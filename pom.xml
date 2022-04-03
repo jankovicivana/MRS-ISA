@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ftn.mrs.isa</groupId>
-    <artifactId>RentalApp</artifactId>
+    <artifactId>MRS-ISA</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>RentalApp</name>
-    <description>RentalApp</description>
+    <name>MRS-ISA</name>
+    <description>MRS-ISA</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
