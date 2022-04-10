@@ -1,6 +1,5 @@
 function login() {
-	console.log("salta");
-	window.open("/homepage.html");
+	window.location.href="/homepage.html";
 	return true;
 
 }
