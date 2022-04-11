@@ -73,8 +73,7 @@ Vue.component("add-adventure",{
                                             <label class="form-label" for="rule_input"><i class="fas fa-pen"></i> Rule: </label>
                                             <input type="text" id="rule_input" class="form-control form-control-lg" />
                                      </div>
-                                     <button class="button"  style="alignment: right" @click = "addRule()">Add rule</button>
-                               </div>
+                              </div>
                         
                                
                                 
@@ -85,7 +84,6 @@ Vue.component("add-adventure",{
                                             <label class="form-label" for="equip_input"><i class="fas fa-pen"></i> Equipment: </label>
                                             <input type="text" id="equip_input" class="form-control form-control-lg" />
                                      </div>
-                                     <button class="button" style="alignment: right" @click = "addEquipment()">Add equipment</button>
                                </div>   
                                               
                                 <br/>    
@@ -97,7 +95,6 @@ Vue.component("add-adventure",{
                                             <label class="form-label" for="image_input"><i class="fas fa-pen"></i> Equipment: </label>
                                             <input type="text" id="image_input" class="form-control form-control-lg" />
                                      </div>
-                                     <button class="button" style="alignment: right" @click = "addImage()">Add image</button>
                                </div>   
                                            
                                 <br/>         
@@ -131,18 +128,18 @@ Vue.component("add-adventure",{
         addEquipment: function (){
             console.log("pozvan za rule");
             let equipment = $("#equip_input").val();
-            this.rules.push(equipment);
+            //this.equipmentList.push(equipment);
             $("#equip_input").val("");
             alert("Equipment is added.");
         },
         addImage: function (){
             console.log("pozvan za rule");
             let img = $("#image_input").val();
-            this.rules.push(img);
+            //this.images.push(img);
             $("#image_input").val("");
             alert("Image is added.");
         },
-        addAdventure: async function (){
+        addAdventure:  function (){
              console.log("sdfsdf");
         let name = $("#name_input").val();
         let description = $("#description_input").val();
@@ -179,6 +176,8 @@ Vue.component("add-adventure",{
     },
     mounted: function (){
         this.rules = [];
-        this.equipment = [];
+        this.equipmentList = [];
+        this.images = [];
+
     }
 });

@@ -41,7 +41,7 @@ public abstract class EntityType {
     @Column(name = "name", nullable = false)
     protected String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinColumn(name = "address")
     protected Address address;
 

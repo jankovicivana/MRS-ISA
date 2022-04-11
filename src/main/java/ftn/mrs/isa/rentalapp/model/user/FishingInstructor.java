@@ -1,12 +1,16 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "fishingInstructors")
 public class FishingInstructor extends Advertiser{
 

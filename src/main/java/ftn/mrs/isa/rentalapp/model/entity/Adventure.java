@@ -29,7 +29,7 @@ public class Adventure extends EntityType{
     private Long id;
 */
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinColumn(name = "fishingInstructorId")
     private FishingInstructor fishingInstructor;
 
