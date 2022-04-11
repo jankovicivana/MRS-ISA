@@ -1,9 +1,11 @@
 const PostPage = { template: '<post-page></post-page>'}
+const AdventureProfile = {template: '<adventure-profile></adventure-profile>'}
 
 const router = new VueRouter({
     mode: 'hash',
     routes: [
-        { path:'/',component: PostPage}
+        { path:'/',component: PostPage},
+        { path: '/adventureProfile', component: AdventureProfile}
     ]
 });
 
