@@ -1,4 +1,10 @@
 Vue.component("client-profile", {
+    data: function(){
+        return{
+            client: ''
+        }
+    },
+
     template: `
 
    <div class="row py-5 px-auto">
@@ -29,20 +35,20 @@ Vue.component("client-profile", {
                         </div>
                         
                         <div class="row mt-2">
-                            <div class="col-md-6 inputs"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name"  readonly value="John"></div>
-                            <div class="col-md-6 inputs"><label class="labels">Surname</label><input type="text" class="form-control" readonly value="Doe" placeholder="Doe"></div>
+                            <div class="col-md-6 inputs"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" v-model="client.name" readonly> </div>
+                            <div class="col-md-6 inputs"><label class="labels">Surname</label><input type="text" class="form-control" readonly v-model="client.surname" placeholder="Doe"></div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-12 inputs"><label class="labels">Email</label><input type="text" class="form-control" placeholder="email" readonly value="ivanaj0610@gmail.com"></div>
-                            <div class="col-md-12 inputs"><label class="labels">Phone number</label><input type="text" class="form-control" placeholder="phone number" readonly value="0654079380"></div>
-                            <div class="col-md-12 inputs"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" readonly value="Strazilovska 14"></div>
+                            <div class="col-md-12 inputs"><label class="labels">Email</label><input type="text" class="form-control" placeholder="email" readonly v-model="client.email"></div>
+                            <div class="col-md-12 inputs"><label class="labels">Phone number</label><input type="text" class="form-control" placeholder="phone number" readonly v-model="client.phoneNumber"></div>
+                            <div class="col-md-12 inputs"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" readonly v-model="client.street"></div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-12 inputs"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" readonly value="USA"></div>
+                            <div class="col-md-12 inputs"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" readonly v-model="client.country"></div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-6 inputs"><label class="labels">City</label><input type="text" class="form-control" readonly value="Boston" placeholder="city"></div>
-                            <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly value="21000"></div>
+                            <div class="col-md-6 inputs"><label class="labels">City</label><input type="text" class="form-control" readonly v-model="client.city" placeholder="city"></div>
+                            <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="client.postalCode"></div>
                         </div>
                       
                         <div class="mt-3 text-right"><button class="btn btn-primary edit-button" type="button">\edit</button></div>
@@ -57,9 +63,9 @@ Vue.component("client-profile", {
                         </div>
                         
                          <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h7>&#127941; Status: Regular </h7>
-                            <h7>&#11088; Points: 10 </h7>
-                            <h7>&#10060; Penalties: 0</h7>
+                            <h6>&#127941; Status: Regular </h6>
+                            <h6>&#11088; Points: <span>{{client.points}}</span> </h6>
+                            <h6>&#10060; Penalties: <span>{{client.penalties}}</span></h6>
                         </div>
                         
                         <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
@@ -95,8 +101,16 @@ Vue.component("client-profile", {
            
         </div>
       </div>
-    </div>
+   </div>
+   </div>
     `
+    ,
+    mounted: function (){
+        axios
+            .get("api/clients/1")
+            .then(response => (this.client = response.data))
+
     }
 
-);
+
+});
