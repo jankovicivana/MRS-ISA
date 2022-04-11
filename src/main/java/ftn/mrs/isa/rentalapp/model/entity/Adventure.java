@@ -10,6 +10,8 @@ import java.util.Set;
 
 
 @Entity
+@Getter
+@Setter
 @Table(name = "adventures")
 public class Adventure extends EntityType{
 
