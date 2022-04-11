@@ -7,13 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +22,8 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+    private final Gson g = new Gson();
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<ClientDTO>> getAllClients(){
@@ -40,5 +42,22 @@ public class ClientController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(new ClientDTO(client), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/updateClient", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    public void updateClient(@RequestBody String data) throws Exception{
+        data = decode(data);
+        ClientDTO clientDTO = g.fromJson(data, ClientDTO.class);
+        clientService.addClient(clientDTO);
+
+    }
+
+    public String decode (String data){
+        data = data.replace("%7B","{");
+        data = data.replace("%22","\"");
+        data = data.replace("%3A",":");
+        data = data.replace("%7D=","}");
+        data = data.replace("%2C",",");
+        return data;
     }
 }
