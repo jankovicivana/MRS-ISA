@@ -12,6 +12,8 @@ import java.util.Set;
 /* getter i setter */
 
 @Entity
+@Getter
+@Setter
 @Table(name = "cottages")
 public class Cottage extends EntityType{
 
@@ -24,11 +26,11 @@ public class Cottage extends EntityType{
     }
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cottageOwnerId")
     private CottageOwner cottageOwner;
 
-    @OneToMany(mappedBy = "cottage", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cottage", fetch = FetchType.EAGER)
     private Set<Room> rooms = new HashSet<Room>();
 
 

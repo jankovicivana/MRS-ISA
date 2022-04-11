@@ -1,41 +1,38 @@
 Vue.component("cottage-profile",{
+    data: function (){
+        return{
+            cottage: ''
+        }
+    },
     template:`
          <section class="profile_main py-lg-3">
             <div class="container cottage_profile px-4 px-lg-5 my-5">
                 <div class="row align-items-center pt-5">
                     <div class="col-md-6">
-                        <img class="main_photo " src="../images/cottage4.jpg" alt="Cottage main photo" width="100%"/>
+                        <img class="main_photo " :src="cottage.mainPhotoUrl" alt="Cottage main photo" width="100%"/>
                         <div class="row thumbs pt-3 ">
-                            <span class="side_photo col-3 px-1"><img src="../images/cottage1.jpg" alt="Cottage photo1" class="img-responsive" width="130px" height="130px"></span>
-                            <span class="side_photo col-3 px-1" ><img src="../images/cottage3.jpg" alt="Cottage photo2" width="130px" height="130px"></span>
-                            <span class="side_photo col-3 px-1" ><img src="../images/cottage5.jpg" alt="Cottage photo3" width="130px" height="130px"></span>
-                            <span class="side_photo col-3 px-1"><img src="../images/cottage2.jpg" alt="Cottage photo4" width="130px" height="130px"></span>
+                            <span v-for="i in cottage.imagesUrls" class="side_photo col-3 px-1"><img :src="i" alt="Cottage photo1" class="img-responsive" width="130px" height="130px"></span>
                         </div>
                     </div>
                     <div class="col-md-6" >
-                        <div class="row">
-                            <div class="col-9 fw-bolder " style="font-size: 35px">Fensi vikendica</div>
-                            <div class="col-3 ">Ocena 5 <i class="fas fa-star" style="color: black"></i></div>
+                        <div class="row m-2">
+                            <div class="col-9 fw-bolder" style="font-size: 35px">{{cottage.name}}</div>
+                            <div class="col-3 pt-3">Ocena 5 <i class="fas fa-star" style="color: black"></i></div>
                         </div>
                         
                         <div class="fs-5 m-3">
-                            <span class="text-decoration-line-through">$45.00</span>
-                            <span>$40.00</span>
+                            Price: $<span>{{cottage.price}}</span>
                         </div>
-                        <p class="lead p-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
+                        <p class="lead p-3">{{cottage.description}}</p>
                         <div class="row number_info p-3">
-                            <p class="col-2" > <i class="fas fa-user-friends"></i> 10</p>
-                            <p class="col-2"><i class="fas fa-home"></i> 5</p>
-                            <p class="col-2"><i class="fas fa-bed"></i> 2</p>
+                            <p class="col-2" > <i class="fas fa-user-friends"></i> {{cottage.numOfBeds}}</p>
+                            <p class="col-2"><i class="fas fa-home"></i> {{cottage.numOfRooms}}</p>
+                            <p class="col-2"><i class="fas fa-bed"></i> {{cottage.numOfBeds}}</p>
                         </div>
                         <div class="row p-3">
                             <p style="font-size: 25px">Dodatne usluge</p>
                             <div class="services">
-                            <p><i class="fas fa-check-circle p-2"></i>Pet frendly</p>
-                            <p><i class="fas fa-check-circle p-2"></i>Wi-fi</p>
-                            <p><i class="fas fa-check-circle p-2"></i>Klimatizovano</p>
-                            <p><i class="fas fa-check-circle p-2"></i>Parking</p>
-                            <p><i class="fas fa-check-circle p-2"></i>Koktel vece</p>
+                            <p v-for="as in cottage.additionalServices"><i class="fas fa-check-circle p-2"></i>{{as}}</p>
                             </div>
                         </div>
                     </div>
@@ -44,11 +41,7 @@ Vue.component("cottage-profile",{
                     <div class="col-4" style="background: #f8f2ec;border-radius: 5%">
                     <p style="font-size: 25px;">Pravila ponasanja</p>
                          <div class="rules">
-                            <p><i class="fas fa-circle p-2"></i>Prijava posle 12h</p>
-                            <p><i class="fas fa-circle p-2"></i>Odjava pre 17h</p>
-                            <p><i class="fas fa-circle p-2"></i>Pusenje zabranjeno</p>
-                            <p><i class="fas fa-circle p-2"></i>Ne lomiti stvari nikako</p>
-                            <p><i class="fas fa-circle p-2"></i>Decu drzati podalje</p>
+                            <p v-for="r in cottage.rules"><i class="fas fa-circle p-2"></i>{{r}}</p>
                          </div>
                     </div>
                     <div class="col-8" style="padding-left: 15px;">
@@ -71,38 +64,18 @@ Vue.component("cottage-profile",{
                     <div class="col-12" style="background: #f8f2ec;">
                         <p id="quick_heading">Brza rezervacija - jos malo pa nestalo!</p>
                         <div class="row p-3">
-                            <div class="col-4 p-3 m-2 quick_res">
+                            <div class="col-4 p-3 m-2 quick_res" v-for="q in cottage.quickReservationsDTO">
                                 <div>
-                                    <p class="res_date">24.05.2022 - 28.05.2022</p>
-                                    <div class="discount">5%</div>
+                                    <p class="res_date">{{q.startDate}} - {{q.endDate}}</p>
+                                    <div class="discount">{{q.discount}}%</div>
                                 </div>
-                                <p><i class="fas fa-user-friends"></i> 3</p>
-                                <span class="text-decoration-line-through">$45.00</span>
-                                <span class="before_price">$40.00</span>
+                                <p><i class="fas fa-user-friends"></i> {{q.maxPersonNum}}</p>
+                                $<span class="text-decoration-line-through">{{q.beforePrice}}</span>
+                                $<span class="before_price">{{q.afterPrice}}</span>
                                 <div class="quick_res_btn"><button type="button" class="btn">REZERVISI</button></div>
                             </div>
                             
-                            <div class="col-4 p-3 m-2 quick_res">
-                                <div>
-                                    <p class="res_date">24.05.2022 - 28.05.2022</p>
-                                    <div class="discount">5%</div>
-                                </div>
-                                <p><i class="fas fa-user-friends"></i> 3</p>
-                                <span class="text-decoration-line-through">$45.00</span>
-                                <span class="before_price">$40.00</span>
-                                <div class="quick_res_btn"><button type="button" class="btn">REZERVISI</button></div>
-                            </div>
                             
-                            <div class="col-4 p-3 m-2 quick_res">
-                                <div>
-                                    <p class="res_date">24.05.2022 - 28.05.2022</p>
-                                    <div class="discount">5%</div>
-                                </div>
-                                <p><i class="fas fa-user-friends"></i> 3</p>
-                                <span class="text-decoration-line-through">$45.00</span>
-                                <span class="before_price">$40.00</span>
-                                <div class="quick_res_btn"><button type="button" class="btn">REZERVISI</button></div>
-                            </div>
                             
                         </div>
                         
@@ -111,5 +84,13 @@ Vue.component("cottage-profile",{
             </div>
         </section>
 
-    `
+    `,
+    mounted:function (){
+        axios
+            .get("api/cottages/1")
+            .then(response => (this.cottage = response.data))
+
+    }
+
+
 });
