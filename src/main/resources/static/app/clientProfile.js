@@ -1,9 +1,5 @@
 Vue.component("client-profile", {
-    data: function(){
-        return{
-            client: ''
-        }
-    },
+
 
     template: `
 
@@ -39,7 +35,7 @@ Vue.component("client-profile", {
                             <div class="col-md-6 inputs"><label class="labels">Surname</label><input type="text" class="form-control" readonly v-model="client.surname" placeholder="Doe"></div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-12 inputs"><label class="labels">Email</label><input type="text" class="form-control" placeholder="email" readonly v-model="client.email"></div>
+                            <div class="col-md-12 inputs"><label class="labels">Email</label><input id="email" type="text" class="form-control" placeholder="email" readonly v-model="client.email"></div>
                             <div class="col-md-12 inputs"><label class="labels">Phone number</label><input type="text" class="form-control" placeholder="phone number" readonly v-model="client.phoneNumber"></div>
                             <div class="col-md-12 inputs"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" readonly v-model="client.street"></div>
                         </div>
@@ -51,7 +47,7 @@ Vue.component("client-profile", {
                             <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="client.postalCode"></div>
                         </div>
                       
-                        <div class="mt-3 text-right"><button class="btn btn-primary edit-button" type="button">\edit</button></div>
+                        <div class="mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
                     </div>
                 </div>
                 
@@ -104,12 +100,43 @@ Vue.component("client-profile", {
    </div>
    </div>
     `
+
     ,
+    data: function(){
+        return{
+            client: '',
+            inputs: null,
+            editButton: null,
+            readonly: true
+        }
+    },
     mounted: function (){
         axios
             .get("api/clients/1")
             .then(response => (this.client = response.data))
 
+    },
+
+    methods: {
+        editClient: function() {
+            this.inputs = document.querySelectorAll('input[type="text"]');
+            for (var i=0; i<this.inputs.length; i++) {
+                if(this.inputs[i].getAttribute("id") !== "email"){
+                    this.inputs[i].toggleAttribute('readonly');
+                }
+            }
+            this.editButton = document.getElementById('editButton');
+            if (this.editButton.innerHTML==="edit" ) {
+                this.editButton.innerHTML="save" ;
+            } else {
+                this.editButton.innerHTML="edit" ;
+                var c = {name :this.client.name, surname :this.client.surname, email :this.client.email, password :this.client.password, country :this.client.country, city :this.client.city, street :this.client.street, postalCode :this.client.postalCode};
+                axios
+                    .post("api/clients/updateClient", c)
+                    .then();
+
+            }
+        }
     }
 
 
