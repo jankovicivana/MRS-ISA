@@ -38,7 +38,7 @@ public abstract class User {
     @Column(name = "surname", nullable = false)
     protected String surname;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address")
     protected Address address;
 
@@ -48,7 +48,7 @@ public abstract class User {
     @Column(name = "type", nullable = false)
     protected UserType type;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "accountDeleteRequest", nullable = true)
     protected AccountDeleteRequest accountDeleteRequest;
 

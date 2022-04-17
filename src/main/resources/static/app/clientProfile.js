@@ -3,7 +3,8 @@ Vue.component("client-profile", {
 
     template: `
 
-   <div class="row py-5 px-auto">
+   <section id = "client_profile" class="profile_main py-lg-3">
+   <div  class="row py-5 px-auto">
       <div class="col-md-8 mx-auto">
         <div class="bg-white shadow rounded overflow-hidden">
             <div class="px-4 pt-0 pb-4 cover">
@@ -11,7 +12,7 @@ Vue.component("client-profile", {
                     <div class="profile mr-3"><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="..." width="150" class="rounded mb-2 img-thumbnail">
                     </div>
                     <div class="pb-4">
-                    <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" >John Doe</h4>
+                    <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{client.name}}</span> <span>{{client.surname}}</span></h4>
                     <a 
                     <a href="#" class="btn flow delete-btn">Delete profile</a>
                     </div>
@@ -22,7 +23,7 @@ Vue.component("client-profile", {
             </div>
             
               
-            <div style="background-color: antiquewhite" class="container rounded mt-1">
+            <div style="background-color: antiquewhite" class="container rounded mt-1" id = "client_profile_container">
             <div class="row">
                 <div class="col-md-6 border-right">
                     <div class="p-3 py-3">
@@ -99,6 +100,7 @@ Vue.component("client-profile", {
       </div>
    </div>
    </div>
+   </section>
     `
 
     ,
@@ -112,7 +114,7 @@ Vue.component("client-profile", {
     },
     mounted: function (){
         axios
-            .get("api/clients/1")
+            .get("api/clients/2")
             .then(response => (this.client = response.data))
 
     },

@@ -49,7 +49,7 @@ public class ClientController {
         data = decode(data);
         ClientDTO clientDTO = g.fromJson(data, ClientDTO.class);
         // ***
-        clientDTO.setId(1);
+        clientDTO.setId(2);
         clientService.updateClient(clientDTO);
     }
 

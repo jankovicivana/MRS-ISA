@@ -11,7 +11,7 @@ Vue.component("cottage-profile",{
                     <div class="col-md-6">
                         <img class="main_photo " :src="cottage.mainPhotoUrl" alt="Cottage main photo" width="100%"/>
                         <div class="row thumbs pt-3 ">
-                            <span v-for="i in cottage.imagesUrls" class="side_photo col-3 px-1"><img :src="i" alt="Cottage photo1" class="img-responsive" width="130px" height="130px"></span>
+                            <span v-for="i in cottage.images" class="side_photo col-3 px-1"><img :src="i" alt="Cottage photo1" class="img-responsive" width="130px" height="130px"></span>
                         </div>
                     </div>
                     <div class="col-md-6" >
