@@ -24,7 +24,7 @@ public abstract class User {
     @Id
     @SequenceGenerator(name = "mySeqGenV1", sequenceName = "mySeqV1", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV1")
-    protected Long id;
+    protected Integer id;
 
     @Column(name = "email", unique = true, nullable = false)
     protected String email;
