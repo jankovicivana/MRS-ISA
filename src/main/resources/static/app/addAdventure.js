@@ -9,7 +9,7 @@ Vue.component("add-adventure",{
                             <div class="card-body p-5">
                                 <h2 class="text-uppercase text-center mb-5" style=" color: #04414d; font-family: 'Bookman Old Style',serif;">New fishing adventure?</h2>
 
-                                <form @submit="addAdventure()">
+                                <form>
                                    
                                     <div class="form-outline mb-4">
                                         <label class="label" for="name_input"> <i class="fas fa-fish"></i>  Adventure name:</label>
@@ -37,7 +37,7 @@ Vue.component("add-adventure",{
 
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="description_input"><i class="fas fa-pen"></i> Description: </label>
-                                        <input type="text" id="description_input" class="form-control form-control-lg" required/>
+                                        <textarea type="text" id="description_input" class="form-control form-control-lg" required/>
                                     </div>
                                      
                                      <hr />
@@ -61,7 +61,7 @@ Vue.component("add-adventure",{
                                     
                                     <div class="form-outline mb-4">
                                         <label class="form-label" for="postal_code_input"><i class="fas fa-pen"></i> Postal code: </label>
-                                        <input type="text" id="postal_code_input" class="form-control form-control-lg" required/>
+                                        <input type="number" id="postal_code_input" class="form-control form-control-lg" required/>
                                     </div>
 
                             <hr />
@@ -71,8 +71,12 @@ Vue.component("add-adventure",{
                               <div class="form-outline mb-4">
                                     <div class="form-outline mb-4">
                                             <label class="form-label" for="rule_input"><i class="fas fa-pen"></i> Rule: </label>
-                                            <input type="text" id="rule_input" class="form-control form-control-lg" />
-                                     </div>
+                                                <div class="row">
+                                                    <input type="text" id="rule_input" class="input_add form-control-lg col-8 mx-3" style="border-color:white;" />
+                                                    <button type="button" id="add_rule_btn" v-on:click="addRule()" class="btn col-3" style="background-color: #04414d;color: white">Add rule</button>
+                                                </div>                                    
+                                    </div>
+                                    <div class="mx-1 mb-2 row" id="rules" style="background: #e6e6e6;border-radius: 3%"></div>
                               </div>
                         
                                
@@ -82,25 +86,46 @@ Vue.component("add-adventure",{
                                 <div class="form-outline mb-4">
                                     <div class="form-outline mb-4">
                                             <label class="form-label" for="equip_input"><i class="fas fa-pen"></i> Equipment: </label>
-                                            <input type="text" id="equip_input" class="form-control form-control-lg" />
-                                     </div>
+                                                <div class="row">
+                                                    <input type="text" id="equip_input" class="input_add form-control-lg col-8 mx-3"  style="border-color:white;" />
+                                                    <button type="button" id="add_equip_btn" v-on:click="addEquipment()" class="btn col-3" style="background-color: #04414d;color: white">Add equipment</button>
+                                                </div>
+                                    </div>
+                                    <div class="mx-1 mb-2 row" id="equipmentList" style="background: #e6e6e6;border-radius: 3%"></div>
+
                                </div>   
                                               
                                 <br/>    
-                                
-                                <hr/>
-                                <h4>Images</h4>
-                                <div class="form-outline mb-4">
+                                <h4>Additional services</h4>
+  
+                              <div class="form-outline mb-4">
                                     <div class="form-outline mb-4">
-                                            <label class="form-label" for="image_input"><i class="fas fa-pen"></i> Equipment: </label>
-                                            <input type="text" id="image_input" class="form-control form-control-lg" />
+                                            <label class="form-label" for="add_service_input"><i class="fas fa-pen"></i> Additional service: </label>
+                                            <div class="row">
+                                                <input type="text" id="add_service_input" class="input_add form-control-lg col-8 mx-3"   style="border-color:white;" />
+                                                <button type="button" v-on:click="addService()" class="btn col-3" style="background-color: #04414d;color: white">Add service</button>
+                                            </div>
                                      </div>
-                               </div>   
-                                           
-                                <br/>         
+                                     <div class="mx-1 mb-2 row" id="services" style="background: #e6e6e6;border-radius: 3%"></div>
+                              </div>
+                              
+                                <br/>
+                              
+                                <hr/>
+                                <h4>Images<i class="fas fa-camera px-2"></i></h4>
+                                <div class="form-outline mb-2 mt-3">
+                                     <input type="file" id="image_input" @change="onFileSelected" class="form-control" accept="image/png, image/gif, image/jpeg" multiple />
+                                </div>
+                                <div class="mx-1 mb-2 row" id="photos" style="background: #e6e6e6;border-radius: 3%">
+                                </div>
+                               
+                               <button type="button" id="add_img_btn" class="btn" v-on:click="addImage()" style="background-color: #04414d; color: white;margin-left: 80%">Add image</button>
+   
+                                                                                      
+                                <br/>        
 
                                 <div class="d-flex justify-content-center">
-                                        <button type="submit"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+                                        <button type="submit" v-on:click="addAdventure()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
                                 </div>
 
 
@@ -116,68 +141,148 @@ Vue.component("add-adventure",{
 
     </section>
     `
+    ,data: function (){
+        return{
+            imagesUrls: [],
+            rules: [],
+            services: [],
+            equipment: [],
+            selectedFile: null
+        }
+    }
     ,
     methods:{
+        onFileSelected: function (event){
+            this.selectedFile = event.target.files[0];
+        },
+
+        addImage: function (){
+            let img = $("#image_input").val()
+            let file = document.querySelector('input[type=file]').files[0];
+            var picturePath  = new FileReader();
+
+
+            picturePath.readAsDataURL(file)
+            picturePath.onload = e => {
+                this.imagesUrls.push(e.target.result);
+
+            }
+
+            if(img == ""){
+                alert("Must choose file!");
+                return;
+            }
+            [tag,aptag] = this.formElement(img,this.imagesUrls);
+
+            document.getElementById("photos").appendChild(tag);
+            document.getElementById("photos").appendChild(aptag);
+            document.getElementById('image_input').value="";
+
+        },
         addRule: function (){
-            console.log("pozvan za rule");
-            let rule = $("#rule_input").val();
+            let rule = $('#rule_input').val();
+            if(rule == ""){
+                alert("Must enter rule!");
+                return;
+            }
             this.rules.push(rule);
-            $("#rule_input").val("");
-            alert("Rule is added.");
+            [tag,aptag] = this.formElement(rule,this.rules);
+
+            document.getElementById("rules").appendChild(tag);
+            document.getElementById("rules").appendChild(aptag);
+            document.getElementById('rule_input').value="";
+
         },
         addEquipment: function (){
-            console.log("pozvan za rule");
-            let equipment = $("#equip_input").val();
-            //this.equipmentList.push(equipment);
-            $("#equip_input").val("");
-            alert("Equipment is added.");
+            let equip = $('#equip_input').val();
+            if(equip == ""){
+                alert("Must enter equipment!");
+                return;
+            }
+            this.equipment.push(equip);
+            [tag,aptag] = this.formElement(equip,this.equipment);
+
+            document.getElementById("equipmentList").appendChild(tag);
+            document.getElementById("equipmentList").appendChild(aptag);
+            document.getElementById('equip_input').value="";
+
         },
-        addImage: function (){
-            console.log("pozvan za rule");
-            let img = $("#image_input").val();
-            //this.images.push(img);
-            $("#image_input").val("");
-            alert("Image is added.");
+
+        addService: function (){
+            let service = $('#add_service_input').val();
+            if(service == ""){
+                alert("Must enter additional service!!");
+                return;
+            }
+            this.services.push(service);
+            [tag,aptag] = this.formElement(service,this.services);
+            document.getElementById("services").appendChild(tag);
+            document.getElementById("services").appendChild(aptag);
+            document.getElementById('add_service_input').value="";
+
         },
-        addAdventure:  function (){
-             console.log("sdfsdf");
-        let name = $("#name_input").val();
-        let description = $("#description_input").val();
-        let maxPersonNum = $("#max_person_input").val();
-        let cancelFee = $("#cancel_fee_input").val();
-        let price = $("#price_input").val();
+        formElement:function(element,elements){
+
+            var tag = document.createElement("p")
+            tag.classList.add('col-8');
+            var text = document.createTextNode(element);
+            tag.append(text);
+            var aptag = document.createElement("p")
+            var atag = document.createElement("a")
+            atag.onclick = (function (p){
+                return function (e){
+                    var index = p.indexOf(element);
+                    p.splice(index,1);
+                    tag.remove();
+                    aptag.remove();
+                    atag.remove();
+                };
+            }(elements));
+            atag.href = "javascript:void(0)";
+            atag.style.textDecoration = 'none';
+            atag.append(document.createTextNode("   Remove"))
+            aptag.style.textAlign='right';
+            aptag.classList.add('col-4');
+            aptag.appendChild(atag);
+            return [tag,aptag];
+        },
+        addAdventure: function (){
+            console.log('doslo ovde')
+
+            let name = $("#name_input").val();
+            let description = $("#description_input").val();
+            let max_person_num = $("#max_person_input").val();
+            let price = $("#price_input").val();
             let country = $("#country_input").val();
             let city = $("#city_input").val();
             let street = $("#street_input").val();
             let postal_code = $("#postal_code_input").val();
+            let cancel_fee = $("#cancel_fee_input").val();
 
+            this.info = {
+                name: name,
+                price:price,
+                maxPersonNum:max_person_num,
+                description:description,
+                country:country,
+                city:city,
+                street: street,
+                postal_code: postal_code,
+                cancelFee: cancel_fee,
+                rules: this.rules,
+                additionalServices: this.services,
+                images: this.imagesUrls,
+                fishingEquipment: this.equipment
+            };
 
-        let info = {
-            name:name,
-            price:price,
-            maxPersonNum:maxPersonNum,
-            cancelFee: cancelFee,
-            description:description,
-            country:country,
-            city:city,
-            street: street,
-            postal_code:postal_code
-
-        }
-        console.log("doslo ovjde");
-        console.log((JSON.stringify(info)).toString());
-        axios.post("/addAdventure",(JSON.stringify(info)).toString())
-            .then(function response(data){
-                alert("Addition is successfull");
-            }).catch(function error(error) {
+            axios.post("api/adventures/addAdventure",this.info)
+                .then(response => {
+                    alert("Addition is successfull!")
+                }).catch(function error(error) {
                 alert(error.response.data);
             });
+
         }
-    },
-    mounted: function (){
-        this.rules = [];
-        this.equipmentList = [];
-        this.images = [];
 
     }
 });
