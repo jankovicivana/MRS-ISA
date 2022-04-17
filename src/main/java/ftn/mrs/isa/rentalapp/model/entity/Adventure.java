@@ -33,7 +33,7 @@ public class Adventure extends EntityType{
     @JoinColumn(name = "fishingInstructorId")
     private FishingInstructor fishingInstructor;
 
-    @OneToMany(mappedBy = "adventure", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "adventure", fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     private Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
     @Column(name = "cancelFee", nullable = false)
