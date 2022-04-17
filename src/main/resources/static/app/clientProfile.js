@@ -132,7 +132,7 @@ Vue.component("client-profile", {
                 this.editButton.innerHTML="edit" ;
                 var c = {name :this.client.name, surname :this.client.surname, email :this.client.email, password :this.client.password, country :this.client.country, city :this.client.city, street :this.client.street, postalCode :this.client.postalCode};
                 axios
-                    .post("api/clients/updateClient", c)
+                    .put("api/clients/updateClient", c)
                     .then();
 
             }

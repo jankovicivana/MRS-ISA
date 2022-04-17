@@ -44,12 +44,13 @@ public class ClientController {
         return new ResponseEntity<>(new ClientDTO(client), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/updateClient", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/updateClient", method = RequestMethod.PUT, produces = "text/plain;charset=UTF-8")
     public void updateClient(@RequestBody String data) throws Exception{
         data = decode(data);
         ClientDTO clientDTO = g.fromJson(data, ClientDTO.class);
-        clientService.addClient(clientDTO);
-
+        // ***
+        clientDTO.setId(1);
+        clientService.updateClient(clientDTO);
     }
 
     public String decode (String data){
