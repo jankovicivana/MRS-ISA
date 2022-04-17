@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+
 @Entity
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public class Cottage extends EntityType{
     @Column(name = "maxNumPerson", nullable = false)
     private Integer maxNumPerson;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cottageOwnerId")
     private CottageOwner cottageOwner;
 

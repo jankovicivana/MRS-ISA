@@ -72,5 +72,4 @@ public abstract class EntityType {
     @OneToMany(mappedBy = "entity")
     private Set<Subscription> subscriptions = new HashSet<Subscription>();
 
-
 }
