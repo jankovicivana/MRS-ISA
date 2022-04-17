@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "rules")
+@Table(name = "rooms")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +19,15 @@ public class Room {
     @Column(name = "bedNumber", nullable = false)
     private Integer bedNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "cottage")
     private Cottage cottage;
 
+    public Room(Integer bedNumber){
+        this.bedNumber = bedNumber;
+    }
+
+    public Room() {
+
+    }
 }

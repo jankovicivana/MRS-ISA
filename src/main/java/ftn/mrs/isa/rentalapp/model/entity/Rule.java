@@ -19,7 +19,7 @@ public class Rule {
     @Column(name = "rule", nullable = false)
     private String rule;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "entity")
     private EntityType entity;
 

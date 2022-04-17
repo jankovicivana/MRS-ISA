@@ -20,7 +20,7 @@ public class Image {
     @Column(name = "path", nullable = false, unique = true)
     private String path;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "entity")
     private EntityType entity;
 }

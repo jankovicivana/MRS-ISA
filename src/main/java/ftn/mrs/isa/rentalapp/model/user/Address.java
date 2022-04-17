@@ -17,8 +17,7 @@ public class Address {
     public Address() {
     }
 
-    public Address(Long id, String street, String city, Integer postalCode, String country) {
-        this.id = id;
+    public Address(String street, String city, Integer postalCode, String country) {
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;
@@ -33,7 +32,7 @@ public class Address {
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<User>();
 
-    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "address", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<EntityType> entities = new HashSet<EntityType>();
 
     @Column(name = "street", nullable = false)
