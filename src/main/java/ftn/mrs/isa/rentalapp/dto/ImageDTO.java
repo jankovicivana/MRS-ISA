@@ -7,5 +7,5 @@ public class ImageDTO {
 
     private String data;
 
-    private String name;
+    private String path;
 }
