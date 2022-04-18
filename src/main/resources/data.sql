@@ -42,9 +42,9 @@ insert into quick_reservations (discount, end_date_time, expiration_date_time, i
 values (5,'20220615 10:00:00 AM','20220522 10:00:00 AM',false,10,180,'20220610 10:00:00 AM',1,null,22);
 
 
-insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography) values (1,'pera@gmail.com','Pera','pera123','06245564','Peric',1,null,1,0,0,'Ovo bi trebao da je biografija instruktora.');
+insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography) values (3,'pera@gmail.com','Pera','pera123','06245564','Peric',1,null,1,0,0,'Ovo bi trebao da je biografija instruktora.');
 
-insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Mnogo dobra vikendica','200',1,1,10,0);
+insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Mnogo dobra vikendica','200',1,3,10,0);
 
 
 insert into images (path,entity) values ('../images/pic1.jpg',2);

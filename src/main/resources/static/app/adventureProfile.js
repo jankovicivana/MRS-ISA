@@ -126,7 +126,7 @@ Vue.component("adventure-profile",{
         `,
     mounted:function (){
         axios
-            .get("api/adventures/1")
+            .get("api/adventures/2")
             .then(response => (this.adventure = response.data))
 
     }

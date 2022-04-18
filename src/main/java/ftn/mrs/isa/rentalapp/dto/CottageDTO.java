@@ -88,10 +88,10 @@ public class CottageDTO {
             this.additionalServices.add(a.getName());
         }
 
-        Set<QuickReservation> quickReservations = cottage.getQuickReservations();
-        for (QuickReservation q : quickReservations) {
-            this.quickReservationsDTO.add(new QuickReservationDTO(q));
-        }
+        //Set<QuickReservation> quickReservations = cottage.getQuickReservations();
+        //for (QuickReservation q : quickReservations) {
+         //   this.quickReservationsDTO.add(new QuickReservationDTO(q));
+        //}
     }
 
 }

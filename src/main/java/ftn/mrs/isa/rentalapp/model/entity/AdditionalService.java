@@ -24,9 +24,6 @@ public class AdditionalService {
     @JoinColumn(name = "entity")
     private EntityType entity;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quickReservation")
     private QuickReservation quickReservation;
