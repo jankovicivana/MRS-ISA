@@ -32,41 +32,41 @@ public abstract class EntityType {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV2")
     protected Integer id;
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<QuickReservation> quickReservations = new HashSet<QuickReservation>();
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<Reservation> reservations = new HashSet<Reservation>();
 
     @Column(name = "name", nullable = false)
     protected String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address")
     protected Address address;
 
     @Column(name = "price", nullable = false)
     protected Double price;
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<Rule> rules = new HashSet<Rule>();
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<AdditionalService> additionalServices = new HashSet<AdditionalService>();
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<Image> images = new HashSet<Image>();
 
     @Column(name = "description", nullable = false)
     protected String description;
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<EntityReview> reviews = new HashSet<EntityReview>();
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<EntityComplaint> complaints = new HashSet<EntityComplaint>();
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<AvailablePeriod> availablePeriods = new HashSet<AvailablePeriod>();
 
     @OneToMany(mappedBy = "entity")

@@ -10,6 +10,8 @@ import java.util.Set;
 
 
 @Entity
+@Getter
+@Setter
 @Table(name = "adventures")
 public class Adventure extends EntityType{
 
@@ -27,11 +29,11 @@ public class Adventure extends EntityType{
     private Long id;
 */
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fishingInstructorId")
     private FishingInstructor fishingInstructor;
 
-    @OneToMany(mappedBy = "adventure", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "adventure", fetch = FetchType.EAGER)
     private Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
     @Column(name = "cancelFee", nullable = false)
