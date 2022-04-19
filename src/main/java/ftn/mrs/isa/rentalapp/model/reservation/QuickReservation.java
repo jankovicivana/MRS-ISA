@@ -18,10 +18,6 @@ import java.util.Set;
 @Table(name = "quickReservations")
 public class QuickReservation {
 
-
-    public QuickReservation() {
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

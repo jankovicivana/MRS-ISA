@@ -105,3 +105,111 @@
 .before_price{
     color: #c91d1d;
 }
+
+
+
+
+.profile-head {
+    transform: translateY(2rem)
+}
+
+
+.delete-btn{
+    float: right;
+    height: 30px;
+    width: 150px;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    background-color: cadetblue;
+    cursor: pointer;
+    text-transform: uppercase
+}
+
+.form-control{
+    background-color: white;
+}
+
+
+.delete-btn:hover {
+    background: darkcyan;
+}
+
+.delete-btn:focus {
+    background: darkcyan;
+    box-shadow: none
+}
+
+.delete-btn:active {
+    background: darkcyan;
+    box-shadow: none
+}
+
+.cover {
+    background-color: #ecd9c6;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+
+
+.container #client_profile_container{
+    height: 80vh;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    background-color: burlywood;
+}
+
+
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+
+
+.inputs input {
+    height: 40px;
+    padding: 0px 10px;
+    font-size: 17px;
+    box-shadow: none;
+    outline: none;
+    background-color: white;
+}
+
+.inputs input[type="text"][readonly] {
+    border: 2px solid rgba(0, 0, 0, 0);
+    background-color: white;
+}
+
+
+
+.edit-button {
+    box-shadow: none;
+    border: none;
+    background-color: cadetblue;
+    cursor: pointer;
+    text-transform: uppercase
+}
+
+.edit-button:hover {
+    background: darkcyan;
+}
+
+.edit-button:focus {
+    background: darkcyan;
+    box-shadow: none
+}
+
+.edit-button:active {
+    background: darkcyan;
+    box-shadow: none
+}
+
+.labels {
+    font-size: 11px
+}

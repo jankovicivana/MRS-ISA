@@ -23,6 +23,4 @@ public class QuickReservationDTO {
 
     private Double discountedPrice;
 
-
-
 }

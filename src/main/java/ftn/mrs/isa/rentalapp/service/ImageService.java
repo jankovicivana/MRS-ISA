@@ -2,6 +2,7 @@ package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.dto.ImageDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Image;
 import ftn.mrs.isa.rentalapp.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ImageService {
 
     public void remove(Integer id){ imageRepository.deleteById(id);}
 
-    public Set<Image> createImageFromString(Set<String> imagesDTO, Cottage cottage) throws IOException {
+    public Set<Image> createImageFromString(Set<String> imagesDTO, EntityType entityType) throws IOException {
         if (imagesDTO == null) {
             return null;
         }
@@ -41,7 +42,7 @@ public class ImageService {
             } catch(Exception e) {
                 return null;
             }
-            String imageName = "cottage-"+cottage.getName()+"."+count+".jpg";
+            String imageName = "cottage-"+entityType.getName()+"."+count+".jpg";
             String picturePath = "src\\main\\resources\\static\\images\\"+imageName;
             try (OutputStream stream = new FileOutputStream(new File(picturePath).getCanonicalFile())) {
                 stream.write(data);
@@ -49,7 +50,7 @@ public class ImageService {
 
             Image im = new Image();
             im.setPath(imageName);
-            im.setEntity(cottage);
+            im.setEntity(entityType);
             images.add(im);
             count++;
         }

@@ -6,12 +6,16 @@ import ftn.mrs.isa.rentalapp.model.entity.Subscription;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Report;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "clients")
 public class Client extends User{
 

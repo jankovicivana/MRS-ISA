@@ -24,8 +24,6 @@ public class CottageDTO {
 
     private String description;
 
-    //private String mainPhotoUrl;
-
     private Set<ImageDTO> images;
 
     private String cottageOwnerName;
@@ -39,6 +37,9 @@ public class CottageDTO {
     private Integer maxNumPerson;
 
     private Set<QuickReservationDTO> quickReservations;
+
+
+
 
 
 }

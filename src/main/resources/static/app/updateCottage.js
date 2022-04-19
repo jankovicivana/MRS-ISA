@@ -7,7 +7,7 @@ Vue.component("update-cottage", {
                     <div class="col-12 col-md-9 col-lg-7 col-xl-6" >
                         <div class="card" style="border-radius: 15px; background: #ecd9c6;   ">
                             <div class="card-body p-5">
-                                <h2 class="text-uppercase text-center mb-5" style=" color: #04414d; font-family: 'Bookman Old Style',serif;">UDATE COTTAGE</h2>
+                                <h2 class="text-uppercase text-center mb-5" style=" color: #04414d; font-family: 'Bookman Old Style',serif;">UPDATE COTTAGE</h2>
                                 <form>
                                    
                                     <div class="form-outline mb-4">

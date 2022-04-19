@@ -29,7 +29,7 @@ public abstract class EntityType {
     @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<QuickReservation> quickReservations = new HashSet<QuickReservation>();
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<Reservation> reservations = new HashSet<Reservation>();
 
     @Column(name = "name", nullable = false)
@@ -54,7 +54,7 @@ public abstract class EntityType {
     @Column(name = "description", nullable = false)
     protected String description;
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<EntityReview> reviews = new HashSet<EntityReview>();
 
     @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)

@@ -14,3 +14,4 @@ public class ImageDTO {
     private Integer entityId;
 
 }
+

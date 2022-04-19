@@ -11,26 +11,24 @@ Vue.component("cottage-profile",{
             <div class="container cottage_profile px-4 px-lg-5 my-5">
                 <div class="row align-items-center pt-5">
                     <div class="col-md-6">
-
                         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                          <div class="carousel-inner">
-                            <div class="carousel-item active">
-                              <img class="d-block w-100" src="../images/cottage4.jpg" alt="First slide" style="border-radius: 2%">
-                            </div>
-                            <div class="carousel-item" v-for="i in cottage.images">
-                              <img class="d-block w-100" :src="i.path" alt="First slide" style="border-radius: 2%">
-                            </div>
-                          </div>
-                          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                          </a>
-                          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                          </a>
+                              <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                  <img class="d-block w-100" src="../images/cottage4.jpg" alt="First slide" style="border-radius: 2%">
+                                </div>
+                                <div class="carousel-item" v-for="i in cottage.images">
+                                  <img class="d-block w-100" :src="i.path" alt="First slide" style="border-radius: 2%">
+                                </div>
+                              </div>
+                              <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                              </a>
+                              <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                              </a>
                         </div>
-                        
                     </div>
                     <div class="col-md-6" >
                         <div class="row m-2">

@@ -10,4 +10,5 @@ public class RuleDTO {
     private String rule;
 
     private Integer entityId;
+
 }
