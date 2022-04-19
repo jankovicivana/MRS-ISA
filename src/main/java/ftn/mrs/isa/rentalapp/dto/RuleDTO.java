@@ -3,12 +3,11 @@ package ftn.mrs.isa.rentalapp.dto;
 import lombok.Data;
 
 @Data
-public class RoomDTO {
+public class RuleDTO {
 
     private Integer id;
 
-    private Integer bedNumber;
+    private String rule;
 
     private Integer entityId;
-
 }

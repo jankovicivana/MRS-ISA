@@ -27,7 +27,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<User>();

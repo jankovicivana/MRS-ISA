@@ -16,10 +16,6 @@ import java.util.Set;
 @Table(name = "cottages")
 public class Cottage extends EntityType{
 
-    public Cottage(Integer id) {
-        super();
-        this.id = id;
-    }
 
     public Cottage() {
     }
@@ -31,7 +27,7 @@ public class Cottage extends EntityType{
     @JoinColumn(name = "cottageOwnerId")
     private CottageOwner cottageOwner;
 
-    @OneToMany(mappedBy = "cottage", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cottage", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<Room> rooms = new HashSet<Room>();
 
 

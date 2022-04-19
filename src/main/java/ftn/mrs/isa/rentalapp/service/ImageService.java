@@ -1,7 +1,10 @@
 package ftn.mrs.isa.rentalapp.service;
 
+import ftn.mrs.isa.rentalapp.dto.ImageDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.Image;
+import ftn.mrs.isa.rentalapp.repository.ImageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,6 +18,14 @@ import java.util.Set;
 @Service
 public class ImageService {
 
+    @Autowired
+    private ImageRepository imageRepository;
+
+    public void save(Image image){imageRepository.save(image);}
+
+    public Image findOne(Integer id){return imageRepository.findById(id).orElse(null);}
+
+    public void remove(Integer id){ imageRepository.deleteById(id);}
 
     public Set<Image> createImageFromString(Set<String> imagesDTO, Cottage cottage) throws IOException {
         if (imagesDTO == null) {
@@ -44,4 +55,5 @@ public class ImageService {
         }
         return images;
     }
+
 }

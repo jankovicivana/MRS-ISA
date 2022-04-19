@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +18,6 @@ import java.util.Set;
 @Table(name = "quickReservations")
 public class QuickReservation {
 
-    public QuickReservation(Long id, LocalDateTime startDate, LocalDateTime endDate) {
-        this.id = id;
-        this.startDateTime = startDate;
-        this.endDateTime = endDate;
-    }
 
     public QuickReservation() {
     }
@@ -32,10 +28,10 @@ public class QuickReservation {
     private Long id;
 
     @Column(name = "startDateTime", nullable = false)
-    private LocalDateTime startDateTime;
+    private LocalDate startDateTime;
 
     @Column(name = "endDateTime", nullable = false)
-    private LocalDateTime endDateTime;
+    private LocalDate endDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity")
@@ -43,6 +39,9 @@ public class QuickReservation {
 
     @Column(name = "price", nullable = false)
     private Double price;
+
+    @Column(name = "discountedPrice", nullable = false)
+    private Double discountedPrice;
 
     @Column(name = "maxPersonNum", nullable = false)
     private Integer maxPersonNum;

@@ -20,12 +20,6 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @Inheritance(strategy=TABLE_PER_CLASS)
 public abstract class EntityType {
 
-    public EntityType(Integer id) {
-        this.id = id;
-    }
-
-    public EntityType() {
-    }
 
     @Id
     @SequenceGenerator(name = "mySeqGenV2", sequenceName = "mySeqV2", initialValue = 1, allocationSize = 1)
@@ -48,13 +42,13 @@ public abstract class EntityType {
     @Column(name = "price", nullable = false)
     protected Double price;
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<Rule> rules = new HashSet<Rule>();
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<AdditionalService> additionalServices = new HashSet<AdditionalService>();
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<Image> images = new HashSet<Image>();
 
     @Column(name = "description", nullable = false)

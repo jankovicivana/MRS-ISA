@@ -1,14 +1,16 @@
 package ftn.mrs.isa.rentalapp.dto;
 
+
 import lombok.Data;
 
 @Data
-public class RoomDTO {
+public class AdditionalServiceDTO {
 
     private Integer id;
 
-    private Integer bedNumber;
+    private String name;
 
     private Integer entityId;
+
 
 }

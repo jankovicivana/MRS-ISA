@@ -11,26 +11,18 @@ public class QuickReservationDTO {
 
     private Long id;
 
-    private LocalDate startDate;
+    private LocalDate startDateTime;
 
-    private LocalDate endDate;
+    private LocalDate endDateTime;
 
     private Integer maxPersonNum;
 
-    private Double beforePrice;
-
-    private Double afterPrice;
+    private Double price;
 
     private Integer discount;
 
-    public QuickReservationDTO(QuickReservation quickReservation){
-        this.id = quickReservation.getId();
-        this.startDate = quickReservation.getStartDateTime().toLocalDate();
-        this.endDate = quickReservation.getEndDateTime().toLocalDate();
-        this.maxPersonNum = quickReservation.getMaxPersonNum();
-        this.beforePrice = quickReservation.getPrice();
-        this.discount = quickReservation.getDiscount();
-        this.afterPrice = this.beforePrice - (this.beforePrice * discount/100);
+    private Double discountedPrice;
 
-    }
+
+
 }
