@@ -28,13 +28,13 @@ insert into rules (rule,entity) values ('Ne lomiti stvari',1);
 insert into rules (rule,entity) values ('Decu drzati podalje',1);
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
-                                start_date_time, entity, reservation)
-values (5,'20220528 10:00:00 AM','20220522 10:00:00 AM',false,10,150,'20220524 10:00:00 AM',1,null);
+                                start_date_time, entity, reservation,discounted_price)
+values (5,'20220528','20220522 10:00:00 AM',false,10,150,'20220524',1,null,145);
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
-                                start_date_time, entity, reservation)
-values (10,'20220620 10:00:00 AM','20220601 10:00:00 AM',false,10,200,'20220615 10:00:00 AM',1,null);
+                                start_date_time, entity, reservation,discounted_price)
+values (10,'20220620','20220601 10:00:00 AM',false,10,200,'20220615',1,null,180);
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
-                                start_date_time, entity, reservation)
-values (5,'20220615 10:00:00 AM','20220522 10:00:00 AM',false,10,180,'20220610 10:00:00 AM',1,null);
+                                start_date_time, entity, reservation,discounted_price)
+values (5,'20220615','20220522 10:00:00 AM',false,10,180,'20220610',1,null,170);

@@ -1,7 +1,9 @@
 Vue.component("cottage-profile",{
     data: function (){
         return{
-            cottage: ''
+            cottage: '',
+            num_rooms: 0,
+            num_beds: 0
         }
     },
     template:`
@@ -9,10 +11,26 @@ Vue.component("cottage-profile",{
             <div class="container cottage_profile px-4 px-lg-5 my-5">
                 <div class="row align-items-center pt-5">
                     <div class="col-md-6">
-                        <img class="main_photo " :src="cottage.mainPhotoUrl" alt="Cottage main photo" width="100%"/>
-                        <div class="row thumbs pt-3 ">
-                            <span v-for="i in cottage.imagesUrls" class="side_photo col-3 px-1"><img :src="i" alt="Cottage photo1" class="img-responsive" width="130px" height="130px"></span>
+
+                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                          <div class="carousel-inner">
+                            <div class="carousel-item active">
+                              <img class="d-block w-100" src="../images/cottage4.jpg" alt="First slide" style="border-radius: 2%">
+                            </div>
+                            <div class="carousel-item" v-for="i in cottage.images">
+                              <img class="d-block w-100" :src="i.path" alt="First slide" style="border-radius: 2%">
+                            </div>
+                          </div>
+                          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
                         </div>
+                        
                     </div>
                     <div class="col-md-6" >
                         <div class="row m-2">
@@ -25,14 +43,14 @@ Vue.component("cottage-profile",{
                         </div>
                         <p class="lead p-3">{{cottage.description}}</p>
                         <div class="row number_info p-3">
-                            <p class="col-2" > <i class="fas fa-user-friends"></i> {{cottage.numOfBeds}}</p>
-                            <p class="col-2"><i class="fas fa-home"></i> {{cottage.numOfRooms}}</p>
-                            <p class="col-2"><i class="fas fa-bed"></i> {{cottage.numOfBeds}}</p>
+                            <p class="col-2" > <i class="fas fa-user-friends"></i> {{cottage.maxNumPerson}}</p>
+                            <p class="col-2"><i class="fas fa-home"></i> {{num_rooms}}</p>
+                            <p class="col-2"><i class="fas fa-bed"></i> {{num_beds}}</p>
                         </div>
                         <div class="row p-3">
                             <p style="font-size: 25px">Dodatne usluge</p>
                             <div class="services">
-                            <p v-for="as in cottage.additionalServices"><i class="fas fa-check-circle p-2"></i>{{as}}</p>
+                            <p v-for="as in cottage.additionalServices"><i class="fas fa-check-circle p-2"></i>{{as.name}}</p>
                             </div>
                         </div>
                     </div>
@@ -41,7 +59,7 @@ Vue.component("cottage-profile",{
                     <div class="col-4" style="background: #f8f2ec;border-radius: 5%">
                     <p style="font-size: 25px;">Pravila ponasanja</p>
                          <div class="rules">
-                            <p v-for="r in cottage.rules"><i class="fas fa-circle p-2"></i>{{r}}</p>
+                            <p v-for="r in cottage.rules"><i class="fas fa-circle p-2"></i>{{r.rule}}</p>
                          </div>
                     </div>
                     <div class="col-8" style="padding-left: 15px;">
@@ -64,14 +82,14 @@ Vue.component("cottage-profile",{
                     <div class="col-12" style="background: #f8f2ec;">
                         <p id="quick_heading">Brza rezervacija - jos malo pa nestalo!</p>
                         <div class="row p-3">
-                            <div class="col-4 p-3 m-2 quick_res" v-for="q in cottage.quickReservationsDTO">
+                            <div class="col-4 p-3 m-2 quick_res" v-for="q in cottage.quickReservations">
                                 <div>
-                                    <p class="res_date">{{q.startDate}} - {{q.endDate}}</p>
+                                    <p class="res_date">{{q.startDateTime}} - {{q.endDateTime}}</p>
                                     <div class="discount">{{q.discount}}%</div>
                                 </div>
                                 <p><i class="fas fa-user-friends"></i> {{q.maxPersonNum}}</p>
-                                $<span class="text-decoration-line-through">{{q.beforePrice}}</span>
-                                $<span class="before_price">{{q.afterPrice}}</span>
+                                $<span class="text-decoration-line-through">{{q.price}}</span>
+                                $<span class="before_price">{{q.discountedPrice}}</span>
                                 <div class="quick_res_btn"><button type="button" class="btn">REZERVISI</button></div>
                             </div>
                             
@@ -86,9 +104,11 @@ Vue.component("cottage-profile",{
 
     `,
     mounted:function (){
+        const sumFuncy = async (a,b) => a+b;
+
         axios
             .get("api/cottages/1")
-            .then(response => (this.cottage = response.data))
+            .then(response => (this.cottage = response.data,this.num_rooms=response.data.rooms.length,response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})))
 
     }
 
