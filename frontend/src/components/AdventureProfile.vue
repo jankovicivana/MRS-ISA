@@ -2,6 +2,10 @@
   <div class="AdventureProfile">
 
     <section class="profile_main py-lg-3" style="background-image: url('https://images.unsplash.com/photo-1551606292-9649254815d6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=888&q=80');background-size: 100% 100%; ">
+      <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
+        <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateAdventure',id:adventure.id }" style="background: #2e6b6b;margin: 5px" tag="button">Edit</router-link>
+        <button type="button" class="col-1 rounded-pill" v-on:click="deleteAdventure()" style="background: #2e6b6b;margin: 5px">Delete</button>
+      </div>
       <div class="container cottage_profile px-4 px-lg-5 my-5" >
         <div class="row align-items-center pt-5">
           <div class="col-md-6">
@@ -127,9 +131,11 @@ import axios from "axios";
 
 export default {
   name: "AdventureProfile",
+  components: {AdventureSideBar},
   data(){
     return{
-      adventure: ''
+      adventure: '',
+      server: process.env.VUE_APP_SERVER_PORT
     }
   },
   mounted:function (){
@@ -139,7 +145,17 @@ export default {
 
   },
   methods:{
+    deleteAdventure:function (){
+      let id = this.adventure.id
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id)
+        .then(response => {
+          alert(response.data)
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
 
+
+    }
   }
 
 }

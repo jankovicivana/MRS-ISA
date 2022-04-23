@@ -66,6 +66,20 @@ public class AdventureController {
 
     }
 
+    @DeleteMapping(value = "/deleteAdventure/{id}")
+    public ResponseEntity<String> deleteAdventure(@PathVariable Integer id){
+        Adventure adventure = adventureService.findOne(id);
+        if(adventure == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!adventureService.canDeleteAdventure(adventure)){
+            return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.OK);
+        }
+        System.out.print("imaa");
+        adventureService.deleteAdventure(adventure);
+        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<AdventureDTO> getAdventure(@PathVariable Integer id){
         Adventure adventure = adventureService.findOne(id);
@@ -73,6 +87,7 @@ public class AdventureController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         AdventureDTO dto = mapper.map(adventure,AdventureDTO.class);
+        dto.setId(adventure.getId());
         dto.setBiography(adventure.getFishingInstructor().getBiography());
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
