@@ -35,6 +35,9 @@ public abstract class EntityType {
     @Column(name = "name", nullable = false)
     protected String name;
 
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "address")
     protected Address address;

@@ -24,6 +24,9 @@ public class Reservation {
     @Column(name = "endDateTime", nullable = false)
     private LocalDateTime endDateTime;
 
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity")
     private EntityType entity;

@@ -36,6 +36,9 @@ public class QuickReservation {
     @Column(name = "price", nullable = false)
     private Double price;
 
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
     @Column(name = "discountedPrice", nullable = false)
     private Double discountedPrice;
 
