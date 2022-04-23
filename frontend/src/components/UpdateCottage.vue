@@ -236,7 +236,6 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rules/deleteRule/"+id)
         .then(response => {
-          console.log(id);
           alert("Removing rule is successfull!")
           location.reload();
         }).catch(function error(error) {
