@@ -3,8 +3,10 @@ package ftn.mrs.isa.rentalapp.controller;
 import ftn.mrs.isa.rentalapp.dto.ImageDTO;
 import ftn.mrs.isa.rentalapp.dto.RuleDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Image;
 import ftn.mrs.isa.rentalapp.model.entity.Rule;
+import ftn.mrs.isa.rentalapp.service.AdventureService;
 import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,9 @@ public class ImageController {
     private CottageService cottageService;
 
     @Autowired
+    private AdventureService adventureService;
+
+    @Autowired
     private ImageService imageService;
 
     @Autowired
@@ -40,9 +45,11 @@ public class ImageController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Cottage cottage = cottageService.findOne(imageDTO.getEntityId());
-
-        if(cottage == null){
+        EntityType entity = cottageService.findOne(imageDTO.getEntityId());
+        if(entity == null){
+            entity = adventureService.findOne(imageDTO.getEntityId());
+        }
+        if(entity == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -60,8 +67,8 @@ public class ImageController {
 
         Image image = new Image();
         image.setPath(imageDTO.getPath());
-        image.setEntity(cottage);
-        cottage.getImages().add(image);
+        image.setEntity(entity);
+        entity.getImages().add(image);
 
         imageService.save(image);
         return new ResponseEntity<>(mapper.map(image, ImageDTO.class),HttpStatus.CREATED);

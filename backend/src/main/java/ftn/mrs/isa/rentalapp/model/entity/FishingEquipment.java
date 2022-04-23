@@ -14,7 +14,7 @@ public class FishingEquipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "equipment", nullable = false)
     private String equipment;

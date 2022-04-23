@@ -8,10 +8,10 @@ import java.util.Set;
 @Data
 public class AdventureDTO {
 
+    private Integer id;
     private String name;
-    private String city;
-    private String street;
-    private Integer postal_code;
+    private AddressDTO address;
+    private Double price;
     private Integer maxPersonNum;
     private Integer cancelFee;
     private  String description;

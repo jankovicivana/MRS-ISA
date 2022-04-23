@@ -3,8 +3,10 @@ package ftn.mrs.isa.rentalapp.controller;
 import ftn.mrs.isa.rentalapp.dto.AdditionalServiceDTO;
 import ftn.mrs.isa.rentalapp.model.entity.AdditionalService;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Rule;
 import ftn.mrs.isa.rentalapp.service.AdditionalServiceService;
+import ftn.mrs.isa.rentalapp.service.AdventureService;
 import ftn.mrs.isa.rentalapp.service.CottageService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,6 +24,9 @@ public class AdditionalServiceController {
     private CottageService cottageService;
 
     @Autowired
+    private AdventureService adventureService;
+
+    @Autowired
     private AdditionalServiceService additionalServiceService;
 
     @Autowired
@@ -29,20 +34,20 @@ public class AdditionalServiceController {
 
     @PostMapping("/addAdditionalService")
     public ResponseEntity<AdditionalServiceDTO> addRule(@RequestBody AdditionalServiceDTO additionalServiceDTO){
-        if(additionalServiceDTO.getEntityId() == null){
+        if ( additionalServiceDTO.getEntityId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        Cottage cottage = cottageService.findOne(additionalServiceDTO.getEntityId());
-
-        if(cottage == null){
+        EntityType entity = cottageService.findOne(additionalServiceDTO.getEntityId());
+        if(entity == null){
+            entity = adventureService.findOne(additionalServiceDTO.getEntityId());
+        }
+        if(entity == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         AdditionalService additionalService = new AdditionalService();
         additionalService.setName(additionalServiceDTO.getName());
-        additionalService.setEntity(cottage);
-        cottage.getAdditionalServices().add(additionalService);
+        additionalService.setEntity(entity);
+        entity.getAdditionalServices().add(additionalService);
 
         additionalServiceService.save(additionalService);
         return new ResponseEntity<>(mapper.map(additionalService, AdditionalServiceDTO.class),HttpStatus.CREATED);

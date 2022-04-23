@@ -2,6 +2,7 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
 import ftn.mrs.isa.rentalapp.dto.AdventureCreateDTO;
+import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.QuickReservationDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,10 +27,7 @@ public class AdventureController {
     @Autowired
     private AdventureService adventureService;
 
-   @Autowired
-   private ModelMapper modelMapper;
-
-    @Autowired
+     @Autowired
     private EquipmentService equipmentService;
 
     @Autowired
@@ -45,7 +44,6 @@ public class AdventureController {
 
     @PostMapping("/addAdventure")
     public ResponseEntity<AdventureDTO> addAdventure(@RequestBody AdventureCreateDTO adventureDTO) throws Exception {
-        System.out.print("uslo u add");
         Adventure adventure = mapper.map(adventureDTO,Adventure.class);
         adventure.setAddress(new Address(adventureDTO.getStreet(),adventureDTO.getCity(),adventureDTO.getPostal_code(),adventureDTO.getCountry()));
 
@@ -71,7 +69,6 @@ public class AdventureController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<AdventureDTO> getAdventure(@PathVariable Integer id){
         Adventure adventure = adventureService.findOne(id);
-        System.out.print("Doslo ovdje");
         if(adventure == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -79,5 +76,24 @@ public class AdventureController {
         dto.setBiography(adventure.getFishingInstructor().getBiography());
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
+
+    @PutMapping("/updateAdventure")
+    public ResponseEntity<AdventureDTO> updateCottage(@RequestBody AdventureDTO adventureDTO) throws IOException {
+        Adventure adventure = adventureService.findOne(adventureDTO.getId());
+
+        if(adventure == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        adventure.setName(adventureDTO.getName());
+        adventure.setPrice(adventureDTO.getPrice());
+        adventure.setMaxPersonNum(adventureDTO.getMaxPersonNum());
+        adventure.setDescription(adventureDTO.getDescription());
+        Address a = mapper.map(adventureDTO.getAddress(),Address.class);
+        adventure.setAddress(a);
+
+        adventureService.save(adventure);
+        return new ResponseEntity<>(mapper.map(adventure,AdventureDTO.class),HttpStatus.OK);
+    }
+
     }
 

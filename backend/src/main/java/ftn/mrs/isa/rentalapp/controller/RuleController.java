@@ -3,7 +3,9 @@ package ftn.mrs.isa.rentalapp.controller;
 import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.RuleDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Rule;
+import ftn.mrs.isa.rentalapp.service.AdventureService;
 import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.RuleService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,9 @@ public class RuleController {
     private CottageService cottageService;
 
     @Autowired
+    private AdventureService adventureService;
+
+    @Autowired
     private RuleService ruleService;
 
     @Autowired
@@ -34,16 +39,18 @@ public class RuleController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Cottage cottage = cottageService.findOne(ruleDTO.getEntityId());
-
-        if(cottage == null){
+        EntityType entity = cottageService.findOne(ruleDTO.getEntityId());
+        if(entity == null) {
+            entity = adventureService.findOne(ruleDTO.getEntityId());
+        }
+            if(entity == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Rule rule = new Rule();
         rule.setRule(ruleDTO.getRule());
-        rule.setEntity(cottage);
-        cottage.getRules().add(rule);
+        rule.setEntity(entity);
+        entity.getRules().add(rule);
 
         ruleService.save(rule);
         return new ResponseEntity<>(mapper.map(rule, RuleDTO.class),HttpStatus.CREATED);
