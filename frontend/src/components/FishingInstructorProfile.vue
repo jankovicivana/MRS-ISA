@@ -88,6 +88,29 @@ export default {
   },
   methods: {
 
+    editClient: function() {
+      this.inputs = document.querySelectorAll('input[type="text"]');
+      document.querySelector('textarea[type="text"]').toggleAttribute('readonly');
+      for (var i=0; i<this.inputs.length; i++) {
+        if(this.inputs[i].getAttribute("id") !== "email"){
+          this.inputs[i].toggleAttribute('readonly');
+        }
+      }
+      this.editButton = document.getElementById('editButton');
+      if (this.editButton.innerHTML==="edit" ) {
+        this.editButton.innerHTML="save" ;
+      } else {
+        this.editButton.innerHTML="edit" ;
+        var c = {id:this.instructor.id,name :this.instructor.name,phoneNumber:this.instructor.phoneNumber, surname :this.instructor.surname, email :this.instructor.email, password :this.instructor.password,  address :this.address, biography: this.instructor.biography};
+        axios
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c)
+          .then(response => {
+            alert("Update is successfull!")
+          })
+
+      }
+    }
+
 }
 }
 </script>
