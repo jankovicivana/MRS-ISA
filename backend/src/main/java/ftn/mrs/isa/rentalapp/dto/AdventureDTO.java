@@ -15,7 +15,7 @@ public class AdventureDTO {
     private Integer maxPersonNum;
     private Integer cancelFee;
     private  String description;
-    private  String biography;
+    private  FishingInstructorDTO fishingInstructor;
     private Set<ImageDTO> images = new HashSet<>();
     private Set<RuleDTO> rules = new HashSet<>();
     private Set<AdditionalServiceDTO> additionalServices = new HashSet<>();

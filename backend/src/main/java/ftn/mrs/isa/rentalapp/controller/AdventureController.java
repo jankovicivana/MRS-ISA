@@ -88,8 +88,19 @@ public class AdventureController {
         }
         AdventureDTO dto = mapper.map(adventure,AdventureDTO.class);
         dto.setId(adventure.getId());
-        dto.setBiography(adventure.getFishingInstructor().getBiography());
         return new ResponseEntity<>(dto,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findMainPhoto/{id}")
+    public ResponseEntity<String> getMainPhoto(@PathVariable Integer id){
+        Adventure a = adventureService.findOne(id);
+        String path = null;
+        for (Image img: a.getImages()){
+            if(img.getIsMainPhoto()){
+                path = img.getPath();
+            }
+        }
+        return new ResponseEntity<>(path,HttpStatus.OK);
     }
 
     @PutMapping("/updateAdventure")

@@ -1,5 +1,6 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
+import ftn.mrs.isa.rentalapp.model.entity.Image;
 import ftn.mrs.isa.rentalapp.model.system_info.Email;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,10 @@ public abstract class User {
 
     @Column(name = "type", nullable = false)
     protected UserType type;
+
+
+    @Column(name = "mainPhoto", nullable = true)
+    protected String mainPhoto;
 
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "accountDeleteRequest", nullable = true)

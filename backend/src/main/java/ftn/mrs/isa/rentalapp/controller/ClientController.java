@@ -45,7 +45,6 @@ public class ClientController {
 
     @PostMapping(value = "/updateClient" )
     public void updateClient(@RequestBody ClientDTO clientDTO) {
-        System.out.print("dodjeeeee");
         // ***
         clientDTO.setId(2);
         clientService.updateClient(clientDTO);

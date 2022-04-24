@@ -49,4 +49,6 @@ public class AdventureService {
         }
         quickReservationRepository.saveAll(adventure.getQuickReservations());
     }
+
+
 }

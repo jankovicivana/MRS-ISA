@@ -23,4 +23,8 @@ public class Image {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "entity")
     private EntityType entity;
+
+
+    @Column(name = "isMainPhoto", nullable = false)
+    private Boolean isMainPhoto;
 }
