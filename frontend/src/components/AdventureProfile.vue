@@ -9,7 +9,7 @@
       <div class="container cottage_profile px-4 px-lg-5 my-5" >
         <div class="row align-items-center pt-5">
           <div class="col-md-6">
-            <img class="main_photo " src="../assets/images/pic4.jpg" alt="Cottage main photo" width="100%"/>
+            <img class="main_photo " :src="require('../assets/images/'+mainPhoto)" alt="Cottage main photo" width="100%"/>
             <div class="row thumbs pt-3 ">
               <span v-for="i in adventure.images" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="require('../assets/images/'+i.path)" alt="Cottage photo1" class="img-responsive" width="130px" height="130px"></span>
             </div>
@@ -61,8 +61,7 @@
             <h3>Fishing instructor</h3>
             <div class="row p-3">
               <div class="col-6  ">
-                        <span class="side_photo p-lg-3 px-1"><img src="../assets/images/pera2.jpg" alt="Cottage photo4"
-                                                                  width="330px"                       ></span>
+                        <span class="side_photo p-lg-3 px-1"><img :src="require('../assets/images/'+fishingInstructor.mainPhoto)" alt="Cottage photo4" width="330px"                       ></span>
               </div>
 
               <br/>
@@ -70,7 +69,7 @@
               <div class=" p-3 m-2 ">
                 <h5>Short biography</h5>
 
-                {{adventure.biography}}
+                {{fishingInstructor.biography}}
               </div>
 
 
@@ -129,22 +128,36 @@
 import axios from "axios";
 
 
+
+
 export default {
   name: "AdventureProfile",
-  components: {AdventureSideBar},
   data(){
+
     return{
       adventure: '',
+      mainPhoto:'',
+      fishingInstructor:'',
       server: process.env.VUE_APP_SERVER_PORT
     }
   },
   mounted:function (){
+
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/2")
-      .then(response => (this.adventure = response.data))
+      .then(response => (
+        this.adventure = response.data,this.fishingInstructor = this.adventure.fishingInstructor
+      ))
+
+    axios
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/findMainPhoto/2")
+      .then(response => (
+        this.mainPhoto = response.data
+      ))
 
   },
   methods:{
+
     deleteAdventure:function (){
       let id = this.adventure.id
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id)

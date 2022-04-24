@@ -8,6 +8,7 @@ import AddCottage from "../components/AddCottage";
 import ClientProfile from "../components/ClientProfile";
 import UpdateCottage from "../components/UpdateCottage";
 import UpdateAdventure from "../components/UpdateAdventure";
+import FishingInstructorProfile from "../components/FishingInstructorProfile";
 
 Vue.use(Router)
 
@@ -45,6 +46,10 @@ export default new Router({
       path: '/adventures/UpdateAdventure',
       name:'UpdateAdventure',
       component: UpdateAdventure
+    },{
+      path: '/fishingInstructor/FishingInstructorProfile',
+      name:'FishingInstructorProfile',
+      component: FishingInstructorProfile
     }
   ]
 })

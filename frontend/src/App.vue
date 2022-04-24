@@ -198,7 +198,6 @@ export default {
   outline: none;
   background-color: white;
 }
-
 .inputs input[type="text"][readonly] {
   border: 2px solid rgba(0, 0, 0, 0);
   background-color: white;
