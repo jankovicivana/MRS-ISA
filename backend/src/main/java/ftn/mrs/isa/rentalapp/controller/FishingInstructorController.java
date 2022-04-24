@@ -43,6 +43,13 @@ public class FishingInstructorController {
 
 
 
+    @PostMapping(value = "/updateInstructor" )
+    public void updateInstructor(@RequestBody FishingInstructorDTO fishingInstructorDTO) {
+        FishingInstructor fishingInstructor = fishingInstructorService.findOne(fishingInstructorDTO.getId());
+        fishingInstructorDTO.setId(3); //vidi ovoooooo
+        fishingInstructorDTO.setRegistrationStatus(fishingInstructor.getRegistrationStatus());
+        fishingInstructorService.updateInstructor(mapper.map(fishingInstructorDTO,FishingInstructor.class));
+    }
 
 
 }
