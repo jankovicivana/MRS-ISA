@@ -1,5 +1,9 @@
 <template>
   <section class="profile_main py-lg-3">
+    <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
+      <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateCottage',id:cottage.id }" style="background: #2e6b6b;margin: 5px" tag="button">Edit</router-link>
+      <button type="button" class="col-1 rounded-pill" v-on:click="deleteCottage()" style="background: #2e6b6b;margin: 5px">Delete</button>
+    </div>
     <div class="container cottage_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center pt-5">
         <div class="col-md-6">
@@ -112,7 +116,20 @@ export default {
         .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1")
         .then(response => (this.cottage = response.data,this.num_rooms=response.data.rooms.length,response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})))
 
-    }
+    },methods: {
+      deleteCottage:function (){
+        let id = this.cottage.id
+        axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/cottages/deleteCottage/"+id)
+          .then(response => {
+            alert(response.data)
+          }).catch(function error(error) {
+          alert(error.response.data);
+        });
+
+
+      }
+
+  }
 }
 </script>
 
