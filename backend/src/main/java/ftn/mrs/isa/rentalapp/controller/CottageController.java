@@ -125,4 +125,17 @@ public class CottageController {
         return new ResponseEntity<>(mapper.map(cottage,CottageDTO.class),HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/deleteCottage/{id}")
+    public ResponseEntity<String> deleteCottage(@PathVariable Integer id){
+        Cottage cottage = cottageService.findOne(id);
+        if(cottage == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!cottageService.canDeleteCottage(cottage)){
+            return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.OK);
+        }
+        cottageService.deleteCottage(cottage);
+        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+    }
+
 }
