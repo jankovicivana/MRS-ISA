@@ -9,7 +9,6 @@
               </div>
               <div class="pb-4">
                 <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{client.name}}</span> <span>{{client.surname}}</span></h4>
-                <a
                 <a href="#" class="btn flow delete-btn">Delete profile</a>
               </div>
               <div class="media-body mb-5 text-white">
