@@ -39,7 +39,7 @@ public abstract class User {
     @Column(name = "surname", nullable = false)
     protected String surname;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "address")
     protected Address address;
 
