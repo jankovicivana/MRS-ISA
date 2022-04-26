@@ -42,13 +42,9 @@ public class CottageOwnerController {
         if(cottageOwner == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        cottageOwner.setName(cottageOwnerDTO.getName());
-        cottageOwner.setSurname(cottageOwnerDTO.getSurname());
-        cottageOwner.setPhoneNumber(cottageOwnerDTO.getPhoneNumber());
-        Address a = mapper.map(cottageOwnerDTO.getAddress(),Address.class);
-        cottageOwner.setAddress(a);
-        cottageOwnerService.updateCottageOwner(cottageOwner);
-        return new ResponseEntity<>(mapper.map(cottageOwner,CottageOwnerDTO.class),HttpStatus.OK);
+        cottageOwnerDTO.setRegistrationStatus(cottageOwner.getRegistrationStatus());
+        cottageOwnerService.updateCottageOwner(mapper.map(cottageOwnerDTO,CottageOwner.class));
+        return new ResponseEntity<>(cottageOwnerDTO,HttpStatus.OK);
     }
 
 }

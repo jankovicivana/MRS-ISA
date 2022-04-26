@@ -87,7 +87,6 @@ export default {
 
     editClient: function() {
       this.inputs = document.querySelectorAll('input[type="text"]');
-      document.querySelector('textarea[type="text"]').toggleAttribute('readonly');
       for (var i=0; i<this.inputs.length; i++) {
         if(this.inputs[i].getAttribute("id") !== "email"){
           this.inputs[i].toggleAttribute('readonly');
