@@ -9,11 +9,9 @@ import ClientProfile from "../components/ClientProfile";
 import UpdateCottage from "../components/UpdateCottage";
 import UpdateAdventure from "../components/UpdateAdventure";
 import FishingInstructorProfile from "../components/FishingInstructorProfile";
-<<<<<<< HEAD
 import CottageOwnerProfile from "../components/CottageOwnerProfile";
-=======
 import AddAdministrator from "../components/AddAdministrator";
->>>>>>> feature_add_administrator
+
 
 Vue.use(Router)
 
