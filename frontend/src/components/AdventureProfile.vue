@@ -99,10 +99,24 @@
 
         </div>
         <hr/>
+        <div class="row" style="background: #f8f2ec;">
+          <p class="col-10" style="padding-left: 15px;alignment: left;background: #f8f2ec;" id="quick_heading">Quick reservations - enormous discounts!</p>
+          <span class="col-2" style="float: right;background: #f8f2ec;">
+            <button type="button" v-on:click="showModal()" style="margin-top:5px;margin-right:1px;color: white;background: #2e6b6b;" class="btn btn-info btn-lg ">Add new</button>
+            <AddQuickReservationAdventure
+              style="width: 300px"
+              v-show="isModalVisible"
+              v-on:click="closeModal()"
+            />
+
+          </span>
+        </div>
+
         <div class="row ">
-          <div class="col-12" style="padding-left: 15px;alignment: center;background: #f8f2ec;">
-            <p id="quick_heading">Quick reservations - enormous discounts!</p>
+            <div class="col-12" style="padding-left: 15px;alignment: center;background: #f8f2ec;">
+
             <div class="row p-3">
+
               <div class="col-4 p-2 m-2 quick_res" v-for="q in adventure.quickReservations">
                 <div>
                   <p class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</p>
@@ -126,19 +140,24 @@
 
 <script>
 import axios from "axios";
+import AddQuickReservationAdventure from "./AddQuickReservationAdventure";
 
 
 
 
 export default {
   name: "AdventureProfile",
+  components: {
+    AddQuickReservationAdventure,
+  },
   data(){
 
     return{
       adventure: '',
       mainPhoto:'',
       fishingInstructor:'',
-      server: process.env.VUE_APP_SERVER_PORT
+      server: process.env.VUE_APP_SERVER_PORT,
+      isModalVisible: false,
     }
   },
   mounted:function (){
@@ -157,7 +176,12 @@ export default {
 
   },
   methods:{
-
+    showModal:function() {
+      this.isModalVisible = true;
+    },
+    closeModal:function() {
+      this.isModalVisible = false;
+    },
     deleteAdventure:function (){
       let id = this.adventure.id
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id)
