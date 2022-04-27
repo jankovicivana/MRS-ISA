@@ -15,6 +15,8 @@ public class QuickReservationDTO {
 
     private LocalDate endDateTime;
 
+    private LocalDate expirationDateTime;
+
     private Integer maxPersonNum;
 
     private Double price;

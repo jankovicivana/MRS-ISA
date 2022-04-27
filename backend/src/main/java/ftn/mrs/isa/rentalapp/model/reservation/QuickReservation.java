@@ -59,7 +59,7 @@ public class QuickReservation {
     private Integer discount;
 
     @Column(name = "expirationDateTime", nullable = false)
-    private LocalDateTime expirationDateTime;
+    private LocalDate expirationDateTime;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation", nullable = true)
