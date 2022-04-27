@@ -10,6 +10,7 @@ import UpdateCottage from "../components/UpdateCottage";
 import UpdateAdventure from "../components/UpdateAdventure";
 import FishingInstructorProfile from "../components/FishingInstructorProfile";
 import CottageOwnerProfile from "../components/CottageOwnerProfile";
+import BoatProfile from "../components/BoatProfile";
 
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ export default new Router({
       path:'/cottageOwner/CottageOwnerProfile',
       name:'CottageOwnerProfile',
       component: CottageOwnerProfile
+    },
+    {
+      path:'/boats/BoatProfile',
+      name:'BoatProfile',
+      component: BoatProfile
     }
   ]
 })

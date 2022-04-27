@@ -36,12 +36,23 @@ export default {
   background-size: 100% 100%;
 }
 
+.profile_boat{
+  background-image: url('assets/images/backboat.jpg');
+  background-size: 100% 100%;
+}
+
 .side_photo img{
   border-radius: 5%;
 }
 
 .cottage_profile{
   background: #ecd9c6;
+  border: 4px solid white;
+  border-radius: 2%;
+}
+
+.boat_profile{
+  background: aliceblue;
   border: 4px solid white;
   border-radius: 2%;
 }
