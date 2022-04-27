@@ -9,7 +9,11 @@ import ClientProfile from "../components/ClientProfile";
 import UpdateCottage from "../components/UpdateCottage";
 import UpdateAdventure from "../components/UpdateAdventure";
 import FishingInstructorProfile from "../components/FishingInstructorProfile";
+<<<<<<< HEAD
 import CottageOwnerProfile from "../components/CottageOwnerProfile";
+=======
+import AddAdministrator from "../components/AddAdministrator";
+>>>>>>> feature_add_administrator
 
 Vue.use(Router)
 
@@ -56,6 +60,10 @@ export default new Router({
       path:'/cottageOwner/CottageOwnerProfile',
       name:'CottageOwnerProfile',
       component: CottageOwnerProfile
+    },{
+      path: '/administrator/AddAdministrator',
+      name:'AddAdministrator',
+      component: AddAdministrator
     }
   ]
 })
