@@ -3,6 +3,7 @@ package ftn.mrs.isa.rentalapp.service;
 import ftn.mrs.isa.rentalapp.dto.ClientDTO;
 import ftn.mrs.isa.rentalapp.model.entity.AdditionalService;
 import ftn.mrs.isa.rentalapp.model.user.Address;
+import ftn.mrs.isa.rentalapp.model.user.Administrator;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.repository.AddressRepository;
 import ftn.mrs.isa.rentalapp.repository.ClientRepository;
@@ -23,6 +24,8 @@ public class ClientService {
     public List<Client> findAll() {return clientRepository.findAll(); }
 
     public Client findOne(Integer id) {return clientRepository.findById(id).orElse(null);}
+
+    public Client findByEmail(String string) {return clientRepository.findByEmail(string);}
 
     public void updateClient(ClientDTO clientDTO){
         Client client = clientRepository.findById(clientDTO.getId()).orElse(null);

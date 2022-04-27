@@ -75,7 +75,6 @@ public class AdventureController {
         if (!adventureService.canDeleteAdventure(adventure)){
             return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.OK);
         }
-        System.out.print("imaa");
         adventureService.deleteAdventure(adventure);
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
     }
