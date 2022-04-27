@@ -1,5 +1,7 @@
 insert into addresses (street,city,postal_code,country) values ('Doza Djerdja 57','Novi Sad',21000,'Srbija');
 insert into addresses (city, country, postal_code, street) values ('trebinje', 'bih', 81100,'republike srpske 17');
+insert into addresses (city, country, postal_code, street) values ('Cuprija', 'Srbija', 35230,'Kneza Milosa 18');
+
 
 insert into cottage_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo) values (1,'pera123@gmail.com','Pera','pera123','06245564','Peric',1,null,1,0,0,'coka1.jpeg');
 insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo) values (2, 'mail', 'pass', 'ivana', 'jankovic', '065', 3, 2, 0, 0,'pera2.jpg');
@@ -82,3 +84,31 @@ insert into quick_reservations (discount, end_date_time, expiration_date_time, i
 values (5,'20220615 10:00:00 AM','20220522 10:00:00 AM',false,10,180,'20220610 10:00:00 AM',2,null,13,false);
 
 
+insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo) values (4,'mika@gmail.com','Mika','mika123','06245564','Mikic',2,null,2,0,0,'coka1.jpeg');
+
+insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
+                   power, type, boat_owner)
+values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Nikolija',200,3,3,20,5,25,250,600,0,4);
+
+insert into images (path,entity,is_main_photo) values ('boat1.jpg',3,false);
+insert into images (path,entity,is_main_photo) values ('boat2.jpg',3,false);
+insert into images (path,entity,is_main_photo) values ('boat3.jpg',3,false);
+insert into images (path,entity,is_main_photo) values ('boat5.jpg',3,true);
+
+insert into additional_services (name,entity,quick_reservation) values ('Pet frendly',3,null);
+insert into additional_services (name,entity,quick_reservation) values ('Wi-fi',3,null);
+insert into additional_services (name,entity,quick_reservation) values ('Klimatizovano',3,null);
+insert into additional_services (name,entity,quick_reservation) values ('Zurke',3,null);
+
+insert into rules (rule,entity) values ('Prijava posle 12h',3);
+insert into rules (rule,entity) values ('Odjava pre 17h',3);
+insert into rules (rule,entity) values ('Ne lomiti stvari',3);
+insert into rules (rule,entity) values ('Decu drzati podalje',3);
+
+insert into navigation_equipment (equipment, boat) values (0,3);
+insert into navigation_equipment (equipment, boat) values (1,3);
+insert into navigation_equipment (equipment, boat) values (2,3);
+
+
+insert into fishing_equipment (equipment,boat) values ('Stap za pecanje',3);
+insert into fishing_equipment (equipment,boat) values ('Crvici',3);

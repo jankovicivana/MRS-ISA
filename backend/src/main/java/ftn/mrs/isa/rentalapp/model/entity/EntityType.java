@@ -54,7 +54,7 @@ public abstract class EntityType {
     @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     protected Set<Image> images = new HashSet<Image>();
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false,length = 500)
     protected String description;
 
     @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)

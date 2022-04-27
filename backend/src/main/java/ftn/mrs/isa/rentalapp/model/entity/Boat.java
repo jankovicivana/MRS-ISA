@@ -10,22 +10,12 @@ import java.util.Set;
 
 
 @Entity
+@Getter
+@Setter
 @Table(name = "boats")
 public class Boat extends EntityType{
-    public Boat() {
-    }
 
-    public Boat(Integer id) {
-        super();
-        this.id = id;
-    }
-
-   /* @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-*/
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "boatOwner")
     private BoatOwner boatOwner;
 
@@ -36,7 +26,7 @@ public class Boat extends EntityType{
     private Double length;
 
     @Column(name = "motorNum", nullable = false)
-    private Integer MotorNum;
+    private Integer motorNum;
 
     @Column(name = "power", nullable = false)
     private Integer power;
@@ -50,10 +40,10 @@ public class Boat extends EntityType{
     @Column(name = "cancelFee", nullable = false)
     private Integer cancelFee;
 
-    @OneToMany(mappedBy = "boat", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "boat", fetch = FetchType.EAGER)
     private Set<NavigationEquipment> navigationEquipment = new HashSet<NavigationEquipment>();
 
-    @OneToMany(mappedBy = "boat", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "boat", fetch = FetchType.EAGER)
     private Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
     /* CJENOVNIK */
