@@ -41,6 +41,11 @@ export default {
   background-size: 100% 100%;
 }
 
+.add_boat{
+  background-image: url('assets/images/boat4.jpg');
+  background-size: 100% 100%;
+}
+
 .side_photo img{
   border-radius: 5%;
 }

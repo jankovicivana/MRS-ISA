@@ -20,11 +20,7 @@ public class FishingEquipment {
     private String equipment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boat")
-    private Boat boat;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adventure")
-    private Adventure adventure;
+    @JoinColumn(name = "entity")
+    private EntityType entity;
 
 }

@@ -13,6 +13,8 @@ public class BoatService {
     @Autowired
     private BoatRepository boatRepository;
 
+    public void save(Boat boat){boatRepository.save(boat);}
+
     public List<Boat> findAll(){return boatRepository.findAll();}
 
     public Boat findOne(Integer id){return boatRepository.findById(id).orElse(null);}

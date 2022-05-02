@@ -36,4 +36,8 @@ public class RuleService {
         }
         return rules;
     }
+
+    public void addRules(Set<Rule> rules){
+        ruleRepository.saveAll(rules);
+    }
 }

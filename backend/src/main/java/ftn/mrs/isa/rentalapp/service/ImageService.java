@@ -43,7 +43,8 @@ public class ImageService {
                 return null;
             }
             String imageName = "cottage-"+entityType.getName()+"."+count+".jpg";
-            String picturePath = "src\\main\\resources\\static\\images\\"+imageName;
+            //String picturePath = "src\\main\\resources\\static\\images\\"+imageName;
+            String picturePath = "..\\frontend\\src\\assets\\images\\"+imageName;
             try (OutputStream stream = new FileOutputStream(new File(picturePath).getCanonicalFile())) {
                 stream.write(data);
             }
@@ -51,10 +52,15 @@ public class ImageService {
             Image im = new Image();
             im.setPath(imageName);
             im.setEntity(entityType);
+            im.setIsMainPhoto(false);
             images.add(im);
             count++;
         }
         return images;
+    }
+
+    public void addImages(Set<Image> images){
+        imageRepository.saveAll(images);
     }
 
 }

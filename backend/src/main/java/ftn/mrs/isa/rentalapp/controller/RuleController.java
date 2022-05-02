@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -55,6 +57,7 @@ public class RuleController {
         ruleService.save(rule);
         return new ResponseEntity<>(mapper.map(rule, RuleDTO.class),HttpStatus.CREATED);
     }
+
 
     @DeleteMapping(value = "/deleteRule/{id}")
     public  ResponseEntity<Void> deleteRule(@PathVariable Integer id){

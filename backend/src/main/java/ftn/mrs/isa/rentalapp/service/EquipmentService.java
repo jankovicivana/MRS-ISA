@@ -18,7 +18,7 @@ public class EquipmentService {
     @Autowired
     private FishingEquipmentRepository fishingEquipmentRepository;
 
-    public Set<FishingEquipment> createFishingEquipmentFromString(Set<String> equipDTO, Adventure adventure){
+    public Set<FishingEquipment> createFishingEquipmentFromString(Set<String> equipDTO, EntityType entity){
         if (equipDTO == null) {
             return null;
         }
@@ -26,10 +26,14 @@ public class EquipmentService {
         for (String e: equipDTO) {
             FishingEquipment r = new FishingEquipment();
             r.setEquipment(e);
-            r.setAdventure(adventure);
+            r.setEntity(entity);
             equipmentList.add(r);
         }
         return equipmentList;
+    }
+
+    public void addFishingEquipments(Set<FishingEquipment> fishingEquipments){
+        fishingEquipmentRepository.saveAll(fishingEquipments);
     }
 
     public void saveFishingEquipment(FishingEquipment equip) {
