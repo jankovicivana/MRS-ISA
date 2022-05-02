@@ -19,6 +19,17 @@
                   </div>
 
                   <div class="form-outline mb-4">
+                    <label class="form-label" for="price_input"><font-awesome-icon icon="fa-solid fa-dollar-sign"/>  Boat type:</label>
+                    <select id="boat_type_input" ref="boat_type_input" class="form-control form-control-lg" required>
+                      <option>YACHT</option>
+                      <option>SAIL BOAT</option>
+                      <option>CANOE</option>
+                      <option>ROW BOAT</option>
+                      <option>MOTOR BOAT</option>
+                    </select>
+                  </div>
+
+                  <div class="form-outline mb-4">
                     <label class="form-label" for="price_input"><font-awesome-icon icon="fa-solid fa-dollar-sign"/>  Price:</label>
                     <input type="number" id="price_input" ref="price_input" class="form-control form-control-lg" min="0.01" required/>
                   </div>
@@ -42,8 +53,8 @@
 
                   <h4>Boat characteristics</h4>
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="lenght_input"><font-awesome-icon icon="fa-solid fa-pen"/> Lenght(m): </label>
-                    <input type="number" id="lenght_input" ref="lenght_input"  class="form-control form-control-lg" min="1" required/>
+                    <label class="form-label" for="length_input"><font-awesome-icon icon="fa-solid fa-pen"/> Length (m): </label>
+                    <input type="number" id="length_input" ref="length_input"  class="form-control form-control-lg" min="1" required/>
                   </div>
 
                   <div class="form-outline mb-4">
@@ -52,12 +63,12 @@
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="power_input"><font-awesome-icon icon="fa-solid fa-pen"/> Power(HS): </label>
+                    <label class="form-label" for="power_input"><font-awesome-icon icon="fa-solid fa-pen"/> Power (HS): </label>
                     <input type="number" id="power_input" ref="power_input" class="form-control form-control-lg" min="0.0" required/>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="max_speed_input"><font-awesome-icon icon="fa-solid fa-pen"/> Max speed: </label>
+                    <label class="form-label" for="max_speed_input"><font-awesome-icon icon="fa-solid fa-pen"/> Max speed (km/h): </label>
                     <input type="number" id="max_speed_input" ref="max_speed_input" class="form-control form-control-lg" min="0.0" required/>
                   </div>
 
@@ -121,7 +132,12 @@
                     <div class="form-outline mb-4">
                       <label class="form-label" for="equip_input"><font-awesome-icon icon="fa-solid fa-pen"/> Equipment: </label>
                       <div class="row">
-                        <input type="text" id="nav_equip_input" ref="nav_equip_input" class="input_add form-control-lg col-8 mx-3"  style="border-color:white;" />
+                        <select id="nav_equip_input" ref="nav_equip_input" class="input_add form-control-lg col-8 mx-3"  style="border-color:white;">
+                          <option>GPS</option>
+                          <option>RADAR</option>
+                          <option>VHF RADIO</option>
+                          <option>FISHFINDER</option>
+                        </select>
                         <button type="button" id="nav_equip_input" v-on:click="addNavEquipment()" class="btn col-3" style="background-color: #04414d;color: white">Add equipment</button>
                       </div>
                     </div>
@@ -184,7 +200,8 @@ export default {
       imagesUrls: [],
       rules: [],
       services: [],
-      equipment: [],
+      fish_equipment: [],
+      nav_equipment: [],
       selectedFile: null
     }
   },
@@ -239,8 +256,8 @@ export default {
         return;
       }
       let aptag,tag;
-      this.equipment.push(equip);
-      [tag,aptag] = this.formElement(equip,this.equipment);
+      this.fish_equipment.push(equip);
+      [tag,aptag] = this.formElement(equip,this.fish_equipment);
 
       document.getElementById("equipmentList").appendChild(tag);
       document.getElementById("equipmentList").appendChild(aptag);
@@ -253,8 +270,8 @@ export default {
         return;
       }
       let aptag,tag;
-      this.equipment.push(equip);
-      [tag,aptag] = this.formElement(equip,this.equipment);
+      this.nav_equipment.push(equip);
+      [tag,aptag] = this.formElement(equip,this.nav_equipment);
 
       document.getElementById("navEquipmentList").appendChild(tag);
       document.getElementById("navEquipmentList").appendChild(aptag);
@@ -303,7 +320,50 @@ export default {
       return [tag,aptag];
     },
     addBoat: function (){
+      let name = this.$refs.name_input.value
+      let description = this.$refs.description_input.value
+      let max_person_num = this.$refs.max_person_input.value
+      let price = this.$refs.price_input.value
+      let country = this.$refs.country_input.value
+      let city = this.$refs.city_input.value
+      let street =this.$refs.street_input.value
+      let postal_code = this.$refs.postal_code_input.value
+      let cancel_fee = this.$refs.cancel_fee_input.value
+      let length = this.$refs.length_input.value
+      let motor_num = this.$refs.motor_number_input.value
+      let power = this.$refs.power_input.value
+      let max_speed = this.$refs.max_speed_input.value
+      let boat_type = this.$refs.boat_type_input.value
 
+
+      this.info = {
+        name: name,
+        type:boat_type,
+        price:price,
+        capacity:max_person_num,
+        description:description,
+        country:country,
+        city:city,
+        street: street,
+        postal_code: postal_code,
+        cancelFee: cancel_fee,
+        length: length,
+        motorNum:motor_num,
+        power:power,
+        maxSpeed:max_speed,
+        rules: this.rules,
+        additionalServices: this.services,
+        images: this.imagesUrls,
+        fishingEquipment: this.fish_equipment,
+        navigationEquipment: this.nav_equipment
+      };
+
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/boats/addBoat",this.info)
+        .then(response => {
+          alert("Addition is successfull!")
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
     }
 
   }

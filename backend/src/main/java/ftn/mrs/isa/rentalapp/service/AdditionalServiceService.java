@@ -1,6 +1,7 @@
 package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.model.entity.AdditionalService;
+import ftn.mrs.isa.rentalapp.model.entity.Rule;
 import ftn.mrs.isa.rentalapp.repository.AdditionalServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
@@ -33,5 +34,9 @@ public class AdditionalServiceService {
             additionalServices.add(add);
         }
         return additionalServices;
+    }
+
+    public void addAdditionalServices(Set<AdditionalService> additionalServices){
+        additionalServiceRepository.saveAll(additionalServices);
     }
 }

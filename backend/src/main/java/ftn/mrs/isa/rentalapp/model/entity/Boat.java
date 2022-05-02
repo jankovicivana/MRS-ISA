@@ -43,7 +43,7 @@ public class Boat extends EntityType{
     @OneToMany(mappedBy = "boat", fetch = FetchType.EAGER)
     private Set<NavigationEquipment> navigationEquipment = new HashSet<NavigationEquipment>();
 
-    @OneToMany(mappedBy = "boat", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     private Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
     /* CJENOVNIK */

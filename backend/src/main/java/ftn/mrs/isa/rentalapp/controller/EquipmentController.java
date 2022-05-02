@@ -41,7 +41,7 @@ public class EquipmentController {
 
         FishingEquipment equip = new FishingEquipment();
         equip.setEquipment(fishingEquipmentDTO.getEquipment());
-        equip.setAdventure(adventure);
+        equip.setEntity(adventure);
         adventure.getFishingEquipment().add(equip);
 
         equipmentService.saveFishingEquipment(equip);
