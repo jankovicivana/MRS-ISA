@@ -3,8 +3,9 @@ insert into addresses (city, country, postal_code, street) values ('trebinje', '
 insert into addresses (city, country, postal_code, street) values ('Cuprija', 'Srbija', 35230,'Kneza Milosa 18');
 
 
-insert into cottage_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo) values (1,'pera123@gmail.com','Pera','pera123','06245564','Peric',1,null,1,0,0,'coka1.jpeg');
-insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo) values (2, 'mail', 'pass', 'ivana', 'jankovic', '065', 3, 2, 0, 0,'pera2.jpg');
+insert into cottage_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted) values (1,'pera123@gmail.com','Pera','pera123','06245564','Peric',1,null,1,0,0,'coka1.jpeg',false);
+insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted) values (2, 'mail', 'pass', 'ivana', 'jankovic', '065', 3, 2, 0, 0,'pera2.jpg',false);
+insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted) values (5, 'yahoomail', 'pass', 'ivana', 'kasikovic', '065', 3, 2, 0, 0,'pera2.jpg',false);
 
 insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Mnogo dobra vikendica','200',1,1,10,false);
 
@@ -45,7 +46,7 @@ values (5,'20220615','20220522 10:00:00 AM',false,10,180,'20220610',1,null,170,f
 
 
 
-insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo) values (3,'pera@gmail.com','Pera','pera123','06245564','Peric',1,null,1,0,0,'Ovo bi trebao da je biografija instruktora.','pera2.jpg');
+insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted) values (3,'pera@gmail.com','Pera','pera123','06245564','Peric',1,null,1,0,0,'Ovo bi trebao da je biografija instruktora.','pera2.jpg',false);
 
 insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted) values (nextval('my_seqv2'),'Ovakav adrenalin se samo kod nas moze dozivjeti.Ludi ste ako nas ne posjetite.','Fenomenalna avantura','200',1,3,10,0,false);
 
@@ -84,7 +85,7 @@ insert into quick_reservations (discount, end_date_time, expiration_date_time, i
 values (5,'20220615 10:00:00 AM','20220522 10:00:00 AM',false,10,180,'20220610 10:00:00 AM',2,null,13,false);
 
 
-insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo) values (4,'mika@gmail.com','Mika','mika123','06245564','Mikic',2,null,2,0,0,'coka1.jpeg');
+insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted) values (4,'mika@gmail.com','Mika','mika123','06245564','Mikic',2,null,2,0,0,'coka1.jpeg',false);
 
 insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
                    power, type, boat_owner)

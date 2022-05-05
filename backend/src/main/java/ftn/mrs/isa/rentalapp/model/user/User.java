@@ -36,6 +36,10 @@ public abstract class User {
     @Column(name = "name", nullable = false)
     protected String name;
 
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
+
     @Column(name = "surname", nullable = false)
     protected String surname;
 

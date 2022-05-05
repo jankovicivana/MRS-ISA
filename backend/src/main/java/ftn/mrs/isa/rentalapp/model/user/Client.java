@@ -37,7 +37,7 @@ public class Client extends User{
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private Set<AdvertiserComplaint> advertiserComplaints = new HashSet<AdvertiserComplaint>();
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<Reservation>();
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)

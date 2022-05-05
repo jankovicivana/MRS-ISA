@@ -1,6 +1,7 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.ClientDTO;
+import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.service.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,20 @@ public class ClientController {
         // ***
         clientDTO.setId(2);
         clientService.updateClient(clientDTO);
+    }
+
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Integer id){
+        Client client = clientService.findOne(id);
+        if(client == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!clientService.canDeleteClient(client)){
+            return new ResponseEntity<>("Client has reservations.Deletion is not possible.",HttpStatus.OK);
+        }
+        clientService.deleteClient(client);
+        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
     }
 
 }
