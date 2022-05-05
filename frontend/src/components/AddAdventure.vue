@@ -118,7 +118,7 @@
                   <div class="mx-1 mb-2 row" id="photos" style="background: #e6e6e6;border-radius: 3%">
                   </div>
 
-                  <button type="button" id="add_img_btn" class="btn" v-on:click="addImage()" style="background-color: #04414d; color: white;margin-left: 80%">Add image</button>
+                  <button type="button" id="add_img_btn" class="btn" v-on:click="deleteClient(client)" style="background-color: #04414d; color: white;margin-left: 80%">Add image</button>
 
 
                   <br/>
