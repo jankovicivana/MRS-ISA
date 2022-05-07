@@ -1,5 +1,6 @@
 <template>
-
+  <div>
+    <client_navbar></client_navbar>
   <section id = "client_profile" class="profile_main py-lg-3">
     <div  class="row py-5 px-auto" style="align-content: center">
       <div class="col-md-8 mx-auto">
@@ -98,7 +99,7 @@
       </div>
     </div>
   </section>
-
+  </div>
 
 
 </template>

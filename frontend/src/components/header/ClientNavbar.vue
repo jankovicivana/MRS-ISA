@@ -7,7 +7,7 @@
       <div class="navbar-menu">
         <div class="navbar-start">
 
-          <a class="navbar-item" href="#">Home </a>
+          <a class="navbar-item" href="#/client/clientHomepage">Home </a>
 
           <a class="navbar-item" href="#/client/clientProfile">My profile</a>
 
@@ -30,7 +30,7 @@
 
         </div>
       </div>
-      <a href="/homepage" class="px-3 mr-1" >Log out</a>
+      <a href="#/homepage" class="px-3 mr-1" >Log out</a>
   </nav>
 </template>
 
