@@ -6,21 +6,21 @@
           <div class="col-12 col-md-9 col-lg-7 col-xl-6" >
             <div class="card" style="border-radius: 15px; background: #ecd9c6;   ">
               <div class="card-body p-5">
-                <h2 class="text-uppercase text-center mb-5" style=" color: #04414d; font-family: 'Bookman Old Style',serif;">ADD NEW BOAT</h2>
+                <h2 class="text-uppercase text-center mb-5" style=" color: #04414d; font-family: 'Bookman Old Style',serif;">UPDATE BOAT</h2>
 
                 <form>
 
                   <div class="form-outline mb-4">
-                    <label class="label" for="name_input"> <font-awesome-icon icon="fa-solid fa-fish"/>  Boat name:</label>
+                    <label class="label" for="name_input"> <font-awesome-icon icon="fa-solid fa-anchor"/>  Boat name:</label>
                     <div>
-                      <input type="text" id="name_input" ref="name_input" class="form-control form-control-lg"  v-model="boat.type" required />
+                      <input type="text" id="name_input" ref="name_input" class="form-control form-control-lg"  v-model="boat.name" required />
 
                     </div>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="price_input"><font-awesome-icon icon="fa-solid fa-dollar-sign"/>  Boat type:</label>
-                    <select id="boat_type_input" ref="boat_type_input" class="form-control form-control-lg" required>
+                    <label class="form-label" for="price_input"><font-awesome-icon icon="fa-solid fa-sailboat"/>  Boat type:</label>
+                    <select id="boat_type_input" ref="boat_type_input" class="form-control form-control-lg" v-model="boat.type" required>
                       <option>YACHT</option>
                       <option>SAIL BOAT</option>
                       <option>CANOE</option>
@@ -190,7 +190,7 @@
                   <br/>
 
                   <div class="d-flex justify-content-center">
-                    <button type="submit" v-on:click="updateBoat()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+                    <button type="submit" v-on:click="updateBoat()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Update</div></button>
                   </div>
 
 
@@ -213,11 +213,18 @@ export default {
   mounted:function (){
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3")
-      .then(response => (this.boat = response.data,this.address = this.boat.address))
+      .then(response => (this.boat = response.data,this.address = this.boat.address,this.boat_type = this.boat.type))
+
+
+    let elem = document.getElementById("boat_type_input")
+    elem.value = this.boat_type;
+
+
   },data:function (){
     return{
       boat:'',
       address:'',
+      boat_type:'',
     }
   },
   methods:{
@@ -236,7 +243,7 @@ export default {
 
       picturePath.readAsDataURL(file)
       picturePath.onload = e => {
-        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:"../images/"+file.name,entityId:2})
+        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:file.name,entityId:3})
           .then(response => {
             alert("Addition image is successfull!")
             location.reload();
@@ -254,7 +261,7 @@ export default {
         alert("Must enter rule!");
         return;
       }
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:2})
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:3})
         .then(response => {
           alert("Addition rule is successfull!")
           location.reload();
@@ -273,7 +280,7 @@ export default {
       }
       //this.cottage.additionalServices.push(service);
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:2})
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:3})
         .then(response => {
           alert("Addition service is successfull!")
           location.reload();
@@ -292,7 +299,7 @@ export default {
         return;
       }
       console.log(enteredEquipment)
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/equipment/addFishingEquipment", {equipment:enteredEquipment,adventureId:2,boatId : -1})
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/equipment/addFishingEquipment", {equipment:enteredEquipment,adventureId:-1,boatId : 3})
         .then(response => {
           alert("Addition of equipment is successfull!")
           location.reload();
@@ -374,17 +381,23 @@ export default {
     updateBoat: function (){
 
       this.info = {
-        id:this.adventure.id,
-        name: this.adventure.name,
-        price:this.adventure.price,
-        maxPersonNum:this.adventure.maxPersonNum,
-        description:this.adventure.description,
+        id:this.boat.id,
+        name: this.boat.name,
+        price:this.boat.price,
+        capacity:this.boat.capacity,
+        description:this.boat.description,
         address:this.address,
-        cancelFee:this.adventure.cancelFee,
-        rules: this.adventure.rules,
-        fishingEquipment: this.adventure.fishingEquipment,
-        additionalServices: this.adventure.additionalServices,
-        images: this.adventure.images
+        cancelFee:this.boat.cancelFee,
+        rules: this.boat.rules,
+        type: this.boat.type,
+        length: this.boat.length,
+        motorNum: this.boat.motorNum,
+        power: this.boat.power,
+        maxSpeed: this.boat.maxSpeed,
+        fishingEquipment: this.boat.fishingEquipment,
+        additionalServices: this.boat.additionalServices,
+        navigationEquipment: this.boat.navigationEquipment,
+        images: this.boat.images
       };
 
       axios.put(process.env.VUE_APP_SERVER_PORT+"/api/boats/updateBoat",this.info)

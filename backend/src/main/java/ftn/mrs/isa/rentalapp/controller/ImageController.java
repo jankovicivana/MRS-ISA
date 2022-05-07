@@ -7,6 +7,7 @@ import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Image;
 import ftn.mrs.isa.rentalapp.model.entity.Rule;
 import ftn.mrs.isa.rentalapp.service.AdventureService;
+import ftn.mrs.isa.rentalapp.service.BoatService;
 import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,9 @@ public class ImageController {
     private CottageService cottageService;
 
     @Autowired
+    private BoatService boatService;
+
+    @Autowired
     private AdventureService adventureService;
 
     @Autowired
@@ -50,6 +54,9 @@ public class ImageController {
             entity = adventureService.findOne(imageDTO.getEntityId());
         }
         if(entity == null){
+            entity = boatService.findOne(imageDTO.getEntityId());
+        }
+        if(entity == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -60,7 +67,7 @@ public class ImageController {
             return null;
         }
         String imageName = imageDTO.getPath();
-        String picturePath = "src\\main\\resources\\static\\images\\"+imageName;
+        String picturePath = "..\\frontend\\src\\assets\\images\\"+imageName;
         try (OutputStream stream = new FileOutputStream(new File(picturePath).getCanonicalFile())) {
             stream.write(data);
         }
@@ -68,6 +75,7 @@ public class ImageController {
         Image image = new Image();
         image.setPath(imageDTO.getPath());
         image.setEntity(entity);
+        image.setIsMainPhoto(false);
         entity.getImages().add(image);
 
         imageService.save(image);

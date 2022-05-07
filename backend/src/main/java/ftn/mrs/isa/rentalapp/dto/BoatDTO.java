@@ -30,7 +30,7 @@ public class BoatDTO {
 
     private Set<QuickReservationDTO> quickReservations;
 
-    private BoatType type;
+    private String type;
 
     private Double length;
 

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueCarousel from 'vue-carousel';
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import AdventureProfile from "../components/AdventureProfile";
@@ -17,6 +18,7 @@ import UpdateBoat from "../components/UpdateBoat";
 
 
 Vue.use(Router)
+Vue.use(VueCarousel)
 
 export default new Router({
   routes: [

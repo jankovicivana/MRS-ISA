@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class NavigationEquipmentDTO {
 
-    private Long id;
+    private Integer id;
 
-    private NavigationEquipmentType equipment;
+    private String equipment;
 
     private Integer boatId;
 }

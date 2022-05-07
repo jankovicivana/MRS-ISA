@@ -116,7 +116,7 @@
 
                   <br/>
                   <div class="d-flex justify-content-center">
-                    <button type="submit" v-on:click="addCottage()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Edit cottage</div></button>
+                    <button type="submit" v-on:click="updateCottage()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Edit cottage</div></button>
                   </div>
                 </form>
               </div>
@@ -274,7 +274,7 @@ export default {
       });
 
     },
-    addCottage: function (){
+    updateCottage: function (){
       console.log('doslo ovde')
 
 

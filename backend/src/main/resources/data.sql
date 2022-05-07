@@ -68,8 +68,8 @@ insert into rules (rule,entity) values ('Pusenje je zabranjeno',2);
 insert into rules (rule,entity) values ('Ne lomiti stvari',2);
 insert into rules (rule,entity) values ('Decu drzati podalje',2);
 
-insert into fishing_equipment (equipment,entity) values ('oprema1',2);
-insert into fishing_equipment (equipment,entity) values ('oprema2',2);
+insert into fishing_equipment (equipment,adventure,boat) values ('oprema1',2,null);
+insert into fishing_equipment (equipment,adventure,boat) values ('oprema2',2,null);
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
                                 start_date_time, entity, reservation,discounted_price,deleted)
@@ -110,5 +110,5 @@ insert into navigation_equipment (equipment, boat) values (1,3);
 insert into navigation_equipment (equipment, boat) values (2,3);
 
 
-insert into fishing_equipment (equipment,entity) values ('Stap za pecanje',3);
-insert into fishing_equipment (equipment,entity) values ('Crvici',3);
+insert into fishing_equipment (equipment,adventure,boat) values ('Stap za pecanje',null,3);
+insert into fishing_equipment (equipment,adventure,boat) values ('Crvici',null,3);
