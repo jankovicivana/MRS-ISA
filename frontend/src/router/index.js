@@ -14,6 +14,7 @@ import BoatProfile from "../components/BoatProfile";
 import AddAdministrator from "../components/AddAdministrator";
 import AddBoat from "../components/AddBoat";
 import AdminViewClients from "../components/AdminViewClients";
+import ClientHomepage from "../components/ClientHomepage";
 
 
 Vue.use(Router)
@@ -78,6 +79,11 @@ export default new Router({
       path: '/admin/viewClients',
       name:'AdminViewClients',
       component: AdminViewClients
+    },
+    {
+      path: '/client/clientHomepage',
+      name: 'ClientHomepage',
+      component: ClientHomepage
     }
   ]
 })

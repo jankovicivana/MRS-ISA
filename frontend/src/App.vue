@@ -33,7 +33,7 @@ export default {
 
 .profile_main{
   background-image: url('assets/images/back2.jpg');
-  background-size: 100% 100%;
+  background-size: cover;
 }
 
 .profile_boat{
@@ -151,7 +151,7 @@ export default {
 .delete-btn{
   float: right;
   height: 30px;
-  width: 150px;
+  width: 160px;
   border: none;
   color: #fff;
   border-radius: 4px;
@@ -246,5 +246,6 @@ export default {
 .labels {
   font-size: 11px
 }
+
 
 </style>
