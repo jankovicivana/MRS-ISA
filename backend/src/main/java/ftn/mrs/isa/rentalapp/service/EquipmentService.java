@@ -1,9 +1,6 @@
 package ftn.mrs.isa.rentalapp.service;
 
-import ftn.mrs.isa.rentalapp.model.entity.Adventure;
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
-import ftn.mrs.isa.rentalapp.model.entity.FishingEquipment;
-import ftn.mrs.isa.rentalapp.model.entity.Rule;
+import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.repository.FishingEquipmentRepository;
 import ftn.mrs.isa.rentalapp.repository.RuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,10 @@ public class EquipmentService {
         for (String e: equipDTO) {
             FishingEquipment r = new FishingEquipment();
             r.setEquipment(e);
-            r.setEntity(entity);
+            if(entity instanceof Adventure)
+                r.setAdventure((Adventure) entity);
+            else
+                r.setBoat((Boat) entity);
             equipmentList.add(r);
         }
         return equipmentList;

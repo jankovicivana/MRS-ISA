@@ -3,8 +3,11 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.FishingEquipmentDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
+import ftn.mrs.isa.rentalapp.model.entity.Boat;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.FishingEquipment;
 import ftn.mrs.isa.rentalapp.service.AdventureService;
+import ftn.mrs.isa.rentalapp.service.BoatService;
 import ftn.mrs.isa.rentalapp.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -12,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.html.parser.Entity;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +30,9 @@ public class EquipmentController {
     private AdventureService adventureService;
 
     @Autowired
+    private BoatService boatService;
+
+    @Autowired
     private ModelMapper mapper;
 
 
@@ -34,15 +42,23 @@ public class EquipmentController {
         if(fishingEquipmentDTO.getAdventureId() == null && fishingEquipmentDTO.getBoatId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Adventure adventure = adventureService.findOne(fishingEquipmentDTO.getAdventureId());
-        if(adventure == null){
+        EntityType entity = adventureService.findOne(fishingEquipmentDTO.getAdventureId());
+        if(entity == null){
+            entity = boatService.findOne(fishingEquipmentDTO.getBoatId());
+        }
+        if(entity == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         FishingEquipment equip = new FishingEquipment();
         equip.setEquipment(fishingEquipmentDTO.getEquipment());
-        equip.setEntity(adventure);
-        adventure.getFishingEquipment().add(equip);
+        if(entity instanceof Adventure){
+            equip.setAdventure((Adventure) entity);
+            ((Adventure) entity).getFishingEquipment().add(equip);
+        }else{
+            equip.setBoat((Boat) entity);
+            ((Boat) entity).getFishingEquipment().add(equip);
+        }
 
         equipmentService.saveFishingEquipment(equip);
         return new ResponseEntity<>(mapper.map(equip, FishingEquipmentDTO.class),HttpStatus.CREATED);

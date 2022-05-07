@@ -1,35 +1,26 @@
 <template>
   <section class="profile_main py-lg-3">
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
-      <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateCottage',id:cottage.id }" style="background: #2e6b6b;margin: 5px" tag="button">Edit</router-link>
-      <button type="button" class="col-1 rounded-pill" v-on:click="deleteCottage()" style="background: #2e6b6b;margin: 5px">Delete</button>
+      <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateCottage',id:cottage.id }" style="background: #2e6b6b;margin: 5px;color: white" tag="button">Edit</router-link>
+      <button type="button" class="col-1 rounded-pill" v-on:click="deleteCottage()" style="background: #2e6b6b;margin: 5px;color: white">Delete</button>
     </div>
     <div class="container cottage_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center pt-5">
         <div class="col-md-6">
-          <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img class="d-block w-100" src="../assets/images/cottage4.jpg" alt="First slide" style="border-radius: 2%">
-              </div>
-              <div class="carousel-item" v-for="i in cottage.images">
-                <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%">
-              </div>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </a>
-          </div>
+          <carousel :per-page="1" :navigate-to="someLocalProperty" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" :adjustable-height-easing="true">
+            <slide>
+              <img class="d-block w-100" src="../assets/images/cottage4.jpg" alt="First slide" >
+            </slide>
+            <slide>
+              <img class="d-block w-100" src="../assets/images/cottage5.jpg" alt="Second slide" >
+            </slide>
+
+          </carousel>
         </div>
         <div class="col-md-6" >
           <div class="row m-2">
             <div class="col-9 fw-bolder" style="font-size: 35px">{{cottage.name}}</div>
-            <div class="col-3 pt-3">Ocena 5 <font-awesome-icon icon="fa-solid fa-star"/></div>
+            <div class="col-3 pt-3">Ocena 5 <font-awesome-icon icon="fa-solid fa-star" style="color: gold;" /></div>
           </div>
 
           <div class="fs-5 m-3">
@@ -57,7 +48,7 @@
           </div>
         </div>
         <div class="col-8" style="padding-left: 15px;">
-          <div class="px-3" style="background: #f8f2ec;border-radius: 5%;">
+          <div class="px-3" style="background: #f8f2ec;">
             <p style="font-size: 25px;">Rezervacija</p>
             <div class="pl-3">
               Pocetni datum:
@@ -73,7 +64,7 @@
         </div>
       </div>
       <div class="row ">
-        <div class="col-12" style="background: #f8f2ec;">
+        <div class="col-12 mx-3" style="background: #f8f2ec;">
           <p id="quick_heading">Brza rezervacija - jos malo pa nestalo!</p>
           <div class="row p-3">
             <div class="col-4 p-3 m-2 quick_res" v-for="q in cottage.quickReservations">

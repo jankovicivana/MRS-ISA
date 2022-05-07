@@ -48,8 +48,9 @@ public class BoatController {
         if(boat == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(mapper.map(boat,BoatDTO.class),HttpStatus.OK);
+        BoatDTO b = mapper.map(boat,BoatDTO.class);
+        b.setType(BoatType.toString(boat.getType()));
+        return new ResponseEntity<>(b,HttpStatus.OK);
     }
 
     @PostMapping("/addBoat")
@@ -82,6 +83,27 @@ public class BoatController {
         imageService.addImages(images);
 
         return new ResponseEntity<>(mapper.map(boat,BoatDTO.class),HttpStatus.CREATED);
+    }
+
+    @PutMapping("/updateBoat")
+    public ResponseEntity<BoatDTO> updateBoat(@RequestBody BoatDTO boatDTO){
+        Boat boat = boatService.findOne(boatDTO.getId());
+        if(boat == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        boat.setName(boatDTO.getName());
+        boat.setPrice(boatDTO.getPrice());
+        boat.setCapacity(boatDTO.getCapacity());
+        boat.setDescription(boatDTO.getDescription());
+        boat.setMaxSpeed(boatDTO.getMaxSpeed());
+        boat.setLength(boatDTO.getLength());
+        boat.setPower(boatDTO.getPower());
+        boat.setMotorNum(boatDTO.getMotorNum());
+        boat.setCancelFee(boatDTO.getCancelFee());
+        Address a = mapper.map(boatDTO.getAddress(),Address.class);
+        boat.setAddress(a);
+        boatService.save(boat);
+        return new ResponseEntity<>(mapper.map(boat,BoatDTO.class),HttpStatus.OK);
     }
 
 }

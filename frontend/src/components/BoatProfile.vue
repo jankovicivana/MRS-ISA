@@ -1,16 +1,19 @@
 <template>
   <section class="profile_boat py-lg-3" >
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
-      <router-link class="col-1 rounded-pill" style="background: #2e6b6b;margin: 5px" tag="button">Edit</router-link>
-      <button type="button" class="col-1 rounded-pill" style="background: #2e6b6b;margin: 5px">Delete</button>
+      <router-link class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: cornflowerblue;margin: 5px;color: white;border-color: royalblue" tag="button">Edit</router-link>
+      <button type="button" class="col-1 rounded-pill" style="background:cornflowerblue;margin: 5px;color: white;border-color: royalblue">Delete</button>
     </div>
     <div class="container boat_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center">
         <div class="col-md-6">
-          <img class="main_photo " :src="require('../assets/images/boat6.jpg')" alt="Boat main photo" width="100%"/>
-          <div class="row thumbs pt-3 ">
-            <span v-for="i in boat.images" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="require('../assets/images/'+i.path)" alt="Boat photo1" class="img-responsive" width="130px" height="130px"></span>
-          </div>
+
+          <carousel :per-page="1" :navigate-to="someLocalProperty" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" :adjustable-height-easing="true">
+            <slide  v-for="i in boat.images">
+              <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%">
+            </slide>
+
+          </carousel>
         </div>
         <div class="col-md-6 pt-5" >
           <div class="row m-2">
@@ -23,7 +26,7 @@
               Price: $<span>{{boat.price}}</span>
             </div>
             <div class="col-5 p-2" style="position: relative;float: right;display: inline-block ">
-              <p class="col-12 p-2" style="text-align: center;border: 2px solid blue;border-radius: 47%;background: cornflowerblue;color: white;">Boat owner: {{boat.boatOwnerName}}</p>
+              <p class="col-12 p-2" style="text-align: center;border: 2px solid royalblue;border-radius: 47%;background: cornflowerblue;color: white;">Boat owner: {{boat.boatOwnerName}}</p>
             </div>
           </div>
           <p class="lead p-3">{{boat.description}}</p>
@@ -34,7 +37,7 @@
             <p class="col-4" >Motor number: {{boat.motorNum}}</p>
             <p class="col-3" >Power: {{boat.power}}HS</p>
             <p class="col-5" style="margin-left: 100px" >Max speed: {{boat.maxSpeed}}km/h</p>
-            <p class="col-3" >Type: {{boat.type}}</p>
+            <p class="col-4" >Type: {{boat.type}}</p>
           </div>
 
           <hr style="color: blue" />
@@ -63,7 +66,7 @@
           </div>
         </div>
         <div class="col-8" style="padding-left: 15px;">
-          <div class="px-3" style="background: white;border-radius: 5%;">
+          <div class="px-3" style="background: white;border-radius: 2%;">
             <p style="font-size: 25px;">Rezervacija</p>
             <div class="pl-3">
               Pocetni datum:
@@ -86,7 +89,7 @@
         </div>
 
       </div>
-      <div class="row ">
+      <div class="row " v-if="quick.length != 0">
         <div class="col-12" style="background: white;">
           <p id="quick_heading">Brza rezervacija - jos malo pa nestalo!</p>
           <div class="row p-3">
@@ -119,13 +122,14 @@ export default {
   data: function (){
     return{
       boat: '',
+      quick:[],
     }
   },
   mounted:function (){
 
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3")
-      .then(response => (this.boat = response.data))
+      .then(response => (this.boat = response.data,this.quick=this.boat.quickReservations))
 
   }
 }

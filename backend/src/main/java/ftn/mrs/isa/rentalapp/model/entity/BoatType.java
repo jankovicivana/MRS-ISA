@@ -1,6 +1,5 @@
 package ftn.mrs.isa.rentalapp.model.entity;
 
-import ftn.mrs.isa.rentalapp.model.user.UserType;
 
 public enum BoatType {
     SAIL_BOAT,
@@ -8,6 +7,24 @@ public enum BoatType {
     ROW_BOAT,
     MOTOR_BOAT,
     YACHT;
+
+    public static String toString(BoatType type) {
+
+        switch(type) {
+            case SAIL_BOAT:
+                return "SAIL BOAT";
+            case CANOE:
+                return "CANOE";
+            case ROW_BOAT:
+                return "ROW BOAT";
+            case MOTOR_BOAT:
+                return "MOTOR BOAT";
+            case YACHT:
+                return "YACHT";
+            default:
+                return "Unknown";
+        }
+    }
 
     public static BoatType getTypeFromString(String type) {
         switch(type) {

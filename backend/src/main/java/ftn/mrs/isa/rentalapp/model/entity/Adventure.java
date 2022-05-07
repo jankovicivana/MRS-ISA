@@ -27,7 +27,7 @@ public class Adventure extends EntityType{
     @JoinColumn(name = "fishingInstructorId")
     private FishingInstructor fishingInstructor;
 
-    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "adventure", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
 
     @Column(name = "cancelFee", nullable = false)

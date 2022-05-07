@@ -6,6 +6,7 @@ import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Rule;
 import ftn.mrs.isa.rentalapp.service.AdventureService;
+import ftn.mrs.isa.rentalapp.service.BoatService;
 import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.RuleService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,9 @@ public class RuleController {
     private AdventureService adventureService;
 
     @Autowired
+    private BoatService boatService;
+
+    @Autowired
     private RuleService ruleService;
 
     @Autowired
@@ -45,7 +49,10 @@ public class RuleController {
         if(entity == null) {
             entity = adventureService.findOne(ruleDTO.getEntityId());
         }
-            if(entity == null){
+        if(entity == null) {
+            entity = boatService.findOne(ruleDTO.getEntityId());
+        }
+        if(entity == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
