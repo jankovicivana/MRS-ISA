@@ -12,6 +12,7 @@ import FishingInstructorProfile from "../components/FishingInstructorProfile";
 import CottageOwnerProfile from "../components/CottageOwnerProfile";
 import BoatProfile from "../components/BoatProfile";
 import AddAdministrator from "../components/AddAdministrator";
+import ClientHomepage from "../components/ClientHomepage";
 
 
 Vue.use(Router)
@@ -68,6 +69,11 @@ export default new Router({
       path: '/administrator/AddAdministrator',
       name:'AddAdministrator',
       component: AddAdministrator
+    },
+    {
+      path: '/client/clientHomepage',
+      name: 'ClientHomepage',
+      component: ClientHomepage
     }
   ]
 })

@@ -1,19 +1,17 @@
 <template>
+
   <section id = "client_profile" class="profile_main py-lg-3">
-    <div  class="row py-5 px-auto">
+    <div  class="row py-5 px-auto" style="align-content: center">
       <div class="col-md-8 mx-auto">
         <div class="bg-white shadow rounded overflow-hidden">
           <div class="px-4 pt-0 pb-4 cover">
             <div class="media align-items-end profile-head">
-              <div class="profile mr-3"><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="..." width="150" class="rounded mb-2 img-thumbnail">
+              <div class="profile mr-3"><img src="../assets/images/default_profile.jpg" alt="..." width="150" class="rounded mb-2 img-thumbnail">
               </div>
-              <div class="pb-4">
-                <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{client.name}}</span> <span>{{client.surname}}</span></h4>
-                <a href="#" class="btn flow delete-btn">Delete profile</a>
-              </div>
-              <div class="media-body mb-5 text-white">
-
-              </div>
+            </div>
+            <div class="pb-4 pt-4">
+              <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{client.name}}</span> <span>{{client.surname}}</span></h4>
+              <a href="#" class="btn delete-btn">Delete account</a>
             </div>
           </div>
 
@@ -107,9 +105,11 @@
 
 <script>
 import axios from "axios";
+import ClientNavbar from "./header/ClientNavbar";
 
 export default {
   name: "ClientProfile",
+  components: {'client_navbar': ClientNavbar},
   data: function(){
     return{
       client: '',
