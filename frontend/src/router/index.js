@@ -15,6 +15,9 @@ import AddAdministrator from "../components/AddAdministrator";
 import AddBoat from "../components/AddBoat";
 import AdminViewClients from "../components/AdminViewClients";
 import ClientHomepage from "../components/ClientHomepage";
+import MainHomepage from "../components/MainHomepage";
+import Cottages from "../components/BrowseCottages";
+import BrowseCottages from "../components/BrowseCottages";
 
 
 Vue.use(Router)
@@ -23,8 +26,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'MainHomepage',
+      component: MainHomepage
     },{
       path: '/adventures/adventureProfile',
       name:'AdventureProfile',
@@ -84,6 +87,11 @@ export default new Router({
       path: '/client/clientHomepage',
       name: 'ClientHomepage',
       component: ClientHomepage
+    },
+    {
+      path: '/cottages',
+      name: "BrowseCottages",
+      component: BrowseCottages
     }
   ]
 })

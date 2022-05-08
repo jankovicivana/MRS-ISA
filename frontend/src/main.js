@@ -13,13 +13,13 @@ import 'mdb-vue-ui-kit/css/mdb.min.css';
 
 
 /* import specific icons */
-import { faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faStar,faFish,faDollarSign,faPen,faCamera,faHome,faBed } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faStar,faFish,faDollarSign,faPen,faCamera,faHome,faBed,faMapMarker } from '@fortawesome/free-solid-svg-icons'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* add icons to the library */
-library.add(faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faStar,faFish,faDollarSign,faPen,faCamera,faHome,faBed)
+library.add(faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faStar,faFish,faDollarSign,faPen,faCamera,faHome,faBed,faMapMarker)
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon)
