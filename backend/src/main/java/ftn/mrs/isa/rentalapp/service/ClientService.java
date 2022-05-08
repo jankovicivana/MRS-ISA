@@ -1,15 +1,12 @@
 package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.dto.ClientDTO;
-import ftn.mrs.isa.rentalapp.model.entity.AdditionalService;
-import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
-import ftn.mrs.isa.rentalapp.model.user.Administrator;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.repository.AddressRepository;
 import ftn.mrs.isa.rentalapp.repository.ClientRepository;
-import ftn.mrs.isa.rentalapp.repository.ReservationsRepository;
+import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +20,7 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     @Autowired
-    private ReservationsRepository reservationsRepository;
+    private ReservationRepository reservationsRepository;
 
     @Autowired
     private AddressRepository addressRepository;
