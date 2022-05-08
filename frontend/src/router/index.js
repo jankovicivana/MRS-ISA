@@ -16,6 +16,7 @@ import AdminViewClients from "../components/AdminViewClients";
 import ClientHomepage from "../components/ClientHomepage";
 import MainHomepage from "../components/MainHomepage";
 import BrowseCottages from "../components/BrowseCottages";
+import BrowseBoats from "../components/BrowseBoats";
 
 
 
@@ -91,6 +92,11 @@ export default new Router({
       path: '/cottages',
       name: "BrowseCottages",
       component: BrowseCottages
+    },
+    {
+      path: '/boats',
+      name: "BrowseBoats",
+      component: BrowseBoats
     }
   ]
 })
