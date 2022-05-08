@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -41,6 +43,18 @@ public class BoatController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<List<BoatDTO>> getAllBoats(){
+        List<Boat> boats = boatService.findAll();
+
+        List<BoatDTO> boatsDTO = new ArrayList<>();
+        for (Boat b : boats){
+            boatsDTO.add(mapper.map(b, BoatDTO.class));
+        }
+
+        return new ResponseEntity<>(boatsDTO, HttpStatus.OK);
+    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<BoatDTO> getBoat(@PathVariable Integer id){

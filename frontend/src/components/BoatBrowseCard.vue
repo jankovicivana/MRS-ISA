@@ -52,4 +52,20 @@ export default {
 
 <style scoped>
 
+.browse-card{
+  transition: transform .2s;
+}
+
+.browse-card:hover{
+  transform: scale(1.07);
+}
+
+.image {
+  max-height: 200px;
+  width: 250px;
+}
+
+.stretch-width {
+  width: 100% !important;
+}
 </style>
