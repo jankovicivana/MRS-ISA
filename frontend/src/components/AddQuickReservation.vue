@@ -4,10 +4,12 @@ import router from "../router";
 import AdventureProfile from "./AdventureProfile";
 
 export default {
-  name: 'AddQuickReservationAdventure',
+  name: 'AddQuickReservation',
+  props: ['id'],
   methods: {
 
     addQuickReservation:function (){
+      let idn = this.id;
       let start_date = this.$refs.start_date_input.value
       let end_date = this.$refs.end_date_input.value
       let expiration_date = this.$refs.expiration_date_input.value
@@ -24,6 +26,7 @@ export default {
       let max_person_num = this.$refs.max_person_num.value
 
       this.info = {
+        entId:idn,
         startDateTime: start_date,
         endDateTime: end_date,
         expirationDateTime:expiration_date,

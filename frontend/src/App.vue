@@ -91,7 +91,6 @@ export default {
 
 .res_button{
   margin-left: 75%;
-  padding-top: 50px;
   padding-bottom: 20px;
 }
 
@@ -153,6 +152,7 @@ html {
   background: #c91d1d;
   color: white;
 }
+
 
 .before_price{
   color: #c91d1d;

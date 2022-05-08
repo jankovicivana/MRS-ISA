@@ -26,9 +26,16 @@
             <div class="col-3 pt-3">Ocena 5 <font-awesome-icon icon="fa-solid fa-star" /></div>
           </div>
 
-          <div class="fs-5 m-3">
-            Price: $<span>{{cottage.price}}</span>
+          <div class="fs-5 m-3 row">
+            <div class="col-6 p-2">
+              Price: $<span>{{cottage.price}}</span>
+            </div>
+            <div class="col-6" style="position: relative;float: right;display: inline-block ">
+              <p class="col-12 p-2" style="text-align: center;border-radius: 45%;background: #2e6b6b;color: white;font-size: 18px">Cottage owner: {{cottage.cottageOwnerName}}</p>
+            </div>
           </div>
+
+
           <p class="lead p-3">{{cottage.description}}</p>
           <div class="row number_info p-3">
             <p class="col-2" > <font-awesome-icon icon="fa-solid fa-user-friends"/> {{cottage.maxNumPerson}}</p>
@@ -43,7 +50,7 @@
           </div>
         </div>
       </div>
-      <div class="row p-3">
+      <div class="row p-4">
         <div class="col-4" style="background: #f8f2ec;border-radius: 5%">
           <p style="font-size: 25px;">Pravila ponasanja</p>
           <div class="rules">
@@ -52,23 +59,45 @@
         </div>
         <div class="col-8" style="padding-left: 15px;">
           <div class="px-3" style="background: #f8f2ec;">
-            <p style="font-size: 25px;">Rezervacija</p>
-            <div class="pl-3">
-              Pocetni datum:
-              <input type="date" name="startDate" placeholder="dd-mm-yyyy">
-              Krajnji datum:
-              <input type="date" name="endDate" placeholder="dd-mm-yyyy">
-              Broj osoba:
-              <input type="number" name="numPeople" min="1" max="10" style="width: 50px">
+            <p class="pt-3" style="font-size: 25px;">Rezervacija</p>
+            <div class="pl-3 row">
+              <div class="col-5">
+                Pocetni datum:
+                <input type="date" name="startDate" placeholder="dd-mm-yyyy">
+              </div>
+              <div class="col-5">
+                Krajnji datum:
+                <input type="date" name="endDate" placeholder="dd-mm-yyyy">
+              </div>
+              <div class="col-4 pt-5">
+                Broj osoba:
+                <input type="number" name="numPeople" min="1" max="10" style="width: 50px">
+              </div>
+              <div class="res_button col-2"><button type="button" class="btn ">Rezervisi</button></div>
             </div>
-            <div class="res_button"><button type="button" class="btn ">Rezervisi</button></div>
+
           </div>
 
         </div>
       </div>
+
+
+
       <div class="row ">
         <div class="col-12 mx-3" style="background: #f8f2ec;">
-          <h3 id="quick_heading">Brza rezervacija - jos malo pa nestalo!</h3>
+          <div class="row pt-3" style="padding-left: 10px">
+            <h3 id="quick_heading" class="col-10">Brza rezervacija - jos malo pa nestalo!</h3>
+            <span class="col-2" style="float: right;background: #f8f2ec;">
+            <button type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg ">Add new</button>
+            <AddQuickReservation
+              :id="cottage.id"
+              style="width: 300px"
+              v-show="isModalVisible"
+              v-on:click="closeModal()"
+            />
+          </span>
+          </div>
+
           <div class="row p-3">
             <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in cottage.quickReservations">
               <div>
@@ -93,14 +122,19 @@
 
 <script>
 import axios from "axios";
+import AddQuickReservation from "./AddQuickReservation";
 
 export default {
   name: "CottageProfile",
+  components:{
+    AddQuickReservation
+  },
   data: function (){
     return{
       cottage: '',
       num_rooms: 0,
       num_beds: 0,
+      isModalVisible: false,
     }
     },
       mounted:function (){
@@ -111,6 +145,12 @@ export default {
         .then(response => (this.cottage = response.data,this.num_rooms=response.data.rooms.length,response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})))
 
     },methods: {
+      showModal:function() {
+        this.isModalVisible = true;
+      },
+      closeModal:function() {
+        this.isModalVisible = false;
+      },
       deleteCottage:function (){
         let id = this.cottage.id
         axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/cottages/deleteCottage/"+id)
@@ -119,7 +159,6 @@ export default {
           }).catch(function error(error) {
           alert(error.response.data);
         });
-
 
       }
 
