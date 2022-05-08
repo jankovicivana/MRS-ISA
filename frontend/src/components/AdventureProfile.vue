@@ -1,17 +1,22 @@
 <template>
   <div class="AdventureProfile">
 
-    <section class="profile_main py-lg-3" style="background-image: url('https://images.unsplash.com/photo-1551606292-9649254815d6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=888&q=80');background-size: 100% 100%; ">
+    <section class="profile_main py-lg-3" style="background-image: url('https://images.unsplash.com/photo-1645032492550-4cf6a31c3cea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY5fHxncmVlbiUyMGJsdWUlMjBwaG90b3N8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60');background-size: 100% 100%; ">
       <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
         <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateAdventure',id:adventure.id }" style="background: #2e6b6b;margin: 5px" tag="button">Edit</router-link>
         <button type="button" class="col-1 rounded-pill" v-on:click="deleteAdventure()" style="background: #2e6b6b;margin: 5px">Delete</button>
       </div>
-      <div class="container cottage_profile px-4 px-lg-5 my-5" >
+      <div class="container adventure_profile px-4 px-lg-5 my-5" >
         <div class="row align-items-center pt-5">
           <div class="col-md-6">
-            <img class="main_photo " :src="require('../assets/images/'+mainPhoto)" alt="Cottage main photo" width="100%"/>
             <div class="row thumbs pt-3 ">
-              <span v-for="i in adventure.images" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="require('../assets/images/'+i.path)" alt="Cottage photo1" class="img-responsive" width="130px" height="130px"></span>
+              <carousel :per-page="1" :navigate-to="someLocalProperty" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" :adjustable-height-easing="true">
+                <slide  v-for="i in adventure.images">
+                  <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%;height: 450px">
+                </slide>
+
+              </carousel>
+
             </div>
           </div>
           <div class="col-md-6"  >
@@ -83,16 +88,22 @@
         <div class="row col-12" style="alignment: center;">
           <div class="px-3" style="background: #f8f2ec;">
             <p style="font-size: 25px;"><h4>Reservations:</h4></p>
-            <div class="pl-6">
+            <div class="pl-6" style="height: 90px" >
+              <span>
               Start date:
               <input type="date" name="startDate" placeholder="dd-mm-yyyy">
+              </span>
+              <span style="margin-left: 35px">
               End date:
               <input type="date" name="endDate" placeholder="dd-mm-yyyy">
+              </span>
+              <span style="margin-left: 35px">
               Person number:
               <input type="number" name="numPeople" min="1" max="10" style="width: 50px">
-              <div class="res_button">
-                <button type="button" class="btn ">Reserve</button>
-              </div>
+              </span>
+              <span style="margin-left: 35px;margin-bottom: 35px">
+                <button type="button" style="background: #2e6b6b; border-radius: 8px;color: #FFFFFF; border-color: #FFFFFF" class="btn ">Reserve</button>
+              </span>
             </div>
 
           </div>
@@ -100,7 +111,7 @@
         </div>
         <hr/>
         <div class="row" style="background: #f8f2ec;">
-          <p class="col-10" style="padding-left: 15px;alignment: left;background: #f8f2ec;" id="quick_heading">Quick reservations - enormous discounts!</p>
+          <p class="col-10" style="padding-left: 15px;alignment: left;background: #f8f2ec;border-radius: 8px" id="quick_adventure_heading">Quick reservations - enormous discounts!</p>
           <span class="col-2" style="float: right;background: #f8f2ec;">
             <button type="button" v-on:click="showModal()" style="margin-top:5px;margin-right:1px;color: white;background: #2e6b6b;" class="btn btn-info btn-lg ">Add new</button>
             <AddQuickReservation
@@ -118,15 +129,15 @@
 
             <div class="row p-3">
 
-              <div class="col-4 p-2 m-2 quick_res zoom" v-for="q in adventure.quickReservations">
+              <div class="col-4 p-2 m-2 quick_adventure_res" v-for="q in adventure.quickReservations">
                 <div>
                   <p class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</p>
-                  <div class="discount">{{q.discount}}%</div>
+                  <div class="adventure_discount">{{q.discount}}%</div>
                 </div>
                 <p><font-awesome-icon icon="fa-solid fa-user-friends"/>  {{q.maxPersonNum}}</p>
                 $<span class="text-decoration-line-through">{{q.price}}</span>
                 $<span class="before_price">{{q.discountedPrice}}</span>
-                <div class="quick_res_btn">
+                <div class="quick_res_adventure_btn">
                   <button type="button" class="btn">RESERVE</button>
                 </div>
               </div>
@@ -205,4 +216,36 @@ export default {
    color: #00b3b3;
    alignment: center;
 }
+
+ #quick_adventure_heading{
+   font-size: 25px;
+   color:#2e6b6b;
+   font-weight: bold;
+ }
+
+ .adventure_discount{
+   background: #2e6b6b;
+   display: inline-block;
+   margin-left: 15%;
+   color: white;
+   border-radius: 50%;
+   padding: 5px
+ }
+ .quick_adventure_res{
+   border-radius: 5%;
+   background: white;
+   font-size: 20px;
+   border: 3px solid #2e6b6b;
+   width: 32%;
+ }
+
+
+ .quick_res_adventure_btn{
+   margin-left: 70%;
+ }
+
+ .quick_res_adventure_btn button{
+   background: #2e6b6b;
+   color: white;
+ }
 </style>

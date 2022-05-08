@@ -43,7 +43,7 @@ public class Reservation {
     @Column(name = "personNum", nullable = false)
     private Integer personNum;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client", nullable = true)
     private Client client;
 

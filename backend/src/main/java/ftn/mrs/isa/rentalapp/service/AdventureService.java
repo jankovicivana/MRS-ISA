@@ -5,7 +5,7 @@ import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.repository.AdventureRepository;
 import ftn.mrs.isa.rentalapp.repository.QuickReservationRepository;
-import ftn.mrs.isa.rentalapp.repository.ReservationsRepository;
+import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class AdventureService {
     private AdventureRepository adventureRepository;
 
     @Autowired
-    private ReservationsRepository reservationsRepository;
+    private ReservationRepository reservationsRepository;
 
     @Autowired
     private QuickReservationRepository quickReservationRepository;

@@ -16,6 +16,7 @@ import AddAdministrator from "../components/AddAdministrator";
 import AddBoat from "../components/AddBoat";
 import AdminViewClients from "../components/AdminViewClients";
 import UpdateBoat from "../components/UpdateBoat";
+import ReservationHistory from "../components/ReservationHistory";
 
 
 Vue.use(Router)
@@ -59,6 +60,10 @@ export default new Router({
       path: '/fishingInstructor/FishingInstructorProfile',
       name:'FishingInstructorProfile',
       component: FishingInstructorProfile
+    },{
+      path: '/fishingInstructor/ReservationHistory',
+      name:'ReservationHistory',
+      component: ReservationHistory
     },
     {
       path:'/cottageOwner/CottageOwnerProfile',
