@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueCarousel from 'vue-carousel';
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import AdventureProfile from "../components/AdventureProfile";
 import AddAdventure from "../components/AddAdventure";
 import CottageProfile from "../components/CottageProfile";
@@ -17,6 +16,11 @@ import AddBoat from "../components/AddBoat";
 import AdminViewClients from "../components/AdminViewClients";
 import UpdateBoat from "../components/UpdateBoat";
 import ClientHomepage from "../components/ClientHomepage";
+import MainHomepage from "../components/MainHomepage";
+import BrowseCottages from "../components/BrowseCottages";
+import BrowseBoats from "../components/BrowseBoats";
+import BrowseAdventures from "../components/BrowseAdventures";
+
 
 
 Vue.use(Router)
@@ -26,8 +30,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'MainHomepage',
+      component: MainHomepage
     },{
       path: '/adventures/adventureProfile',
       name:'AdventureProfile',
@@ -93,6 +97,21 @@ export default new Router({
       path: '/boats/UpdateBoat',
       name:'UpdateBoat',
       component: UpdateBoat
+    },
+    {
+      path: '/cottages',
+      name: "BrowseCottages",
+      component: BrowseCottages
+    },
+    {
+      path: '/boats',
+      name: "BrowseBoats",
+      component: BrowseBoats
+    },
+    {
+      path: '/adventures',
+      name: "BrowseAdventures",
+      component: BrowseAdventures
     }
   ]
 })
