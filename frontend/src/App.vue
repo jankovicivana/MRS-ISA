@@ -56,6 +56,11 @@ export default {
   border-radius: 2%;
 }
 
+.adventure_profile{
+  background: white;
+  border: 4px solid white;
+  border-radius: 2%;
+}
 .boat_profile{
   background: aliceblue;
   border: 4px solid white;
