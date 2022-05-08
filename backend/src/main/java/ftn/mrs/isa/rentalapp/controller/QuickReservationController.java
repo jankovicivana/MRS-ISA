@@ -8,6 +8,8 @@ import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.service.AdventureService;
+import ftn.mrs.isa.rentalapp.service.BoatService;
+import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.QuickReservationService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -34,13 +36,25 @@ public class QuickReservationController {
     @Autowired
     private AdventureService adventureService;
 
+    @Autowired
+    private CottageService cottageService;
+
+    @Autowired
+    private BoatService boatService;
+
 
     @PostMapping("/addQuickReservation")
     public ResponseEntity<QuickReservationDTO> addQuickReservation(@RequestBody QuickReservationDTO quickReservationDTO) throws Exception {
-        Adventure a = adventureService.findOne(2);
+        EntityType entity = adventureService.findOne(quickReservationDTO.getEntId());
+        if (entity == null){
+            entity = cottageService.findOne(quickReservationDTO.getEntId());
+        }
+        if (entity == null){
+            entity = boatService.findOne(quickReservationDTO.getEntId());
+        }
         QuickReservation quickReservation = mapper.map(quickReservationDTO, QuickReservation.class);
         quickReservation.setIsReserved(false);
-        quickReservation.setEntity(a);
+        quickReservation.setEntity(entity);
         quickReservation.setIsReserved(false);
         quickReservation.setReservation(null);
         System.out.print(quickReservation.getExpirationDateTime());

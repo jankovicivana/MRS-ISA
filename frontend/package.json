@@ -21,6 +21,7 @@
     "bulma": "^0.9.3",
     "popper": "^1.0.1",
     "vue": "^2.5.2",
+    "vue-carousel": "^0.18.0",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

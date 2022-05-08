@@ -103,7 +103,8 @@
           <p class="col-10" style="padding-left: 15px;alignment: left;background: #f8f2ec;" id="quick_heading">Quick reservations - enormous discounts!</p>
           <span class="col-2" style="float: right;background: #f8f2ec;">
             <button type="button" v-on:click="showModal()" style="margin-top:5px;margin-right:1px;color: white;background: #2e6b6b;" class="btn btn-info btn-lg ">Add new</button>
-            <AddQuickReservationAdventure
+            <AddQuickReservation
+              :id="adventure.id"
               style="width: 300px"
               v-show="isModalVisible"
               v-on:click="closeModal()"
@@ -117,7 +118,7 @@
 
             <div class="row p-3">
 
-              <div class="col-4 p-2 m-2 quick_res" v-for="q in adventure.quickReservations">
+              <div class="col-4 p-2 m-2 quick_res zoom" v-for="q in adventure.quickReservations">
                 <div>
                   <p class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</p>
                   <div class="discount">{{q.discount}}%</div>
@@ -140,7 +141,7 @@
 
 <script>
 import axios from "axios";
-import AddQuickReservationAdventure from "./AddQuickReservationAdventure";
+import AddQuickReservation from "./AddQuickReservation";
 
 
 
@@ -148,7 +149,7 @@ import AddQuickReservationAdventure from "./AddQuickReservationAdventure";
 export default {
   name: "AdventureProfile",
   components: {
-    AddQuickReservationAdventure,
+    AddQuickReservation,
   },
   data(){
 

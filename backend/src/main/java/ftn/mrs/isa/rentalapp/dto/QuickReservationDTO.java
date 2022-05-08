@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class QuickReservationDTO {
 
-    private Long id;
+    private Integer id;
 
     private LocalDate startDateTime;
 
@@ -24,5 +24,7 @@ public class QuickReservationDTO {
     private Integer discount;
 
     private Double discountedPrice;
+
+    private Integer entId;
 
 }

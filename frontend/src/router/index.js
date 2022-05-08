@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueCarousel from 'vue-carousel';
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import AdventureProfile from "../components/AdventureProfile";
@@ -14,10 +15,12 @@ import BoatProfile from "../components/BoatProfile";
 import AddAdministrator from "../components/AddAdministrator";
 import AddBoat from "../components/AddBoat";
 import AdminViewClients from "../components/AdminViewClients";
+import UpdateBoat from "../components/UpdateBoat";
 import ClientHomepage from "../components/ClientHomepage";
 
 
 Vue.use(Router)
+Vue.use(VueCarousel)
 
 export default new Router({
   routes: [
@@ -79,11 +82,17 @@ export default new Router({
       path: '/admin/viewClients',
       name:'AdminViewClients',
       component: AdminViewClients
+
     },
     {
       path: '/client/clientHomepage',
       name: 'ClientHomepage',
       component: ClientHomepage
+    },
+    {
+      path: '/boats/UpdateBoat',
+      name:'UpdateBoat',
+      component: UpdateBoat
     }
   ]
 })

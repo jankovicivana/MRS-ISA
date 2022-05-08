@@ -42,8 +42,25 @@ export default {
 }
 
 .add_boat{
-  background-image: url('assets/images/boat4.jpg');
-  background-size: 100% 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('assets/images/backboat4.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  overflow: scroll;
+}
+
+.update_cottage{
+  background-attachment: fixed;
+  background-image: url('assets/images/back1.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  overflow: scroll;
 }
 
 .side_photo img{
@@ -57,7 +74,7 @@ export default {
 }
 
 .boat_profile{
-  background: aliceblue;
+  background: white;
   border: 4px solid white;
   border-radius: 2%;
 }
@@ -90,7 +107,6 @@ export default {
 
 .res_button{
   margin-left: 75%;
-  padding-top: 50px;
   padding-bottom: 20px;
 }
 
@@ -100,17 +116,34 @@ export default {
 }
 
 #quick_heading{
-  font-size: 25px;
   color:#c91d1d;
   font-weight: bold;
+  padding-top: 5px;
 }
 
 .quick_res{
-  border-radius: 5%;
   background: white;
-  font-size: 20px;
-  border: 3px solid #c91d1d;
+  font-size: 23px;
   width: 32%;
+}
+
+body {
+  font-family: Century Gothic, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.zoom {
+  transition: transform 0.6s; /* Animation */
+  margin: 0 auto;
+}
+
+.zoom:hover {
+  transform: scale(
+    1.03
+  ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
 
 .res_date{
@@ -121,7 +154,7 @@ export default {
 .discount{
   background: #c91d1d;
   display: inline-block;
-  margin-left: 15%;
+  margin-left: 10%;
   color: white;
   border-radius: 50%;
   padding: 5px
@@ -135,6 +168,7 @@ export default {
   background: #c91d1d;
   color: white;
 }
+
 
 .before_price{
   color: #c91d1d;
