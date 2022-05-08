@@ -32,7 +32,7 @@
               class="column is-flex is-justify-content-flex-end is-align-items-right">
 
               <div class="buttons ml-5">
-                <a class="button is-success" href="/#" style="background-color: #2e6b6b">
+                <a class="button is-success" href="#/cottages/CottageProfile" style="background-color: #2e6b6b">
                   View
                 </a>
               </div>

@@ -11,7 +11,7 @@
       </div>
     </div>
     <a href="">Register</a>
-    <a href="#/homepage" class="px-3 mr-1" >Log in</a>
+    <a href="#/" class="px-3 mr-1" >Log in</a>
   </nav>
 </template>
 

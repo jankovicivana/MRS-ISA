@@ -16,13 +16,13 @@
               <a href="#">Overview</a>
             </li>
             <li>
-              <a href="#">Boats</a>
+              <a href="#/boats">Boats</a>
             </li>
             <li>
-              <a href="#">Cottages</a>
+              <a href="#/cottages">Cottages</a>
             </li>
             <li>
-              <a href="#">Fishing Adventures</a>
+              <a href="#/adventures">Fishing Adventures</a>
             </li>
           </ul>
         </div>

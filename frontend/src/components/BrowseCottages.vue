@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import BrowseCard from "./BrowseCard";
 import axios from "axios";
 import MainNavbar from "./header/MainNavbar";
+import CottageBrowseCard from "./CottageBrowseCard";
 export default {
   name: "Cottages",
-  components: {'browse_card': BrowseCard, 'main_navbar': MainNavbar},
+  components: {'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar},
   data: function(){
     return{
       cottages: '',

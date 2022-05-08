@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import AdventureProfile from "../components/AdventureProfile";
 import AddAdventure from "../components/AddAdventure";
 import CottageProfile from "../components/CottageProfile";
@@ -16,8 +15,8 @@ import AddBoat from "../components/AddBoat";
 import AdminViewClients from "../components/AdminViewClients";
 import ClientHomepage from "../components/ClientHomepage";
 import MainHomepage from "../components/MainHomepage";
-import Cottages from "../components/BrowseCottages";
 import BrowseCottages from "../components/BrowseCottages";
+
 
 
 Vue.use(Router)
