@@ -10,6 +10,7 @@ export default {
 
     addQuickReservation:function (){
       let idn = this.id;
+      console.log(idn)
       let start_date = this.$refs.start_date_input.value
       let end_date = this.$refs.end_date_input.value
       let expiration_date = this.$refs.expiration_date_input.value
