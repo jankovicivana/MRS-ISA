@@ -42,8 +42,9 @@ export default {
 }
 
 .add_boat{
-  background-image: url('assets/images/boat4.jpg');
+  background-image: url('assets/images/back3.jpg');
   background-size: 100% 100%;
+  object-fit: cover;
 }
 
 .side_photo img{
@@ -100,17 +101,34 @@ export default {
 }
 
 #quick_heading{
-  font-size: 25px;
   color:#c91d1d;
   font-weight: bold;
+  padding-top: 5px;
 }
 
 .quick_res{
-  border-radius: 5%;
   background: white;
-  font-size: 20px;
-  border: 3px solid #c91d1d;
+  font-size: 23px;
   width: 32%;
+}
+
+body {
+  font-family: Century Gothic, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.zoom {
+  transition: transform 0.6s; /* Animation */
+  margin: 0 auto;
+}
+
+.zoom:hover {
+  transform: scale(
+    1.03
+  ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
 
 .res_date{
@@ -121,7 +139,7 @@ export default {
 .discount{
   background: #c91d1d;
   display: inline-block;
-  margin-left: 15%;
+  margin-left: 10%;
   color: white;
   border-radius: 50%;
   padding: 5px

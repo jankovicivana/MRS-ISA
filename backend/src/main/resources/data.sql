@@ -11,7 +11,6 @@ insert into cottages (id,description,name,price,address,cottage_owner_id,max_num
 
 
 insert into images (path,entity,is_main_photo) values ('cottage1.jpg',1,true);
-insert into images (path,entity,is_main_photo) values ('cottage2.jpg',1,false);
 insert into images (path,entity,is_main_photo) values ('cottage3.jpg',1,false);
 insert into images (path,entity,is_main_photo) values ('cottage4.jpg',1,false);
 insert into images (path,entity,is_main_photo) values ('cottage5.jpg',1,false);

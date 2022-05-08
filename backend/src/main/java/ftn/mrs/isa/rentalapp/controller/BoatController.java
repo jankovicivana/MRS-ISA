@@ -106,4 +106,17 @@ public class BoatController {
         return new ResponseEntity<>(mapper.map(boat,BoatDTO.class),HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/deleteBoat/{id}")
+    public ResponseEntity<String> deleteBoat(@PathVariable Integer id){
+        Boat boat = boatService.findOne(id);
+        if(boat == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(!boatService.canDeleteBoat(boat)){
+            return new ResponseEntity<>("Boat has reservations.Deletion is not possible.",HttpStatus.OK);
+        }
+        boatService.deleteBoat(boat);
+        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+    }
+
 }

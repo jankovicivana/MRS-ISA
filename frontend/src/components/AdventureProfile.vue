@@ -117,7 +117,7 @@
 
             <div class="row p-3">
 
-              <div class="col-4 p-2 m-2 quick_res" v-for="q in adventure.quickReservations">
+              <div class="col-4 p-2 m-2 quick_res zoom" v-for="q in adventure.quickReservations">
                 <div>
                   <p class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</p>
                   <div class="discount">{{q.discount}}%</div>

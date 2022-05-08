@@ -1,8 +1,8 @@
 <template>
   <section class="profile_boat py-lg-3" >
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
-      <router-link class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: cornflowerblue;margin: 5px;color: white;border-color: royalblue" tag="button">Edit</router-link>
-      <button type="button" class="col-1 rounded-pill" style="background:cornflowerblue;margin: 5px;color: white;border-color: royalblue">Delete</button>
+      <router-link class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: #2e6b6b;margin: 5px;color: white;border-color: white" tag="button">Edit</router-link>
+      <button type="button" class="col-1 rounded-pill" v-on:click="deleteBoat()" style="background:#2e6b6b;margin: 5px;color: white;border-color: white">Delete</button>
     </div>
     <div class="container boat_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center">
@@ -12,12 +12,15 @@
             <slide  v-for="i in boat.images">
               <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%">
             </slide>
-
           </carousel>
+
+          <div class="row thumbs pt-3 ">
+            <span v-for="i in boat.images" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="require('../assets/images/'+i.path)" alt="Boat photo" class="img-responsive" width="130px" height="130px"></span>
+          </div>
         </div>
         <div class="col-md-6 pt-5" >
           <div class="row m-2">
-            <div class="col-9 fw-bolder" style="font-size: 35px">{{boat.name}}</div>
+            <h1 class="col-9 " >{{boat.name}}</h1>
             <div class="col-3 pt-3">Ocena 5 <font-awesome-icon icon="fa-solid fa-star" style="color: gold"/></div>
           </div>
 
@@ -31,9 +34,9 @@
           </div>
           <p class="lead p-3">{{boat.description}}</p>
           <hr style="color: blue" />
-          <div class="row number_info p-3">
-            <p class="col-2 " > <font-awesome-icon icon="fa-solid fa-user-friends"/> {{boat.capacity}}</p>
-            <p class="col-3" >Lenght: {{boat.length}}m</p>
+          <div class="row number_info py-3">
+            <p class="col-2 " style="padding-left: 30px;" > <font-awesome-icon icon="fa-solid fa-user-friends"/> {{boat.capacity}}</p>
+            <p class="col-3" >Length: {{boat.length}}m</p>
             <p class="col-4" >Motor number: {{boat.motorNum}}</p>
             <p class="col-3" >Power: {{boat.power}}HS</p>
             <p class="col-5" style="margin-left: 100px" >Max speed: {{boat.maxSpeed}}km/h</p>
@@ -67,20 +70,27 @@
         </div>
         <div class="col-8" style="padding-left: 15px;">
           <div class="px-3" style="background: white;border-radius: 2%;">
-            <p style="font-size: 25px;">Rezervacija</p>
-            <div class="pl-3">
-              Pocetni datum:
-              <input type="date" name="startDate" placeholder="dd-mm-yyyy">
-              Krajnji datum:
-              <input type="date" name="endDate" placeholder="dd-mm-yyyy">
-              Broj osoba:
-              <input type="number" name="numPeople" min="1" max="10" style="width: 50px">
+            <p class="pt-3" style="font-size: 25px;">Rezervacija</p>
+            <div class="pl-3 row">
+              <div class="col-5">
+                Pocetni datum:
+                <input type="date" name="startDate" placeholder="dd-mm-yyyy">
+              </div>
+              <div class="col-5">
+                Krajnji datum:
+                <input type="date" name="endDate" placeholder="dd-mm-yyyy">
+              </div>
+              <div class="col-4 pt-4">
+                Broj osoba:
+                <input type="number" name="numPeople" min="1" max="10" style="width: 50px">
+              </div>
+
             </div>
             <div class="res_button"><button type="button" class="btn ">Rezervisi</button></div>
           </div>
         </div>
       </div>
-      <div class="row p-3">
+      <div class="row py-3">
         <div class="col-4" style="background:white;border-radius: 5%">
           <p style="font-size: 25px;">Pravila ponasanja</p>
           <div class="rules">
@@ -101,7 +111,7 @@
               <p><font-awesome-icon icon="fa-solid fa-user-friends"/> {{q.maxPersonNum}}</p>
               $<span class="text-decoration-line-through">{{q.price}}</span>
               $<span class="before_price">{{q.discountedPrice}}</span>
-              <div class="quick_res_btn"><button type="button" class="btn">REZERVISI</button></div>
+              <div class="quick_res_btn"><button type="button" class="btn" style="background: cornflowerblue">REZERVISI</button></div>
             </div>
 
 
@@ -131,6 +141,17 @@ export default {
       .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3")
       .then(response => (this.boat = response.data,this.quick=this.boat.quickReservations))
 
+  },
+  methods:{
+    deleteBoat:function (){
+      let id = this.boat.id
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/boats/deleteBoat/"+id)
+        .then(response => {
+          alert(response.data)
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
+    }
   }
 }
 </script>

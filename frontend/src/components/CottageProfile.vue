@@ -2,12 +2,12 @@
   <section class="profile_main py-lg-3">
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
       <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateCottage',id:cottage.id }" style="background: #2e6b6b;margin: 5px;color: white" tag="button">Edit</router-link>
-      <button type="button" class="col-1 rounded-pill" v-on:click="deleteCottage()" style="background: #2e6b6b;margin: 5px;color: white">Delete</button>
+      <button type="button" class="col-1 rounded-pill " v-on:click="deleteCottage()" style="background: #2e6b6b;margin: 5px;color: white">Delete</button>
     </div>
     <div class="container cottage_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center pt-5">
         <div class="col-md-6">
-          <carousel :per-page="1" :navigate-to="someLocalProperty" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" :adjustable-height-easing="true">
+          <carousel :per-page="1" :navigate-to="someLocalProperty" :navigationEnabled="true" :mouse-drag="false" :autoplay="false" :adjustable-height="true" :adjustable-height-easing="true">
             <slide>
               <img class="d-block w-100" src="../assets/images/cottage4.jpg" alt="First slide" >
             </slide>
@@ -16,11 +16,14 @@
             </slide>
 
           </carousel>
+          <div class="row thumbs pt-3 ">
+            <span v-for="i in cottage.images" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="require('../assets/images/'+i.path)" alt="Cottage photo1" class="img-responsive" width="130px" height="130px"></span>
+          </div>
         </div>
         <div class="col-md-6" >
           <div class="row m-2">
             <div class="col-9 fw-bolder" style="font-size: 35px">{{cottage.name}}</div>
-            <div class="col-3 pt-3">Ocena 5 <font-awesome-icon icon="fa-solid fa-star" style="color: gold;" /></div>
+            <div class="col-3 pt-3">Ocena 5 <font-awesome-icon icon="fa-solid fa-star" /></div>
           </div>
 
           <div class="fs-5 m-3">
@@ -65,14 +68,14 @@
       </div>
       <div class="row ">
         <div class="col-12 mx-3" style="background: #f8f2ec;">
-          <p id="quick_heading">Brza rezervacija - jos malo pa nestalo!</p>
+          <h3 id="quick_heading">Brza rezervacija - jos malo pa nestalo!</h3>
           <div class="row p-3">
-            <div class="col-4 p-3 m-2 quick_res" v-for="q in cottage.quickReservations">
+            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in cottage.quickReservations">
               <div>
-                <p class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</p>
+                <h4 class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</h4>
                 <div class="discount">{{q.discount}}%</div>
               </div>
-              <p><font-awesome-icon icon="fa-solid fa-user-friends"/> {{q.maxPersonNum}}</p>
+              <p class="py-2"><font-awesome-icon icon="fa-solid fa-user-friends"/> {{q.maxPersonNum}}</p>
               $<span class="text-decoration-line-through">{{q.price}}</span>
               $<span class="before_price">{{q.discountedPrice}}</span>
               <div class="quick_res_btn"><button type="button" class="btn">REZERVISI</button></div>
