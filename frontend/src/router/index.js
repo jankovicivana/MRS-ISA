@@ -17,6 +17,7 @@ import ClientHomepage from "../components/ClientHomepage";
 import MainHomepage from "../components/MainHomepage";
 import BrowseCottages from "../components/BrowseCottages";
 import BrowseBoats from "../components/BrowseBoats";
+import BrowseAdventures from "../components/BrowseAdventures";
 
 
 
@@ -97,6 +98,11 @@ export default new Router({
       path: '/boats',
       name: "BrowseBoats",
       component: BrowseBoats
+    },
+    {
+      path: '/adventures',
+      name: "BrowseAdventures",
+      component: BrowseAdventures
     }
   ]
 })

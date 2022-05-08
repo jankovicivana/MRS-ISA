@@ -7,13 +7,10 @@
             <div class="media align-items-end profile-head">
               <div class="profile mr-3"><img :src="require('../assets/images/'+instructor.mainPhoto)" alt="..." width="250" class="rounded mb-2 img-thumbnail">
               </div>
-              <div class="pb-4">
-                <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{ this.instructor.name }}</span> <span>{{ this.instructor.surname }}</span></h4>
-                <a href="#" class="btn flow delete-btn">Delete profile</a>
-              </div>
-              <div class="media-body mb-5 text-white">
-
-              </div>
+            </div>
+            <div class="pb-4 pt-4">
+              <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{ this.instructor.name }}</span> <span>{{ this.instructor.surname }}</span></h4>
+              <a href="#" class="btn flow delete-btn">Delete account</a>
             </div>
           </div>
 

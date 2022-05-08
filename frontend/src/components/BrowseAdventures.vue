@@ -2,17 +2,17 @@
   <div class="browse_main">
     <main_navbar></main_navbar>
     <div class="mt-5 container">
-      <h1>Cottages</h1>
+      <h1>Adventures</h1>
       <hr style="color: #2e6b6b"/>
       <div>
         <div>
           pretraga
         </div>
-        <div v-if="cottages.length === 0">
-          <p style="color: white"> No cottages for now.</p>
+        <div v-if="adventures.length === 0">
+          <p style="color: white"> No adventures  for now.</p>
         </div>
-        <div v-for="c in cottages">
-          <browse_card :cottage="c"></browse_card>
+        <div v-for="a in adventures">
+          <browse_card :adventure="a"></browse_card>
         </div>
       </div>
     </div>
@@ -21,22 +21,23 @@
 </template>
 
 <script>
-import axios from "axios";
 import MainNavbar from "./header/MainNavbar";
-import CottageBrowseCard from "./CottageBrowseCard";
+import AdventureBrowseCard from "./AdventureBrowseCard";
+import axios from "axios";
+
 export default {
-  name: "Cottages",
-  components: {'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar},
-  data: function(){
-    return{
-      cottages: ''
+  name: "BrowseAdventures",
+  components: {'main_navbar': MainNavbar, 'browse_card': AdventureBrowseCard},
+  data: function (){
+    return {
+      adventures: ''
     }
   },
-  mounted: function (){
+  mounted: function(){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/all")
-      .then(response => (this.cottages = response.data))
-  },
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/all")
+      .then(response => (this.adventures = response.data))
+  }
 }
 </script>
 
@@ -60,5 +61,4 @@ export default {
 h1{
   color: white;
 }
-
 </style>

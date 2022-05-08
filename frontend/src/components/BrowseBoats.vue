@@ -9,7 +9,7 @@
           pretraga
         </div>
         <div v-if="boats.length === 0">
-          <p> No boats for now.</p>
+          <p style="color: white"> No boats for now.</p>
         </div>
         <div v-for="b in boats">
           <browse_card :boat="b"></browse_card>
