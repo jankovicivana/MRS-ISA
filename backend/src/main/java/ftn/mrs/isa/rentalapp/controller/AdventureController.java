@@ -1,9 +1,6 @@
 package ftn.mrs.isa.rentalapp.controller;
 
-import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
-import ftn.mrs.isa.rentalapp.dto.AdventureCreateDTO;
-import ftn.mrs.isa.rentalapp.dto.CottageDTO;
-import ftn.mrs.isa.rentalapp.dto.QuickReservationDTO;
+import ftn.mrs.isa.rentalapp.dto.*;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
@@ -16,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -41,6 +40,18 @@ public class AdventureController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<List<AdventureDTO>> getAllBoats(){
+        List<Adventure> adventures = adventureService.findAll();
+
+        List<AdventureDTO> adventuresDTO = new ArrayList<>();
+        for (Adventure a : adventures){
+            adventuresDTO.add(mapper.map(a, AdventureDTO.class));
+        }
+
+        return new ResponseEntity<>(adventuresDTO, HttpStatus.OK);
+    }
 
     @PostMapping("/addAdventure")
     public ResponseEntity<AdventureDTO> addAdventure(@RequestBody AdventureCreateDTO adventureDTO) throws Exception {
