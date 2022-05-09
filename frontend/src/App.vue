@@ -200,7 +200,7 @@ html {
 .delete-btn{
   float: right;
   height: 30px;
-  width: 160px;
+  width: 170px;
   border: none;
   color: #fff;
   border-radius: 4px;
@@ -216,6 +216,7 @@ html {
 
 .delete-btn:hover {
   background: darkcyan;
+  color: white;
 }
 
 .delete-btn:focus {
