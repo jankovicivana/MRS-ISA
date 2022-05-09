@@ -8,8 +8,6 @@ import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@popperjs/core';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import "bulma/css/bulma.css";
-import 'mdb-vue-ui-kit/css/mdb.min.css';
 
 
 /* import specific icons */

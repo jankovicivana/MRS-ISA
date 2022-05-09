@@ -14,7 +14,7 @@
                   <div>
                     <table class="table">
                       <thead>
-                      <tr>
+                      <tr style="background: #ecd9c6">
                         <th>Adventure</th>
                         <th>Client</th>
                         <th>Start date</th>
@@ -26,7 +26,7 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr v-for="reservation in reservations">
+                      <tr style="background: #ecd9c6;" v-for="reservation in reservations">
                         <td>{{reservation.adventure.name}}</td>
                         <td>{{reservation.client.surname + " "+ reservation.client.name}}</td>
                         <td>{{reservation.startDateTime[2]+"."+reservation.startDateTime[1]+"."+reservation.startDateTime[0]+"."}}</td>

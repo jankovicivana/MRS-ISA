@@ -12,9 +12,9 @@
                 <h1 class="title">Clients</h1>
                   <hr />
                   <div>
-                    <table class="table">
+                    <table class="table" >
                       <thead>
-                      <tr>
+                      <tr style="background:#ecd9c6">
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
@@ -24,7 +24,7 @@
                       </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="client in clients">
+                        <tr style="background: #ecd9c6" v-for="client in clients">
                           <td>{{client.name}}</td>
                           <td>{{client.surname}}</td>
                           <td>{{client.email}}</td>

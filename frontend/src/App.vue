@@ -63,6 +63,16 @@ export default {
   overflow: scroll;
 }
 
+.update_adventure{
+  background-attachment: fixed;
+  background-image: url('https://images.unsplash.com/photo-1551606292-9649254815d6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1188&q=80 ');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  overflow: scroll;
+}
 .side_photo img{
   border-radius: 5%;
 }
