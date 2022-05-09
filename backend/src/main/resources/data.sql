@@ -7,7 +7,7 @@ insert into cottage_owners(id,email,name,password,phone_number,surname,type,acco
 insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted) values (2, 'mail', 'pass', 'ivana', 'jankovic', '065', 3, 2, 0, 0,'pera2.jpg',false);
 insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted) values (5, 'yahoomail', 'pass', 'ivana', 'kasikovic', '065', 3, 2, 0, 0,'pera2.jpg',false);
 
-insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Mnogo dobra vikendica','200',1,1,10,false);
+insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Divna vikendica','200',1,1,10,false);
 
 insert into images (path,entity,is_main_photo) values ('cottage1.jpg',1,true);
 insert into images (path,entity,is_main_photo) values ('cottage3.jpg',1,false);
@@ -109,5 +109,22 @@ insert into navigation_equipment (equipment, boat) values (0,3);
 insert into navigation_equipment (equipment, boat) values (1,3);
 insert into navigation_equipment (equipment, boat) values (2,3);
 
-insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Mnogo dobra vikendica 2','250',2,1,15,false);
-insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Mnogo dobra vikendica','200',1,1,20,false);
+insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Super vikendica','500',2,1,15,false);
+insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Najbolja vikendica','250',1,1,20,false);
+insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Coka vikendica','800',1,1,20,false);
+
+insert into fishing_equipment (equipment,adventure,boat) values ('oprema1',2,null);
+insert into fishing_equipment (equipment,adventure,boat) values ('oprema2',2,null);
+insert into fishing_equipment (equipment,adventure,boat) values ('Stap za pecanje',null,3);
+insert into fishing_equipment (equipment,adventure,boat) values ('Crvici',null,3);
+
+
+
+insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
+                   power, type, boat_owner)
+values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Marija',300,3,3,20,5,25,250,600,0,4);
+
+
+insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
+                   power, type, boat_owner)
+values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Ivana',250,2,3,20,5,25,250,600,0,4);
