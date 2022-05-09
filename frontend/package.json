@@ -22,7 +22,8 @@
     "popper": "^1.0.1",
     "vue": "^2.5.2",
     "vue-carousel": "^0.18.0",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-sweet-calendar": "^0.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",

@@ -22,7 +22,7 @@ import BrowseBoats from "../components/BrowseBoats";
 import BrowseAdventures from "../components/BrowseAdventures";
 
 import ReservationHistory from "../components/ReservationHistory";
-
+import InstructorAvailability from "../components/InstructorAvailability";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -69,6 +69,10 @@ export default new Router({
       path: '/fishingInstructor/ReservationHistory',
       name:'ReservationHistory',
       component: ReservationHistory
+    },{
+      path: '/fishingInstructor/Availability',
+      name:'InstructorAvailability',
+      component: InstructorAvailability
     },
     {
       path:'/cottageOwner/CottageOwnerProfile',
