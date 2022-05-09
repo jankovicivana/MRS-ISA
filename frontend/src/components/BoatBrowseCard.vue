@@ -4,7 +4,7 @@
       <figure class="media-left">
         <p class="image">
           <a href="/#" >
-            <img class="image" :src="require('../assets/images/cottage'+boat.id+'.jpg')" alt="Image"/>
+            <img class="image" :src="require('../assets/images/cottage'+(parseInt(boat.id)-2).toString()+'.jpg')" alt="Image"/>
           </a>
         </p>
       </figure>
