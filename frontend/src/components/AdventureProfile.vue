@@ -66,7 +66,7 @@
             <h3>Fishing instructor</h3>
             <div class="row p-3">
               <div class="col-6  ">
-                        <span class="side_photo p-lg-3 px-1"><img :src="require('../assets/images/'+fishingInstructor.mainPhoto)" alt="Cottage photo4" width="330px"                       ></span>
+                <span class="side_photo p-lg-3 px-1"><img :src="require('../assets/images/'+fishingInstructor.mainPhoto)" alt="Cottage photo4" width="330px"                       ></span>
               </div>
 
               <br/>
@@ -125,7 +125,7 @@
         </div>
 
         <div class="row ">
-            <div class="col-12" style="padding-left: 15px;alignment: center;background: #f8f2ec;">
+          <div class="col-12" style="padding-left: 15px;alignment: center;background: #f8f2ec;">
 
             <div class="row p-3">
 
@@ -211,41 +211,41 @@ export default {
 </script>
 
 <style scoped>
- .fa{
+.fa{
   font-size: 8px;
-   color: #00b3b3;
-   alignment: center;
+  color: #00b3b3;
+  alignment: center;
 }
 
- #quick_adventure_heading{
-   font-size: 25px;
-   color:#2e6b6b;
-   font-weight: bold;
- }
+#quick_adventure_heading{
+  font-size: 25px;
+  color:#2e6b6b;
+  font-weight: bold;
+}
 
- .adventure_discount{
-   background: #2e6b6b;
-   display: inline-block;
-   margin-left: 15%;
-   color: white;
-   border-radius: 50%;
-   padding: 5px
- }
- .quick_adventure_res{
-   border-radius: 5%;
-   background: white;
-   font-size: 20px;
-   border: 3px solid #2e6b6b;
-   width: 32%;
- }
+.adventure_discount{
+  background: #2e6b6b;
+  display: inline-block;
+  margin-left: 15%;
+  color: white;
+  border-radius: 50%;
+  padding: 5px
+}
+.quick_adventure_res{
+  border-radius: 5%;
+  background: white;
+  font-size: 20px;
+  border: 3px solid #2e6b6b;
+  width: 32%;
+}
 
 
- .quick_res_adventure_btn{
-   margin-left: 70%;
- }
+.quick_res_adventure_btn{
+  margin-left: 70%;
+}
 
- .quick_res_adventure_btn button{
-   background: #2e6b6b;
-   color: white;
- }
+.quick_res_adventure_btn button{
+  background: #2e6b6b;
+  color: white;
+}
 </style>

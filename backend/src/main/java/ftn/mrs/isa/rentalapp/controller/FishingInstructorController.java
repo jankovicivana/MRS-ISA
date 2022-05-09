@@ -1,13 +1,16 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 
+import ftn.mrs.isa.rentalapp.dto.AvailablePeriodDTO;
 import ftn.mrs.isa.rentalapp.dto.ClientDTO;
 import ftn.mrs.isa.rentalapp.dto.FishingInstructorDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
+import ftn.mrs.isa.rentalapp.model.entity.AvailablePeriod;
 import ftn.mrs.isa.rentalapp.model.entity.Image;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.service.AdditionalServiceService;
+import ftn.mrs.isa.rentalapp.service.AvailablePeriodService;
 import ftn.mrs.isa.rentalapp.service.FishingInstructorService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -24,6 +27,9 @@ public class FishingInstructorController {
 
     @Autowired
     FishingInstructorService fishingInstructorService;
+
+    @Autowired
+    AvailablePeriodService availablePeriodService;
 
     @Autowired
     private ModelMapper mapper;
@@ -51,5 +57,9 @@ public class FishingInstructorController {
         fishingInstructorService.updateInstructor(mapper.map(fishingInstructorDTO,FishingInstructor.class));
     }
 
+    @PostMapping(value = "/addAvailablePeriod" )
+    public void updateInstructor(@RequestBody AvailablePeriodDTO availablePeriod) {
+        availablePeriodService.add(mapper.map(availablePeriod,AvailablePeriod.class));
+    }
 
 }
