@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 
@@ -20,6 +21,7 @@ library.add(faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faSta
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 new Vue({
