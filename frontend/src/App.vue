@@ -33,7 +33,7 @@ export default {
 
 .profile_main{
   background-image: url('assets/images/back2.jpg');
-  background-size: 100% 100%;
+  background-size: cover;
 }
 
 .profile_boat{
@@ -42,9 +42,25 @@ export default {
 }
 
 .add_boat{
-  background-image: url('assets/images/back3.jpg');
-  background-size: 100% 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('assets/images/backboat4.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
   object-fit: cover;
+  overflow: scroll;
+}
+
+.update_cottage{
+  background-attachment: fixed;
+  background-image: url('assets/images/back1.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  overflow: scroll;
 }
 
 .side_photo img{
@@ -63,7 +79,7 @@ export default {
   border-radius: 2%;
 }
 .boat_profile{
-  background: aliceblue;
+  background: white;
   border: 4px solid white;
   border-radius: 2%;
 }
@@ -174,7 +190,7 @@ html {
 .delete-btn{
   float: right;
   height: 30px;
-  width: 150px;
+  width: 160px;
   border: none;
   color: #fff;
   border-radius: 4px;
@@ -269,5 +285,6 @@ html {
 .labels {
   font-size: 11px
 }
+
 
 </style>

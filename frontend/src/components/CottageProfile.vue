@@ -7,7 +7,7 @@
     <div class="container cottage_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center pt-5">
         <div class="col-md-6">
-          <carousel :per-page="1" :navigate-to="someLocalProperty" :navigationEnabled="true" :mouse-drag="false" :autoplay="false" :adjustable-height="true" :adjustable-height-easing="true">
+          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="false" >
             <slide>
               <img class="d-block w-100" src="../assets/images/cottage4.jpg" alt="First slide" >
             </slide>
@@ -83,7 +83,7 @@
 
 
 
-      <div class="row ">
+      <div class="row " v-if="quick.length != 0" >
         <div class="col-12 mx-3" style="background: #f8f2ec;">
           <div class="row pt-3" style="padding-left: 10px">
             <h3 id="quick_heading" class="col-10">Brza rezervacija - jos malo pa nestalo!</h3>
@@ -95,7 +95,7 @@
               v-show="isModalVisible"
               v-on:click="closeModal()"
             />
-          </span>
+            </span>
           </div>
 
           <div class="row p-3">
@@ -109,8 +109,6 @@
               $<span class="before_price">{{q.discountedPrice}}</span>
               <div class="quick_res_btn"><button type="button" class="btn">REZERVISI</button></div>
             </div>
-
-
 
           </div>
 
@@ -132,6 +130,7 @@ export default {
   data: function (){
     return{
       cottage: '',
+      quick:[],
       num_rooms: 0,
       num_beds: 0,
       isModalVisible: false,
@@ -142,7 +141,7 @@ export default {
 
       axios
         .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1")
-        .then(response => (this.cottage = response.data,this.num_rooms=response.data.rooms.length,response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})))
+        .then(response => (this.cottage = response.data,this.quick=this.cottage.quickReservations,this.num_rooms=response.data.rooms.length,response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})))
 
     },methods: {
       showModal:function() {
