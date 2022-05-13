@@ -1,5 +1,6 @@
 <template>
   <section class="vh-80 update_cottage">
+    <CottageOwnerNavbar></CottageOwnerNavbar>
     <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
       <div class="container h-100" >
         <div class="row d-flex justify-content-center align-items-center h-100" >
@@ -10,22 +11,22 @@
                 <form>
 
                   <div class="form-outline mb-4">
-                    <label class="label" for="name_input"> <i class="fas fa-home"></i>  Cottage name:</label>
+                    <label class="label" for="name_input"> <font-awesome-icon icon="fa-solid fa-home"></font-awesome-icon>  Cottage name:</label>
                     <div>
                       <input type="text" id="name_input" ref="name_input" class="form-control form-control-lg"  v-model="cottage.name"/>
 
                     </div>
                   </div>
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="price_input"><i class="fas fa-dollar-sign"></i>  Price:</label>
+                    <label class="form-label" for="price_input"><font-awesome-icon icon="fa-solid fa-dollar-sign"></font-awesome-icon>  Price:</label>
                     <input type="number" id="price_input" ref="price_input" class="form-control form-control-lg" v-model="cottage.price" min="1"/>
                   </div>
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="max_person_input"><i class="fas fa-user"></i> Max person number: </label>
+                    <label class="form-label" for="max_person_input"><font-awesome-icon icon="fa-solid fa-user"></font-awesome-icon> Max person number: </label>
                     <input type="number" id="max_person_input" ref="max_person_input" class="form-control form-control-lg" v-model="cottage.maxNumPerson" min="1"/>
                   </div>
                   <div class="form-outline mb-4" style="margin-right: 150px">
-                    <label class="form-label" for="num_bed_input"><i class="fas fa-door-open"></i> Add room: (Enter the number of beds)</label>
+                    <label class="form-label" for="num_bed_input"><font-awesome-icon icon="fa-solid fa-door-open"></font-awesome-icon> Add room: (Enter the number of beds)</label>
                     <div class="row">
                       <input type="number" id="num_bed_input" ref="num_bed_input" class="input_add form-control-lg col-6 mx-3" min="1"/>
                       <button type="submit"  v-on:click="addRoom()" class="btn col-3" style="background-color: #04414d;color: white">Add room</button>
@@ -38,7 +39,7 @@
 
 
                   <div class="form-outline mb-4 mt-3">
-                    <label class="form-label" for="description_input"><i class="fas fa-pen"></i> Description: </label>
+                    <label class="form-label" for="description_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Description: </label>
                     <textarea id="description_input" ref="description_input" class="form-control-lg" v-model="cottage.description" style="width: 100%;border: white"/>
                   </div>
 
@@ -46,29 +47,29 @@
                   <h4>Address</h4>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="country_input"><i class="fas fa-pen"></i> Country: </label>
+                    <label class="form-label" for="country_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Country: </label>
                     <input type="text" id="country_input" ref="country_input" class="form-control form-control-lg" v-model="this.address.country" />
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="city_input"><i class="fas fa-pen"></i> City: </label>
+                    <label class="form-label" for="city_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> City: </label>
                     <input type="text" id="city_input" ref="city_input" class="form-control form-control-lg" v-model="this.address.city" />
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="street_input"><i class="fas fa-pen"></i> Street: </label>
+                    <label class="form-label" for="street_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Street: </label>
                     <input type="text" id="street_input" ref="street_input" class="form-control form-control-lg" v-model="this.address.street" />
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="postal_code_input"><i class="fas fa-pen"></i> Postal code: </label>
+                    <label class="form-label" for="postal_code_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Postal code: </label>
                     <input type="number" id="postal_code_input" ref="postal_code_input" class="form-control form-control-lg" v-model="this.address.postalCode" />
                   </div>
                   <hr />
                   <h4>Conduct rules</h4>
                   <div class="form-outline mb-4">
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="rule_input"><i class="fas fa-pen"></i> Rule: </label>
+                      <label class="form-label" for="rule_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Rule: </label>
                       <div class="row">
                         <input type="text" id="rule_input" ref="rule_input" class="input_add form-control-lg col-6 mx-3" />
                         <button type="submit" id="add_rule_btn" v-on:click="addRule()" class="btn col-2" style="background-color: #04414d;color: white">Add rule</button>
@@ -84,7 +85,7 @@
 
                   <div class="form-outline mb-4">
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="add_service_input"><i class="fas fa-pen"></i> Additional service: </label>
+                      <label class="form-label" for="add_service_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Additional service: </label>
                       <div class="row">
                         <input type="text" id="add_service_input" ref="add_service_input" class="input_add form-control-lg col-6 mx-3" />
                         <button type="submit" v-on:click="addService()" class="btn col-3" style="background-color: #04414d;color: white">Add service</button>
@@ -96,13 +97,10 @@
                     </div>
                   </div>
 
-
-
-
                   <br/>
 
                   <hr/>
-                  <h4>Images<i class="fas fa-camera px-2"></i></h4>
+                  <h4>Images <font-awesome-icon icon="fa-solid fa-camera"></font-awesome-icon></h4>
                   <div class="form-outline mb-2 mt-3">
                     <input type="file" id="image_input" ref="image_input" @change="onFileSelected" class="form-control" accept="image/png, image/gif, image/jpeg" multiple />
                   </div>
@@ -130,9 +128,11 @@
 
 <script>
 import axios from "axios";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 
 export default {
   name: "UpdateCottage",
+  components: {CottageOwnerNavbar},
   mounted: function (){
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1")
@@ -146,13 +146,17 @@ export default {
   }
   ,
   methods:{
+    show: function(group, type='', title, text){
+      this.$notify({group, title, text, type})
+    },
+
     onFileSelected: function (event){
       this.selectedFile = event.target.files[0];
     },
 
     addImage: function (){
       let img = this.$refs.image_input.value
-      if(img == ""){
+      if(img === ""){
         alert("Must choose file!");
         return;
       }
@@ -165,8 +169,8 @@ export default {
         //this.cottage.images.push({data:e.target.result,path:file.name,entityId:1});
         axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:"../images/"+file.name,entityId:1})
           .then(response => {
-            alert("Addition image is successfull!")
-            location.reload();
+            this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added image!</p>`)
+            setTimeout(() => {location.reload(); }, 1500)
           }).catch(function error(error) {
           alert(error.response.data);
         });
@@ -177,7 +181,7 @@ export default {
     },
     addRule: function (){
       let ruleText = this.$refs.rule_input.value
-      if(ruleText == ""){
+      if(ruleText === ""){
         alert("Must enter rule!");
         return;
       }
@@ -185,8 +189,8 @@ export default {
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:1})
         .then(response => {
-          alert("Addition rule is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added rule!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -196,7 +200,7 @@ export default {
     },
     addService: function (){
       let service = this.$refs.add_service_input.value
-      if(service == ""){
+      if(service === ""){
         alert("Must enter additional service!!");
         return;
       }
@@ -204,8 +208,8 @@ export default {
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:1})
         .then(response => {
-          alert("Addition service is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added service!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -216,15 +220,15 @@ export default {
     addRoom: function (){
 
       let room = this.$refs.num_bed_input.value
-      if(room == ""){
+      if(room === ""){
         alert('Must enter bed number!')
         return;
       }
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rooms/addRoom", {bedNumber:room,entityId:1})
         .then(response => {
-          alert("Addition room is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added room!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -236,8 +240,8 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rules/deleteRule/"+id)
         .then(response => {
-          alert("Removing rule is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed rule!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -247,8 +251,8 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rooms/deleteRoom/"+id)
         .then(response => {
-          alert("Removing room is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed room!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -257,8 +261,8 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/deleteAdditionalService/"+id)
         .then(response => {
-          alert("Removing additionalService is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed additional service!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -267,17 +271,14 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/images/deleteImage/"+id)
         .then(response => {
-          alert("Removing image is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed image!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
 
     },
     updateCottage: function (){
-      console.log('doslo ovde')
-
-
       this.info = {
         id:this.cottage.id,
         name: this.cottage.name,
@@ -293,7 +294,7 @@ export default {
 
       axios.put(process.env.VUE_APP_SERVER_PORT+"/api/cottages/updateCottage",this.info)
         .then(response => {
-          alert("Update is succeddfull!")
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated cottage!</p>`)
         }).catch(function error(error) {
         alert(error.response.data);
       });

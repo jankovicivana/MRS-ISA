@@ -1,5 +1,8 @@
 <template>
+  <div>
+    <fishing-instructor-navbar></fishing-instructor-navbar>
   <section id = "client_profile" class="profile_main py-lg-3">
+
     <div  class="row py-5 px-auto">
       <div class="col-md-8 mx-auto">
         <div class="bg-white shadow rounded overflow-hidden">
@@ -57,15 +60,17 @@
       </div>
     </div>
   </section>
-
+  </div>
 
 </template>
 
 <script>
 import axios from "axios";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "FishingInstructorProfile",
+  components: {FishingInstructorNavbar},
   data: function(){
     return{
       instructor: '',
@@ -84,6 +89,11 @@ export default {
 
   },
   methods: {
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfull edit!</p>`
+      let text = `<p style="font-size: 20px">Successfully edited data!</p>`
+      this.$notify({group, title, text, type})
+    },
 
     editClient: function() {
       this.inputs = document.querySelectorAll('input[type="text"]');
@@ -102,7 +112,7 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c)
           .then(response => {
-            alert("Update is successfull!")
+            this.show('foo-css', 'success')
           })
 
       }

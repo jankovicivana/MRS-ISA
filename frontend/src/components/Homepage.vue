@@ -16,13 +16,13 @@
                 <a href="#">Overview</a>
               </li>
               <li>
-                <a href="#/boats">Boats</a>
+                <a href="#boats">Boats</a>
               </li>
               <li>
-                <a href="#/cottages">Cottages</a>
+                <a href="#cottages">Cottages</a>
               </li>
               <li>
-                <a href="#/adventures">Fishing Adventures</a>
+                <a href="#adventures">Fishing Adventures</a>
               </li>
             </ul>
           </div>
@@ -86,7 +86,7 @@
       </div>
 
       <div class="has-text-centered mt-6">
-        <a href="#/cottages" class="button is-primary">View all</a>
+        <a href="#/cottages" class="button view_button is-primary">View all</a>
       </div>
     </div>
 
@@ -115,7 +115,7 @@
       </div>
 
       <div class="has-text-centered mt-6">
-        <a href="#/boats" class="button is-primary">View all</a>
+        <a href="#/boats" class="button view_button is-primary">View all</a>
       </div>
     </div>
 
@@ -143,7 +143,7 @@
       </div>
 
       <div class="has-text-centered mt-6">
-        <a href="#/adventures" class="button is-primary">View all</a>
+        <a href="#/adventures" class="button view_button is-primary">View all</a>
       </div>
     </div>
 
@@ -221,6 +221,20 @@ html {
 .card {
   cursor: pointer;
   width: 300px;
+}
+
+a{
+  text-decoration: none;
+}
+
+
+.view_button{
+  background-color: #4AAE9B;
+  color: white;
+}
+
+.view_button:hover{
+  background-color: #2e6b6b;
 }
 
 </style>

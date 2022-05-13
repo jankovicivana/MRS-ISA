@@ -12,7 +12,7 @@
         <div class="content">
           <div>
             <p>
-              <strong><a href="/#"  style="color: #2e6b6b">{{adventure.name}}</a> </strong>
+              <strong><a href="#/adventures/AdventureProfile"  style="color: #2e6b6b">{{adventure.name}}</a> </strong>
               <span class="mr-1 m-lg-4" style="font-size:20px; color:gold">&starf; &starf; &starf; &starf; &starf;</span>
               <br /><br />
 
@@ -31,7 +31,7 @@
             <div
               class="column is-flex is-justify-content-flex-end is-align-items-right">
               <div class="buttons ml-5">
-                <a class="button is-success" href="#/adventures/AdventureProfile" style="background-color: #2e6b6b">
+                <a class="button view_button is-success" href="#/adventures/AdventureProfile" style="background-color: #2e6b6b">
                   View
                 </a>
               </div>
@@ -68,4 +68,19 @@ export default {
 .stretch-width {
   width: 100% !important;
 }
+
+
+.view_button{
+  background-color: #2e6b6b;
+  color: white;
+}
+
+.view_button:hover{
+  background-color: #4AAE9B;
+}
+
+a{
+  text-decoration: none;
+}
+
 </style>

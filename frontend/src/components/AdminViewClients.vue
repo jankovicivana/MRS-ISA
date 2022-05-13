@@ -1,6 +1,6 @@
 <template>
   <section class="profile_main vh-100" >
-
+    <admin_navbar></admin_navbar>
   <div class="content is-medium" style=" height:80%"  >
     <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
       <div class="container h-100" >
@@ -48,9 +48,11 @@
 
 <script>
 import axios from "axios";
+import AdminNavbar from "./header/AdminNavbar";
 
 export default {
   name: "AdminViewClients",
+  components: {'admin_navbar': AdminNavbar},
   data(){
 
     return{

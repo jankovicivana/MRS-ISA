@@ -1,6 +1,6 @@
 <template>
   <section class="profile_main vh-100" >
-
+  <fishing-instructor-navbar></fishing-instructor-navbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -54,6 +54,7 @@
 import axios from "axios";
 import { Calendar } from 'vue-sweet-calendar'
 import 'vue-sweet-calendar/dist/SweetCalendar.css'
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "InstructorAvailability",
@@ -92,6 +93,12 @@ export default {
     }
   },
   methods:{
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfully added!</p>`
+      let text = `<p style="font-size: 20px">Successfully added available period!</p>`
+      this.$notify({group, title, text, type})
+    },
+
     addAvailablePeriod:function (){
       let start_date = this.$refs.start_date_input.value
       let end_date = this.$refs.end_date_input.value
@@ -123,7 +130,7 @@ export default {
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/addAvailablePeriod",this.info)
         .then(response => {
-          alert("Addition is successfull!")
+          this.show('foo-css', 'success')
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -132,6 +139,7 @@ export default {
     }
   },
   components: {
+    FishingInstructorNavbar,
     Calendar // Registering Component
   }
 }

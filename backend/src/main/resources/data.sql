@@ -68,8 +68,8 @@ insert into rules (rule,entity) values ('Pusenje je zabranjeno',2);
 insert into rules (rule,entity) values ('Ne lomiti stvari',2);
 insert into rules (rule,entity) values ('Decu drzati podalje',2);
 
-insert into fishing_equipment (equipment,adventure,boat) values ('oprema1',2,null);
-insert into fishing_equipment (equipment,adventure,boat) values ('oprema2',2,null);
+insert into fishing_equipment (equipment,adventure,boat) values ('udice',2,null);
+insert into fishing_equipment (equipment,adventure,boat) values ('mamci',2,null);
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
                                 start_date_time, entity, reservation,discounted_price,deleted)
@@ -113,12 +113,8 @@ insert into cottages (id,description,name,price,address,cottage_owner_id,max_num
 insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Najbolja vikendica','250',1,1,20,false);
 insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Coka vikendica','800',1,1,20,false);
 
-insert into fishing_equipment (equipment,adventure,boat) values ('oprema1',2,null);
-insert into fishing_equipment (equipment,adventure,boat) values ('oprema2',2,null);
 insert into fishing_equipment (equipment,adventure,boat) values ('Stap za pecanje',null,3);
 insert into fishing_equipment (equipment,adventure,boat) values ('Crvici',null,3);
-
-
 
 insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
                    power, type, boat_owner)

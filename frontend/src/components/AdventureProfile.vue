@@ -1,23 +1,23 @@
 <template>
   <div class="AdventureProfile">
-
+    <fishing-instructor-navbar></fishing-instructor-navbar>
     <section class="profile_main py-lg-3" style="background-image: url('https://images.unsplash.com/photo-1645032492550-4cf6a31c3cea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY5fHxncmVlbiUyMGJsdWUlMjBwaG90b3N8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60');background-size: 100% 100%; ">
       <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
-        <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateAdventure',id:adventure.id }" style="background: #2e6b6b;margin: 5px" tag="button">Edit</router-link>
-        <button type="button" class="col-1 rounded-pill" v-on:click="deleteAdventure()" style="background: #2e6b6b;margin: 5px">Delete</button>
+        <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateAdventure',id:adventure.id }" style="background: #2e6b6b;border: none;color: white;margin: 5px" tag="button">Edit</router-link>
+        <button type="button" class="col-1 rounded-pill" v-on:click="deleteAdventure()" style="background: #2e6b6b;border: none;color:white ;margin: 5px">Delete</button>
       </div>
       <div class="container adventure_profile px-4 px-lg-5 my-5" >
         <div class="row align-items-center pt-5">
           <div class="col-md-6">
-            <div class="row thumbs pt-3 ">
-              <carousel :per-page="1" :navigate-to="someLocalProperty" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" :adjustable-height-easing="true">
+
+              <carousel :per-page="1"  :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true">
                 <slide  v-for="i in adventure.images">
                   <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%;height: 450px">
                 </slide>
 
               </carousel>
 
-            </div>
+
           </div>
           <div class="col-md-6"  >
             <div class="row">
@@ -87,7 +87,7 @@
         <hr/>
         <div class="row col-12" style="alignment: center;">
           <div class="px-3" style="background: #f8f2ec;">
-            <p style="font-size: 25px;"><h4>Reservations:</h4></p>
+            <p style="font-size: 25px;">Reservations</p>
             <div class="pl-6" style="height: 90px" >
               <span>
               Start date:
@@ -110,39 +110,35 @@
 
         </div>
         <hr/>
-        <div class="row" style="background: #f8f2ec;">
-          <p class="col-10" style="padding-left: 15px;alignment: left;background: #f8f2ec;border-radius: 8px" id="quick_adventure_heading">Quick reservations - enormous discounts!</p>
-          <span class="col-2" style="float: right;background: #f8f2ec;">
-            <button type="button" v-on:click="showModal()" style="margin-top:5px;margin-right:1px;color: white;background: #2e6b6b;" class="btn btn-info btn-lg ">Add new</button>
+        <div class="row " >
+          <div class="col-12 mx-3" style="background: #f8f2ec;">
+            <div class="row pt-3" style="padding-left: 10px">
+              <h3 id="quick_heading" class="col-10">Quick reservations - enormous discounts!</h3>
+              <span class="col-2" style="float: right;background: #f8f2ec;">
+            <button type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg ">Add new</button>
             <AddQuickReservation
               :id="adventure.id"
               style="width: 300px"
               v-show="isModalVisible"
               v-on:click="closeModal()"
             />
-
-          </span>
-        </div>
-
-        <div class="row ">
-          <div class="col-12" style="padding-left: 15px;alignment: center;background: #f8f2ec;">
+            </span>
+            </div>
 
             <div class="row p-3">
-
-              <div class="col-4 p-2 m-2 quick_adventure_res" v-for="q in adventure.quickReservations">
+              <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in adventure.quickReservations">
                 <div>
-                  <p class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</p>
-                  <div class="adventure_discount">{{q.discount}}%</div>
+                  <h4 class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</h4>
+                  <div class="discount">{{q.discount}}%</div>
                 </div>
-                <p><font-awesome-icon icon="fa-solid fa-user-friends"/>  {{q.maxPersonNum}}</p>
+                <p class="py-2"><font-awesome-icon icon="fa-solid fa-user-friends"/> {{q.maxPersonNum}}</p>
                 $<span class="text-decoration-line-through">{{q.price}}</span>
                 $<span class="before_price">{{q.discountedPrice}}</span>
-                <div class="quick_res_adventure_btn">
-                  <button type="button" class="btn">RESERVE</button>
-                </div>
+                <div class="quick_res_btn"><button type="button" class="btn">RESERVE</button></div>
               </div>
 
             </div>
+
           </div>
         </div>
       </div>
@@ -153,17 +149,15 @@
 <script>
 import axios from "axios";
 import AddQuickReservation from "./AddQuickReservation";
-
-
-
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "AdventureProfile",
   components: {
+    FishingInstructorNavbar,
     AddQuickReservation,
   },
-  data(){
-
+  data: function(){
     return{
       adventure: '',
       mainPhoto:'',
@@ -180,14 +174,14 @@ export default {
         this.adventure = response.data,this.fishingInstructor = this.adventure.fishingInstructor
       ))
 
-    axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/findMainPhoto/2")
-      .then(response => (
-        this.mainPhoto = response.data
-      ))
 
   },
   methods:{
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfully deleted!</p>`
+      let text = `<p style="font-size: 20px">Successfully deleted adventure!</p>`
+      this.$notify({group, title, text, type})
+    },
     showModal:function() {
       this.isModalVisible = true;
     },
@@ -198,7 +192,8 @@ export default {
       let id = this.adventure.id
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id)
         .then(response => {
-          alert(response.data)
+          this.show('foo-css', 'success')
+
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -231,6 +226,7 @@ export default {
   border-radius: 50%;
   padding: 5px
 }
+
 .quick_adventure_res{
   border-radius: 5%;
   background: white;

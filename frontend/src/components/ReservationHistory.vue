@@ -1,6 +1,6 @@
 <template>
   <section class="profile_main vh-100" >
-
+  <fishing-instructor-navbar></fishing-instructor-navbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -53,9 +53,11 @@
 
 <script>
 import axios from "axios";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "ReservationHistory",
+  components: {FishingInstructorNavbar},
   data(){
 
     return{

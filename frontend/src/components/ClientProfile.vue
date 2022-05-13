@@ -12,7 +12,7 @@
             </div>
             <div class="pb-4 pt-4">
               <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{client.name}}</span> <span>{{client.surname}}</span></h4>
-              <a href="#" class="btn delete-btn">Delete account</a>
+              <a href="#/" class="btn delete-btn">Delete account</a>
             </div>
           </div>
 
@@ -124,6 +124,12 @@ export default {
   },
 
   methods: {
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfull edit!</p>`
+      let text = `<p style="font-size: 20px">Successfully edited data!</p>`
+      this.$notify({group, title, text, type})
+    },
+
     editClient: function() {
       this.inputs = document.querySelectorAll('input[type="text"]');
       for (var i=0; i<this.inputs.length; i++) {
@@ -140,9 +146,8 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVER_PORT+"/api/clients/updateClient", c)
           .then(response => {
-            alert("Update is successfull!")
+            this.show('foo-css', 'success')
           })
-
       }
     }
   }

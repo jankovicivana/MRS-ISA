@@ -42,7 +42,7 @@ public class AdventureController {
     private ModelMapper mapper;
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<AdventureDTO>> getAllBoats(){
+    public ResponseEntity<List<AdventureDTO>> getAllAdventures(){
         List<Adventure> adventures = adventureService.findAll();
 
         List<AdventureDTO> adventuresDTO = new ArrayList<>();
@@ -97,6 +97,7 @@ public class AdventureController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         AdventureDTO dto = mapper.map(adventure,AdventureDTO.class);
+        System.out.println(dto);
         dto.setId(adventure.getId());
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
@@ -114,7 +115,7 @@ public class AdventureController {
     }
 
     @PutMapping("/updateAdventure")
-    public ResponseEntity<AdventureDTO> updateCottage(@RequestBody AdventureDTO adventureDTO) throws IOException {
+    public ResponseEntity<AdventureDTO> updateAdventure(@RequestBody AdventureDTO adventureDTO) throws IOException {
         Adventure adventure = adventureService.findOne(adventureDTO.getId());
 
         if(adventure == null){

@@ -1,5 +1,6 @@
 <template>
   <section class="vh-80 update_adventure" >
+    <fishing-instructor-navbar></fishing-instructor-navbar>
     <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
       <div class="container h-100" >
         <div class="row d-flex justify-content-center align-items-center h-100" >
@@ -151,9 +152,11 @@
 
 <script>
 import axios from "axios";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "UpdateAdventure",
+  components: {FishingInstructorNavbar},
   mounted: function (){
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/2")
@@ -167,13 +170,17 @@ export default {
   }
   ,
   methods:{
+    show: function(group, type='', title, text){
+      this.$notify({group, title, text, type})
+    },
+
     onFileSelected: function (event){
       this.selectedFile = event.target.files[0];
     },
 
     addImage: function (){
       let img = this.$refs.image_input.value
-      if(img == ""){
+      if(img === ""){
         alert("Must choose file!");
         return;
       }
@@ -185,8 +192,8 @@ export default {
       picturePath.onload = e => {
         axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:"../images/"+file.name,entityId:2})
           .then(response => {
-            alert("Addition image is successfull!")
-            location.reload();
+            this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added image!</p>`)
+            setTimeout(() => {location.reload(); }, 1500)
           }).catch(function error(error) {
           alert(error.response.data);
         });
@@ -197,14 +204,14 @@ export default {
     },
     addRule: function (){
       let ruleText = this.$refs.rule_input.value
-      if(ruleText == ""){
+      if(ruleText === ""){
         alert("Must enter rule!");
         return;
       }
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:2})
         .then(response => {
-          alert("Addition rule is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added rule!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -214,7 +221,7 @@ export default {
     },
     addService: function (){
       let service = this.$refs.add_service_input.value
-      if(service == ""){
+      if(service === ""){
         alert("Must enter additional service!!");
         return;
       }
@@ -222,8 +229,8 @@ export default {
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:2})
         .then(response => {
-          alert("Addition service is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added service!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -234,15 +241,15 @@ export default {
     addEquipment: function (){
 
       let enteredEquipment = this.$refs.equip_input.value
-      if(enteredEquipment == "" || enteredEquipment == null){
+      if(enteredEquipment === "" || enteredEquipment == null){
         alert('Must enter equipment!')
         return;
       }
       console.log(enteredEquipment)
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/equipment/addFishingEquipment", {equipment:enteredEquipment,adventureId:2,boatId : -1})
         .then(response => {
-          alert("Addition of equipment is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added equipment!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -255,8 +262,8 @@ export default {
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rules/deleteRule/"+id)
         .then(response => {
           console.log(id);
-          alert("Removing rule is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed rule!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -264,8 +271,8 @@ export default {
     },removeEquipment:function (id){
        axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/equipment/deleteFishingEquipment/"+id)
         .then(response => {
-          alert("Removing equipment is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed equipment!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -274,8 +281,8 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/deleteAdditionalService/"+id)
         .then(response => {
-          alert("Removing additionalService is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed additional service!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -284,8 +291,8 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/images/deleteImage/"+id)
         .then(response => {
-          alert("Removing image is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed image!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -309,7 +316,8 @@ export default {
 
       axios.put(process.env.VUE_APP_SERVER_PORT+"/api/adventures/updateAdventure",this.info)
         .then(response => {
-          alert("Update is succeddfull!")
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated adventure!</p>`)
+          location.reload();
         }).catch(function error(error) {
         alert(error.response.data);
       });

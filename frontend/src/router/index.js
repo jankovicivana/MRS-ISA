@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueCarousel from 'vue-carousel';
 import Router from 'vue-router'
+import VueNotification from "vue-notification";
 import AdventureProfile from "../components/AdventureProfile";
 import AddAdventure from "../components/AddAdventure";
 import CottageProfile from "../components/CottageProfile";
@@ -23,9 +24,11 @@ import BrowseAdventures from "../components/BrowseAdventures";
 
 import ReservationHistory from "../components/ReservationHistory";
 import InstructorAvailability from "../components/InstructorAvailability";
+import LoginPage from "../components/LoginPage";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
+Vue.use(VueNotification)
 
 export default new Router({
   routes: [
@@ -121,6 +124,11 @@ export default new Router({
       path: '/adventures',
       name: "BrowseAdventures",
       component: BrowseAdventures
+    },
+    {
+      path: '/login',
+      name: "LoginPage",
+      component: LoginPage
     }
   ]
 })

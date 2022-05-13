@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <BoatOwnerNavbar></BoatOwnerNavbar>
   <section class="add_boat vh-80">
     <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
       <div class="container h-100" >
@@ -188,13 +190,16 @@
       </div>
     </div>
   </section>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 
 export default {
   name: "AddBoat",
+  components: {BoatOwnerNavbar},
   data: function (){
     return{
       imagesUrls: [],
@@ -206,6 +211,12 @@ export default {
     }
   },
   methods:{
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfully added!</p>`
+      let text = `<p style="font-size: 20px">Successfully added boat!</p>`
+      this.$notify({group, title, text, type})
+    },
+
     onFileSelected: function (event){
       this.selectedFile = event.target.files[0];
     },
@@ -360,7 +371,8 @@ export default {
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/boats/addBoat",this.info)
         .then(response => {
-          alert("Addition is successfull!")
+          this.show('foo-css', 'success')
+          setTimeout(() => {location.reload(); }, 3000)
         }).catch(function error(error) {
         alert(error.response.data);
       });

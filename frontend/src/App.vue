@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <main>
+      <notifications group="foo-css" position="bottom right" width="400px" :speed="500" />
       <MyNavbar></MyNavbar>
       <router-view></router-view>
     </main>
@@ -11,7 +12,8 @@
 import MyNavbar from "./components/MyNavbar";
 export default {
   name: 'app',
-  components: {MyNavbar}
+  components: {MyNavbar},
+
 }
 </script>
 
@@ -84,7 +86,7 @@ export default {
 }
 
 .adventure_profile{
-  background: white;
+  background: #ecd9c6;
   border: 4px solid white;
   border-radius: 2%;
 }
