@@ -17,4 +17,5 @@ public class ReservationDTO {
     private Double price;
     private Integer personNum;
     private AdventureDTO adventure;
+    private CottageDTO cottage;
 }

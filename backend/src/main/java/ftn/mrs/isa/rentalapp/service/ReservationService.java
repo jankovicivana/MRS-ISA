@@ -17,4 +17,10 @@ public class ReservationService {
 
     public List<Reservation> findAllHistoryByUser(Integer id) {return reservationRepository.findAllHistoryByUser(LocalDateTime.now(),id); }
 
+    public List<Reservation> findAllHistoryByCottageOwner(Integer id) {return reservationRepository.findAllHistoryByCottageOwner(LocalDateTime.now(),id); }
+
+    public List<Reservation> findAllUpcomingByCottageOwner(Integer id) {return reservationRepository.findAllUpcomingByCottageOwner(LocalDateTime.now(),id); }
+
+    public List<Reservation> findAllCurrentByCottageOwner(Integer id) {return reservationRepository.findAllCurrentByCottageOwner(LocalDateTime.now(),id); }
+
 }

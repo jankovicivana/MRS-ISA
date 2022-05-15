@@ -20,4 +20,12 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
     @Query(value = "SELECT * FROM public.reservations inner join public.adventures   ON  reservations.entity = adventures.id WHERE end_date_time < :startDate and adventures.fishing_instructor_id = :id  ", nativeQuery = true)
     public List<Reservation> findAllHistoryByUser(@Param("startDate") LocalDateTime startDate, @Param("id") Integer id);
 
+    @Query(value = "SELECT * FROM public.reservations inner join public.cottages   ON  reservations.entity = cottages.id WHERE end_date_time < :startDate and cottages.cottage_owner_id = :id  ", nativeQuery = true)
+    public List<Reservation> findAllHistoryByCottageOwner(@Param("startDate") LocalDateTime startDate, @Param("id") Integer id);
+
+    @Query(value = "SELECT * FROM public.reservations inner join public.cottages   ON  reservations.entity = cottages.id WHERE start_date_time > :startDate and cottages.cottage_owner_id = :id  ", nativeQuery = true)
+    public List<Reservation> findAllUpcomingByCottageOwner(@Param("startDate") LocalDateTime startDate, @Param("id") Integer id);
+
+    @Query(value = "SELECT * FROM public.reservations inner join public.cottages   ON  reservations.entity = cottages.id WHERE start_date_time < :startDate and end_date_time > :startDate and cottages.cottage_owner_id = :id  ", nativeQuery = true)
+    public List<Reservation> findAllCurrentByCottageOwner(@Param("startDate") LocalDateTime startDate, @Param("id") Integer id);
 }
