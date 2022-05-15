@@ -23,6 +23,7 @@ import BrowseAdventures from "../components/BrowseAdventures";
 
 import ReservationHistory from "../components/ReservationHistory";
 import InstructorAvailability from "../components/InstructorAvailability";
+import AdminViewInstructor from "../components/AdminViewInstructor";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -95,6 +96,11 @@ export default new Router({
       path: '/admin/viewClients',
       name:'AdminViewClients',
       component: AdminViewClients
+
+    },{
+      path: '/admin/viewInstructors',
+      name:'AdminViewInstructor',
+      component: AdminViewInstructor
 
     },
     {

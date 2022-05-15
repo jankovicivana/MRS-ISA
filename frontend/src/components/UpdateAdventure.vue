@@ -309,7 +309,7 @@ export default {
 
       axios.put(process.env.VUE_APP_SERVER_PORT+"/api/adventures/updateAdventure",this.info)
         .then(response => {
-          alert("Update is succeddfull!")
+          alert("Update is successfull!")
         }).catch(function error(error) {
         alert(error.response.data);
       });

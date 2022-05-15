@@ -24,6 +24,9 @@
                       </tr>
                       </thead>
                       <tbody>
+                        <tr style="background: #ecd9c6"  v-if="clients.length == 0">
+                          <td colspan="5" class="p-3">Trenutno nema korisnika.</td>
+                        </tr>
                         <tr style="background: #ecd9c6" v-for="client in clients">
                           <td>{{client.name}}</td>
                           <td>{{client.surname}}</td>
