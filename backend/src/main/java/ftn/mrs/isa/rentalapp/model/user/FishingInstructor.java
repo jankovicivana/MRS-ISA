@@ -17,7 +17,7 @@ public class FishingInstructor extends Advertiser{
     public FishingInstructor() {
     }
 
-    @OneToMany(mappedBy = "fishingInstructor", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "fishingInstructor", fetch = FetchType.EAGER)
     private Set<Adventure> adventures = new HashSet<Adventure>();
 
     @Column(name = "biography", nullable = false)

@@ -12,6 +12,7 @@ import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.service.AdditionalServiceService;
 import ftn.mrs.isa.rentalapp.service.AvailablePeriodService;
 import ftn.mrs.isa.rentalapp.service.FishingInstructorService;
+import ftn.mrs.isa.rentalapp.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,6 +64,29 @@ public class FishingInstructorController {
     @PostMapping(value = "/addAvailablePeriod" )
     public void updateInstructor(@RequestBody AvailablePeriodDTO availablePeriod) {
         availablePeriodService.add(mapper.map(availablePeriod,AvailablePeriod.class));
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Integer id){
+        FishingInstructor client = fishingInstructorService.findOne(id);
+        if(client == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!fishingInstructorService.canDeleteInstructor(client)){
+            return new ResponseEntity<>("Instructor has reservations.Deletion is not possible.",HttpStatus.OK);
+        }
+        fishingInstructorService.deleteInstructor(client);
+        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<List<FishingInstructorDTO>> getAllInstructors(){
+        List<FishingInstructor> instructors = fishingInstructorService.findAll();
+        List<FishingInstructorDTO> instructorsDTO = new ArrayList<>();
+        for(FishingInstructor c : instructors){
+            instructorsDTO.add(mapper.map(c,FishingInstructorDTO.class));
+        }
+        return new ResponseEntity<>(instructorsDTO, HttpStatus.OK);
     }
 
 }

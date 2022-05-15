@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AdventureService {
@@ -53,4 +54,7 @@ public class AdventureService {
     }
 
 
+    public void saveAll(Set<Adventure> adventures) {
+        adventureRepository.saveAll(adventures);
+    }
 }
