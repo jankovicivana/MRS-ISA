@@ -1,6 +1,8 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
 import ftn.mrs.isa.rentalapp.model.entity.Boat;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "boatOwners")
 public class BoatOwner extends Advertiser{
 
@@ -17,7 +21,7 @@ public class BoatOwner extends Advertiser{
     }
 
 
-    @OneToMany(mappedBy = "boatOwner", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "boatOwner", fetch = FetchType.EAGER)
     private Set<Boat> boats = new HashSet<Boat>();
 
 }

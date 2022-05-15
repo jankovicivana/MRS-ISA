@@ -27,4 +27,12 @@ public class ReservationService {
     public void saveAll(List<Reservation> reservations) {
         reservationRepository.saveAll(reservations);
     }
+
+    public List<Reservation> getFutureReservationByBoatOwner(Integer id) {
+        return reservationRepository.getFutureReservationByBoatOwner(LocalDateTime.now(),id);
+    }
+
+    public List<Reservation> getReservationByBoatOwner(Integer id) {
+        return reservationRepository.getReservationByBoatOwner(id);
+    }
 }

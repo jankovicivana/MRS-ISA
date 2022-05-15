@@ -25,4 +25,10 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
 
     @Query(value = "SELECT * FROM public.reservations inner join public.adventures   ON  reservations.entity = adventures.id WHERE  adventures.fishing_instructor_id = :id  ", nativeQuery = true)
     public List<Reservation> getReservationByFishingInstructor( @Param("id") Integer id);
+
+    @Query(value = "SELECT * FROM public.reservations inner join public.boats   ON  reservations.entity = boats.id WHERE  start_date_time > :startDate and boats.boat_owner = :id  ", nativeQuery = true)
+    List<Reservation> getFutureReservationByBoatOwner(@Param("startDate") LocalDateTime startDate, @Param("id") Integer id);
+
+    @Query(value = "SELECT * FROM public.reservations inner join public.boats   ON  reservations.entity = boats.id WHERE  boats.boat_owner = :id  ", nativeQuery = true)
+    List<Reservation> getReservationByBoatOwner(@Param("id") Integer id);
 }
