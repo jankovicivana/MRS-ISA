@@ -27,8 +27,8 @@ import AdminViewInstructor from "../components/AdminViewInstructor";
 import AdminViewBoatOwners from "../components/AdminViewBoatOwners";
 import UpcomingReservations from "../components/UpcomingReservations";
 import CurrentReservations from "../components/CurrentReservations";
-import Report from "../components/Report";
 import ClientSubscriptions from "../components/ClientSubscriptions";
+import Reservations from "../components/Reservations";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -148,15 +148,16 @@ export default new Router({
       name: "CurrentReservations",
       component: CurrentReservations
     },
-    {
-      path: '/createReport',
-      name: "CreateReport",
-      component: Report
-    },
+
     {
       path: '/client/subscriptions',
       name: "ClientSubscriptions",
       component: ClientSubscriptions
+    },
+    {
+      path: '/client/reservations',
+      name: "Reservations",
+      component: Reservations
     }
   ]
 })
