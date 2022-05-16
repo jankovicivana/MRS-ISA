@@ -3,28 +3,12 @@
     <ClientNavbar></ClientNavbar>
     <div class="mt-5 container">
       <h1>My subscriptions</h1>
-      <div class="columns">
-        <div class="column col-3">
-          <select v-model="selected">
-            <option value="Cottages">Cottages</option>
-            <option value="Boats">Boats</option>
-            <option value="Adventures">Adventures</option>
-          </select>
-        </div>
 
-      </div>
       <div v-if="subscriptions.length === 0">
         <p style="color: white"> No subscriptions for now. Subscribe to entities to receive info about special offers.</p>
       </div>
       <div v-for="s in subscriptions">
-        <card class="media shadow p-4" style="background-color: white">
-          <figure class="media-left">
-            <p class="image">
-              <a href="/#" >
-                <img class="image" :src="require('../assets/images/cottage1.jpg')" alt="Image"/>
-              </a>
-            </p>
-          </figure>
+        <card class="media p-4 mb-4 browse-card" style="background-color: white">
           <div class="media-content">
             <div class="content">
               <div>
@@ -42,7 +26,7 @@
               <div class="columns">
                 <div class="column is-flex is-justify-content-flex-end is-align-items-right">
                   <div class="column is-justify-content-flex-end is-flex  col-2">
-                    <button class="button search_button is-link"  v-on:click="unsubscribe()">Unsubscribe</button>
+                    <button class="button unsub_btn is-link" id="unsub" v-on:click="unsubscribe(s)">Unsubscribe</button>
                   </div>
                 </div>
               </div>
@@ -63,19 +47,24 @@ export default {
   data: function(){
     return{
       subscriptions: '',
-      selected: ''
+      selected: '',
     }
   },
   mounted: function(){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/subscription/findByUser/2")
-      .then(response => (this.subscriptions = response.data)).catch(function error(error) {
-      alert(error.response.data);
-    })
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/sub/findByUser/2")
+      .then(response => (this.subscriptions = response.data))
   },
   methods: {
-    unsubscribe: function () {
-
+    unsubscribe: function (s) {
+      let id = s.id;
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/sub/delete/"+id)
+        .then(response => {
+          const index = this.subscriptions.indexOf(s);
+          this.subscriptions.splice(index, 1);
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
     }
   }
 }
@@ -100,16 +89,43 @@ export default {
 
 h1{
   color: white;
+  padding-bottom: 30px;
 }
 
-.unsub_button{
-  background-color: #2e6b6b;
+#unsub{
+  float: right;
+  height: 30px;
+  width: 170px;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  background-color: cadetblue;
+  cursor: pointer;
+  text-transform: uppercase
+}
+
+#unsub:hover {
+  background: darkcyan;
   color: white;
 }
 
-.unsub_button:hover{
-  background-color: #4AAE9B;
+#unsub:focus {
+  background: darkcyan;
+  box-shadow: none
 }
 
+#unsub:active {
+  background: darkcyan;
+  box-shadow: none
+}
+
+
+.browse-card{
+  transition: transform .2s;
+}
+
+.browse-card:hover{
+  transform: scale(1.07);
+}
 
 </style>

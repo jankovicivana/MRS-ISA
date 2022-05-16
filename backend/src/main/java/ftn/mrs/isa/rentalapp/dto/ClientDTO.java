@@ -1,7 +1,15 @@
 package ftn.mrs.isa.rentalapp.dto;
 
+import ftn.mrs.isa.rentalapp.model.entity.Subscription;
+import ftn.mrs.isa.rentalapp.model.system_info.Email;
+import ftn.mrs.isa.rentalapp.model.user.AccountDeleteRequest;
+import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.Client;
+import ftn.mrs.isa.rentalapp.model.user.UserType;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class ClientDTO {
@@ -16,36 +24,15 @@ public class ClientDTO {
 
     private String surname;
 
+    private AddressDTO address;
+
     private String phoneNumber;
 
-    private String country;
+    private UserType type = UserType.CLIENT;
 
-    private String city;
-
-    private String street;
-
-    private Integer postalCode;
+    private String mainPhoto;
 
     private Integer points;
 
     private Integer penalties;
-
-    public ClientDTO(){}
-
-    public ClientDTO(Client client){
-        this.id = client.getId();
-        this.email = client.getEmail();
-        this.password = client.getPassword();
-        this.name = client.getName();
-        this.surname = client.getSurname();
-        this.phoneNumber = client.getPhoneNumber();
-        this.country = client.getAddress().getCountry();
-        this.city = client.getAddress().getCity();
-        this.street = client.getAddress().getStreet();
-        this.postalCode = client.getAddress().getPostalCode();
-        this.penalties = client.getPenalties();
-        this.points = client.getPoints();
-
-    }
-
 }
