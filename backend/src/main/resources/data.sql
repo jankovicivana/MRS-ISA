@@ -47,8 +47,17 @@ values (5,'20220615','20220522 10:00:00 AM',false,10,180,'20220610',1,null,170,f
 insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted) values (3,'pera@gmail.com','Pera','pera123','06245564','Peric',1,null,1,0,0,'Ovo bi trebao da je biografija instruktora.','pera2.jpg',false);
 
 insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted) values (nextval('my_seqv2'),'Ovakav adrenalin se samo kod nas moze dozivjeti.Ludi ste ako nas ne posjetite.','Fenomenalna avantura','200',1,3,10,0,false);
-insert into reservations(id,start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-                        (1,'20210522 10:00:00 AM','20210525 10:00:00 AM',false,2,200,20,60,5,false,5);
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+                        ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,2,200,20,60,5,false,5);
+
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+    ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,1,200,20,60,5,false,5);
+
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+    ('20220522 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,60,5,false,5);
+
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+    ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,60,5,false,5);
 
 insert into images (path,entity,is_main_photo) values ('pic1.jpg',2,false);
 insert into images (path,entity,is_main_photo) values ('pic2.jpg',2,false);

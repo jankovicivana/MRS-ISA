@@ -5,6 +5,7 @@ import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,4 +36,10 @@ public class ReservationService {
     public List<Reservation> getReservationByBoatOwner(Integer id) {
         return reservationRepository.getReservationByBoatOwner(id);
     }
+    public List<Reservation> findAllHistoryByCottageOwner(Integer id) {return reservationRepository.findAllHistoryByCottageOwner(LocalDateTime.now(),id); }
+
+    public List<Reservation> findAllUpcomingByCottageOwner(Integer id) {return reservationRepository.findAllUpcomingByCottageOwner(LocalDateTime.now(),id); }
+
+    public List<Reservation> findAllCurrentByCottageOwner(Integer id) {return reservationRepository.findAllCurrentByCottageOwner(LocalDateTime.now(),id); }
+
 }

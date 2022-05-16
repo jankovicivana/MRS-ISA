@@ -25,6 +25,9 @@ import ReservationHistory from "../components/ReservationHistory";
 import InstructorAvailability from "../components/InstructorAvailability";
 import AdminViewInstructor from "../components/AdminViewInstructor";
 import AdminViewBoatOwners from "../components/AdminViewBoatOwners";
+import UpcomingReservations from "../components/UpcomingReservations";
+import CurrentReservations from "../components/CurrentReservations";
+import Report from "../components/Report";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -133,6 +136,21 @@ export default new Router({
       path: '/adventures',
       name: "BrowseAdventures",
       component: BrowseAdventures
+    },
+    {
+      path: '/upcomingReservations',
+      name: "UpcomingReservations",
+      component: UpcomingReservations
+    },
+    {
+      path: '/currentReservations',
+      name: "CurrentReservations",
+      component: CurrentReservations
+    },
+    {
+      path: '/createReport',
+      name: "CreateReport",
+      component: Report
     }
   ]
 })

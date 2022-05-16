@@ -9,7 +9,7 @@
               <div class="card " style="border-radius: 15px; background: #ecd9c6;  height: 100% ">
                 <div class="card-body p-5">
 
-                  <h1 class="title">Reservation history</h1>
+                  <h1 class="title">Current reservation</h1>
                   <hr />
                   <div>
                     <table class="table">
@@ -22,7 +22,7 @@
                         <th>End date</th>
                         <th>No. of people</th>
                         <th>Price</th>
-                        <th>Report</th>
+                        <th>Reservation</th>
 
                       </tr>
                       </thead>
@@ -35,7 +35,7 @@
                         <td class="d-flex justify-content-center">{{reservation.personNum}}</td>
                         <td>{{reservation.price}}</td>
 
-                        <td><button v-on:click="createReport(reservation)" style="background: #2e6b6b; border-radius: 8px;color: #FFFFFF; border-color: #FFFFFF">Create report</button></td>
+                        <td><button v-on:click="createReport(reservation)" style="background: #2e6b6b; border-radius: 8px;color: #FFFFFF; border-color: #FFFFFF">Add reservation</button></td>
                       </tr>
                       </tbody>
 
@@ -56,7 +56,7 @@
 import axios from "axios";
 
 export default {
-  name: "ReservationHistory",
+  name: "CurrentReservations",
   data(){
 
     return{
@@ -66,7 +66,7 @@ export default {
   },
   mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByCottageOwner/"+this.id)
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findCurrentByCottageOwner/"+this.id)
       .then(response => (
         this.reservations = response.data
       ))

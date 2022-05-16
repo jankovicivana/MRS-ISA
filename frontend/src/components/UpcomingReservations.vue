@@ -9,20 +9,18 @@
               <div class="card " style="border-radius: 15px; background: #ecd9c6;  height: 100% ">
                 <div class="card-body p-5">
 
-                  <h1 class="title">Reservation history</h1>
+                  <h1 class="title">Upcoming reservations</h1>
                   <hr />
                   <div>
                     <table class="table">
                       <thead>
                       <tr style="background: #ecd9c6">
-                        <th v-if="id===1">Cottage</th>
-
+                        <th>Cottage</th>
                         <th>Client</th>
                         <th>Start date</th>
                         <th>End date</th>
                         <th>No. of people</th>
                         <th>Price</th>
-                        <th>Report</th>
 
                       </tr>
                       </thead>
@@ -34,8 +32,6 @@
                         <td>{{reservation.endDateTime[2]+"."+reservation.endDateTime[1]+"."+reservation.endDateTime[0]+"."}}</td>
                         <td class="d-flex justify-content-center">{{reservation.personNum}}</td>
                         <td>{{reservation.price}}</td>
-
-                        <td><button v-on:click="createReport(reservation)" style="background: #2e6b6b; border-radius: 8px;color: #FFFFFF; border-color: #FFFFFF">Create report</button></td>
                       </tr>
                       </tbody>
 
@@ -56,17 +52,17 @@
 import axios from "axios";
 
 export default {
-  name: "ReservationHistory",
+  name: "UpcomingReservations",
   data(){
 
     return{
       reservations: '',
-      id: 1
     }
   },
   mounted:function (){
+
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByCottageOwner/"+this.id)
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findUpcomingByCottageOwner/1")
       .then(response => (
         this.reservations = response.data
       ))

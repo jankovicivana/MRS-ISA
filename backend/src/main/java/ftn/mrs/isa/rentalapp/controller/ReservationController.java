@@ -2,10 +2,13 @@ package ftn.mrs.isa.rentalapp.controller;
 
 
 import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
+import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.ReservationDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
+import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.service.AdventureService;
+import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -34,6 +37,9 @@ public class ReservationController {
     @Autowired
     private AdventureService adventureService;
 
+    @Autowired
+    private CottageService cottageService;
+
     @GetMapping(value = "/findHistoryByUser/{id}")
     public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByUser(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllHistoryByUser(id);
@@ -43,6 +49,46 @@ public class ReservationController {
             ReservationDTO rt = mapper.map(c, ReservationDTO.class);
             Adventure a = adventureService.findOne(c.getEntity().getId());
             rt.setAdventure(mapper.map(a, AdventureDTO.class));
+            reservationsDTO.add(rt);
+        }
+        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findHistoryByCottageOwner/{id}")
+    public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByCottageOwner(@PathVariable Integer id){
+        List<Reservation> reservations = reservationService.findAllHistoryByCottageOwner(id);
+        System.out.print("------>"+reservations.size());
+        List<ReservationDTO> reservationsDTO = new ArrayList<>();
+        for(Reservation c : reservations){
+            ReservationDTO rt = mapper.map(c, ReservationDTO.class);
+            Cottage cottage = cottageService.findOne(c.getEntity().getId());
+            rt.setCottage(mapper.map(cottage, CottageDTO.class));
+            reservationsDTO.add(rt);
+        }
+        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findUpcomingByCottageOwner/{id}")
+    public ResponseEntity<List<ReservationDTO>> getAllUpcomingReservationByCottageOwner(@PathVariable Integer id){
+        List<Reservation> reservations = reservationService.findAllUpcomingByCottageOwner(id);
+        List<ReservationDTO> reservationsDTO = new ArrayList<>();
+        for(Reservation c : reservations){
+            ReservationDTO rt = mapper.map(c, ReservationDTO.class);
+            Cottage cottage = cottageService.findOne(c.getEntity().getId());
+            rt.setCottage(mapper.map(cottage, CottageDTO.class));
+            reservationsDTO.add(rt);
+        }
+        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findCurrentByCottageOwner/{id}")
+    public ResponseEntity<List<ReservationDTO>> getAllCurrentReservationByCottageOwner(@PathVariable Integer id){
+        List<Reservation> reservations = reservationService.findAllCurrentByCottageOwner(id);
+        List<ReservationDTO> reservationsDTO = new ArrayList<>();
+        for(Reservation c : reservations){
+            ReservationDTO rt = mapper.map(c, ReservationDTO.class);
+            Cottage cottage = cottageService.findOne(c.getEntity().getId());
+            rt.setCottage(mapper.map(cottage, CottageDTO.class));
             reservationsDTO.add(rt);
         }
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
