@@ -37,6 +37,9 @@ public class ClientService {
     public void updateClient(Client client){
         clientRepository.save(client);
     }
+    public void save(Client client){clientRepository.save(client);}
+
+
 
     public boolean canDeleteClient(Client client) {
         List<Reservation> l = reservationsRepository.getReservationByClient(LocalDate.now(), client.getId());

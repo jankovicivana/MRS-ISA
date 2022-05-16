@@ -56,7 +56,7 @@ export default new Router({
       name:'AddCottage',
       component: AddCottage
     },{
-      path: '/client/ClientProfile',
+      path: '/client/ClientProfile/:id',
       name:'ClientProfile',
       component: ClientProfile
     },{
@@ -72,7 +72,7 @@ export default new Router({
       name:'FishingInstructorProfile',
       component: FishingInstructorProfile
     },{
-      path: '/fishingInstructor/ReservationHistory',
+      path: '/ReservationHistory',
       name:'ReservationHistory',
       component: ReservationHistory
     },{
@@ -149,7 +149,7 @@ export default new Router({
       component: CurrentReservations
     },
     {
-      path: '/createReport',
+      path: '/createReport/:id',
       name: "CreateReport",
       component: Report
     },

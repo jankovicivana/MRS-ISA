@@ -1,8 +1,13 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.ClientDTO;
+import ftn.mrs.isa.rentalapp.dto.ReportDTO;
+import ftn.mrs.isa.rentalapp.model.entity.Adventure;
+import ftn.mrs.isa.rentalapp.model.reservation.Report;
+import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
+import ftn.mrs.isa.rentalapp.model.user.Advertiser;
 import ftn.mrs.isa.rentalapp.model.user.Client;
-import ftn.mrs.isa.rentalapp.service.ClientService;
+import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/clients")
@@ -25,6 +31,18 @@ public class ClientController {
 
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private CottageOwnerService cottageOwnerService;
+
+    @Autowired
+    private BoatOwnerService boatOwnerService;
+
+    @Autowired
+    private FishingInstructorService fishingInstructorService;
+
+    @Autowired
+    private ReportService reportService;
+
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<ClientDTO>> getAllClients(){
@@ -67,6 +85,56 @@ public class ClientController {
         }
         clientService.deleteClient(client);
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/addPenalty/{id}")
+    public ResponseEntity<String> addPenalty(@PathVariable Integer id){
+        Client client = clientService.findOne(id);
+        if(client == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        client.setPenalties(client.getPenalties()+1);
+        clientService.save(client);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/createReport")
+    public ResponseEntity<String> createReport(@RequestBody ReportDTO reportDTO){
+        Client client = clientService.findOne(reportDTO.getClientId());
+        Advertiser advertiser = cottageOwnerService.findOne(reportDTO.getAdvertiserId());
+        if(advertiser == null){
+            advertiser = boatOwnerService.findOne(reportDTO.getAdvertiserId());
+        }
+        if(advertiser == null){
+            advertiser = fishingInstructorService.findOne(reportDTO.getAdvertiserId());
+        }
+        if(advertiser == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(client == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Report r = new Report();
+        r.setClient(client);
+        r.setAdvertiser(advertiser);
+        if(!reportDTO.getDidShowUp()){
+            r.setClientShowedUp(false);
+            r.setPenaltyStatus(RequestStatus.ACCEPTED);
+            client.setPenalties(client.getPenalties()+1);
+            clientService.save(client);
+        }else {
+            r.setReportString(reportDTO.getReportString());
+            r.setClientShowedUp(true);
+            if(reportDTO.getSanction()){
+                r.setPenaltyStatus(RequestStatus.ON_HOLD);
+            }else{
+                r.setPenaltyStatus(RequestStatus.REJECTED);
+            }
+        }
+
+        reportService.save(r);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /*@GetMapping(value = "/subscriptions/{id}")
