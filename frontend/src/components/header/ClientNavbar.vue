@@ -13,7 +13,7 @@
 
           <a class="navbar-item" href="#/client/clientHomepage">Special offers </a>
 
-          <a class="navbar-item" href="#/client/clientHomepage">Subscriptions </a>
+          <a class="navbar-item" href="#/client/subscriptions">Subscriptions </a>
 
           <a class="navbar-item" href="#/client/clientHomepage">Reviews </a>
 

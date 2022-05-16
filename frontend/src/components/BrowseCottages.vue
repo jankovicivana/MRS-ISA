@@ -4,8 +4,6 @@
     <div class="mt-5 container">
       <h1>Cottages</h1>
       <hr style="color: #2e6b6b"/>
-      <div>
-        <div>
           <div class="columns is-multiline mb-5 is-vcentered">
             <div class="column is-2">
               <input
@@ -38,7 +36,6 @@
               <button class="button search_button is-link"  v-on:click="search()">Search</button>
             </div>
           </div>
-        </div>
         <div v-if="cottages.length === 0">
           <p style="color: white"> No cottages for now.</p>
         </div>
@@ -46,7 +43,6 @@
           <browse_card :cottage="c"></browse_card>
         </div>
       </div>
-    </div>
     <div style="height: 150px"></div>
   </div>
 </template>

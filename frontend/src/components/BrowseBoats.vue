@@ -4,7 +4,6 @@
     <div class="mt-5 container">
       <h1>Boats</h1>
       <hr style="color: #2e6b6b"/>
-      <div>
         <div>
           <div class="columns is-multiline mb-5 is-vcentered">
             <div class="column is-2">
@@ -32,13 +31,10 @@
               </div>
             </div>
 
-
-
             <div class="column is-flex is-justify-content-flex-end is-1">
               <button class="button search_button is-link"  v-on:click="search()">Search</button>
             </div>
           </div>
-        </div>
         <div v-if="boats.length === 0">
           <p style="color: white"> No boats for now.</p>
         </div>

@@ -1,6 +1,7 @@
 package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.dto.ClientDTO;
+import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.Client;
@@ -8,6 +9,8 @@ import ftn.mrs.isa.rentalapp.repository.AddressRepository;
 import ftn.mrs.isa.rentalapp.repository.ClientRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,18 +34,7 @@ public class ClientService {
 
     public Client findByEmail(String string) {return clientRepository.findByEmail(string);}
 
-    public void updateClient(ClientDTO clientDTO){
-        Client client = clientRepository.findById(clientDTO.getId()).orElse(null);
-        // if null vrati gresku
-        client.setName(clientDTO.getName());
-        client.setSurname(clientDTO.getSurname());
-        client.setPassword(clientDTO.getPassword());
-        Address a = client.getAddress();
-        a.setCountry(clientDTO.getCountry());
-        a.setCity(clientDTO.getCity());
-        a.setStreet(clientDTO.getStreet());
-        a.setPostalCode(clientDTO.getPostalCode());
-        addressRepository.save(a);
+    public void updateClient(Client client){
         clientRepository.save(client);
     }
 

@@ -43,7 +43,7 @@ public class Client extends User{
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private Set<Report> reports = new HashSet<Report>();
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Subscription> subscriptions = new HashSet<Subscription>();
 
     @Column(name = "points", nullable = false)

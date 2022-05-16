@@ -137,3 +137,8 @@ values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On
 insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
                    power, type, boat_owner)
 values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Ivana',250,2,3,20,5,25,250,600,0,4);
+
+insert into subscriptions (id, client, entity) values (1, 2, 1);
+insert into subscriptions (id, client, entity) values (2, 2, 2);
+insert into subscriptions (id, client, entity) values (3, 2, 3);
+insert into subscriptions (id, client, entity) values (4, 2, 4);

@@ -1,6 +1,6 @@
 <template>
   <div class="my-4 stretch-width browse-card">
-    <article class="media shadow p-4" style="background-color: white">
+    <card class="media shadow p-4" style="background-color: white">
       <figure class="media-left">
         <p class="image">
           <a href="/#" >
@@ -39,7 +39,7 @@
           </div>
         </div>
       </div>
-    </article>
+    </card>
   </div>
 </template>
 
