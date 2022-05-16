@@ -31,6 +31,8 @@ public class ClientService {
 
     public Client findByEmail(String string) {return clientRepository.findByEmail(string);}
 
+    public void save(Client client){clientRepository.save(client);}
+
     public void updateClient(ClientDTO clientDTO){
         Client client = clientRepository.findById(clientDTO.getId()).orElse(null);
         // if null vrati gresku

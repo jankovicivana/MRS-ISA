@@ -29,7 +29,7 @@
                       <tbody>
                       <tr style="background: #ecd9c6;" v-for="reservation in reservations">
                         <td>{{reservation.cottage.name}}</td>
-                        <td>{{reservation.client.surname + " "+ reservation.client.name}}</td>
+                        <td><router-link :to="{ name: 'ClientProfile',params:{id:'5'} }" >{{reservation.client.surname + " "+ reservation.client.name}}</router-link></td>
                         <td>{{reservation.startDateTime[2]+"."+reservation.startDateTime[1]+"."+reservation.startDateTime[0]+"."}}</td>
                         <td>{{reservation.endDateTime[2]+"."+reservation.endDateTime[1]+"."+reservation.endDateTime[0]+"."}}</td>
                         <td class="d-flex justify-content-center">{{reservation.personNum}}</td>
@@ -63,8 +63,8 @@ export default {
       reservations: '',
       id: 1
     }
-  },
-  mounted:function (){
+  }
+  ,mounted:function (){
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByCottageOwner/"+this.id)
       .then(response => (
@@ -75,7 +75,8 @@ export default {
   },
   methods:{
     createReport:function (reservation){
-
+      console.log(reservation.client.id)
+      this.$router.push({path:"/createReport/"+reservation.client.id});
     }
 
   }

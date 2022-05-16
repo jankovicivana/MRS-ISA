@@ -117,8 +117,10 @@ export default {
     }
   },
   mounted: function (){
+    var clientId = this.$route.params.id;
+    console.log(this.$route)
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/2")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/"+clientId)
       .then(response => (this.client = response.data))
 
   },

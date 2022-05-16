@@ -18,7 +18,7 @@ public class Report {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "reportString", nullable = false)
+    @Column(name = "reportString")
     private String reportString;
 
     @Column(name = "penaltyStatus", nullable = false)

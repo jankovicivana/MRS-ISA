@@ -62,10 +62,39 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Report",
-  methods:{
+  data: function (){
+    return{
+      clientId: ''
+    }
+  }
+  ,methods:{
     createReport:function(){
+      this.clientId = this.$route.params.id;
+      console.log(this.clientId)
+
+      this.info = {
+        clientId: this.clientId,
+        advertiserId: 1,
+        reportString: this.$refs.comment_input.value,
+        didShowUp: document.getElementById('flexRadioDefault1').checked,
+        sanction : document.getElementById('flexCheckDefault').checked
+      }
+
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/clients/createReport/",this.info)
+        .then(response => {
+          alert("Report is sent!")
+          this.$router.push({path:"/ReservationHistory"});
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
+
+
+
+
     },
     toggleSanction:function (){
       document.getElementById('comment_input').disabled = false;
