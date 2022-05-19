@@ -147,7 +147,8 @@ export default {
       const sumFuncy = async (a,b) => a+b;
 
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1")
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.cottage = response.data,this.quick=this.cottage.quickReservations,this.num_rooms=response.data.rooms.length,response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})))
 
     },methods: {

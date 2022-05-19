@@ -134,3 +134,4 @@ insert into role (name) values ('ROLE_fishingInstructor');
 insert into user_role (user_id, role_id) values (2, 1);
 insert into user_role (user_id, role_id) values (5, 1);
 insert into user_role (user_id, role_id) values (1, 3);
+insert into user_role (user_id, role_id) values (4, 4);

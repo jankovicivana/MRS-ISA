@@ -26,6 +26,8 @@ public class CottageService {
 
     public List<Cottage> findAll(){return cottageRepository.findAll();}
 
+    public List<Cottage> findAllByOwnerEmail(String email){return cottageRepository.findAllByOwnerEmail(email);}
+
     public Cottage findOne(Integer id){return cottageRepository.findById(id).orElse(null);}
 
     public void save(Cottage cottage){cottageRepository.save(cottage);}

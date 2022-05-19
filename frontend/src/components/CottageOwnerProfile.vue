@@ -80,7 +80,8 @@ export default {
   },
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottageOwner/1")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottageOwner/getCottageOwner", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.cottage_owner = response.data,this.address = this.cottage_owner.address)).catch(function error(error) {
       alert(error.response.data);
     });

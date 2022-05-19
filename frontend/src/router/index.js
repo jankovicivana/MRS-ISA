@@ -26,6 +26,8 @@ import BrowseAdventures from "../components/BrowseAdventures";
 import ReservationHistory from "../components/ReservationHistory";
 import InstructorAvailability from "../components/InstructorAvailability";
 import LoginPage from "../components/LoginPage";
+import HomepageCottageOwner from "../components/HomepageCottageOwner";
+import HomepageBoatOwner from "../components/HomepageBoatOwner";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -131,6 +133,16 @@ export default new Router({
       path: '/login',
       name: "LoginPage",
       component: LoginPage
+    },
+    {
+      path: '/cottageOwner/cottageOwnerHomepage',
+      name: 'HomepageCottageOwner',
+      component: HomepageCottageOwner
+    },
+    {
+      path: '/boatOwner/boatOwnerHomepage',
+      name: 'HomepageBoatOwner',
+      component: HomepageBoatOwner
     }
   ]
 })

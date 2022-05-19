@@ -135,7 +135,8 @@ export default {
   components: {CottageOwnerNavbar},
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.cottage = response.data,this.address = this.cottage.address))
 
   },data: function (){
