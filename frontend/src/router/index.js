@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueCarousel from 'vue-carousel';
 import Router from 'vue-router'
 import VueNotification from "vue-notification";
+import StarRating from "vue-star-rating";
 import AdventureProfile from "../components/AdventureProfile";
 import AddAdventure from "../components/AddAdventure";
 import CottageProfile from "../components/CottageProfile";
@@ -29,6 +30,7 @@ import LoginPage from "../components/LoginPage";
 Vue.use(Router)
 Vue.use(VueCarousel)
 Vue.use(VueNotification)
+Vue.use(StarRating)
 
 export default new Router({
   routes: [

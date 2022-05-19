@@ -8,9 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.google.gson.Gson;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +36,11 @@ public class ClientController {
         return new ResponseEntity<>(clientsDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ClientDTO> getClient(@PathVariable Integer id){
-        Client client = clientService.findOne(id);
+    @GetMapping(value = "/getClient")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<ClientDTO> getClient(Principal principal){
+        String mail = principal.getName();
+        Client client = clientService.findByEmail(mail);
         if(client == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -45,6 +48,7 @@ public class ClientController {
     }
 
     @PostMapping(value = "/updateClient" )
+    @PreAuthorize("hasRole('client')")
     public void updateClient(@RequestBody ClientDTO clientDTO) {
         // ***
         clientDTO.setId(2);

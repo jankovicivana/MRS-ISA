@@ -299,5 +299,10 @@ html {
   font-size: 11px
 }
 
+nav{
+  position: sticky;
+  top: 0;
+}
+
 
 </style>

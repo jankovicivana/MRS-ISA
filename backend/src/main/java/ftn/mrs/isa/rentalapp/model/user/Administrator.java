@@ -24,5 +24,4 @@ public class Administrator extends User{
     @Column(name = "isPredefined", nullable = false)
     private Boolean isPredefined;
 
-
 }

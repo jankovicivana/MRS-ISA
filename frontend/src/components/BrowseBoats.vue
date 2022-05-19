@@ -6,31 +6,26 @@
       <hr style="color: #2e6b6b"/>
       <div>
         <div>
-          <div class="columns is-multiline mb-5 is-vcentered">
-            <div class="column is-2">
-              <input
-                class="input is-link"
-                type="text"
-                placeholder="Search anything!"
-                v-model="searchText"
-              />
+          <div class="columns mb-6">
+            <div class="column col-2">
+              <input class="input is-link" type="text" placeholder="Browse boats" v-model="searchText"/>
             </div>
-
-            <div class="column is-3">
+            <div class="column col-3">
               <div class="select">
                 <select title="Sorting" v-model="searchSort">
                   <option selected="selected" value="NO_SORT" >No sorting</option>
                   <option value="PRICE_ASC">Price: Ascending</option>
-                  <option value="PRICE_DES">Price: Descending</option>
+                  <option value="PRICE_DESC">Price: Descending</option>
                   <option value="RATING_ASC">Rating: Ascending</option>
-                  <option value="RATING_DES">Rating: Descending</option>
+                  <option value="RATING_DESC">Rating: Descending</option>
                   <option value="NAME_ASC">Name: Ascending</option>
-                  <option value="NAME_DES">Name: Descending</option>
-                  <option value="ADDR_ASC">Address: Ascending</option>
-                  <option value="ADDR_DES">Address: Descending</option>
+                  <option value="NAME_DESC">Name: Descending</option>
+                  <option value="ADDRESS_ASC">Address: Ascending</option>
+                  <option value="ADDRESS_DESC">Address: Descending</option>
                 </select>
               </div>
             </div>
+
 
 
 
@@ -96,7 +91,7 @@ export default {
             return 0;
           })
         }
-        else if(this.searchSort === "NAME_DES"){
+        else if(this.searchSort === "NAME_DESC"){
           this.search_boats = this.search_boats.sort((a, b) => {
             let aName = a.name.toLowerCase();
             let bName = b.name.toLowerCase();
@@ -123,7 +118,7 @@ export default {
           })
         }
 
-        else if(this.searchSort === "PRICE_DES"){
+        else if(this.searchSort === "PRICE_DESC"){
           this.search_boats = this.search_boats.sort((a, b) => {
 
             if(a.price < b.price){
@@ -149,7 +144,7 @@ export default {
           })
         }
 
-        else if(this.searchSort === "RATING_DES"){
+        else if(this.searchSort === "RATING_DESC"){
           this.search_boats = this.search_boats.sort((a, b) => {
 
             if(a.rating < b.rating){
@@ -162,7 +157,7 @@ export default {
           })
         }
 
-        else if (this.searchSort === "ADDR_ASC"){
+        else if (this.searchSort === "ADDRESS_ASC"){
           this.search_boats = this.search_boats.sort((a, b) => {
             let aAddress = a.address.street.toLowerCase();
             let bAddress = b.address.street.toLowerCase();
@@ -175,7 +170,7 @@ export default {
             return 0;
           })
         }
-        else if(this.searchSort === "ADDR_DES"){
+        else if(this.searchSort === "ADDRESS_DESC"){
           this.search_boats = this.search_boats.sort((a, b) => {
             let aAddress = a.address.street.toLowerCase();
             let bAddress = b.address.street.toLowerCase();

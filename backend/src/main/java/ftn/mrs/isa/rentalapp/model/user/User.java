@@ -1,23 +1,24 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
-import ftn.mrs.isa.rentalapp.model.entity.Image;
 import ftn.mrs.isa.rentalapp.model.system_info.Email;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "users")
 @Inheritance(strategy=TABLE_PER_CLASS)
-
-public abstract class User {
+public class User implements UserDetails {
 
     public User() {
     }
@@ -39,6 +40,8 @@ public abstract class User {
     @Column(name = "deleted")
     private boolean deleted = false;
 
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @Column(name = "surname", nullable = false)
     protected String surname;
@@ -50,9 +53,17 @@ public abstract class User {
     @Column(name = "phoneNumber", nullable = false)
     protected String phoneNumber;
 
-    @Column(name = "type", nullable = false)
-    protected UserType type;
+    @Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles = new ArrayList<>();
+
+    @Column(name = "type", nullable = false)
+    protected String type;
 
     @Column(name = "mainPhoto", nullable = true)
     protected String mainPhoto;
@@ -63,4 +74,34 @@ public abstract class User {
 
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     protected Set<Email> emails = new HashSet<Email>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

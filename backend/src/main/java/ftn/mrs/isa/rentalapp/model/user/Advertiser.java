@@ -16,7 +16,6 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @Getter
 @Setter
 @Entity
-@Inheritance(strategy=TABLE_PER_CLASS)
 public abstract class Advertiser extends User{
 
     public Advertiser() {

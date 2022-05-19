@@ -118,7 +118,8 @@ export default {
   },
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/2")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/getClient", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.client = response.data))
 
   },

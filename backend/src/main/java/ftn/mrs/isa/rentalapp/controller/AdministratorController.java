@@ -32,7 +32,7 @@ public class AdministratorController {
     @PostMapping("/addAdministrator")
     public ResponseEntity<AdministratorDTO> addAdventure(@RequestBody AdministratorCreateDTO administratorCreateDTO) {
         Administrator admin = mapper.map(administratorCreateDTO,Administrator.class);
-        admin.setType(UserType.ADMINISTRATOR);
+        admin.setType(String.valueOf(UserType.ADMINISTRATOR));
         administratorService.save(admin);
         return new ResponseEntity<>(mapper.map(admin, AdministratorDTO.class), HttpStatus.CREATED);
 
