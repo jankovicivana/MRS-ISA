@@ -369,7 +369,8 @@ export default {
         navigationEquipment: this.nav_equipment
       };
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/boats/addBoat",this.info)
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/boats/addBoat",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
           setTimeout(() => {location.reload(); }, 3000)

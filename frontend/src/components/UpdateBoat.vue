@@ -217,7 +217,8 @@ export default {
   components: {BoatOwnerNavbar},
   mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.boat = response.data,this.address = this.boat.address,this.boat_type = this.boat.type))
 
 
@@ -408,7 +409,8 @@ export default {
         images: this.boat.images
       };
 
-      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/boats/updateBoat",this.info)
+      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/boats/updateBoat",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated boat!</p>`)
           setTimeout(() => {location.reload(); }, 1500)

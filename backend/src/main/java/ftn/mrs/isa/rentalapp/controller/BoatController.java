@@ -2,7 +2,6 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.BoatCreateDTO;
 import ftn.mrs.isa.rentalapp.dto.BoatDTO;
-import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.service.*;
@@ -11,9 +10,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -56,8 +57,22 @@ public class BoatController {
         return new ResponseEntity<>(boatsDTO, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/allByOwner")
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<List<BoatDTO>> getAllBoatsByOwner(Principal principal){
+        List<Boat> boats = boatService.findAllByOwnerEmail(principal.getName());
+
+        List<BoatDTO> boatsDTO = new ArrayList<>();
+        for (Boat b : boats){
+            boatsDTO.add(mapper.map(b, BoatDTO.class));
+        }
+
+        return new ResponseEntity<>(boatsDTO, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BoatDTO> getBoat(@PathVariable Integer id){
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<BoatDTO> getBoat(@PathVariable Integer id,Principal principal){
         Boat boat = boatService.findOne(id);
         if(boat == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,7 +83,8 @@ public class BoatController {
     }
 
     @PostMapping("/addBoat")
-    public ResponseEntity<BoatDTO> addBoat(@RequestBody BoatCreateDTO boatCreateDTO) throws IOException {
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<BoatDTO> addBoat(@RequestBody BoatCreateDTO boatCreateDTO,Principal principal) throws IOException {
         Boat boat = mapper.map(boatCreateDTO,Boat.class);
         boat.setAddress(new Address(boatCreateDTO.getStreet(),boatCreateDTO.getCity(),boatCreateDTO.getPostal_code(),boatCreateDTO.getCountry()));
         boat.setType(BoatType.getTypeFromString(boatCreateDTO.getType()));
@@ -100,7 +116,8 @@ public class BoatController {
     }
 
     @PutMapping("/updateBoat")
-    public ResponseEntity<BoatDTO> updateBoat(@RequestBody BoatDTO boatDTO){
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<BoatDTO> updateBoat(@RequestBody BoatDTO boatDTO,Principal principal){
         Boat boat = boatService.findOne(boatDTO.getId());
         if(boat == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -121,7 +138,8 @@ public class BoatController {
     }
 
     @DeleteMapping(value = "/deleteBoat/{id}")
-    public ResponseEntity<String> deleteBoat(@PathVariable Integer id){
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<String> deleteBoat(@PathVariable Integer id,Principal principal){
         Boat boat = boatService.findOne(id);
         if(boat == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

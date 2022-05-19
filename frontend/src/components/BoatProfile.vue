@@ -162,7 +162,8 @@ export default {
   mounted:function (){
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.boat = response.data,this.quick=this.boat.quickReservations))
 
   },
@@ -180,7 +181,8 @@ export default {
     },
     deleteBoat:function (){
       let id = this.boat.id
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/boats/deleteBoat/"+id)
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/boats/deleteBoat/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
         }).catch(function error(error) {

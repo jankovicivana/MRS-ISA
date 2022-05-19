@@ -7,7 +7,7 @@
     <div class="navbar-menu">
       <div class="navbar-start">
 
-        <a class="navbar-item" href="#/client/clientHomepage">Home </a>
+        <a class="navbar-item" href="#/boatOwner/boatOwnerHomepage">Home </a>
 
         <a class="navbar-item" href="#/">My profile</a>
 
