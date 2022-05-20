@@ -1,5 +1,5 @@
 <template>
-  <div class="my-4 stretch-width browse-card">
+  <div class="my-4 browse-card">
     <card class="media shadow p-4" style="background-color: white">
       <figure class="media-left">
         <p class="image">
@@ -12,26 +12,31 @@
         <div class="content">
           <div>
             <p>
-              <strong><a href="/#"  style="color: #2e6b6b">{{cottage.name}}</a> </strong>
-              <span class="mr-1 m-lg-4" style="font-size:20px; color:gold">&starf; &starf; &starf; &starf; &starf;</span>
-              <br /><br />
+              <span class="columns mt-0 mb-1">
+                <span class="col-10 ml-3">
+                  <strong><a href="#/cottages/CottageProfile"  style="color: #2e6b6b; font-size: 20px">{{cottage.name}}</a> </strong>
+                </span>
+                <span class="col-2">
+                  <star-rating :rating="3.8" :read-only="true" :increment="0.01" :star-size="20" :size="200"></star-rating>
+                </span>
+              </span>
 
+              <b><font-awesome-icon icon="fa-map-marker"/> {{cottage.address.street}}, {{cottage.address.city}}, {{cottage.address.country}}</b>
+              <br /> <br />
               {{cottage.description}}
             </p>
-
             <div>
-              <strong><font-awesome-icon icon="fa-map-marker"/> {{cottage.address.street}}, {{cottage.address.city}}, {{cottage.address.country}}</strong>
               <h4>$ <span>{{cottage.price}}</span></h4>
             </div>
           </div>
-          <div class="columns is-vcentered">
+          <div class="columns">
             <div class="column">
               <span class="tag m-lg-1" style="background-color: #2e6b6b; color: white" v-for="as in cottage.additionalServices.slice(0, 5)"><font-awesome-icon class="small-icon m-1" icon="fa-solid fa-check-circle" /> {{as.name}}</span>
             </div>
             <div
               class="column is-flex is-justify-content-flex-end is-align-items-right">
               <div class="buttons ml-5">
-                <a class="button is-success" href="#/cottages/CottageProfile" style="background-color: #2e6b6b">
+                <a class="button view_button is-success" href="#/cottages/CottageProfile" style="background-color: #2e6b6b">
                   View
                 </a>
               </div>
@@ -54,6 +59,7 @@ export default {
 
 .browse-card{
   transition: transform .2s;
+  width: 100%;
 }
 
 .browse-card:hover{
@@ -65,8 +71,17 @@ export default {
   width: 250px;
 }
 
-.stretch-width {
-  width: 100% !important;
+.view_button{
+  background-color: #2e6b6b;
+  color: white;
+}
+
+.view_button:hover{
+  background-color: #4AAE9B;
+}
+
+a{
+  text-decoration: none;
 }
 
 </style>

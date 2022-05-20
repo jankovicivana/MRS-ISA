@@ -1,5 +1,9 @@
 <template>
+  <div>
+    <CottageOwnerNavbar></CottageOwnerNavbar>
+
   <section id = "client_profile" class="profile_main py-lg-3">
+
     <div  class="row py-5 px-auto">
       <div class="col-md-8 mx-auto">
         <div class="bg-white shadow rounded overflow-hidden">
@@ -7,13 +11,10 @@
             <div class="media align-items-end profile-head">
               <div class="profile mr-3"><img :src="require('../assets/images/'+cottage_owner.mainPhoto)" alt="..." width="250" class="rounded mb-2 img-thumbnail">
               </div>
-              <div class="pb-4">
-                <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{ this.cottage_owner.name }}</span> <span>{{ this.cottage_owner.surname }}</span></h4>
-                <a href="#" class="btn flow delete-btn">Delete profile</a>
-              </div>
-              <div class="media-body mb-5 text-white">
-
-              </div>
+            </div>
+            <div class="pb-4 pt-4">
+              <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{ this.cottage_owner.name }}</span> <span>{{ this.cottage_owner.surname }}</span></h4>
+              <a href="#" class="btn flow delete-btn">Delete profile</a>
             </div>
           </div>
 
@@ -57,15 +58,17 @@
       </div>
     </div>
   </section>
-
+  </div>
 
 </template>
 
 <script>
 import axios from "axios";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 
 export default {
   name: "CottageOwnerProfile",
+  components: {CottageOwnerNavbar},
   data: function(){
     return{
       cottage_owner: '',
@@ -77,13 +80,19 @@ export default {
   },
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottageOwner/1")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottageOwner/getCottageOwner", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.cottage_owner = response.data,this.address = this.cottage_owner.address)).catch(function error(error) {
       alert(error.response.data);
     });
 
   },
   methods: {
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfull edit</p>`
+      let text = `<p style="font-size: 20px">Successfully edited data!</p>`
+      this.$notify({group, title, text, type})
+    },
 
     editClient: function() {
       this.inputs = document.querySelectorAll('input[type="text"]');
@@ -101,7 +110,7 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVER_PORT+"/api/cottageOwner/updateCottageOwner", c)
           .then(response => {
-            alert("Update is successfull!")
+            this.show('foo-css', 'success')
           })
 
       }

@@ -1,5 +1,6 @@
 <template>
   <section class="vh-80 update_adventure ">
+    <fishing-instructor-navbar></fishing-instructor-navbar>
     <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
       <div class="container h-100" >
         <div class="row d-flex justify-content-center align-items-center h-100" >
@@ -20,7 +21,7 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label" for="price_input"><font-awesome-icon icon="fa-solid fa-dollar-sign"/>  Price:</label>
-                    <input type="number" id="price_input" ref="price_input" class="form-control form-control-lg" min="0.01" required/>
+                    <input type="number" id="price_input" ref="price_input" class="form-control form-control-lg" min="0" required/>
                   </div>
 
 
@@ -141,9 +142,11 @@
 
 <script>
 import axios from "axios";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "AddAdventure",
+  components: {FishingInstructorNavbar},
   data: function (){
     return{
       imagesUrls: [],
@@ -154,6 +157,11 @@ export default {
     }
   },
   methods:{
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfully added!</p>`
+      let text = `<p style="font-size: 20px">Successfully added adventure!</p>`
+      this.$notify({group, title, text, type})
+    },
     onFileSelected: function (event){
       this.selectedFile = event.target.files[0];
     },
@@ -170,7 +178,7 @@ export default {
 
       }
 
-      if(img == ""){
+      if(img === ""){
         alert("Must choose file!");
         return;
       }
@@ -184,7 +192,7 @@ export default {
     },
     addRule: function (){
       let rule = this.$refs.rule_input.value;
-      if(rule == ""){
+      if(rule === ""){
         alert("Must enter rule!");
         return;
       }
@@ -199,7 +207,7 @@ export default {
     },
     addEquipment: function (){
       let equip = this.$refs.equip_input.value
-      if(equip == ""){
+      if(equip === ""){
         alert("Must enter equipment!");
         return;
       }
@@ -215,7 +223,7 @@ export default {
 
     addService: function (){
       let service = this.$refs.add_service_input.value;
-      if(service == ""){
+      if(service === ""){
         alert("Must enter additional service!!");
         return;
       }
@@ -281,9 +289,11 @@ export default {
         fishingEquipment: this.equipment
       };
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/adventures/addAdventure",this.info)
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/adventures/addAdventure",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          alert("Addition is successfull!")
+          this.show('foo-css', 'success')
+          setTimeout(() => {location.reload(); }, 3000)
         }).catch(function error(error) {
         alert(error.response.data);
       });

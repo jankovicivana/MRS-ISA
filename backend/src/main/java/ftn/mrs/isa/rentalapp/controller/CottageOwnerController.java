@@ -12,7 +12,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +28,10 @@ public class CottageOwnerController {
     @Autowired
     private ModelMapper mapper;
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<CottageOwnerDTO> getInstructor(@PathVariable Integer id){
-        CottageOwner cottageOwner = cottageOwnerService.findOne(id);
+    @GetMapping(value = "/getCottageOwner")
+    @PreAuthorize("hasRole('cottageOwner')")
+    public ResponseEntity<CottageOwnerDTO> getCottageOwner(Principal principal){
+        CottageOwner cottageOwner = cottageOwnerService.findByEmail(principal.getName());
         if(cottageOwner == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -37,6 +41,7 @@ public class CottageOwnerController {
 
 
     @PostMapping(value = "/updateCottageOwner" )
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<CottageOwnerDTO> updateCottageOwner(@RequestBody CottageOwnerDTO cottageOwnerDTO) {
         CottageOwner cottageOwner = cottageOwnerService.findOne(cottageOwnerDTO.getId());
         if(cottageOwner == null){

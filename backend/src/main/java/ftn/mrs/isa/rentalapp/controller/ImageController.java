@@ -15,12 +15,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.Principal;
 import java.util.Base64;
 
 @RestController
@@ -44,7 +46,8 @@ public class ImageController {
     private ModelMapper mapper;
 
     @PostMapping("/addImage")
-    public ResponseEntity<ImageDTO> addImage(@RequestBody ImageDTO imageDTO) throws IOException {
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<ImageDTO> addImage(@RequestBody ImageDTO imageDTO, Principal principal) throws IOException {
         if(imageDTO.getEntityId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -83,7 +86,8 @@ public class ImageController {
     }
 
     @DeleteMapping(value = "/deleteImage/{id}")
-    public  ResponseEntity<Void> deleteImage(@PathVariable Integer id){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public  ResponseEntity<Void> deleteImage(@PathVariable Integer id,Principal principal){
         Image image = imageService.findOne(id);
 
         if(image != null){

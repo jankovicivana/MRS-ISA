@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueCarousel from 'vue-carousel';
 import Router from 'vue-router'
+import VueNotification from "vue-notification";
+import StarRating from "vue-star-rating";
 import AdventureProfile from "../components/AdventureProfile";
 import AddAdventure from "../components/AddAdventure";
 import CottageProfile from "../components/CottageProfile";
@@ -29,9 +31,15 @@ import UpcomingReservations from "../components/UpcomingReservations";
 import CurrentReservations from "../components/CurrentReservations";
 import Report from "../components/Report";
 import ClientSubscriptions from "../components/ClientSubscriptions";
+import LoginPage from "../components/LoginPage";
+import HomepageCottageOwner from "../components/HomepageCottageOwner";
+import HomepageBoatOwner from "../components/HomepageBoatOwner";
+import FishingInstructorHomepage from "../components/FishingInstructorHomepage";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
+Vue.use(VueNotification)
+Vue.use(StarRating)
 
 export default new Router({
   routes: [
@@ -90,7 +98,7 @@ export default new Router({
       name:'BoatProfile',
       component: BoatProfile
     },{
-      path: '/administrator/AddAdministrator',
+      path: '/admin/AddAdministrator',
       name:'AddAdministrator',
       component: AddAdministrator
     },{
@@ -117,6 +125,11 @@ export default new Router({
       path: '/client/clientHomepage',
       name: 'ClientHomepage',
       component: ClientHomepage
+    },
+    {
+      path: '/fishingInstructor/instructorHomepage',
+      name: 'FishingInstructorHomepage',
+      component: FishingInstructorHomepage
     },
     {
       path: '/boats/UpdateBoat',
@@ -157,6 +170,21 @@ export default new Router({
       path: '/client/subscriptions',
       name: "ClientSubscriptions",
       component: ClientSubscriptions
+    },
+    {
+      path: '/login',
+      name: "LoginPage",
+      component: LoginPage
+    },
+    {
+      path: '/cottageOwner/cottageOwnerHomepage',
+      name: 'HomepageCottageOwner',
+      component: HomepageCottageOwner
+    },
+    {
+      path: '/boatOwner/boatOwnerHomepage',
+      name: 'HomepageBoatOwner',
+      component: HomepageBoatOwner
     }
   ]
 })

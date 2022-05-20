@@ -7,6 +7,11 @@ export default {
   name: 'AddQuickReservation',
   props: ['id'],
   methods: {
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfully added!</p>`
+      let text = `<p style="font-size: 20px">Successfully added quick reservation!</p>`
+      this.$notify({group, title, text, type})
+    },
 
     addQuickReservation:function (){
       let idn = this.id;
@@ -39,7 +44,8 @@ export default {
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/addQuickReservation",this.info)
         .then(response => {
-          alert("Addition is successfull!")
+          this.show('foo-css', 'success')
+          setTimeout(() => {location.reload(); }, 3000)
           router.go(AdventureProfile)
 
         }).catch(function error(error) {
@@ -65,7 +71,7 @@ export default {
           <div class="container h-100" >
             <div class="row d-flex justify-content-center align-items-center h-100" >
               <div class="col-12 col-md-9 col-lg-7 col-xl-6" >
-                <div class="card" style="border-radius: 15px; background: #ecd9c6;   ">
+                <div class="card" style="border-radius: 15px; background: #ecd9c6; width:1200px ">
                   <div class="card-body p-5">
                     <h2 class="text-uppercase text-center mb-5" style=" color: #04414d; font-family: 'Bookman Old Style',serif;">Add new quick reservation</h2>
                     <form>

@@ -14,9 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.parser.Entity;
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +39,8 @@ public class EquipmentController {
 
 
     @PostMapping("/addFishingEquipment")
-    public ResponseEntity<FishingEquipmentDTO> addFishingEquipment(@RequestBody FishingEquipmentDTO fishingEquipmentDTO){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<FishingEquipmentDTO> addFishingEquipment(@RequestBody FishingEquipmentDTO fishingEquipmentDTO, Principal principal){
         System.out.print("idee");
         if(fishingEquipmentDTO.getAdventureId() == null && fishingEquipmentDTO.getBoatId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -65,7 +68,8 @@ public class EquipmentController {
     }
 
     @DeleteMapping(value = "/deleteFishingEquipment/{id}")
-    public  ResponseEntity<Void> deleteFishingEquipment(@PathVariable Integer id){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public  ResponseEntity<Void> deleteFishingEquipment(@PathVariable Integer id, Principal principal){
         FishingEquipment equip = equipmentService.findFishingEquipment(id);
 
         if(equip != null){

@@ -1,38 +1,22 @@
 <template>
   <div>
-    <section class="hero is-info is-large hero-main">
+    <section class="hero is-fullheight-with-navbar main_homepage">
       <div class="hero-body">
-        <div class="container has-text-centered">
+        <div class="container has-text-centered ml-4 pl-4">
           <h1 class="title">Welcome!</h1>
-          <p class="subtitle">Book your perfect holiday now.</p>
+          <p class="text">Book your perfect holiday now.</p>
         </div>
-      </div>
-
-      <div class="hero-foot">
-        <nav class="tabs is-boxed is-fullwidth justify-content-center">
-          <div class="container">
-            <ul>
-              <li class="is-active">
-                <a href="#">Overview</a>
-              </li>
-              <li>
-                <a href="#/boats">Boats</a>
-              </li>
-              <li>
-                <a href="#/cottages">Cottages</a>
-              </li>
-              <li>
-                <a href="#/adventures">Fishing Adventures</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
       </div>
     </section>
 
-    <div id="overview" class="container block mt-6 ml-6 align-items-center align-self-center">
-      <div class="content is-medium ml-6 has-text-centered " >
-        <h1>Explore nature</h1>
+    <div id="info" class="container block ml-6 mt-1 align-items-center align-self-center">
+      <div class="columns align-self-center is-flex justify-content-center pl-2 ml-6">
+        <a href="#cottages"> <img  class="image rounded" src="../assets/images/cabin.png" alt="pic1"/></a>
+        <a href="#adventures"><img class="image rounded" src="../assets/images/fishing.png" alt="pic1"/></a>
+        <a href="#boats"><img class="image rounded" src="../assets/images/ship.png" alt="pic1"/></a>
+      </div>
+      <div class="content ml-5 has-text-centered">
+        <h2>Explore nature</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan,
           metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum
@@ -41,16 +25,7 @@
         </p>
       </div>
       <div class="columns is-8 is-variable mt-6 ml-4">
-        <div class="column block content">
-          <h4>Lorem ipsum</h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan,
-            metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum
-            justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio,
-            sollicitudin vel erat vel, interdum mattis neque.
-          </p>
-        </div>
-        <div class="column block content">
+        <div class="column content has-text-centered">
           <h4>Lorem ipsum</h4>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan,
@@ -63,51 +38,48 @@
     </div>
 
     <div id="cottages" class="block p-6 mt-6 mb-3" style="background: aliceblue">
-      <div class="container content is-medium">
-        <h1>Cottages</h1>
-        <hr />
+      <div class="container ml-5 content align-items-center">
+        <h2>Cottages</h2>
         <br />
         <div class="columns">
           <div class="column" v-for="c in cottages">
-            <div class="card zoom col-3">
+            <div class="card col-3">
               <div class="card-image">
-                <img class="cottage-image" :src="require('../assets/images/cottage'+c.id+'.jpg')" />
+                <img class="card_image" alt="Image" :src="require('../assets/images/cottage'+c.id+'.jpg')" />
               </div>
 
-              <div class="content p-3">
+              <div class="p-3">
                 <h4>{{ c.name }}</h4>
-                <p>{{ c.address.street }}</p>
+                <p><font-awesome-icon icon="fa-map-marker"/> {{ c.address.street }}</p>
                 <p>{{ c.address.city}}</p>
-                <p>$<span>{{ c.price }}</span></p>
+                <p><b>$<span>{{ c.price }}</span></b></p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="has-text-centered mt-6">
-        <a href="#/cottages" class="button is-primary">View all</a>
+      <div class="has-text-centered mt-6 ml-0 content align-items-center">
+        <a href="#/cottages" class="button view_button is-primary">View more</a>
       </div>
     </div>
 
-
     <div id="boats" class="block p-6 mt-1 mb-3" style="background: aliceblue">
-      <div class="container content is-medium">
-        <h1>Boats</h1>
-        <hr />
+      <div class="container ml-5 content align-items-center">
+        <h2>Boats</h2>
         <br />
         <div class="columns">
           <div class="column" v-for="b in boats">
-            <div class="card zoom col-3">
+            <div class="card col-3">
               <div class="card-image">
-                <img class="cottage-image" :src="require('../assets/images/boat'+ (parseInt(b.id)-2).toString() +'.jpg')" />
+                <img class="card_image" alt="Image" :src="require('../assets/images/boat'+ (parseInt(b.id)-2).toString() +'.jpg')" />
               </div>
 
-              <div class="content p-3">
+              <div class="p-3">
                 <h4>{{ b.name }}</h4>
-                <p>{{ b.address.street }}</p>
+                <p><font-awesome-icon icon="fa-map-marker"/> {{ b.address.street }}</p>
                 <p>{{ b.address.city}}</p>
-                <p>$<span>{{ b.price }}</span></p>
+                <p><b>$<span>{{ b.price }}</span></b></p>
               </div>
             </div>
           </div>
@@ -115,27 +87,26 @@
       </div>
 
       <div class="has-text-centered mt-6">
-        <a href="#/boats" class="button is-primary">View all</a>
+        <a href="#/boats" class="button view_button is-primary">View more</a>
       </div>
     </div>
 
     <div id="adventures" class="block p-6 mt-1 mb-6" style="background: aliceblue">
-      <div class="container content is-medium">
-        <h1>Adventures</h1>
-        <hr />
+      <div class="container ml-5 content align-items-center">
+        <h2>Adventures</h2>
+
         <br />
         <div class="columns">
           <div class="column" v-for="a in adventures">
-            <div class="card zoom col-3">
+            <div class="card col-3">
               <div class="card-image">
-                <img class="cottage-image" :src="require('../assets/images/pic1.jpg')" />
+                <img class="card_image" alt="Image" :src="require('../assets/images/pic1.jpg')" />
               </div>
-
-              <div class="content p-3">
+              <div class="p-3">
                 <h4>{{ a.name }}</h4>
-                <p>{{ a.address.street }}</p>
+                <p><font-awesome-icon icon="fa-map-marker"/> {{ a.address.street }}</p>
                 <p>{{ a.address.city}}</p>
-                <p>$<span>{{ a.price }}</span></p>
+                <p><b>$<span>{{ a.price }}</span></b></p>
               </div>
             </div>
           </div>
@@ -143,7 +114,7 @@
       </div>
 
       <div class="has-text-centered mt-6">
-        <a href="#/adventures" class="button is-primary">View all</a>
+        <a href="#/adventures" class="button view_button is-primary">View more</a>
       </div>
     </div>
 
@@ -180,35 +151,27 @@ export default {
 </script>
 
 <style scoped>
-.hero-main {
-  background:
-    url("../assets/images/back2.jpg");
+.main_homepage {
+  background-attachment: fixed;
+  background-image: url('../assets/images/back2.jpg');
+  background-position-y: 0;
+  background-repeat: no-repeat;
   background-size: cover;
-}
-
-.title {
-  font-size: 3rem;
-}
-
-.subtitle {
-  font-size: 2rem;
-}
-
-* {
-  margin: 0;
-
+  height: 50%;
+  opacity: 1;
+  top: 0;
+  transition: opacity 0.3s linear 0s;
+  width: 100%;
   box-sizing: border-box;
 }
 
-body {
-  font-family: Century Gothic, sans-serif;
+
+* {
+  margin: 0;
+  box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-.cottage-image {
+.card_image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -221,6 +184,52 @@ html {
 .card {
   cursor: pointer;
   width: 300px;
+  transition: transform .2s;
+}
+
+.card:hover{
+  transform: scale(1.08);
+}
+
+a{
+  text-decoration: none;
+  color: white;
+}
+
+h1{
+  color: white;
+  font-size: xxx-large;
+  font-weight: bold;
+}
+
+.text{
+  color: white;
+  font-size: xx-large;
+}
+
+.view_button{
+  background-color: #4AAE9B;
+  color: white;
+}
+
+.view_button:hover{
+  background-color: #2e6b6b;
+}
+
+h2 {
+  text-align: center;
+}
+
+.image{
+  height: 170px;
+  width: 170px;
+  padding: 50px;
+  transition: transform .3s;
+
+}
+
+.image:hover{
+  transform: scale(1.4);
 }
 
 </style>

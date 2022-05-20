@@ -1,7 +1,9 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
 
-public enum UserType {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum UserType{
     FISHING_INSTRUCTOR,
     COTTAGE_OWNER,
     BOAT_OWNER,
@@ -12,34 +14,33 @@ public enum UserType {
 
         switch(type) {
             case FISHING_INSTRUCTOR:
-                return "Fishing Instructor";
+                return "fishingInstructor";
             case COTTAGE_OWNER:
-                return "Cottage Owner";
+                return "cottageOwner";
             case BOAT_OWNER:
-                return "Boat Owner";
+                return "boatOwner";
             case CLIENT:
-                return "Client";
+                return "client";
             case ADMINISTRATOR:
-                return "Administrator";
+                return "admin";
             default:
-                return "Unknown";
+                return "unknown";
         }
     }
 
     public static UserType getTypeFromString(String type) {
         switch(type) {
-            case "Fishing Instructor" :
+            case "fishingInstructor" :
                 return FISHING_INSTRUCTOR;
-            case "Cottage Owner":
+            case "cottageOwner":
                 return COTTAGE_OWNER;
-            case"Boat Owner" :
+            case"boatOwner" :
                 return BOAT_OWNER;
-            case "Administrator":
+            case "admin":
                 return ADMINISTRATOR;
             default:
                 return CLIENT;
         }
     }
-
 
 }

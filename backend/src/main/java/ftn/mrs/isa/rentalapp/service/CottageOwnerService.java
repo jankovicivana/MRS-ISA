@@ -13,6 +13,8 @@ public class CottageOwnerService {
 
     public CottageOwner findOne(Integer id){return cottageOwnerRepository.findById(id).orElse(null);}
 
+    public CottageOwner findByEmail(String email){return  cottageOwnerRepository.findByEmail(email);}
+
     public void updateCottageOwner(CottageOwner cottageOwner){
         cottageOwnerRepository.save(cottageOwner);
     }

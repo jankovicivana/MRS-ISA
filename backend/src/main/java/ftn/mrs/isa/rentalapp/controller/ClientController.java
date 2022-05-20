@@ -13,9 +13,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.google.gson.Gson;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,18 +46,23 @@ public class ClientController {
 
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<ClientDTO>> getAllClients(){
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<List<ClientDTO>> getAllClients(Principal principal){
         List<Client> clients = clientService.findAll();
         List<ClientDTO> clientsDTO = new ArrayList<>();
         for(Client c : clients){
+            if (!c.isDeleted()){
             clientsDTO.add(mapper.map(c, ClientDTO.class));
+            }
         }
         return new ResponseEntity<>(clientsDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ClientDTO> getClient(@PathVariable Integer id){
-        Client client = clientService.findOne(id);
+    @GetMapping(value = "/getClient")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<ClientDTO> getClient(Principal principal){
+        String mail = principal.getName();
+        Client client = clientService.findByEmail(mail);
         if(client == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -64,7 +70,8 @@ public class ClientController {
     }
 
     @PostMapping(value = "/updateClient" )
-    public ResponseEntity<ClientDTO> updateClient(ClientDTO clientDTO){
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<ClientDTO> updateClient(@RequestBody ClientDTO clientDTO){
         Client client = clientService.findOne(clientDTO.getId());
         if(client == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -75,7 +82,8 @@ public class ClientController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id){
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> delete(@PathVariable Integer id,Principal principal){
         Client client = clientService.findOne(id);
         if(client == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

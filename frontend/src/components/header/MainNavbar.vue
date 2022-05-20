@@ -6,12 +6,12 @@
     </div>
     <div class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item" href="/#">Home </a>
-        <a class="navbar-item" href="/#">Special offers </a>
+        <a class="navbar-item" href="#/">Home </a>
+        <a class="navbar-item" href="#/">Special offers </a>
       </div>
     </div>
-    <a href="">Register</a>
-    <a href="#/" class="px-3 mr-1" >Log in</a>
+    <a href="#/">Register</a>
+    <a href="#/login" class="px-3 mr-1" >Log in</a>
   </nav>
 </template>
 

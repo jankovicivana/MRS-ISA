@@ -8,19 +8,21 @@ import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@popperjs/core';
 import { library } from '@fortawesome/fontawesome-svg-core'
-
+import "vue-notification";
+import "vue-star-rating";
 
 /* import specific icons */
-import { faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faStar,faFish,faDollarSign,faPen,faCamera,faHome,faBed,faMapMarker } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faStar,faFish,faDollarSign,faPen,faCamera,faHome,faBed,faMapMarker,faUser,faDoorOpen,faAnchor,faSailboat } from '@fortawesome/free-solid-svg-icons'
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* add icons to the library */
-library.add(faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faStar,faFish,faDollarSign,faPen,faCamera,faHome,faBed,faMapMarker)
+library.add(faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faStar,faFish,faDollarSign,faPen,faCamera,faHome,faBed,faMapMarker,faUser,faDoorOpen,faAnchor,faSailboat)
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('star-rating', require("vue-star-rating").default);
 
 Vue.config.productionTip = false
 

@@ -9,9 +9,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +53,6 @@ public class CottageController {
     private ModelMapper mapper;
 
 
-
     @GetMapping(value = "/all")
     public ResponseEntity<List<CottageDTO>> getAllCottages(){
         List<Cottage> cottages = cottageService.findAll();
@@ -64,8 +65,21 @@ public class CottageController {
         return new ResponseEntity<>(cottagesDTO, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/allByOwner")
+    @PreAuthorize("hasRole('cottageOwner')")
+    public ResponseEntity<List<CottageDTO>> getAllCottagesByOwnerId(Principal principal){
+        List<Cottage> cottages = cottageService.findAllByOwnerEmail(principal.getName());
+        List<CottageDTO> cottagesDTO = new ArrayList<>();
+        for (Cottage c : cottages){
+            cottagesDTO.add(mapper.map(c,CottageDTO.class));
+        }
+
+        return new ResponseEntity<>(cottagesDTO, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CottageDTO> getCottage(@PathVariable Integer id){
+    @PreAuthorize("hasRole('cottageOwner')")
+    public ResponseEntity<CottageDTO> getCottage(@PathVariable Integer id,Principal principal){
         System.out.println(id);
         Cottage cottage = cottageService.findOne(id);
         if(cottage == null){
@@ -76,6 +90,7 @@ public class CottageController {
     }
 
     @PostMapping("/addCottage")
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<CottageDTO> addCottage(@RequestBody CottageCreateDTO cottageCreateDTO) throws IOException {
         Cottage cottage = new Cottage();
         cottage.setName(cottageCreateDTO.getName());
@@ -105,6 +120,7 @@ public class CottageController {
     }
 
     @PutMapping("/updateCottage")
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<CottageDTO> updateCottage(@RequestBody CottageDTO cottageDTO) throws IOException {
         Cottage cottage = cottageService.findOne(cottageDTO.getId());
 
@@ -126,6 +142,7 @@ public class CottageController {
     }
 
     @DeleteMapping(value = "/deleteCottage/{id}")
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<String> deleteCottage(@PathVariable Integer id){
         Cottage cottage = cottageService.findOne(id);
         if(cottage == null){

@@ -14,7 +14,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +40,8 @@ public class AdditionalServiceController {
     private ModelMapper mapper;
 
     @PostMapping("/addAdditionalService")
-    public ResponseEntity<AdditionalServiceDTO> addRule(@RequestBody AdditionalServiceDTO additionalServiceDTO){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<AdditionalServiceDTO> addRule(@RequestBody AdditionalServiceDTO additionalServiceDTO, Principal principal){
         if ( additionalServiceDTO.getEntityId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -61,7 +65,8 @@ public class AdditionalServiceController {
     }
 
     @DeleteMapping(value = "/deleteAdditionalService/{id}")
-    public  ResponseEntity<Void> deleteAdditionalService(@PathVariable Integer id){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public  ResponseEntity<Void> deleteAdditionalService(@PathVariable Integer id, Principal principal){
         AdditionalService additionalService = additionalServiceService.findOne(id);
 
         if(additionalService != null){

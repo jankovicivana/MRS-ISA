@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <BoatOwnerNavbar></BoatOwnerNavbar>
   <section class="add_boat vh-80">
     <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
       <div class="container h-100" >
@@ -203,16 +205,20 @@
       </div>
     </div>
   </section>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 
 export default {
   name: "UpdateBoat",
+  components: {BoatOwnerNavbar},
   mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.boat = response.data,this.address = this.boat.address,this.boat_type = this.boat.type))
 
 
@@ -228,12 +234,15 @@ export default {
     }
   },
   methods:{
+    show: function(group, type='', title, text){
+      this.$notify({group, title, text, type})
+    },
     onFileSelected: function (event){
       this.selectedFile = event.target.files[0];
     },
     addImage: function (){
       let img = this.$refs.image_input.value
-      if(img == ""){
+      if(img === ""){
         alert("Must choose file!");
         return;
       }
@@ -245,8 +254,8 @@ export default {
       picturePath.onload = e => {
         axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:file.name,entityId:3})
           .then(response => {
-            alert("Addition image is successfull!")
-            location.reload();
+            this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added image!</p>`)
+            setTimeout(() => {location.reload(); }, 1500)
           }).catch(function error(error) {
           alert(error.response.data);
         });
@@ -257,14 +266,14 @@ export default {
     },
     addRule: function (){
       let ruleText = this.$refs.rule_input.value
-      if(ruleText == ""){
+      if(ruleText === ""){
         alert("Must enter rule!");
         return;
       }
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:3})
         .then(response => {
-          alert("Addition rule is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added rule!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -274,7 +283,7 @@ export default {
     },
     addService: function (){
       let service = this.$refs.add_service_input.value
-      if(service == ""){
+      if(service === ""){
         alert("Must enter additional service!!");
         return;
       }
@@ -282,8 +291,8 @@ export default {
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:3})
         .then(response => {
-          alert("Addition service is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added service!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -294,15 +303,15 @@ export default {
     addEquipment: function (){
 
       let enteredEquipment = this.$refs.equip_input.value
-      if(enteredEquipment == "" || enteredEquipment == null){
+      if(enteredEquipment === "" || enteredEquipment == null){
         alert('Must enter equipment!')
         return;
       }
       console.log(enteredEquipment)
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/equipment/addFishingEquipment", {equipment:enteredEquipment,adventureId:-1,boatId : 3})
         .then(response => {
-          alert("Addition of equipment is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added equipment!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -319,8 +328,8 @@ export default {
       console.log(enteredEquipment)
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/navigationEquipment/addNavigationEquipment", {equipment:enteredEquipment,boatId : 3})
         .then(response => {
-          alert("Addition of equipment is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added equipment!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -333,8 +342,8 @@ export default {
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rules/deleteRule/"+id)
         .then(response => {
           console.log(id);
-          alert("Removing rule is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed rule!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -342,8 +351,8 @@ export default {
     },removeEquipment:function (id){
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/equipment/deleteFishingEquipment/"+id)
         .then(response => {
-          alert("Removing equipment is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed equipment!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -351,8 +360,8 @@ export default {
     },removeNavEquipment:function (id){
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/navigationEquipment/deleteNavigationEquipment/"+id)
         .then(response => {
-          alert("Removing equipment is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed equipment!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -361,8 +370,8 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/deleteAdditionalService/"+id)
         .then(response => {
-          alert("Removing additionalService is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed additional service!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -371,8 +380,8 @@ export default {
 
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/images/deleteImage/"+id)
         .then(response => {
-          alert("Removing image is successfull!")
-          location.reload();
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed image!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -400,9 +409,11 @@ export default {
         images: this.boat.images
       };
 
-      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/boats/updateBoat",this.info)
+      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/boats/updateBoat",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          alert("Update is succeddfull!")
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated boat!</p>`)
+          setTimeout(() => {location.reload(); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });

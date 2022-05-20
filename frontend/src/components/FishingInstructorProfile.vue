@@ -1,5 +1,8 @@
 <template>
+  <div>
+    <fishing-instructor-navbar></fishing-instructor-navbar>
   <section id = "client_profile" class="profile_main py-lg-3">
+
     <div  class="row py-5 px-auto">
       <div class="col-md-8 mx-auto">
         <div class="bg-white shadow rounded overflow-hidden">
@@ -57,15 +60,17 @@
       </div>
     </div>
   </section>
-
+  </div>
 
 </template>
 
 <script>
 import axios from "axios";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "FishingInstructorProfile",
+  components: {FishingInstructorNavbar},
   data: function(){
     return{
       instructor: '',
@@ -77,13 +82,19 @@ export default {
   },
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/3")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getInstructor", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.instructor = response.data,this.address = this.instructor.address)).catch(function error(error) {
       alert(error.response.data);
     });
 
   },
   methods: {
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfull edit!</p>`
+      let text = `<p style="font-size: 20px">Successfully edited data!</p>`
+      this.$notify({group, title, text, type})
+    },
 
     editClient: function() {
       this.inputs = document.querySelectorAll('input[type="text"]');
@@ -100,9 +111,10 @@ export default {
         this.editButton.innerHTML="edit" ;
         var c = {id:this.instructor.id,name :this.instructor.name,phoneNumber:this.instructor.phoneNumber, surname :this.instructor.surname, email :this.instructor.email, password :this.instructor.password,  address :this.address, biography: this.instructor.biography};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c)
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c, {headers: {Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
-            alert("Update is successfull!")
+            this.show('foo-css', 'success')
           })
 
       }

@@ -4,38 +4,34 @@
     <div class="mt-5 container">
       <h1>Cottages</h1>
       <hr style="color: #2e6b6b"/>
-          <div class="columns is-multiline mb-5 is-vcentered">
-            <div class="column is-2">
-              <input
-                class="input is-link"
-                type="text"
-                placeholder="Search anything!"
-                v-model="searchText"
-              />
+      <div>
+        <div>
+          <div class="columns mb-6">
+            <div class="column col-2">
+              <input class="input is-link" type="text" placeholder="Browse cottages" v-model="searchText"/>
             </div>
 
-            <div class="column is-3">
+            <div class="column col-3">
               <div class="select">
                 <select title="Sorting" v-model="searchSort">
                   <option selected="selected" value="NO_SORT" >No sorting</option>
                   <option value="PRICE_ASC">Price: Ascending</option>
-                  <option value="PRICE_DES">Price: Descending</option>
+                  <option value="PRICE_DESC">Price: Descending</option>
                   <option value="RATING_ASC">Rating: Ascending</option>
-                  <option value="RATING_DES">Rating: Descending</option>
+                  <option value="RATING_DESC">Rating: Descending</option>
                   <option value="NAME_ASC">Name: Ascending</option>
-                  <option value="NAME_DES">Name: Descending</option>
-                  <option value="ADDR_ASC">Address: Ascending</option>
-                  <option value="ADDR_DES">Address: Descending</option>
+                  <option value="NAME_DESC">Name: Descending</option>
+                  <option value="ADDRESS_ASC">Address: Ascending</option>
+                  <option value="ADDRESS_DESC">Address: Descending</option>
                 </select>
               </div>
             </div>
-
-
 
             <div class="column is-flex is-justify-content-flex-end is-1">
               <button class="button search_button is-link"  v-on:click="search()">Search</button>
             </div>
           </div>
+        </div>
         <div v-if="cottages.length === 0">
           <p style="color: white"> No cottages for now.</p>
         </div>
@@ -43,6 +39,7 @@
           <browse_card :cottage="c"></browse_card>
         </div>
       </div>
+    </div>
     <div style="height: 150px"></div>
   </div>
 </template>
@@ -91,7 +88,7 @@ export default {
             return 0;
           })
         }
-        else if(this.searchSort === "NAME_DES"){
+        else if(this.searchSort === "NAME_DESC"){
           this.search_cottages = this.search_cottages.sort((a, b) => {
             let aName = a.name.toLowerCase();
             let bName = b.name.toLowerCase();
@@ -118,7 +115,7 @@ export default {
           })
         }
 
-        else if(this.searchSort === "PRICE_DES"){
+        else if(this.searchSort === "PRICE_DESC"){
           this.search_cottages = this.search_cottages.sort((a, b) => {
 
             if(a.price < b.price){
@@ -144,7 +141,7 @@ export default {
           })
         }
 
-        else if(this.searchSort === "RATING_DES"){
+        else if(this.searchSort === "RATING_DESC"){
           this.search_cottages = this.search_cottages.sort((a, b) => {
 
             if(a.rating < b.rating){
@@ -157,7 +154,7 @@ export default {
           })
         }
 
-        else if (this.searchSort === "ADDR_ASC"){
+        else if (this.searchSort === "ADDRESS_ASC"){
           this.search_cottages = this.search_cottages.sort((a, b) => {
             let aAddress = a.address.street.toLowerCase();
             let bAddress = b.address.street.toLowerCase();
@@ -170,7 +167,7 @@ export default {
             return 0;
           })
         }
-        else if(this.searchSort === "ADDR_DES"){
+        else if(this.searchSort === "ADDRESS_DESC"){
           this.search_cottages = this.search_cottages.sort((a, b) => {
             let aAddress = a.address.street.toLowerCase();
             let bAddress = b.address.street.toLowerCase();

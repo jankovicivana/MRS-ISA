@@ -11,10 +11,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.Principal;
 
 
 @RestController
@@ -30,9 +33,10 @@ public class AdministratorController {
 
 
     @PostMapping("/addAdministrator")
-    public ResponseEntity<AdministratorDTO> addAdventure(@RequestBody AdministratorCreateDTO administratorCreateDTO) {
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<AdministratorDTO> addAdventure(@RequestBody AdministratorCreateDTO administratorCreateDTO, Principal principal) {
         Administrator admin = mapper.map(administratorCreateDTO,Administrator.class);
-        admin.setType(UserType.ADMINISTRATOR);
+        admin.setType(String.valueOf(UserType.ADMINISTRATOR));
         administratorService.save(admin);
         return new ResponseEntity<>(mapper.map(admin, AdministratorDTO.class), HttpStatus.CREATED);
 

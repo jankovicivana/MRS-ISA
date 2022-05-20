@@ -18,8 +18,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +42,10 @@ public class FishingInstructorController {
     private ModelMapper mapper;
 
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<FishingInstructorDTO> getInstructor(@PathVariable Integer id){
+    @GetMapping(value = "/getInstructor")
+    public ResponseEntity<FishingInstructorDTO> getInstructor(Principal principal){
         System.out.print("uslo");
-        FishingInstructor instructor = fishingInstructorService.findOne(id);
+        FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
         if(instructor == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -54,7 +57,8 @@ public class FishingInstructorController {
 
 
     @PostMapping(value = "/updateInstructor" )
-    public void updateInstructor(@RequestBody FishingInstructorDTO fishingInstructorDTO) {
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public void updateInstructor(@RequestBody FishingInstructorDTO fishingInstructorDTO, Principal principal) {
         FishingInstructor fishingInstructor = fishingInstructorService.findOne(fishingInstructorDTO.getId());
         fishingInstructorDTO.setId(3); //vidi ovoooooo
         fishingInstructorDTO.setRegistrationStatus(fishingInstructor.getRegistrationStatus());
@@ -62,7 +66,8 @@ public class FishingInstructorController {
     }
 
     @PostMapping(value = "/addAvailablePeriod" )
-    public void updateInstructor(@RequestBody AvailablePeriodDTO availablePeriod) {
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public void updateInstructor(@RequestBody AvailablePeriodDTO availablePeriod, Principal principal) {
         availablePeriodService.add(mapper.map(availablePeriod,AvailablePeriod.class));
     }
 

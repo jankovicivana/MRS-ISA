@@ -1,5 +1,6 @@
 <template>
   <section class="vh-80" style="background-image: url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'); background-size: 100% 100%;">
+    <CottageOwnerNavbar></CottageOwnerNavbar>
     <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
       <div class="container h-100" >
         <div class="row d-flex justify-content-center align-items-center h-100" >
@@ -10,22 +11,22 @@
                 <form>
 
                   <div class="form-outline mb-4">
-                    <label class="label" for="name_input"> <i class="fas fa-home"></i>  Cottage name:</label>
+                    <label class="label" for="name_input"> <font-awesome-icon icon="fa-solid fa-home"></font-awesome-icon>  Cottage name:</label>
                     <div>
                       <input type="text" id="name_input"  ref="name_input" class="form-control form-control-lg"  required />
 
                     </div>
                   </div>
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="price_input"><i class="fas fa-dollar-sign"></i>  Price:</label>
+                    <label class="form-label" for="price_input"><font-awesome-icon icon="fa-solid fa-dollar-sign"></font-awesome-icon>  Price:</label>
                     <input type="number" id="price_input" ref="price_input" class="form-control form-control-lg" min="1" required/>
                   </div>
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="max_person_input"><i class="fas fa-user"></i> Max person number: </label>
+                    <label class="form-label" for="max_person_input"><font-awesome-icon icon="fa-solid fa-user"></font-awesome-icon> Max person number: </label>
                     <input type="number" id="max_person_input" ref="max_person_input"  class="form-control form-control-lg" min="1" required/>
                   </div>
                   <div class="form-outline mb-4" style="margin-right: 150px">
-                    <label class="form-label" for="num_bed_input"><i class="fas fa-door-open"></i> Add room: (Enter the number of beds)</label>
+                    <label class="form-label" for="num_bed_input"><font-awesome-icon icon="fa-solid fa-door-open"></font-awesome-icon> Add room: (Enter the number of beds)</label>
                     <div class="row">
                       <input type="number" id="num_bed_input"  ref="num_bed_input" class="input_add form-control-lg col-6 mx-3" min="1"/>
                       <button type="button"  v-on:click="addRoom()" class="btn col-3" style="background-color: #04414d;color: white">Add room</button>
@@ -35,7 +36,7 @@
 
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="description_input"><i class="fas fa-pen"></i> Description: </label>
+                    <label class="form-label" for="description_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Description: </label>
                     <input type="text" id="description_input" ref="description_input" class="form-control form-control-lg" required/>
                   </div>
 
@@ -43,29 +44,29 @@
                   <h4>Address</h4>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="country_input"><i class="fas fa-pen"></i> Country: </label>
+                    <label class="form-label" for="country_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Country: </label>
                     <input type="text" id="country_input" ref="country_input" class="form-control form-control-lg" required/>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="city_input"><i class="fas fa-pen"></i> City: </label>
+                    <label class="form-label" for="city_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> City: </label>
                     <input type="text" id="city_input"  ref="city_input" class="form-control form-control-lg" required/>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="street_input"><i class="fas fa-pen"></i> Street: </label>
+                    <label class="form-label" for="street_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Street: </label>
                     <input type="text" id="street_input"  ref="street_input" class="form-control form-control-lg" required/>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="postal_code_input"><i class="fas fa-pen"></i> Postal code: </label>
+                    <label class="form-label" for="postal_code_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Postal code: </label>
                     <input type="number" id="postal_code_input" ref="postal_code_input" class="form-control form-control-lg" required/>
                   </div>
                   <hr />
                   <h4>Conduct rulesss</h4>
                   <div class="form-outline mb-4">
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="rule_input"><i class="fas fa-pen"></i> Rule: </label>
+                      <label class="form-label" for="rule_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Rule: </label>
                       <div class="row">
                         <input type="text" id="rule_input" ref="rule_input" class="input_add form-control-lg col-6 mx-3" />
                         <button type="button" id="add_rule_btn" v-on:click="addRule()" class="btn col-2" style="background-color: #04414d;color: white">Add rule</button>
@@ -78,7 +79,7 @@
 
                   <div class="form-outline mb-4">
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="add_service_input"><i class="fas fa-pen"></i> Additional service: </label>
+                      <label class="form-label" for="add_service_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Additional service: </label>
                       <div class="row">
                         <input type="text" id="add_service_input" ref="add_service_input" class="input_add form-control-lg col-6 mx-3" />
                         <button type="button" v-on:click="addService()" class="btn col-3" style="background-color: #04414d;color: white">Add service</button>
@@ -93,7 +94,7 @@
                   <br/>
 
                   <hr/>
-                  <h4>Images<i class="fas fa-camera px-2"></i></h4>
+                  <h4>Images <font-awesome-icon icon="fa-solid fa-camera"></font-awesome-icon></h4>
                   <div class="form-outline mb-2 mt-3">
                     <input type="file" id="image_input" ref="image_input"  @change="onFileSelected" class="form-control" accept="image/png, image/gif, image/jpeg" multiple />
                   </div>
@@ -119,10 +120,13 @@
 
 <script>
 import axios from "axios";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 
 export default {
   name: "AddCottage"
-  ,data: function (){
+  ,
+  components: {CottageOwnerNavbar},
+  data: function (){
     return{
       rooms: [],
       images: [],
@@ -133,6 +137,12 @@ export default {
   }
   ,
   methods:{
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfully added!</p>`
+      let text = `<p style="font-size: 20px">Successfully added cottage!</p>`
+      this.$notify({group, title, text, type})
+    },
+
     onFileSelected: function (event){
       this.selectedFile = event.target.files[0];
     },
@@ -292,7 +302,8 @@ export default {
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/addCottage",this.info)
         .then(response => {
-          alert("Addition is successfull!")
+          this.show('foo-css', 'success')
+          setTimeout(() => {location.reload(); }, 3000)
         }).catch(function error(error) {
         alert(error.response.data);
       });

@@ -14,8 +14,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Set;
 
 
@@ -40,7 +42,8 @@ public class RuleController {
     private ModelMapper mapper;
 
     @PostMapping("/addRule")
-    public ResponseEntity<RuleDTO> addRule(@RequestBody RuleDTO ruleDTO){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<RuleDTO> addRule(@RequestBody RuleDTO ruleDTO, Principal principal){
         if(ruleDTO.getEntityId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +70,8 @@ public class RuleController {
 
 
     @DeleteMapping(value = "/deleteRule/{id}")
-    public  ResponseEntity<Void> deleteRule(@PathVariable Integer id){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public  ResponseEntity<Void> deleteRule(@PathVariable Integer id,Principal principal){
         System.out.print("id jee"+id);
         Rule rule = ruleService.findOne(id);
         System.out.print("kao naslo");
