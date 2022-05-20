@@ -169,7 +169,9 @@ export default {
   mounted:function (){
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/2")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/2", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}}
+  )
       .then(response => (
         this.adventure = response.data,this.fishingInstructor = this.adventure.fishingInstructor
       ))
@@ -190,7 +192,8 @@ export default {
     },
     deleteAdventure:function (){
       let id = this.adventure.id
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id)
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
 

@@ -4,15 +4,18 @@ import ftn.mrs.isa.rentalapp.dto.*;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
+import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +57,8 @@ public class AdventureController {
     }
 
     @PostMapping("/addAdventure")
-    public ResponseEntity<AdventureDTO> addAdventure(@RequestBody AdventureCreateDTO adventureDTO) throws Exception {
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<AdventureDTO> addAdventure(@RequestBody AdventureCreateDTO adventureDTO,Principal principal) throws Exception {
         Adventure adventure = mapper.map(adventureDTO,Adventure.class);
         adventure.setAddress(new Address(adventureDTO.getStreet(),adventureDTO.getCity(),adventureDTO.getPostal_code(),adventureDTO.getCountry()));
 
@@ -78,7 +82,8 @@ public class AdventureController {
     }
 
     @DeleteMapping(value = "/deleteAdventure/{id}")
-    public ResponseEntity<String> deleteAdventure(@PathVariable Integer id){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<String> deleteAdventure(@PathVariable Integer id,Principal principal){
         Adventure adventure = adventureService.findOne(id);
         if(adventure == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -91,7 +96,8 @@ public class AdventureController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AdventureDTO> getAdventure(@PathVariable Integer id){
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<AdventureDTO> getAdventure(@PathVariable Integer id,Principal principal){
         Adventure adventure = adventureService.findOne(id);
         if(adventure == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -102,7 +108,21 @@ public class AdventureController {
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 
+
+    @GetMapping(value = "/allByOwner")
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<List<AdventureDTO>> getAllAdventuresByOwnerId(Principal principal){
+        List<Adventure> adventures = adventureService.findAllByOwnerEmail(principal.getName());
+        List<AdventureDTO> adventureDTO = new ArrayList<>();
+        for (Adventure c : adventures){
+            adventureDTO.add(mapper.map(c,AdventureDTO.class));
+        }
+        return new ResponseEntity<>(adventureDTO, HttpStatus.OK);
+    }
+
+
     @GetMapping(value = "/findMainPhoto/{id}")
+    @PreAuthorize("hasRole('fishingInstructor')")
     public ResponseEntity<String> getMainPhoto(@PathVariable Integer id){
         Adventure a = adventureService.findOne(id);
         String path = null;
@@ -115,7 +135,8 @@ public class AdventureController {
     }
 
     @PutMapping("/updateAdventure")
-    public ResponseEntity<AdventureDTO> updateAdventure(@RequestBody AdventureDTO adventureDTO) throws IOException {
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<AdventureDTO> updateAdventure(@RequestBody AdventureDTO adventureDTO,Principal principal) throws IOException {
         Adventure adventure = adventureService.findOne(adventureDTO.getId());
 
         if(adventure == null){

@@ -62,7 +62,7 @@ export default {
         } else if (response.data.role === "ROLE_boatOwner") {
           router.push('/boatOwner/boatOwnerHomepage');
         } else if (response.data.role === "ROLE_fishingInstructor") {
-          router.push('/');
+          router.push('/fishingInstructor/instructorHomepage');
         }
     },
 

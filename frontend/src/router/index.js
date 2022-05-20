@@ -28,6 +28,7 @@ import InstructorAvailability from "../components/InstructorAvailability";
 import LoginPage from "../components/LoginPage";
 import HomepageCottageOwner from "../components/HomepageCottageOwner";
 import HomepageBoatOwner from "../components/HomepageBoatOwner";
+import FishingInstructorHomepage from "../components/FishingInstructorHomepage";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -108,6 +109,11 @@ export default new Router({
       path: '/client/clientHomepage',
       name: 'ClientHomepage',
       component: ClientHomepage
+    },
+    {
+      path: '/fishingInstructor/instructorHomepage',
+      name: 'FishingInstructorHomepage',
+      component: FishingInstructorHomepage
     },
     {
       path: '/boats/UpdateBoat',

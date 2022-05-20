@@ -128,7 +128,8 @@ export default {
       }
       this.events.push(this.newEvent);
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/addAvailablePeriod",this.info)
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/addAvailablePeriod",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
         }).catch(function error(error) {

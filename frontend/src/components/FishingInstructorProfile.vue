@@ -82,7 +82,8 @@ export default {
   },
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/3")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getInstructor", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.instructor = response.data,this.address = this.instructor.address)).catch(function error(error) {
       alert(error.response.data);
     });
@@ -110,7 +111,8 @@ export default {
         this.editButton.innerHTML="edit" ;
         var c = {id:this.instructor.id,name :this.instructor.name,phoneNumber:this.instructor.phoneNumber, surname :this.instructor.surname, email :this.instructor.email, password :this.instructor.password,  address :this.address, biography: this.instructor.biography};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c)
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c, {headers: {Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success')
           })
