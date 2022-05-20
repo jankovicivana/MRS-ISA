@@ -27,11 +27,14 @@ public class ClientController {
 
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<ClientDTO>> getAllClients(){
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<List<ClientDTO>> getAllClients(Principal principal){
         List<Client> clients = clientService.findAll();
         List<ClientDTO> clientsDTO = new ArrayList<>();
         for(Client c : clients){
+            if (!c.isDeleted()){
             clientsDTO.add(new ClientDTO(c));
+            }
         }
         return new ResponseEntity<>(clientsDTO, HttpStatus.OK);
     }
@@ -57,7 +60,8 @@ public class ClientController {
 
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id){
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> delete(@PathVariable Integer id,Principal principal){
         Client client = clientService.findOne(id);
         if(client == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

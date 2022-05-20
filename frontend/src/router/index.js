@@ -92,7 +92,7 @@ export default new Router({
       name:'BoatProfile',
       component: BoatProfile
     },{
-      path: '/administrator/AddAdministrator',
+      path: '/admin/AddAdministrator',
       name:'AddAdministrator',
       component: AddAdministrator
     },{

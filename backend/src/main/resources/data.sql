@@ -125,6 +125,8 @@ insert into boats (id, deleted, description, name, price, address, motor_num, ca
                    power, type, boat_owner)
 values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Ivana',250,2,3,20,5,25,250,600,0,4);
 
+insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted) values (6,'admin@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',false, true,false);
+
 insert into role (name) values ('ROLE_client');
 insert into role (name) values ('ROLE_admin');
 insert into role (name) values ('ROLE_cottageOwner');
@@ -136,3 +138,4 @@ insert into user_role (user_id, role_id) values (5, 1);
 insert into user_role (user_id, role_id) values (1, 3);
 insert into user_role (user_id, role_id) values (4, 4);
 insert into user_role (user_id, role_id) values (3, 5);
+insert into user_role (user_id, role_id) values (6, 2);

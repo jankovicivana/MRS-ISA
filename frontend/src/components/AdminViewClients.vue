@@ -62,7 +62,8 @@ export default {
   mounted:function (){
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/all")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/all",{headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.clients = response.data
       ))
@@ -70,11 +71,18 @@ export default {
 
   },
   methods:{
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfull!</p>`
+      let text = `<p style="font-size: 20px">Successfully deleted client!</p>`
+      this.$notify({group, title, text, type})
+    },
     deleteClient:function (client){
       let id = client.id
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/clients/delete/"+id)
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/clients/delete/"+id,{headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          alert(response.data)
+          this.show('foo-css', 'success')
+          setTimeout(() => {location.reload(); }, 3000)
           const index = this.clients.indexOf(client);
           this.clients.splice(index, 1);
         }).catch(function error(error) {
