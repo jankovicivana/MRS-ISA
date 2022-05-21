@@ -1,6 +1,8 @@
 <template>
   <div>
-    <CottageOwnerNavbar></CottageOwnerNavbar>
+    <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
+    <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'"></BoatOwnerNavbar>
+    <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
 
   <section id = "client_profile" class="profile_main py-lg-3">
 
@@ -44,6 +46,10 @@
                     <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="address.postalCode"/></div>
                   </div>
 
+                  <div v-if="role === 'ROLE_fishingInstructor'" class="row mt-2">
+                    <div class="col-md-12 inputs"><label class="labels">Biography</label><textarea type="text" class="form-control" placeholder="biography.." readonly v-model="cottage_owner.biography"/></div>
+                  </div>
+
                   <div class="mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
                 </div>
               </div>
@@ -65,26 +71,54 @@
 <script>
 import axios from "axios";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "CottageOwnerProfile",
-  components: {CottageOwnerNavbar},
+  components: {FishingInstructorNavbar, BoatOwnerNavbar, CottageOwnerNavbar},
   data: function(){
     return{
       cottage_owner: '',
       address:'',
       inputs: null,
       editButton: null,
-      readonly: true
+      readonly: true,
+      role:''
     }
   },
   mounted: function (){
-    axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottageOwner/getCottageOwner", {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}})
-      .then(response => (this.cottage_owner = response.data,this.address = this.cottage_owner.address)).catch(function error(error) {
-      alert(error.response.data);
-    });
+    this.role = sessionStorage.getItem("role");
+    if (this.role === "ROLE_cottageOwner") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/getCottageOwner", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => (this.cottage_owner = response.data, this.address = this.cottage_owner.address)).catch(function error(error) {
+        alert(error.response.data);
+      });
+    }else if (this.role === "ROLE_boatOwner") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/getBoatOwner", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => (this.cottage_owner = response.data, this.address = this.cottage_owner.address)).catch(function error(error) {
+        alert(error.response.data);
+      });
+    }else if (this.role === "ROLE_fishingInstructor") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getInstructor", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.cottage_owner = response.data,this.address = this.cottage_owner.address)).catch(function error(error) {
+        alert(error.response.data);
+      });
+    }
 
   },
   methods: {
@@ -107,12 +141,26 @@ export default {
       } else {
         this.editButton.innerHTML="edit" ;
         var c = {id:this.cottage_owner.id,name :this.cottage_owner.name,phoneNumber:this.cottage_owner.phoneNumber, surname :this.cottage_owner.surname, email :this.cottage_owner.email, password :this.cottage_owner.password,  address :this.address, biography: this.cottage_owner.biography};
-        axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/cottageOwner/updateCottageOwner", c)
-          .then(response => {
-            this.show('foo-css', 'success')
-          })
-
+        if (this.role === "ROLE_cottageOwner") {
+          axios
+            .post(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/updateCottageOwner", c)
+            .then(response => {
+              this.show('foo-css', 'success')
+            })
+        }else if (this.role === "ROLE_cottageOwner") {
+          axios
+            .post(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/updateBoatOwner", c)
+            .then(response => {
+              this.show('foo-css', 'success')
+            })
+        }else if (this.role === "ROLE_fishingInstructor") {
+          axios
+            .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c, {headers: {Authorization:
+                  'Bearer ' + sessionStorage.getItem("accessToken")}})
+            .then(response => {
+              this.show('foo-css', 'success')
+            });
+        }
       }
     }
 

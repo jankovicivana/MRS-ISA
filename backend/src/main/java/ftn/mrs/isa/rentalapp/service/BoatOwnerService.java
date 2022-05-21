@@ -3,6 +3,7 @@ package ftn.mrs.isa.rentalapp.service;
 import ftn.mrs.isa.rentalapp.model.entity.Boat;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
+import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
 import ftn.mrs.isa.rentalapp.repository.BoatOwnerRepository;
 import ftn.mrs.isa.rentalapp.repository.BoatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class BoatOwnerService {
     public List<BoatOwner> findAll() {
         return boatOwnerRepository.findAll();
     }
+
+    public void updateBoatOwner(BoatOwner boatOwner){
+        boatOwnerRepository.save(boatOwner);
+    }
+
 
 
     public boolean canDeleteBoatOwner(BoatOwner owner) {
