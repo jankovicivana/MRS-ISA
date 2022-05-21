@@ -64,7 +64,7 @@ export default new Router({
       name:'AddCottage',
       component: AddCottage
     },{
-      path: '/client/ClientProfile/:id',
+      path: '/client/ClientProfile',
       name:'ClientProfile',
       component: ClientProfile
     },{

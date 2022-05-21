@@ -72,6 +72,11 @@ export default {
     }
   }
   ,methods:{
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successfully!</p>`
+      let text = `<p style="font-size: 20px">Successfully sent report!</p>`
+      this.$notify({group, title, text, type})
+    },
     createReport:function(){
       this.clientId = this.$route.params.id;
       console.log(this.clientId)
@@ -84,10 +89,11 @@ export default {
         sanction : document.getElementById('flexCheckDefault').checked
       }
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/clients/createReport/",this.info)
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/clients/createReport/",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          alert("Report is sent!")
-          this.$router.push({path:"/ReservationHistory"});
+          this.show('foo-css', 'success')
+          setTimeout(() => {this.$router.push({path:"/ReservationHistory"}); }, 3000)
         }).catch(function error(error) {
         alert(error.response.data);
       });

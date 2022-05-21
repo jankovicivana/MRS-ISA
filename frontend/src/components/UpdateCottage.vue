@@ -168,7 +168,8 @@ export default {
       picturePath.readAsDataURL(file)
       picturePath.onload = e => {
         //this.cottage.images.push({data:e.target.result,path:file.name,entityId:1});
-        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:"../images/"+file.name,entityId:1})
+        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:"../images/"+file.name,entityId:1}, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added image!</p>`)
             setTimeout(() => {location.reload(); }, 1500)
@@ -188,7 +189,8 @@ export default {
       }
       //this.cottage.rules.push({rule:ruleText});
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:1})
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:1}, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added rule!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
@@ -207,7 +209,8 @@ export default {
       }
       //this.cottage.additionalServices.push(service);
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:1})
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:1}, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added service!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
@@ -226,7 +229,8 @@ export default {
         return;
       }
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rooms/addRoom", {bedNumber:room,entityId:1})
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rooms/addRoom", {bedNumber:room,entityId:1}, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added room!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
@@ -239,7 +243,8 @@ export default {
     },
     removeRule:function (id){
 
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rules/deleteRule/"+id)
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rules/deleteRule/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed rule!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
@@ -250,7 +255,8 @@ export default {
     },removeRoom:function (id){
       console.log(id)
 
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rooms/deleteRoom/"+id)
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rooms/deleteRoom/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed room!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
@@ -260,7 +266,8 @@ export default {
 
     },removeAdditionalService:function (id){
 
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/deleteAdditionalService/"+id)
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/deleteAdditionalService/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed additional service!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
@@ -270,7 +277,8 @@ export default {
 
     },removeImage:function (id){
 
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/images/deleteImage/"+id)
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/images/deleteImage/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed image!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
@@ -293,7 +301,8 @@ export default {
         images: this.cottage.images
       };
 
-      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/cottages/updateCottage",this.info)
+      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/cottages/updateCottage",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated cottage!</p>`)
         }).catch(function error(error) {

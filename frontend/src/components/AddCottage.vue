@@ -300,7 +300,8 @@ export default {
         images: this.images
       };
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/addCottage",this.info)
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/addCottage",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
           setTimeout(() => {location.reload(); }, 3000)

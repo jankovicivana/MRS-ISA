@@ -1,6 +1,7 @@
 <template>
   <div class="browse_main">
-    <main_navbar></main_navbar>
+    <main_navbar v-if="role === ''"></main_navbar>
+    <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
     <div class="mt-5 container">
       <h1>Cottages</h1>
       <hr style="color: #2e6b6b"/>
@@ -48,21 +49,33 @@
 import axios from "axios";
 import MainNavbar from "./header/MainNavbar";
 import CottageBrowseCard from "./CottageBrowseCard";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 export default {
   name: "Cottages",
-  components: {'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar},
+  components: {'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar,CottageOwnerNavbar},
   data: function(){
     return{
       cottages: '',
       searchText: '',
       searchSort: '',
-      search_cottages: ''
+      search_cottages: '',
+      role:''
     }
   },
   mounted: function (){
-    axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/all")
-      .then(response => (this.cottages = this.search_cottages = response.data))
+    this.role = sessionStorage.getItem("role");
+    if (this.role === "ROLE_cottageOwner") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/allByOwner", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.cottages = this.search_cottages = response.data))
+    }else{
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/all", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.cottages = this.search_cottages = response.data))
+    }
+
   },
   methods: {
     search: function (){

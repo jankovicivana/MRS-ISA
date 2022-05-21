@@ -42,7 +42,8 @@ export default {
         discountedPrice: price - price*discount/100,
         };
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/addQuickReservation",this.info)
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/addQuickReservation",this.info, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
           setTimeout(() => {location.reload(); }, 3000)

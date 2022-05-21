@@ -1,7 +1,8 @@
 <template>
   <div>
-    <client_navbar></client_navbar>
-  <section id = "client_profile" class="profile_main py-lg-3">
+    <client_navbar v-if="role === 'ROLE_client'"></client_navbar>
+    <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
+    <section id = "client_profile" class="profile_main py-lg-3">
     <div  class="row py-5 px-auto" style="align-content: center">
       <div class="col-md-8 mx-auto">
         <div class="bg-white shadow rounded overflow-hidden">
@@ -32,14 +33,14 @@
                   <div class="row mt-2">
                     <div class="col-md-12 inputs"><label class="labels">Email</label><input id="email" type="text" class="form-control" placeholder="email" readonly v-model="client.email"></div>
                     <div class="col-md-12 inputs"><label class="labels">Phone number</label><input type="text" class="form-control" placeholder="phone number" readonly v-model="client.phoneNumber"></div>
-                    <div class="col-md-12 inputs"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" readonly v-model="this.address.street"></div>
+                    <div class="col-md-12 inputs"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" readonly v-model="this.client.address.street"></div>
                   </div>
                   <div class="row mt-2">
-                    <div class="col-md-12 inputs"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" readonly v-model="this.address.country"></div>
+                    <div class="col-md-12 inputs"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" readonly v-model="this.client.address.country"></div>
                   </div>
                   <div class="row mt-2">
-                    <div class="col-md-6 inputs"><label class="labels">City</label><input type="text" class="form-control" readonly v-model="this.address.city" placeholder="city"></div>
-                    <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="this.address.postalCode"></div>
+                    <div class="col-md-6 inputs"><label class="labels">City</label><input type="text" class="form-control" readonly v-model="this.client.address.city" placeholder="city"></div>
+                    <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="this.client.address.postalCode"></div>
                   </div>
 
                   <div class="mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
@@ -104,24 +105,40 @@
 <script>
 import axios from "axios";
 import ClientNavbar from "./header/ClientNavbar";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 
 export default {
   name: "ClientProfile",
-  components: {'client_navbar': ClientNavbar},
+  components: {'client_navbar': ClientNavbar,CottageOwnerNavbar},
   data: function(){
     return{
       client: '',
       address: '',
       inputs: null,
       editButton: null,
-      readonly: true
+      readonly: true,
+      role:''
     }
   },
   mounted: function (){
-    axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/getClient", {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}})
-      .then(response => (this.client = response.data))
+    this.role = sessionStorage.getItem("role");
+    if (this.role === "ROLE_cottageOwner") {
+      var clientId = this.$route.params.id;
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/"+clientId, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.client = response.data))
+    }
+    if (this.role === "ROLE_client") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/clients/getClient", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => (this.client = response.data))
+    }
 
   },
 

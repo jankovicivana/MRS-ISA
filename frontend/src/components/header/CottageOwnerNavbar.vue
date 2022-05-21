@@ -14,7 +14,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Cottages </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="#/client/clientHomepage"> My cottages</a>
+            <a class="navbar-item" href="#/cottages"> My cottages</a>
             <a class="navbar-item" href="#/cottages/addCottage"> Add cottage </a>
           </div>
         </div>
@@ -22,8 +22,9 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Reservations </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="#/"> Reservation history</a>
-            <a class="navbar-item" href="#/fishingInstructor/Availability"> Availability calendar </a>
+            <a class="navbar-item" href="#/ReservationHistory"> Reservation history </a>
+            <a class="navbar-item" href="#/upcomingReservations"> Upcoming reservations </a>
+            <a class="navbar-item" href="#/currentReservations"> Current reservations </a>
           </div>
         </div>
 

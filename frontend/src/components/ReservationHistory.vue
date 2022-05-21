@@ -1,6 +1,8 @@
 <template>
   <section class="profile_main vh-100" >
-  <fishing-instructor-navbar></fishing-instructor-navbar>
+  <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
+    <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
+    <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -15,7 +17,7 @@
                     <table class="table">
                       <thead>
                       <tr style="background: #ecd9c6">
-                        <th v-if="id===1">Cottage</th>
+                        <th v-if="role === 'ROLE_cottageOwner'">Cottage</th>
 
                         <th>Client</th>
                         <th>Start date</th>
@@ -55,23 +57,37 @@
 <script>
 import axios from "axios";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import router from "../router";
 
 export default {
   name: "ReservationHistory",
-  components: {FishingInstructorNavbar},
+  components: {BoatOwnerNavbar, CottageOwnerNavbar, FishingInstructorNavbar},
   data(){
 
     return{
       reservations: '',
+      role:''
     }
   }
   ,mounted:function (){
-    axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByUser/3", {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}})
-      .then(response => (
-        this.reservations = response.data
-      ))
+    this.role = sessionStorage.getItem("role");
+    if (this.role === "ROLE_cottageOwner") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByCottageOwner/1", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (
+          this.reservations = response.data
+        ))
+    } else if (this.role === "ROLE_fishingInstructor") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByUser/3", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (
+          this.reservations = response.data
+        ))
+    }
 
 
   },

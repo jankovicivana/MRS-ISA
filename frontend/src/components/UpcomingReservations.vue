@@ -1,6 +1,8 @@
 <template>
   <section class="profile_main vh-100" >
-
+    <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
+    <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
+    <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -50,19 +52,25 @@
 
 <script>
 import axios from "axios";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "UpcomingReservations",
+  components: {BoatOwnerNavbar, CottageOwnerNavbar, FishingInstructorNavbar},
   data(){
 
     return{
       reservations: '',
+      role:''
     }
   },
   mounted:function (){
-
+    this.role = sessionStorage.getItem("role");
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findUpcomingByCottageOwner/1")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findUpcomingByCottageOwner/1", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.reservations = response.data
       ))
