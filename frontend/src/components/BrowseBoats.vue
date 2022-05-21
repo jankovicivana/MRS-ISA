@@ -1,6 +1,7 @@
 <template>
   <div class="browse_main">
-    <main_navbar></main_navbar>
+    <main_navbar v-if="role === ''"></main_navbar>
+    <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>
     <div class="mt-5 container">
       <h1>Boats</h1>
       <hr style="color: #2e6b6b"/>
@@ -50,22 +51,33 @@
 import MainNavbar from "./header/MainNavbar";
 import BoatBrowseCard from "./BoatBrowseCard";
 import axios from "axios";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 
 export default {
   name: "BrowseBoats",
-  components: {'browse_card': BoatBrowseCard, 'main_navbar': MainNavbar},
+  components: {BoatOwnerNavbar, 'browse_card': BoatBrowseCard, 'main_navbar': MainNavbar},
   data: function(){
     return{
       boats: '',
       searchText: '',
       searchSort: '',
-      search_boats: ''
+      search_boats: '',
+      role:''
     }
   },
   mounted: function (){
-    axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/all")
-      .then(response => (this.boats = this.search_boats = response.data))
+    this.role = sessionStorage.getItem("role");
+    if (this.role === "ROLE_boatOwner") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/boats/allByOwner", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.boats = this.search_boats = response.data))
+    }else{
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/boats/all", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.boats = this.search_boats = response.data))
+    }
   },
   methods: {
     search: function (){

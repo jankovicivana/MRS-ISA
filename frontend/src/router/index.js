@@ -10,8 +10,7 @@ import AddCottage from "../components/AddCottage";
 import ClientProfile from "../components/ClientProfile";
 import UpdateCottage from "../components/UpdateCottage";
 import UpdateAdventure from "../components/UpdateAdventure";
-import FishingInstructorProfile from "../components/FishingInstructorProfile";
-import CottageOwnerProfile from "../components/CottageOwnerProfile";
+import AdvertiserProfile from "../components/AdvertiserProfile";
 import BoatProfile from "../components/BoatProfile";
 import AddAdministrator from "../components/AddAdministrator";
 import AddBoat from "../components/AddBoat";
@@ -76,10 +75,6 @@ export default new Router({
       name:'UpdateAdventure',
       component: UpdateAdventure
     },{
-      path: '/fishingInstructor/FishingInstructorProfile',
-      name:'FishingInstructorProfile',
-      component: FishingInstructorProfile
-    },{
       path: '/ReservationHistory',
       name:'ReservationHistory',
       component: ReservationHistory
@@ -89,9 +84,9 @@ export default new Router({
       component: InstructorAvailability
     },
     {
-      path:'/cottageOwner/CottageOwnerProfile',
-      name:'CottageOwnerProfile',
-      component: CottageOwnerProfile
+      path:'/AdvertiserProfile',
+      name:'AdvertiserProfile',
+      component: AdvertiserProfile
     },
     {
       path:'/boats/BoatProfile',

@@ -36,9 +36,9 @@
             <div
               class="column is-flex is-justify-content-flex-end is-align-items-right">
               <div class="buttons ml-5">
-                <a class="button view_button is-success" href="#/adventures/AdventureProfile" style="background-color: #2e6b6b">
+                <router-link :to="{ name:'AdventureProfile',params:{id:adventure.id} }" class="button view_button is-success" style="background-color: #2e6b6b">
                   View
-                </a>
+                </router-link>
               </div>
             </div>
           </div>

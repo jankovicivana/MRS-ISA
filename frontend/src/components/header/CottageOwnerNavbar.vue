@@ -9,7 +9,7 @@
 
         <a class="navbar-item" href="#/cottageOwner/cottageOwnerHomepage">Home </a>
 
-        <a class="navbar-item" href="#/cottageOwner/CottageOwnerProfile">My profile</a>
+        <a class="navbar-item" href="#/AdvertiserProfile">My profile</a>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Cottages </a>

@@ -17,7 +17,7 @@
         <br />
         <div class="columns">
           <div class="column" v-for="c in cottages">
-            <div class="card col-3">
+            <div class="card col-3" v-on:click="open(c.id)">
               <div class="card-image">
                 <img class="card_image" alt="Image" :src="require('../assets/images/cottage'+c.id+'.jpg')" />
               </div>
@@ -60,6 +60,11 @@ export default {
       .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/allByOwner", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.cottages = response.data))
+  },
+  methods:{
+    open:function (id){
+      this.$router.push({name:"CottageProfile",params:{id:id}});
+    }
   }
 }
 </script>

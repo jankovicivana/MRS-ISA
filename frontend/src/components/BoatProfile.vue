@@ -160,9 +160,9 @@ export default {
     }
   },
   mounted:function (){
-
+    var boatId = this.$route.params.id;
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3", {headers: {Authorization:
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+boatId, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.boat = response.data,this.quick=this.boat.quickReservations))
 

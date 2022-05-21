@@ -9,12 +9,12 @@
 
         <a class="navbar-item" href="#/boatOwner/boatOwnerHomepage">Home </a>
 
-        <a class="navbar-item" href="#/">My profile</a>
+        <a class="navbar-item" href="#/AdvertiserProfile">My profile</a>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Boats </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="#/client/clientHomepage"> My boats</a>
+            <a class="navbar-item" href="#/boats"> My boats</a>
             <a class="navbar-item" href="#/boats/addBoat"> Add boat </a>
           </div>
         </div>
@@ -22,8 +22,9 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Reservations </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="#/"> Reservation history</a>
-            <a class="navbar-item" href="#/fishingInstructor/Availability"> Availability calendar </a>
+            <a class="navbar-item" href="#/ReservationHistory"> Reservation history </a>
+            <a class="navbar-item" href="#/upcomingReservations"> Upcoming reservations </a>
+            <a class="navbar-item" href="#/currentReservations"> Current reservations </a>
           </div>
         </div>
 

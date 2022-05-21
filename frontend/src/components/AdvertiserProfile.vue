@@ -11,11 +11,11 @@
         <div class="bg-white shadow rounded overflow-hidden">
           <div class="px-4 pt-0 pb-4 cover">
             <div class="media align-items-end profile-head">
-              <div class="profile mr-3"><img :src="require('../assets/images/'+cottage_owner.mainPhoto)" alt="..." width="250" class="rounded mb-2 img-thumbnail">
+              <div class="profile mr-3"><img :src="require('../assets/images/'+advertiser.mainPhoto)" alt="..." width="250" class="rounded mb-2 img-thumbnail">
               </div>
             </div>
             <div class="pb-4 pt-4">
-              <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{ this.cottage_owner.name }}</span> <span>{{ this.cottage_owner.surname }}</span></h4>
+              <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{this.advertiser.name }}</span> <span>{{ this.advertiser.surname }}</span></h4>
               <a href="#" class="btn flow delete-btn">Delete profile</a>
             </div>
           </div>
@@ -30,12 +30,12 @@
                   </div>
 
                   <div class="row mt-2">
-                    <div class="col-md-6 inputs"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" v-model="cottage_owner.name" readonly> </div>
-                    <div class="col-md-6 inputs"><label class="labels">Surname</label><input type="text" class="form-control" readonly v-model="cottage_owner.surname" placeholder="Doe"></div>
+                    <div class="col-md-6 inputs"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" v-model="advertiser.name" readonly> </div>
+                    <div class="col-md-6 inputs"><label class="labels">Surname</label><input type="text" class="form-control" readonly v-model="advertiser.surname" placeholder="Doe"></div>
                   </div>
                   <div class="row mt-2">
-                    <div class="col-md-12 inputs"><label class="labels">Email</label><input id="email" type="text" class="form-control" placeholder="email" readonly v-model="cottage_owner.email"></div>
-                    <div class="col-md-12 inputs"><label class="labels">Phone number</label><input type="text" class="form-control" placeholder="phone number" readonly v-model="cottage_owner.phoneNumber"></div>
+                    <div class="col-md-12 inputs"><label class="labels">Email</label><input id="email" type="text" class="form-control" placeholder="email" readonly v-model="advertiser.email"></div>
+                    <div class="col-md-12 inputs"><label class="labels">Phone number</label><input type="text" class="form-control" placeholder="phone number" readonly v-model="advertiser.phoneNumber"></div>
                     <div class="col-md-12 inputs"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" readonly v-model="address.street"></div>
                   </div>
                   <div class="row mt-2">
@@ -47,10 +47,10 @@
                   </div>
 
                   <div v-if="role === 'ROLE_fishingInstructor'" class="row mt-2">
-                    <div class="col-md-12 inputs"><label class="labels">Biography</label><textarea type="text" class="form-control" placeholder="biography.." readonly v-model="cottage_owner.biography"/></div>
+                    <div class="col-md-12 inputs"><label class="labels">Biography</label><textarea type="text" class="form-control" placeholder="biography.." readonly v-model="advertiser.biography"/></div>
                   </div>
 
-                  <div class="mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
+                  <div class="mt-3 text-right"><button v-on:click="editAdvertiser" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
                 </div>
               </div>
 
@@ -75,11 +75,11 @@ import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
-  name: "CottageOwnerProfile",
+  name: "AdvertiserProfile",
   components: {FishingInstructorNavbar, BoatOwnerNavbar, CottageOwnerNavbar},
   data: function(){
     return{
-      cottage_owner: '',
+      advertiser: '',
       address:'',
       inputs: null,
       editButton: null,
@@ -97,7 +97,7 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")
           }
         })
-        .then(response => (this.cottage_owner = response.data, this.address = this.cottage_owner.address)).catch(function error(error) {
+        .then(response => (this.advertiser = response.data, this.address = this.advertiser.address)).catch(function error(error) {
         alert(error.response.data);
       });
     }else if (this.role === "ROLE_boatOwner") {
@@ -108,14 +108,14 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")
           }
         })
-        .then(response => (this.cottage_owner = response.data, this.address = this.cottage_owner.address)).catch(function error(error) {
+        .then(response => (this.advertiser = response.data, this.address = this.advertiser.address)).catch(function error(error) {
         alert(error.response.data);
       });
     }else if (this.role === "ROLE_fishingInstructor") {
       axios
         .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getInstructor", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
-        .then(response => (this.cottage_owner = response.data,this.address = this.cottage_owner.address)).catch(function error(error) {
+        .then(response => (this.advertiser = response.data,this.address = this.advertiser.address)).catch(function error(error) {
         alert(error.response.data);
       });
     }
@@ -128,7 +128,7 @@ export default {
       this.$notify({group, title, text, type})
     },
 
-    editClient: function() {
+    editAdvertiser: function() {
       this.inputs = document.querySelectorAll('input[type="text"]');
       for (var i=0; i<this.inputs.length; i++) {
         if(this.inputs[i].getAttribute("id") !== "email"){
@@ -140,7 +140,7 @@ export default {
         this.editButton.innerHTML="save" ;
       } else {
         this.editButton.innerHTML="edit" ;
-        var c = {id:this.cottage_owner.id,name :this.cottage_owner.name,phoneNumber:this.cottage_owner.phoneNumber, surname :this.cottage_owner.surname, email :this.cottage_owner.email, password :this.cottage_owner.password,  address :this.address, biography: this.cottage_owner.biography};
+        var c = {id:this.advertiser.id,name :this.advertiser.name,phoneNumber:this.advertiser.phoneNumber, surname :this.advertiser.surname, email :this.advertiser.email, password :this.advertiser.password,  address :this.address, biography: this.advertiser.biography};
         if (this.role === "ROLE_cottageOwner") {
           axios
             .post(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/updateCottageOwner", c)

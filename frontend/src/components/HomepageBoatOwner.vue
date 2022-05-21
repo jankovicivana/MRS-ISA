@@ -18,7 +18,7 @@
         <br />
         <div class="columns">
           <div class="column" v-for="b in boats">
-            <div class="card col-3">
+            <div class="card col-3" v-on:click="open(b.id)">
               <div class="card-image">
                 <img class="card_image" alt="Image" :src="require('../assets/images/boat'+ (parseInt(b.id)-2).toString() +'.jpg')" />
               </div>
@@ -60,6 +60,11 @@ export default {
       .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/allByOwner", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.boats = response.data))
+  },
+  methods:{
+    open:function (id){
+      this.$router.push({name:"BoatProfile",params:{id:id}});
+    }
   }
 }
 </script>

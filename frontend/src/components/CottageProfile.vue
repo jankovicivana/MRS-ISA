@@ -145,9 +145,9 @@ export default {
     },
       mounted:function (){
       const sumFuncy = async (a,b) => a+b;
-
+      var cottageId = this.$route.params.id;
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1", {headers: {Authorization:
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+cottageId, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.cottage = response.data,this.quick=this.cottage.quickReservations,this.num_rooms=response.data.rooms.length,response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})))
 

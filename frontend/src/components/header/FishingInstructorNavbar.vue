@@ -7,9 +7,9 @@
     <div class="navbar-menu">
       <div class="navbar-start">
 
-        <a class="navbar-item" href="#/client/clientHomepage">Home </a>
+        <a class="navbar-item" href="#/fishingInstructor/instructorHomepage">Home </a>
 
-        <a class="navbar-item" href="#/fishingInstructor/FishingInstructorProfile">My profile</a>
+        <a class="navbar-item" href="#/AdvertiserProfile">My profile</a>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Adventures </a>

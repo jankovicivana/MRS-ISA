@@ -167,9 +167,9 @@ export default {
     }
   },
   mounted:function (){
-
+    var adventureId = this.$route.params.id;
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/2", {headers: {Authorization:
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/"+adventureId, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}}
   )
       .then(response => (
