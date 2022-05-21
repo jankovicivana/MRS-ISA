@@ -40,7 +40,7 @@ public class AdditionalServiceController {
     private ModelMapper mapper;
 
     @PostMapping("/addAdditionalService")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
     public ResponseEntity<AdditionalServiceDTO> addRule(@RequestBody AdditionalServiceDTO additionalServiceDTO, Principal principal){
         if ( additionalServiceDTO.getEntityId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -65,7 +65,7 @@ public class AdditionalServiceController {
     }
 
     @DeleteMapping(value = "/deleteAdditionalService/{id}")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
     public  ResponseEntity<Void> deleteAdditionalService(@PathVariable Integer id, Principal principal){
         AdditionalService additionalService = additionalServiceService.findOne(id);
 

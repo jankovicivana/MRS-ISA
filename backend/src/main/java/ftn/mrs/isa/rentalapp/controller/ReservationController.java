@@ -58,35 +58,27 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/findHistoryByCottageOwner/{id}")
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByCottageOwner(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllHistoryByCottageOwner(id);
-        System.out.print("------>"+reservations.size());
-        List<ReservationDTO> reservationsDTO = new ArrayList<>();
-        for(Reservation c : reservations){
-            ReservationDTO rt = mapper.map(c, ReservationDTO.class);
-            Cottage cottage = cottageService.findOne(c.getEntity().getId());
-            rt.setCottage(mapper.map(cottage, CottageDTO.class));
-            reservationsDTO.add(rt);
-        }
-        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+        return getListResponseEntity(reservations);
     }
 
     @GetMapping(value = "/findUpcomingByCottageOwner/{id}")
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<List<ReservationDTO>> getAllUpcomingReservationByCottageOwner(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllUpcomingByCottageOwner(id);
-        List<ReservationDTO> reservationsDTO = new ArrayList<>();
-        for(Reservation c : reservations){
-            ReservationDTO rt = mapper.map(c, ReservationDTO.class);
-            Cottage cottage = cottageService.findOne(c.getEntity().getId());
-            rt.setCottage(mapper.map(cottage, CottageDTO.class));
-            reservationsDTO.add(rt);
-        }
-        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+        return getListResponseEntity(reservations);
     }
 
     @GetMapping(value = "/findCurrentByCottageOwner/{id}")
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<List<ReservationDTO>> getAllCurrentReservationByCottageOwner(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllCurrentByCottageOwner(id);
+        return getListResponseEntity(reservations);
+    }
+
+    private ResponseEntity<List<ReservationDTO>> getListResponseEntity(List<Reservation> reservations) {
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for(Reservation c : reservations){
             ReservationDTO rt = mapper.map(c, ReservationDTO.class);

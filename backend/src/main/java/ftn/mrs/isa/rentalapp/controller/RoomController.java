@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,6 +28,7 @@ public class RoomController {
     private ModelMapper mapper;
 
     @PostMapping("/addRoom")
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<RoomDTO> addRoom(@RequestBody RoomDTO roomDTO){
         if(roomDTO.getEntityId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -48,6 +50,7 @@ public class RoomController {
     }
 
     @DeleteMapping(value = "/deleteRoom/{id}")
+    @PreAuthorize("hasRole('cottageOwner')")
     public  ResponseEntity<Void> deleteRoom(@PathVariable Integer id){
         Room room = roomService.findOne(id);
 

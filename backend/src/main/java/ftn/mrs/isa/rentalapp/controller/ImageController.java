@@ -46,7 +46,7 @@ public class ImageController {
     private ModelMapper mapper;
 
     @PostMapping("/addImage")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
     public ResponseEntity<ImageDTO> addImage(@RequestBody ImageDTO imageDTO, Principal principal) throws IOException {
         if(imageDTO.getEntityId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -86,7 +86,7 @@ public class ImageController {
     }
 
     @DeleteMapping(value = "/deleteImage/{id}")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
     public  ResponseEntity<Void> deleteImage(@PathVariable Integer id,Principal principal){
         Image image = imageService.findOne(id);
 

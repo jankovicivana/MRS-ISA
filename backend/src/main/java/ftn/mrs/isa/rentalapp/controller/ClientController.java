@@ -69,6 +69,16 @@ public class ClientController {
         return new ResponseEntity<>(mapper.map(client, ClientDTO.class), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('cottageOwner','boatOwner')")
+    public ResponseEntity<ClientDTO> getClientById(@PathVariable Integer id,Principal principal){
+        Client client = clientService.findOne(id);
+        if(client == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(mapper.map(client, ClientDTO.class), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/updateClient" )
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<ClientDTO> updateClient(@RequestBody ClientDTO clientDTO){
@@ -95,6 +105,7 @@ public class ClientController {
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
     }
 
+    //ova ne treba funkcija
     @PostMapping(value = "/addPenalty/{id}")
     public ResponseEntity<String> addPenalty(@PathVariable Integer id){
         Client client = clientService.findOne(id);
@@ -107,6 +118,7 @@ public class ClientController {
     }
 
     @PostMapping(value = "/createReport")
+    @PreAuthorize("hasAnyRole('cottageOwner','boatOwner')")
     public ResponseEntity<String> createReport(@RequestBody ReportDTO reportDTO){
         Client client = clientService.findOne(reportDTO.getClientId());
         Advertiser advertiser = cottageOwnerService.findOne(reportDTO.getAdvertiserId());

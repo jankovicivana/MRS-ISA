@@ -39,7 +39,7 @@ public class EquipmentController {
 
 
     @PostMapping("/addFishingEquipment")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','boatOwner')")
     public ResponseEntity<FishingEquipmentDTO> addFishingEquipment(@RequestBody FishingEquipmentDTO fishingEquipmentDTO, Principal principal){
         System.out.print("idee");
         if(fishingEquipmentDTO.getAdventureId() == null && fishingEquipmentDTO.getBoatId() == null){
@@ -68,7 +68,7 @@ public class EquipmentController {
     }
 
     @DeleteMapping(value = "/deleteFishingEquipment/{id}")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','boatOwner')")
     public  ResponseEntity<Void> deleteFishingEquipment(@PathVariable Integer id, Principal principal){
         FishingEquipment equip = equipmentService.findFishingEquipment(id);
 

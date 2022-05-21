@@ -42,7 +42,7 @@ public class RuleController {
     private ModelMapper mapper;
 
     @PostMapping("/addRule")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
     public ResponseEntity<RuleDTO> addRule(@RequestBody RuleDTO ruleDTO, Principal principal){
         if(ruleDTO.getEntityId() == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -70,7 +70,7 @@ public class RuleController {
 
 
     @DeleteMapping(value = "/deleteRule/{id}")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
     public  ResponseEntity<Void> deleteRule(@PathVariable Integer id,Principal principal){
         System.out.print("id jee"+id);
         Rule rule = ruleService.findOne(id);
