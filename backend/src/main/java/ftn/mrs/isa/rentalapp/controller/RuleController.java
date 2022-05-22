@@ -1,8 +1,6 @@
 package ftn.mrs.isa.rentalapp.controller;
 
-import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.RuleDTO;
-import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Rule;
 import ftn.mrs.isa.rentalapp.service.AdventureService;
@@ -18,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Set;
 
 
 @RestController

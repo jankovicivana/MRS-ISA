@@ -2,28 +2,20 @@ package ftn.mrs.isa.rentalapp.controller;
 
 
 import ftn.mrs.isa.rentalapp.dto.AvailablePeriodDTO;
-import ftn.mrs.isa.rentalapp.dto.ClientDTO;
 import ftn.mrs.isa.rentalapp.dto.FishingInstructorDTO;
-import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.AvailablePeriod;
-import ftn.mrs.isa.rentalapp.model.entity.Image;
-import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
-import ftn.mrs.isa.rentalapp.service.AdditionalServiceService;
 import ftn.mrs.isa.rentalapp.service.AvailablePeriodService;
 import ftn.mrs.isa.rentalapp.service.FishingInstructorService;
-import ftn.mrs.isa.rentalapp.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +64,8 @@ public class FishingInstructorController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id){
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> delete(@PathVariable Integer id, Principal principal){
         FishingInstructor client = fishingInstructorService.findOne(id);
         if(client == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -85,7 +78,8 @@ public class FishingInstructorController {
     }
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<FishingInstructorDTO>> getAllInstructors(){
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<List<FishingInstructorDTO>> getAllInstructors(Principal principal){
         List<FishingInstructor> instructors = fishingInstructorService.findAll();
         List<FishingInstructorDTO> instructorsDTO = new ArrayList<>();
         for(FishingInstructor c : instructors){

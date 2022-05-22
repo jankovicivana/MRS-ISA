@@ -3,7 +3,8 @@ package ftn.mrs.isa.rentalapp.model.reservation;
 
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.user.Client;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

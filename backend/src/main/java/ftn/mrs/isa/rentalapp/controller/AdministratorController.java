@@ -32,6 +32,8 @@ public class AdministratorController {
     private AdministratorService administratorService;
 
 
+
+
     @PostMapping("/addAdministrator")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<AdministratorDTO> addAdventure(@RequestBody AdministratorCreateDTO administratorCreateDTO, Principal principal) {
@@ -41,4 +43,7 @@ public class AdministratorController {
         return new ResponseEntity<>(mapper.map(admin, AdministratorDTO.class), HttpStatus.CREATED);
 
     }
+
+
+
 }

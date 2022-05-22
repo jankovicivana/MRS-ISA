@@ -1,9 +1,13 @@
 
 package ftn.mrs.isa.rentalapp.config;
+
+import ftn.mrs.isa.rentalapp.security.RestAuthenticationEntryPoint;
+import ftn.mrs.isa.rentalapp.security.TokenAuthenticationFilter;
+import ftn.mrs.isa.rentalapp.service.UserService;
+import ftn.mrs.isa.rentalapp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,11 +19,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import ftn.mrs.isa.rentalapp.security.RestAuthenticationEntryPoint;
-import ftn.mrs.isa.rentalapp.security.TokenAuthenticationFilter;
-import ftn.mrs.isa.rentalapp.service.UserService;
-import ftn.mrs.isa.rentalapp.util.TokenUtils;
 
 @Configuration
 // Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi

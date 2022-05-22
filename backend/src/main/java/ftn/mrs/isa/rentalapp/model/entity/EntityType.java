@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +36,9 @@ public abstract class EntityType {
 
     @Column(name = "deleted")
     private boolean deleted = false;
+
+    @Column(name = "averageGrade")
+    private Double averageGrade = 0.0;
 
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "address")

@@ -1,7 +1,6 @@
 package ftn.mrs.isa.rentalapp.model.entity;
 
 
-import ftn.mrs.isa.rentalapp.model.user.Address;
 import lombok.Getter;
 import lombok.Setter;
 

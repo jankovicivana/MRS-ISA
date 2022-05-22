@@ -1,6 +1,5 @@
 package ftn.mrs.isa.rentalapp.dto;
 
-import ftn.mrs.isa.rentalapp.model.entity.BoatType;
 import lombok.Data;
 
 import java.util.HashSet;

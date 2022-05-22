@@ -1,12 +1,9 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 
-import ftn.mrs.isa.rentalapp.dto.AdventureCreateDTO;
-import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
 import ftn.mrs.isa.rentalapp.dto.QuickReservationDTO;
-import ftn.mrs.isa.rentalapp.model.entity.*;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
-import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.service.AdventureService;
 import ftn.mrs.isa.rentalapp.service.BoatService;
 import ftn.mrs.isa.rentalapp.service.CottageService;
@@ -21,8 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor

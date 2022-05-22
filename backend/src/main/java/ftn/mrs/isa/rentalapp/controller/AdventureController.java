@@ -1,10 +1,9 @@
 package ftn.mrs.isa.rentalapp.controller;
 
-import ftn.mrs.isa.rentalapp.dto.*;
+import ftn.mrs.isa.rentalapp.dto.AdventureCreateDTO;
+import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
-import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
-import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

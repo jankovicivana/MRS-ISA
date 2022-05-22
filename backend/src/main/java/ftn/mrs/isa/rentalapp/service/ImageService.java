@@ -1,7 +1,5 @@
 package ftn.mrs.isa.rentalapp.service;
 
-import ftn.mrs.isa.rentalapp.dto.ImageDTO;
-import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Image;
 import ftn.mrs.isa.rentalapp.repository.ImageRepository;

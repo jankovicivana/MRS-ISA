@@ -1,7 +1,7 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
 
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,10 +12,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "advertiserReviews")
 public class AdvertiserReview {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @SequenceGenerator(name = "mySeqGenV3", sequenceName = "mySeqV3", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV3")
+    private Integer id;
 
     @Column(name = "grade", nullable = false)
     private Integer grade;
@@ -23,11 +24,14 @@ public class AdvertiserReview {
     @Column(name = "review", nullable = false)
     private String review;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "status", nullable = false)
+    private RequestStatus status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client")
     private Client client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "advertiser")
     private Advertiser advertiser;
 

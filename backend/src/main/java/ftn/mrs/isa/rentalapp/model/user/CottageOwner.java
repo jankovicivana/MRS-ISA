@@ -1,6 +1,5 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
-import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 
 import javax.persistence.Entity;

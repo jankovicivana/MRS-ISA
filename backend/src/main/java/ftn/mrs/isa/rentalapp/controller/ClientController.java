@@ -2,7 +2,6 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.ClientDTO;
 import ftn.mrs.isa.rentalapp.dto.ReportDTO;
-import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.reservation.Report;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.user.Advertiser;

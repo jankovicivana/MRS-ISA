@@ -1,11 +1,7 @@
 package ftn.mrs.isa.rentalapp.controller;
 
-import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.CottageOwnerDTO;
-import ftn.mrs.isa.rentalapp.dto.FishingInstructorDTO;
-import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
-import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.service.CottageOwnerService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

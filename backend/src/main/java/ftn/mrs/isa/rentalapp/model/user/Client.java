@@ -3,7 +3,6 @@ package ftn.mrs.isa.rentalapp.model.user;
 import ftn.mrs.isa.rentalapp.model.entity.EntityComplaint;
 import ftn.mrs.isa.rentalapp.model.entity.EntityReview;
 import ftn.mrs.isa.rentalapp.model.entity.Subscription;
-import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Report;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import lombok.Getter;

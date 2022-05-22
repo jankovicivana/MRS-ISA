@@ -1,7 +1,5 @@
 package ftn.mrs.isa.rentalapp.controller;
 
-import javax.servlet.http.HttpServletResponse;
-
 import ftn.mrs.isa.rentalapp.dto.JwtAuthenticationRequest;
 import ftn.mrs.isa.rentalapp.dto.UserTokenState;
 import ftn.mrs.isa.rentalapp.model.user.Role;
@@ -21,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 //Kontroler zaduzen za autentifikaciju korisnika

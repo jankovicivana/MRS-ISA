@@ -1,6 +1,6 @@
 <template>
   <section class="profile_main vh-100" >
-
+    <admin-navbar></admin-navbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -25,7 +25,7 @@
                       </thead>
                       <tbody>
                       <tr style="background: #ecd9c6"  v-if="clients.length == 0">
-                        <td colspan="5" class="p-3">Trenutno nema korisnika.</td>
+                        <td colspan="5" class="p-3">Currently there is no any user.</td>
                       </tr>
 
                       <tr style="background: #ecd9c6" v-for="client in clients">
@@ -52,9 +52,11 @@
 
 <script>
 import axios from "axios";
+import AdminNavbar from "./header/AdminNavbar";
 
 export default {
   name: "AdminViewInstructor",
+  components: {AdminNavbar},
   data(){
 
     return{
@@ -64,7 +66,8 @@ export default {
   mounted:function (){
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/all")
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/all", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.clients = response.data
       ))
@@ -72,11 +75,18 @@ export default {
 
   },
   methods:{
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Successful!</p>`
+      let text = `<p style="font-size: 20px">Successfully deleted instructor!</p>`
+      this.$notify({group, title, text, type})
+    },
     deleteClient:function (client){
       let id = client.id
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/delete/"+id)
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/delete/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          alert(response.data)
+          this.show('foo-css', 'success')
+          setTimeout(() => { }, 3000)
           const index = this.clients.indexOf(client);
           this.clients.splice(index, 1);
         }).catch(function error(error) {

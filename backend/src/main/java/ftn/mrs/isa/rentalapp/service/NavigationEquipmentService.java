@@ -1,6 +1,8 @@
 package ftn.mrs.isa.rentalapp.service;
 
-import ftn.mrs.isa.rentalapp.model.entity.*;
+import ftn.mrs.isa.rentalapp.model.entity.Boat;
+import ftn.mrs.isa.rentalapp.model.entity.NavigationEquipment;
+import ftn.mrs.isa.rentalapp.model.entity.NavigationEquipmentType;
 import ftn.mrs.isa.rentalapp.repository.NavigationEquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

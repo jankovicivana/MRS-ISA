@@ -1,10 +1,9 @@
 package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.model.entity.AdditionalService;
-import ftn.mrs.isa.rentalapp.model.entity.Rule;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.repository.AdditionalServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
