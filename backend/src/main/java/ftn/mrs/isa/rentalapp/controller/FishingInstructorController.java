@@ -47,7 +47,7 @@ public class FishingInstructorController {
     }
 
 
-    @GetMapping(value = "/getUnavailablePeriod/getInstructor")
+    @GetMapping(value = "/getAvailablePeriod/getInstructor")
     public ResponseEntity<List<AvailablePeriodDTO>> getAvailablePeriodOfInstructor(Principal principal){
         FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
         if(instructor == null){
