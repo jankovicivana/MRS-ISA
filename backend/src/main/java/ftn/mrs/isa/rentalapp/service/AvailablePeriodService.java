@@ -24,4 +24,8 @@ public class AvailablePeriodService {
         System.out.println(periodList);
         return !periodList.isEmpty();
     }
+
+    public List<AvailablePeriod> getAvailablePeriod(Integer id) {
+        return availablePeriodRepository.getAvailableUserPeriod(id);
+    }
 }

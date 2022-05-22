@@ -69,7 +69,7 @@ public class ClientController {
     }
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAnyRole('cottageOwner','boatOwner')")
+    @PreAuthorize("hasAnyRole('cottageOwner','boatOwner','fishingInstructor')")
     public ResponseEntity<ClientDTO> getClientById(@PathVariable Integer id,Principal principal){
         Client client = clientService.findOne(id);
         if(client == null){
