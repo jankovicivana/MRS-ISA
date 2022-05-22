@@ -95,7 +95,7 @@ export default {
   },
   mounted: function(){
 
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getUnavailablePeriod/getInstructor", {headers: {Authorization:
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getAvailablePeriod/getInstructor", {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.periods = response.data
@@ -108,7 +108,7 @@ export default {
   },
   methods:{
     fillCalendar:function (){
-      for(let p in this.periods){
+      for(let p of this.periods){
         this.newEvent = {
           title: 'Event 1',
           start: p.startDateTime,

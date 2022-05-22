@@ -1,6 +1,7 @@
 <template>
   <div class="browse_main">
-    <main_navbar></main_navbar>
+    <main_navbar v-if="role === ''"></main_navbar>
+    <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
     <div class="mt-5 container">
       <h1>Adventures</h1>
       <hr style="color: #2e6b6b"/>
@@ -48,23 +49,34 @@
 import MainNavbar from "./header/MainNavbar";
 import AdventureBrowseCard from "./AdventureBrowseCard";
 import axios from "axios";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "BrowseAdventures",
-  components: {'main_navbar': MainNavbar, 'browse_card': AdventureBrowseCard},
+  components: {FishingInstructorNavbar, 'main_navbar': MainNavbar, 'browse_card': AdventureBrowseCard},
   data: function (){
     return {
       adventures: '',
       searchText: '',
       searchSort: '',
-      search_adventures: ''
+      search_adventures: '',
+      role:''
     }
   },
   mounted: function(){
+    this.role = sessionStorage.getItem("role");
+
+    if(this.role === 'ROLE_fishingInstructor'){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/allByOwner", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.adventures = this.search_adventures = response.data))
+
+    }else{
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/all")
       .then(response => (this.adventures = this.search_adventures = response.data))
-  },
+    }},
   methods: {
     search: function (){
       if(this.searchText){
