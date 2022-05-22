@@ -54,7 +54,7 @@
           </div>
         </div>
       </div>
-      <div class="row p-4">
+      <div class="row py-4">
         <div class="col-4" style="background: #f8f2ec;border-radius: 5%">
           <p style="font-size: 25px;">Rules</p>
           <div class="rules">
@@ -88,8 +88,8 @@
 
 
       <div class="row " v-if="quick.length != 0" >
-        <div class="col-12 mx-3" style="background: #f8f2ec;">
-          <div class="row pt-3" style="padding-left: 10px">
+        <div class="col-12" style="background: #f8f2ec;">
+          <div class="row pt-3">
             <h3 id="quick_heading" class="col-10">Quick reservations - enormous discounts!</h3>
             <span class="col-2" style="float: right;background: #f8f2ec;">
             <button type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg ">Add new</button>
@@ -118,6 +118,14 @@
 
         </div>
       </div>
+      <div class="row  py-4 mt-3">
+        <h4><b>Location:</b>  {{address.country}}, {{address.city}}, {{address.street}}</h4>
+        <l-map style="height: 300px" :zoom="zoom" :center="center">
+          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+          <l-marker :lat-lng="markerLatLng"></l-marker>
+        </l-map>
+      </div>
+
     </div>
   </section>
   </div>
@@ -141,15 +149,43 @@ export default {
       num_rooms: 0,
       num_beds: 0,
       isModalVisible: false,
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '',
+      zoom: 15,
+      center: [0,0],
+      markerLatLng: [0, 0],
+      address:'',
+      cottageId: this.$route.params.id,
+      config:''
     }
     },
       mounted:function (){
+
       const sumFuncy = async (a,b) => a+b;
-      var cottageId = this.$route.params.id;
-      axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+cottageId, {headers: {Authorization:
-              'Bearer ' + sessionStorage.getItem("accessToken")}})
-        .then(response => (this.cottage = response.data,this.quick=this.cottage.quickReservations,this.num_rooms=response.data.rooms.length,response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})))
+
+        axios
+          .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+this.cottageId, {headers: {Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(first_response => {
+        this.cottage = first_response.data
+        this.address=first_response.data.address
+        this.quick=this.cottage.quickReservations
+        this.num_rooms=first_response.data.rooms.length
+        first_response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})
+        this.config = {
+            method: 'get',
+            url: 'https://api.geoapify.com/v1/geocode/search?text='+this.address.street+' '+this.address.city+' '+this.address.postal_code+' '+this.address.country+'&apiKey=edff0ba2d6d545279a82d4d37402a851',
+            headers: { }
+          }
+        axios(this.config).then(second_response => {
+          this.center = [second_response.data.features[0].geometry.coordinates[1],second_response.data.features[0].geometry.coordinates[0]]
+          this.markerLatLng = [second_response.data.features[0].geometry.coordinates[1],second_response.data.features[0].geometry.coordinates[0]]
+        })
+
+      })
+
+
+
 
     },methods: {
     show: function(group, type=''){
