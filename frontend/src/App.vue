@@ -38,6 +38,17 @@ export default {
   background-size: cover;
 }
 
+.basic_background{
+  background-attachment: fixed;
+  background-image: url('assets/images/back2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  overflow: scroll;
+}
+
 .profile_boat{
   background-image: url('assets/images/backboat.jpg');
   background-size: 100% 100%;

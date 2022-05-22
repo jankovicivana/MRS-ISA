@@ -25,7 +25,7 @@
                       </thead>
                       <tbody>
                         <tr style="background: #ecd9c6"  v-if="clients.length == 0">
-                          <td colspan="5" class="p-3">Trenutno nema korisnika.</td>
+                          <td colspan="5" class="p-3">Currently there is no any user.</td>
                         </tr>
                         <tr style="background: #ecd9c6" v-for="client in clients">
                           <td>{{client.name}}</td>
@@ -75,7 +75,7 @@ export default {
   },
   methods:{
     show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfull!</p>`
+      let title = `<p style="font-size: 25px">Successful!</p>`
       let text = `<p style="font-size: 20px">Successfully deleted client!</p>`
       this.$notify({group, title, text, type})
     },

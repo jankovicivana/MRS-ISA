@@ -35,6 +35,7 @@ import LoginPage from "../components/LoginPage";
 import HomepageCottageOwner from "../components/HomepageCottageOwner";
 import HomepageBoatOwner from "../components/HomepageBoatOwner";
 import FishingInstructorHomepage from "../components/FishingInstructorHomepage";
+import Revision from "../components/Revision";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -119,6 +120,11 @@ export default new Router({
       path: '/admin/viewBoatOwners',
       name:'AdminViewBoatOwners',
       component: AdminViewBoatOwners
+
+    },{
+      path: '/admin/revisions',
+      name:'Revison',
+      component: Revision
 
     },
     {
