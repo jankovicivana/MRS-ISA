@@ -1,7 +1,7 @@
 package ftn.mrs.isa.rentalapp.model.entity;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +30,10 @@ public class EntityComplaint {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity")
     private EntityType entity;
+
+
+    @Column(name = "status", nullable = false)
+    private RequestStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client")

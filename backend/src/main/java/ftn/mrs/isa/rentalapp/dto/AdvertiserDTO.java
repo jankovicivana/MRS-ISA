@@ -1,10 +1,10 @@
 package ftn.mrs.isa.rentalapp.dto;
 
-import ftn.mrs.isa.rentalapp.model.user.UserType;
+import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import lombok.Data;
 
 @Data
-public class ClientDTO {
+public class AdvertiserDTO {
 
     private Integer id;
 
@@ -16,15 +16,15 @@ public class ClientDTO {
 
     private String surname;
 
-    private AddressDTO address;
-
     private String phoneNumber;
 
-    private UserType type = UserType.CLIENT;
+    private String biography;
+
+    private AddressDTO address;
 
     private String mainPhoto;
 
-    private Integer points;
+    private RequestStatus registrationStatus;
 
-    private Integer penalties;
+
 }

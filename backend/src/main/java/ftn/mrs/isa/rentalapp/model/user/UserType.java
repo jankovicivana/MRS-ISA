@@ -1,8 +1,6 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
 
-import org.springframework.security.core.GrantedAuthority;
-
 public enum UserType{
     FISHING_INSTRUCTOR,
     COTTAGE_OWNER,

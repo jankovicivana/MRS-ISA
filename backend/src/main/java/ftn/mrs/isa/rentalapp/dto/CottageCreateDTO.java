@@ -4,7 +4,6 @@ import ftn.mrs.isa.rentalapp.model.entity.AdditionalService;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.Image;
 import ftn.mrs.isa.rentalapp.model.entity.Rule;
-import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import lombok.Data;
 
 import java.util.ArrayList;

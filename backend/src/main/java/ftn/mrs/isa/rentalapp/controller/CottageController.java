@@ -1,6 +1,7 @@
 package ftn.mrs.isa.rentalapp.controller;
 
-import ftn.mrs.isa.rentalapp.dto.*;
+import ftn.mrs.isa.rentalapp.dto.CottageCreateDTO;
+import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.service.*;
@@ -15,17 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import ftn.mrs.isa.rentalapp.dto.CottageDTO;
-import ftn.mrs.isa.rentalapp.model.entity.Cottage;
-import ftn.mrs.isa.rentalapp.service.CottageService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 
 

@@ -1,13 +1,11 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
 
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-
-import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 @Getter
 @Setter
@@ -27,6 +25,10 @@ public class AdvertiserComplaint {
 
     @Column(name = "isAnswered", nullable = false)
     private Boolean isAnswered;
+
+
+    @Column(name = "status", nullable = false)
+    private RequestStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertiser")

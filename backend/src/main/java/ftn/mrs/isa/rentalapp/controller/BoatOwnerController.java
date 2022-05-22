@@ -2,17 +2,17 @@ package ftn.mrs.isa.rentalapp.controller;
 
 
 import ftn.mrs.isa.rentalapp.dto.BoatOwnerDTO;
-import ftn.mrs.isa.rentalapp.dto.FishingInstructorDTO;
 import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
-import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
-import ftn.mrs.isa.rentalapp.service.*;
+import ftn.mrs.isa.rentalapp.service.BoatOwnerService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,8 @@ public class BoatOwnerController {
     private ModelMapper mapper;
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id){
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> delete(@PathVariable Integer id, Principal principal){
         BoatOwner client = boatOwnerService.findOne(id);
         if(client == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -41,7 +42,8 @@ public class BoatOwnerController {
     }
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<BoatOwnerDTO>> getAllBoatOwners(){
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<List<BoatOwnerDTO>> getAllBoatOwners(Principal principal){
         List<BoatOwner> owners = boatOwnerService.findAll();
         List<BoatOwnerDTO> ownersDTO = new ArrayList<>();
         for(BoatOwner c : owners){

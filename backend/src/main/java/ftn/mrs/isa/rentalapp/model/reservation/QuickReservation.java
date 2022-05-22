@@ -2,13 +2,11 @@ package ftn.mrs.isa.rentalapp.model.reservation;
 
 import ftn.mrs.isa.rentalapp.model.entity.AdditionalService;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
-import ftn.mrs.isa.rentalapp.model.user.Client;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -2,9 +2,7 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.AdditionalServiceDTO;
 import ftn.mrs.isa.rentalapp.model.entity.AdditionalService;
-import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
-import ftn.mrs.isa.rentalapp.model.entity.Rule;
 import ftn.mrs.isa.rentalapp.service.AdditionalServiceService;
 import ftn.mrs.isa.rentalapp.service.AdventureService;
 import ftn.mrs.isa.rentalapp.service.BoatService;
