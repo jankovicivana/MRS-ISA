@@ -23,11 +23,11 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Owners </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="#/admin/viewClients"> Clients</a>
-            <a class="navbar-item" href="#/admin/viewInstructors"> Fishing instructors </a>
-            <a class="navbar-item" href="#/admin/viewBoatOwners"> Boat owners </a>
-            <a class="navbar-item" href="#/client/clientHomepage"> Cottage owners </a>
-            <a class="navbar-item" href="#/administrator/AddAdministrator"> Add administrator </a>
+            <a class="navbar-item" href="#/admin/viewUsers/clients"> Clients</a>
+            <a class="navbar-item" href="#/admin/viewUsers/instructors"> Fishing instructors </a>
+            <a class="navbar-item" href="#/admin/viewUsers/boatOwners"> Boat owners </a>
+            <a class="navbar-item" href="#/admin/viewUsers/cottageOwners"> Cottage owners </a>
+            <a class="navbar-item" href="#/admin/AddAdministrator"> Add administrator </a>
           </div>
         </div>
 

@@ -14,4 +14,8 @@ public interface AvailablePeriodRepository extends  JpaRepository<AvailablePerio
 
     @Query(value = "SELECT * FROM public.available_periods WHERE entity = :id and start_date_time < :start and end_date_time > :end", nativeQuery = true)
     public List<AvailablePeriod> getAvailable(Integer id, LocalDate start, LocalDate end);
+
+    @Query(value = "SELECT * FROM public.available_periods WHERE entity = :id ", nativeQuery = true)
+    public List<AvailablePeriod> getAvailableUserPeriod(Integer id);
+
 }

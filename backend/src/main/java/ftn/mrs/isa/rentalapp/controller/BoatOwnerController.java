@@ -76,7 +76,9 @@ public class BoatOwnerController {
         List<BoatOwner> owners = boatOwnerService.findAll();
         List<BoatOwnerDTO> ownersDTO = new ArrayList<>();
         for(BoatOwner c : owners){
-            ownersDTO.add(mapper.map(c,BoatOwnerDTO.class));
+            if (!c.isDeleted()) {
+                ownersDTO.add(mapper.map(c, BoatOwnerDTO.class));
+            }
         }
         return new ResponseEntity<>(ownersDTO, HttpStatus.OK);
     }

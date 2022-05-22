@@ -7,9 +7,9 @@ import ftn.mrs.isa.rentalapp.dto.ReservationDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
-import ftn.mrs.isa.rentalapp.service.AdventureService;
-import ftn.mrs.isa.rentalapp.service.CottageService;
-import ftn.mrs.isa.rentalapp.service.ReservationService;
+import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
+import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
+import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +42,18 @@ public class ReservationController {
     @Autowired
     private CottageService cottageService;
 
-    @GetMapping(value = "/findHistoryByUser/{id}")
+    @Autowired
+    private CottageOwnerService cottageOwnerService;
+
+    @Autowired
+    private FishingInstructorService fishingInstructorService;
+
+    @GetMapping(value = "/findHistoryByUser/getInstructor")
     @PreAuthorize("hasRole('fishingInstructor')")
-    public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByUser(@PathVariable Integer id, Principal principal){
-        List<Reservation> reservations = reservationService.findAllHistoryByUser(id);
-        System.out.print("------>"+reservations.size());
+    public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByUser( Principal principal){
+        FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.findAllHistoryByUser(instructor.getId());
+        System.out.print("-------------------------------->"+reservations.size());
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for(Reservation c : reservations){
             ReservationDTO rt = mapper.map(c, ReservationDTO.class);
@@ -57,10 +64,11 @@ public class ReservationController {
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/findHistoryByCottageOwner/{id}")
+    @GetMapping(value = "/findHistoryByCottageOwner/getCottageOwner")
     @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByCottageOwner(@PathVariable Integer id){
-        List<Reservation> reservations = reservationService.findAllHistoryByCottageOwner(id);
+    public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByCottageOwner(Principal principal){
+        CottageOwner owner = cottageOwnerService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.findAllHistoryByCottageOwner(owner.getId());
         return getListResponseEntity(reservations);
     }
 

@@ -161,4 +161,4 @@ insert into entity_reviews (id,grade,review,status,client,entity) values (nextva
 insert into entity_reviews (id,grade,review,status,client,entity) values (nextval('my_seqv4'),1,'Ne valja vikendica',1,2,1);
 
 
-insert into available_periods (id, start_date_time, end_date_time, entity) values (1, '20220622', '20220627', 1);
+insert into available_periods (id, start_date_time, end_date_time, entity) values (1, '20220622', '20220627', 3);

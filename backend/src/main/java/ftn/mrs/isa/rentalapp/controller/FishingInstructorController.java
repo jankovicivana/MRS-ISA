@@ -47,6 +47,20 @@ public class FishingInstructorController {
     }
 
 
+    @GetMapping(value = "/getUnavailablePeriod/getInstructor")
+    public ResponseEntity<List<AvailablePeriodDTO>> getAvailablePeriodOfInstructor(Principal principal){
+        FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
+        if(instructor == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<AvailablePeriod> periods = availablePeriodService.getAvailablePeriod(instructor.getId());
+        List<AvailablePeriodDTO> availablePeriods = new ArrayList<>();
+        for (AvailablePeriod a : periods){
+            availablePeriods.add(mapper.map(a,AvailablePeriodDTO.class));
+        }
+        return new ResponseEntity<>(availablePeriods, HttpStatus.OK);
+    }
+
 
     @PostMapping(value = "/updateInstructor" )
     @PreAuthorize("hasRole('fishingInstructor')")
@@ -83,7 +97,9 @@ public class FishingInstructorController {
         List<FishingInstructor> instructors = fishingInstructorService.findAll();
         List<FishingInstructorDTO> instructorsDTO = new ArrayList<>();
         for(FishingInstructor c : instructors){
-            instructorsDTO.add(mapper.map(c,FishingInstructorDTO.class));
+            if (!c.isDeleted()) {
+                instructorsDTO.add(mapper.map(c, FishingInstructorDTO.class));
+            }
         }
         return new ResponseEntity<>(instructorsDTO, HttpStatus.OK);
     }

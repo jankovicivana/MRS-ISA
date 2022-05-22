@@ -42,7 +42,7 @@ public class EntityType {
     @Column(name = "averageGrade")
     private Double averageGrade = 0.0;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address")
     protected Address address;
 

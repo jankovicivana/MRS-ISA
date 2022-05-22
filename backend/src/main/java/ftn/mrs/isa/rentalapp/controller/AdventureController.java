@@ -4,6 +4,7 @@ import ftn.mrs.isa.rentalapp.dto.AdventureCreateDTO;
 import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.user.Address;
+import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -37,6 +38,9 @@ public class AdventureController {
     private ImageService imageService;
 
     @Autowired
+    private FishingInstructorService fishingInstructorService;
+
+    @Autowired
     private RuleService ruleService;
 
     @Autowired
@@ -57,11 +61,17 @@ public class AdventureController {
     @PostMapping("/addAdventure")
     @PreAuthorize("hasRole('fishingInstructor')")
     public ResponseEntity<AdventureDTO> addAdventure(@RequestBody AdventureCreateDTO adventureDTO,Principal principal) throws Exception {
-        Adventure adventure = mapper.map(adventureDTO,Adventure.class);
+        FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
+        Adventure adventure = new Adventure();
+        adventure.setName(adventureDTO.getName());
+        adventure.setDescription(adventureDTO.getDescription());
+        adventure.setMaxPersonNum(Integer.parseInt(adventureDTO.getMaxPersonNum()));
+        adventure.setPrice(adventureDTO.getPrice());
+        adventure.setCancelFee(adventureDTO.getCancelFee());
         adventure.setAddress(new Address(adventureDTO.getStreet(),adventureDTO.getCity(),adventureDTO.getPostal_code(),adventureDTO.getCountry()));
+        adventure.setFishingInstructor(instructor);
 
         Set<Rule> rules = ruleService.createRuleFromString(adventureDTO.getRules(),adventure);
-        System.out.print(rules.size());
         adventure.setRules(rules);
 
         Set<FishingEquipment> equipment = equipmentService.createFishingEquipmentFromString(adventureDTO.getFishingEquipment(),adventure);
