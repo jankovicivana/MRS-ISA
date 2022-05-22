@@ -2,6 +2,8 @@ package ftn.mrs.isa.rentalapp.dto;
 
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 public class EntityTypeDTO {
 
@@ -14,5 +16,9 @@ public class EntityTypeDTO {
     private AddressDTO address;
 
     private String description;
+
+    private Set<ImageDTO> images;
+
+    private Set<AdditionalServiceDTO> additionalServices;
 
 }

@@ -159,5 +159,6 @@ export default new Router({
       name: "Reservations",
       component: Reservations
     }
+
   ]
 })

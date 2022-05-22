@@ -136,7 +136,7 @@ export default {
         this.editButton.innerHTML="save" ;
       } else {
         this.editButton.innerHTML="edit" ;
-        var c = {id: this.client.id, name: this.client.name, surname: this.client.surname, email: this.client.email, password: this.client.password, address: this.client.address};
+        let c = {id: this.client.id, name: this.client.name, surname: this.client.surname, email: this.client.email, password: this.client.password, address: this.client.address};
         axios
           .post(process.env.VUE_APP_SERVER_PORT+"/api/clients/updateClient", c)
           .then(response => {

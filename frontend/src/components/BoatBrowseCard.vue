@@ -15,7 +15,6 @@
               <strong><a href="/#"  style="color: #2e6b6b">{{boat.name}}</a> </strong>
               <span class="mr-1 m-lg-4" style="font-size:20px; color:gold">&starf; &starf; &starf; &starf; &starf;</span>
               <br /><br />
-
               {{boat.description}}
             </p>
 

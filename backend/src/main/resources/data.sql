@@ -142,3 +142,5 @@ insert into subscriptions (id, client, entity) values (1, 2, 1);
 insert into subscriptions (id, client, entity) values (2, 2, 2);
 insert into subscriptions (id, client, entity) values (3, 2, 3);
 insert into subscriptions (id, client, entity) values (4, 2, 4);
+
+insert into available_periods (id, start_date_time, end_date_time, entity) values (1, '20220622', '20220627', 1);

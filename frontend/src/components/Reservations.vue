@@ -3,13 +3,14 @@
     <ClientNavbar></ClientNavbar>
     <div class="container pt-5">
       <h1> Browse available entities </h1>
-
       <div class="search_div row">
         <div class="column col-2">
-          <input class="input" v-model="searchText" type="text" placeholder="Name"/>
+          <span style="color: white">Name</span>
+          <input class="input" ref="name" type="text" placeholder="Name"/>
         </div>
         <div class="column col-2">
-          <select title="Select city" v-model="selectedCity" style="height: 40px; width:200px">
+          <span style="color: white">Location</span>
+          <select title="Select city" ref="location" style="height: 40px; width:200px">
             <option selected value="">Anywhere</option>
             <option v-for="a in this.addresses" :value="a.city">
               {{a.city}}
@@ -17,48 +18,83 @@
           </select>
         </div>
         <div class="column col-2">
-          <input class="input" v-model="price" type="number" placeholder="Max price"/>
+          <span style="color: white">Price</span>
+          <input class="input" ref="price" type="number" min="0" placeholder="Max price"/>
         </div>
         <div class="column col-2">
-          <input class="input" type="number" placeholder="People" name="numPeople" min="1" max="10" style="height: 40px">
+          <span style="color: white">People</span>
+          <input class="input" type="number" placeholder="Number of people" ref="people" min="1" max="10" style="height: 40px">
         </div>
       </div>
       <div class="columns">
         <div class="column col-2 ">
-          <span style="color: white">Start</span>
-          <input type="date" name="startDate" placeholder="start" style="height: 40px; width:200px">
+          <span style="color: white">Start date</span>
+          <input type="date" name="startDate" ref="startDate" placeholder="start" style="height: 40px; width:200px">
+        </div>
+        <div class="column col-2 ">
+          <span style="color: white">Start time</span>
+          <input type="time" name="startTime" ref="startTime" placeholder="start" style="height: 40px; width:200px">
+        </div>
+
+        <div class="column col-2">
+          <span style="color: white">End date</span>
+          <input type="date" name="endDate" ref="endDate" placeholder="end" style="height: 40px; width:200px">
         </div>
         <div class="column col-2">
-          <span style="color: white">End</span>
-          <input type="date" name="endDate" placeholder="end" style="height: 40px; width:200px">
+          <span style="color: white">End time</span>
+          <input type="time" name="endTime" ref="endTime" placeholder="end" style="height: 40px; width:200px">
+        </div>
+
+
+        <div class="column col-2">
+          <span style="color: white">Rating</span>
+          <input class="input" type="number" placeholder="Rating" ref="rating" min="0" max="5" style="height: 40px">
         </div>
         <div class="column col-2">
-          <button type="button" class="btn search_btn" style="float: left">Search</button>
+          <button type="submit" v-on:click="search()" class="btn search_btn" style="float: left">Search</button>
         </div>
       </div>
 
-
+      <div v-if="entities.length === 0">
+        <p style="color: white"> Nothing to show for now.</p>
+      </div>
+      <div v-for="e in entities">
+        <browse_card :cottage="e"></browse_card>
+      </div>
 
     </div>
+
   </div>
 </template>
 
 <script>
 import ClientNavbar from "./header/ClientNavbar";
 import axios from "axios";
+import CottageBrowseCard from "./CottageBrowseCard";
 export default {
   name: "Reservations",
-  components: {ClientNavbar},
+  components: {ClientNavbar, 'browse_card': CottageBrowseCard},
   data: function(){
     return{
       addresses: '',
-      selectedCity: ''
+      entities: '',
+      params: ''
     }
   },
   mounted: function () {
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/address/all")
       .then(response => (this.addresses = response.data))
+  },
+  methods: {
+    search: function (){
+      this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
+        startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.$refs.rating.value};
+      axios
+        .post(process.env.VUE_APP_SERVER_PORT+"/api/entity/getAvailable", this.params)
+        .then(response => (this.entities = response.data)).catch(function error(error) {
+        alert(error.response.data);});
+    }
   }
 }
 </script>
