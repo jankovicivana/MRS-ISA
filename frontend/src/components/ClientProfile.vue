@@ -122,7 +122,7 @@ export default {
   },
   mounted: function (){
     this.role = sessionStorage.getItem("role");
-    if (this.role === "ROLE_cottageOwner") {
+    if (this.role === "ROLE_cottageOwner" || this.role === "ROLE_fishingInstructor" ) {
       var clientId = this.$route.params.id;
       axios
         .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/"+clientId, {headers: {Authorization:

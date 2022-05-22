@@ -14,7 +14,6 @@ import AdvertiserProfile from "../components/AdvertiserProfile";
 import BoatProfile from "../components/BoatProfile";
 import AddAdministrator from "../components/AddAdministrator";
 import AddBoat from "../components/AddBoat";
-import AdminViewClients from "../components/AdminViewClients";
 import UpdateBoat from "../components/UpdateBoat";
 import ClientHomepage from "../components/ClientHomepage";
 import MainHomepage from "../components/MainHomepage";
@@ -24,8 +23,6 @@ import BrowseAdventures from "../components/BrowseAdventures";
 
 import ReservationHistory from "../components/ReservationHistory";
 import InstructorAvailability from "../components/InstructorAvailability";
-import AdminViewInstructor from "../components/AdminViewInstructor";
-import AdminViewBoatOwners from "../components/AdminViewBoatOwners";
 import UpcomingReservations from "../components/UpcomingReservations";
 import CurrentReservations from "../components/CurrentReservations";
 import Report from "../components/Report";
@@ -36,6 +33,7 @@ import HomepageCottageOwner from "../components/HomepageCottageOwner";
 import HomepageBoatOwner from "../components/HomepageBoatOwner";
 import FishingInstructorHomepage from "../components/FishingInstructorHomepage";
 import Revision from "../components/Revision";
+import AdminViewUsers from "../components/AdminViewUsers";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -103,21 +101,12 @@ export default new Router({
       name:'AddBoat',
       component: AddBoat
     },{
-      path: '/admin/viewClients',
+      path: '/admin/viewUsers/:userType',
       name:'AdminViewClients',
-      component: AdminViewClients
+      component: AdminViewUsers
 
-    },{
-      path: '/admin/viewInstructors',
-      name:'AdminViewInstructor',
-      component: AdminViewInstructor
-
-    },{
-      path: '/admin/viewBoatOwners',
-      name:'AdminViewBoatOwners',
-      component: AdminViewBoatOwners
-
-    },{
+    }
+    ,{
       path: '/admin/revisions',
       name:'Revison',
       component: Revision

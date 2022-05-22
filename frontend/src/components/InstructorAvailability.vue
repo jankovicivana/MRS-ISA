@@ -61,6 +61,7 @@ export default {
   data() {
     return {
       selectedDate: null,
+      periods:'',
       eventCategories: [
         {
           id: 1,
@@ -92,7 +93,31 @@ export default {
 
     }
   },
+  mounted: function(){
+
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getUnavailablePeriod/getInstructor", {headers: {Authorization:
+          'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => {
+        this.periods = response.data
+        this.fillCalendar();
+      }).catch(function error(error) {
+        alert(error.response.data);
+      });
+
+
+  },
   methods:{
+    fillCalendar:function (){
+      for(let p in this.periods){
+        this.newEvent = {
+          title: 'Event 1',
+          start: p.startDateTime,
+          end: p.endDateTime,
+          categoryId: 1
+        }
+        this.events.push(this.newEvent);
+      }
+    },
     show: function(group, type=''){
       let title = `<p style="font-size: 25px">Successfully added!</p>`
       let text = `<p style="font-size: 20px">Successfully added available period!</p>`
