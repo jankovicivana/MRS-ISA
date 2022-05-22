@@ -16,9 +16,11 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @Getter
 @Setter
 @Entity
+@Table(name="entities")
 @Inheritance(strategy=TABLE_PER_CLASS)
-public abstract class EntityType {
+public class EntityType {
 
+    public EntityType(){}
 
     @Id
     @SequenceGenerator(name = "mySeqGenV2", sequenceName = "mySeqV2", initialValue = 1, allocationSize = 1)
@@ -40,7 +42,7 @@ public abstract class EntityType {
     @Column(name = "averageGrade")
     private Double averageGrade = 0.0;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address")
     protected Address address;
 

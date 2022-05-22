@@ -30,6 +30,7 @@ import UpcomingReservations from "../components/UpcomingReservations";
 import CurrentReservations from "../components/CurrentReservations";
 import Report from "../components/Report";
 import ClientSubscriptions from "../components/ClientSubscriptions";
+import Reservations from "../components/Reservations";
 import LoginPage from "../components/LoginPage";
 import HomepageCottageOwner from "../components/HomepageCottageOwner";
 import HomepageBoatOwner from "../components/HomepageBoatOwner";
@@ -167,6 +168,7 @@ export default new Router({
       name: "CreateReport",
       component: Report
     },
+
     {
       path: '/client/subscriptions',
       name: "ClientSubscriptions",
@@ -186,6 +188,11 @@ export default new Router({
       path: '/boatOwner/boatOwnerHomepage',
       name: 'HomepageBoatOwner',
       component: HomepageBoatOwner
+    },
+    {
+      path: '/client/reservations',
+      name: "Reservations",
+      component: Reservations
     }
   ]
 })

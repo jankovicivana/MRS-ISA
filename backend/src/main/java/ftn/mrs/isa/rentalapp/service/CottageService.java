@@ -32,7 +32,6 @@ public class CottageService {
 
     public void save(Cottage cottage){cottageRepository.save(cottage);}
 
-
     public boolean canDeleteCottage(Cottage cottage) {
         List<Reservation> l = reservationsRepository.getReservationByEntity(LocalDate.now(), cottage.getId());
         return l.size() == 0;

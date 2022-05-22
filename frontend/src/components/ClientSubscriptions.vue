@@ -128,4 +128,8 @@ h1{
   transform: scale(1.07);
 }
 
+a{
+  text-decoration: none;
+}
+
 </style>
