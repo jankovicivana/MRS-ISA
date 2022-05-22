@@ -1,0 +1,63 @@
+package ftn.mrs.isa.rentalapp.service;
+
+
+import ftn.mrs.isa.rentalapp.model.user.Client;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+
+@Service
+public class EmailService {
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+    /*
+     * Koriscenje klase za ocitavanje vrednosti iz application.properties fajla
+     */
+    @Autowired
+    private Environment env;
+
+    /*
+     * Anotacija za oznacavanje asinhronog zadatka
+     * Vise informacija na: https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#scheduling
+     */
+    @Async
+    public void sendNotificationAsync(Client client, String entityName) throws MailException, InterruptedException, MessagingException {
+        System.out.println("Slanje emaila...");
+        MimeMessageHelper mail = new MimeMessageHelper(javaMailSender.createMimeMessage(), true, "UTF-8");
+        mail.setTo(client.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+
+        mail.setSubject("Rental app notification");
+        mail.setText("<html>\n" +
+                "    <body>\n" +
+                "        <div style=\"margin: 50px;\">\n" +
+                "            <div style=\"background-color: rgb(99, 216, 99);height: 55px;\">\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">Successful !</h1>\n" +
+                "            </div>\n" +
+                "            <div style=\"margin-top: 10px;\">\n" +
+                "                <div style=\"margin: 25px;\">\n" +
+                "                Dear "+client.getName()+",\n" +
+                "                <br/>\n" +
+                "                Your review of "+ entityName +" is acccepted.\n" +
+                "                <br/>\n" +
+                "                Regards,\n" +
+                "                <br/>\n" +
+                "                <span >Rental app team</span>\n" +
+                "            </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </body>\n" +
+                "</html>",true);
+        //mail.set
+        javaMailSender.send( mail.getMimeMessage());
+        System.out.println("Email poslat!");
+    }
+}
