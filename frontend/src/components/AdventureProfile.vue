@@ -126,6 +126,9 @@
             </div>
 
             <div class="row p-3">
+              <div v-if="adventure.quickReservations.length === 0">
+                <h4 class="p-3">There are no quick reservations for now.</h4>
+              </div>
               <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in adventure.quickReservations">
                 <div>
                   <h4 class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</h4>
@@ -141,6 +144,14 @@
 
           </div>
         </div>
+        <div class="row  py-4 mt-3">
+          <h4><b>Location:</b>  {{address.country}}, {{address.city}}, {{address.street}}</h4>
+          <l-map style="height: 300px" :zoom="zoom" :center="center">
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-marker :lat-lng="markerLatLng"></l-marker>
+          </l-map>
+        </div>
+
       </div>
     </section>
   </div>
@@ -164,17 +175,34 @@ export default {
       fishingInstructor:'',
       server: process.env.VUE_APP_SERVER_PORT,
       isModalVisible: false,
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '',
+      zoom: 15,
+      center: [0,0],
+      markerLatLng: [0, 0],
+      address:'',
+      adventureId: this.$route.params.id,
+      config:''
     }
   },
   mounted:function (){
-    var adventureId = this.$route.params.id;
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/"+adventureId, {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}}
-  )
-      .then(response => (
-        this.adventure = response.data,this.fishingInstructor = this.adventure.fishingInstructor
-      ))
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/"+this.adventureId, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => {
+        this.adventure = response.data
+        this.fishingInstructor = this.adventure.fishingInstructor
+        this.address=response.data.address
+        this.config = {
+          method: 'get',
+          url: 'https://api.geoapify.com/v1/geocode/search?text='+this.address.street+' '+this.address.city+' '+this.address.postal_code+' '+this.address.country+'&apiKey=edff0ba2d6d545279a82d4d37402a851',
+          headers: { }
+        }
+        axios(this.config).then(second_response => {
+          this.center = [second_response.data.features[0].geometry.coordinates[1],second_response.data.features[0].geometry.coordinates[0]]
+          this.markerLatLng = [second_response.data.features[0].geometry.coordinates[1],second_response.data.features[0].geometry.coordinates[0]]
+        })
+      })
 
 
   },
