@@ -27,6 +27,9 @@ public abstract class Advertiser extends User{
     @Column(name = "registrationStatus", nullable = false)
     protected RequestStatus registrationStatus;
 
+    @Column(name = "registrationReason", nullable = true)
+    protected String registrationReason;
+
     @Column(name = "averageGrade")
     private Double averageGrade = 0.0;
 

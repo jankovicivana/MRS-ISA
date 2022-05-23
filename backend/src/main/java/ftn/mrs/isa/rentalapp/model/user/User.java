@@ -61,7 +61,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<>();
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = true)
     protected String type;
 
     @Column(name = "mainPhoto", nullable = true)

@@ -1,11 +1,17 @@
 package ftn.mrs.isa.rentalapp.service;
 
+import ftn.mrs.isa.rentalapp.dto.UserRequest;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
+import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.Client;
+import ftn.mrs.isa.rentalapp.model.user.Role;
+import ftn.mrs.isa.rentalapp.model.user.User;
 import ftn.mrs.isa.rentalapp.repository.AddressRepository;
 import ftn.mrs.isa.rentalapp.repository.ClientRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,6 +25,13 @@ public class ClientService {
 
     @Autowired
     private ReservationRepository reservationsRepository;
+
+
+    @Autowired
+    private RoleService roleService;
+
+
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private AddressRepository addressRepository;
@@ -34,6 +47,23 @@ public class ClientService {
     }
     public void save(Client client){clientRepository.save(client);}
 
+    public Client save(UserRequest userRequest) {
+        Client c = new Client();
+        c.setEmail(userRequest.getEmail());
+        c.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        c.setName(userRequest.getName());
+        c.setSurname(userRequest.getSurname());
+        c.setAddress(new Address(userRequest.getStreet(), userRequest.getCity(), userRequest.getPostalCode(), userRequest.getCountry()));
+        c.setEnabled(true);
+        c.setPhoneNumber(userRequest.getPhoneNumber());
+        c.setPoints(0);
+        c.setPenalties(0);
+
+        List<Role> roles = roleService.findByName(userRequest.getRole());
+        c.setRoles(roles);
+
+        return this.clientRepository.save(c);
+    }
 
 
     public boolean canDeleteClient(Client client) {

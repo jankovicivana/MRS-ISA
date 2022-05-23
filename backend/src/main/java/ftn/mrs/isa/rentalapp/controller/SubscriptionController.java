@@ -2,14 +2,18 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.SubscriptionDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Subscription;
+import ftn.mrs.isa.rentalapp.model.user.Client;
+import ftn.mrs.isa.rentalapp.service.ClientService;
 import ftn.mrs.isa.rentalapp.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +29,16 @@ public class SubscriptionController {
     @Autowired
     private SubscriptionService subscriptionService;
 
-    @GetMapping(value = "/findByUser/{id}")
-    public ResponseEntity<List<SubscriptionDTO>> getSubscriptionsByUser(@PathVariable Integer id){
-        List<Subscription> subs = subscriptionService.getSubscriptionsByUser(id);
+    @Autowired
+    private ClientService clientService;
+
+    @GetMapping(value = "/getSubscriptions")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<List<SubscriptionDTO>> getSubscriptions(Principal principal){
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        String mail = principal.getName();
+        Client client = clientService.findByEmail(mail);
+        List<Subscription> subs = subscriptionService.getSubscriptionsByUser(client.getId());
         List<SubscriptionDTO> subsDTO = new ArrayList<>();
         for(Subscription s: subs){
             SubscriptionDTO subDTO = mapper.map(s, SubscriptionDTO.class);
@@ -37,6 +48,7 @@ public class SubscriptionController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
+    @PreAuthorize("hasRole('client')")
     public ResponseEntity<String> delete(@PathVariable Integer id){
         Subscription sub = subscriptionService.findOne(id);
         if(sub == null){
@@ -45,5 +57,4 @@ public class SubscriptionController {
         subscriptionService.deleteSubscription(sub);
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
     }
-
 }

@@ -31,7 +31,7 @@
 
         </div>
       </div>
-      <a href="#/" class="px-3 mr-1" >Log out</a>
+      <a href="#/logout" class="px-3 mr-1" >Log out</a>
   </nav>
 </template>
 
