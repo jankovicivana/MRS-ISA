@@ -84,8 +84,6 @@ export default {
   background-repeat: no-repeat;
   height: 100%;
   width: 100%;
-  object-fit: cover;
-
 }
 
 

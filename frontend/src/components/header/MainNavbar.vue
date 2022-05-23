@@ -10,7 +10,7 @@
         <a class="navbar-item" href="#/">Special offers </a>
       </div>
     </div>
-    <a href="#/">Register</a>
+    <a href="#/register">Register</a>
     <a href="#/login" class="px-3 mr-1" >Log in</a>
   </nav>
 </template>
@@ -56,4 +56,6 @@ a:hover {
 a.navbar-item.is-active{
   color: grey;
 }
+
+
 </style>
