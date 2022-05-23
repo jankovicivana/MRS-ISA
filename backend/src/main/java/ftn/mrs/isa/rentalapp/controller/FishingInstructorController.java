@@ -51,26 +51,10 @@ public class FishingInstructorController {
     }
 
 
-    @GetMapping(value = "/getAvailablePeriod/getInstructor")
-    public ResponseEntity<List<AvailablePeriodDTO>> getAvailablePeriodOfInstructor(Principal principal){
-        FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
-        if(instructor == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        List<AvailablePeriod> periods = availablePeriodService.getAvailablePeriod(instructor.getId());
-        List<AvailablePeriodDTO> availablePeriods = new ArrayList<>();
-        for (AvailablePeriod a : periods){
-            availablePeriods.add(mapper.map(a,AvailablePeriodDTO.class));
-        }
-        return new ResponseEntity<>(availablePeriods, HttpStatus.OK);
-    }
-
-
     @PostMapping(value = "/updateInstructor" )
     @PreAuthorize("hasRole('fishingInstructor')")
     public void updateInstructor(@RequestBody FishingInstructorDTO fishingInstructorDTO, Principal principal) {
         FishingInstructor fishingInstructor = fishingInstructorService.findOne(fishingInstructorDTO.getId());
-        fishingInstructorDTO.setId(3); //vidi ovoooooo
         fishingInstructorDTO.setRegistrationStatus(fishingInstructor.getRegistrationStatus());
         fishingInstructorService.updateInstructor(mapper.map(fishingInstructorDTO,FishingInstructor.class));
     }

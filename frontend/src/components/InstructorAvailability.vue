@@ -87,7 +87,7 @@ export default {
   },
   mounted: function(){
 
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getAvailablePeriod/getInstructor", {headers: {Authorization:
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/getInstructor", {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.periods = response.data
@@ -148,6 +148,7 @@ export default {
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
+          setTimeout(() => { }, 3000)
         }).catch(function error(error) {
         alert(error.response.data);
       });

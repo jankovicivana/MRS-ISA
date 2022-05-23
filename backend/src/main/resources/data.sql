@@ -162,4 +162,4 @@ insert into entity_reviews (id,grade,review,status,client,entity) values (nextva
 
 
 insert into available_periods (start_date_time, end_date_time,entity,fishing_instructor) values ('20220622', '20220627', 1,null);
-insert into available_periods (id, start_date_time, end_date_time, entity,fishing_instructor) values (1, '20220622', '20220627', null,3);
+insert into available_periods (start_date_time, end_date_time, entity,fishing_instructor) values ('20220622', '20220627', null,3);
