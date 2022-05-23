@@ -1,6 +1,7 @@
 package ftn.mrs.isa.rentalapp.model.user;
 
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
+import ftn.mrs.isa.rentalapp.model.entity.AvailablePeriod;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,5 +23,8 @@ public class FishingInstructor extends Advertiser{
 
     @Column(name = "biography", nullable = false)
     private String biography;
+
+    @OneToMany(mappedBy = "fishingInstructor", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private Set<AvailablePeriod> availablePeriods = new HashSet<AvailablePeriod>();
 
 }

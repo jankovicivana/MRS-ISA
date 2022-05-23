@@ -24,4 +24,12 @@ public class AvailablePeriodService {
         System.out.println(periodList);
         return !periodList.isEmpty();
     }
+
+    public List<AvailablePeriod> getAvailablePeriodFishingInstructor(Integer id) {
+        return availablePeriodRepository.getAvailablePeriodFishingInstructor(id);
+    }
+
+    public List<AvailablePeriod> getAvailablePeriodEntity(Integer id) {
+        return availablePeriodRepository.getAvailablePeriodEntity(id);
+    }
 }
