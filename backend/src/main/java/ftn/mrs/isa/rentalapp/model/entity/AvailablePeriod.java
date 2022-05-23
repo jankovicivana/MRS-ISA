@@ -1,6 +1,7 @@
 package ftn.mrs.isa.rentalapp.model.entity;
 
 
+import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,5 +28,8 @@ public class AvailablePeriod {
     @JoinColumn(name = "entity")
     private EntityType entity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fishingInstructor")
+    private FishingInstructor fishingInstructor;
 
 }

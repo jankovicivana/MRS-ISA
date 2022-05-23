@@ -6,6 +6,7 @@ import ftn.mrs.isa.rentalapp.dto.FishingInstructorDTO;
 import ftn.mrs.isa.rentalapp.model.entity.AvailablePeriod;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.service.AvailablePeriodService;
+import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.FishingInstructorService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -29,6 +30,9 @@ public class FishingInstructorController {
 
     @Autowired
     AvailablePeriodService availablePeriodService;
+
+    @Autowired
+    CottageService cottageService;
 
     @Autowired
     private ModelMapper mapper;
@@ -71,11 +75,7 @@ public class FishingInstructorController {
         fishingInstructorService.updateInstructor(mapper.map(fishingInstructorDTO,FishingInstructor.class));
     }
 
-    @PostMapping(value = "/addAvailablePeriod" )
-    @PreAuthorize("hasRole('fishingInstructor')")
-    public void updateInstructor(@RequestBody AvailablePeriodDTO availablePeriod, Principal principal) {
-        availablePeriodService.add(mapper.map(availablePeriod,AvailablePeriod.class));
-    }
+
 
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasRole('admin')")

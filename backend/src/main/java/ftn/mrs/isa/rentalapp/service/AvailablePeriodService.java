@@ -25,7 +25,11 @@ public class AvailablePeriodService {
         return !periodList.isEmpty();
     }
 
-    public List<AvailablePeriod> getAvailablePeriod(Integer id) {
-        return availablePeriodRepository.getAvailableUserPeriod(id);
+    public List<AvailablePeriod> getAvailablePeriodFishingInstructor(Integer id) {
+        return availablePeriodRepository.getAvailablePeriodFishingInstructor(id);
+    }
+
+    public List<AvailablePeriod> getAvailablePeriodEntity(Integer id) {
+        return availablePeriodRepository.getAvailablePeriodEntity(id);
     }
 }

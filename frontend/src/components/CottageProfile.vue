@@ -126,6 +126,40 @@
         </l-map>
       </div>
 
+      <hr />
+
+      <div class="row">
+        <h3>Add availability</h3>
+        <div class="col-7 p-4" >
+          <calendar
+            :eventCategories="eventCategories"
+            :events="events"
+            ref="calendar"
+            style="background: #f8f2ec;"
+          />
+        </div>
+        <div class="col-4">
+          <form>
+            <div class="form-outline mb-4">
+              <label class="label">Start date:</label>
+              <div>
+                <input class="form-control form-control-lg" ref="start_date_input" type="date"   placeholder="Start date input" />
+              </div>
+            </div>
+            <div class="form-outline mb-4">
+              <label class="label">End date:</label>
+              <div>
+                <input class="form-control form-control-lg" type="date" ref="end_date_input"   placeholder="End date input" />
+              </div>
+            </div>
+            <div class="d-flex justify-content-center">
+              <button type="submit"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
     </div>
   </section>
   </div>
@@ -134,13 +168,16 @@
 <script>
 import axios from "axios";
 import AddQuickReservation from "./AddQuickReservation";
+import { Calendar } from 'vue-sweet-calendar'
+import 'vue-sweet-calendar/dist/SweetCalendar.css'
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 
 export default {
   name: "CottageProfile",
   components:{
     CottageOwnerNavbar,
-    AddQuickReservation
+    AddQuickReservation,
+    Calendar
   },
   data: function (){
     return{
@@ -156,7 +193,29 @@ export default {
       markerLatLng: [0, 0],
       address:'',
       cottageId: this.$route.params.id,
-      config:''
+      config:'',
+      selectedDate: null,
+      eventCategories: [
+        {
+          id: 1,
+          title: 'InstructorAvailability',
+          textColor: 'white',
+          backgroundColor: '#2e6b6b'
+        },
+        {
+          id: 2,
+          title: 'Company-wide',
+          textColor: 'white',
+          backgroundColor: 'red'
+        },
+        {
+          id: 3,
+          title: 'National',
+          textColor: 'white',
+          backgroundColor: 'green'
+        }
+      ],
+      events: []
     }
     },
       mounted:function (){
@@ -166,31 +225,47 @@ export default {
         axios
           .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+this.cottageId, {headers: {Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")}})
-      .then(first_response => {
-        this.cottage = first_response.data
-        this.address=first_response.data.address
-        this.quick=this.cottage.quickReservations
-        this.num_rooms=first_response.data.rooms.length
-        first_response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})
-        this.config = {
-            method: 'get',
-            url: 'https://api.geoapify.com/v1/geocode/search?text='+this.address.street+' '+this.address.city+' '+this.address.postal_code+' '+this.address.country+'&apiKey=edff0ba2d6d545279a82d4d37402a851',
-            headers: { }
-          }
-        axios(this.config).then(second_response => {
-          this.center = [second_response.data.features[0].geometry.coordinates[1],second_response.data.features[0].geometry.coordinates[0]]
-          this.markerLatLng = [second_response.data.features[0].geometry.coordinates[1],second_response.data.features[0].geometry.coordinates[0]]
-        })
+          .then(first_response => {
+            this.cottage = first_response.data
+            this.address=first_response.data.address
+            this.quick=this.cottage.quickReservations
+            this.num_rooms=first_response.data.rooms.length
+            first_response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})
+            this.config = {
+                method: 'get',
+                url: 'https://api.geoapify.com/v1/geocode/search?text='+this.address.street+' '+this.address.city+' '+this.address.postal_code+' '+this.address.country+'&apiKey=edff0ba2d6d545279a82d4d37402a851',
+                headers: { }
+              }
+            axios(this.config).then(second_response => {
+              this.center = [second_response.data.features[0].geometry.coordinates[1],second_response.data.features[0].geometry.coordinates[0]]
+              this.markerLatLng = [second_response.data.features[0].geometry.coordinates[1],second_response.data.features[0].geometry.coordinates[0]]
+            })
+          })
 
-      })
-
-
-
+        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.cottageId, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+          .then(response => {
+            this.periods = response.data
+            this.fillCalendar();
+          }).catch(function error(error) {
+          alert(error.response.data);
+        });
 
     },methods: {
+    fillCalendar:function (){
+      for(let p of this.periods){
+        this.newEvent = {
+          title: 'Event 1',
+          start: p.startDateTime,
+          end: p.endDateTime,
+          categoryId: 1
+        }
+        this.events.push(this.newEvent);
+      }
+    },
     show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfully deleted!</p>`
-      let text = `<p style="font-size: 20px">Successfully deleted cottage!</p>`
+      let title = `<p style="font-size: 25px">Successfully added!</p>`
+      let text = `<p style="font-size: 20px">Successfully added available period!</p>`
       this.$notify({group, title, text, type})
     },
       showModal:function() {
@@ -209,7 +284,46 @@ export default {
           alert(error.response.data);
         });
 
-      }
+      },
+    addAvailablePeriod:function (){
+        let start_date = this.$refs.start_date_input.value
+        let end_date = this.$refs.end_date_input.value
+        if(start_date === ''){
+          alert("You must enter start date!")
+          return;
+        }
+        if(end_date === ''){
+          alert("You must enter end date!")
+          return;
+        }
+        if(start_date>end_date){
+          alert("End date must be after start date.")
+          return;
+        }
+
+        this.info = {
+          startDateTime: start_date,
+          endDateTime: end_date,
+          entity:this.cottageId
+        };
+        this.newEvent = {
+          title: 'Event 1',
+          start: start_date,
+          end: end_date,
+          categoryId: 1
+        }
+        this.events.push(this.newEvent);
+
+        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addForEntity",this.info, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+          .then(response => {
+            this.show('foo-css', 'success')
+            setTimeout(() => { }, 3000)
+            //this.$router.push({name:"CottageProfile",params:{id:this.cottageId}});
+          }).catch(function error(error) {
+          alert(error.response.data);
+        });
+    }
 
   }
 }
