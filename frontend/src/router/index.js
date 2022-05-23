@@ -70,7 +70,7 @@ export default new Router({
       name:'AddAdventure',
       component: AddAdventure
     },{
-      path: '/cottages/CottageProfile',
+      path: '/cottages/CottageProfile/:id',
       name:'CottageProfile',
       component: CottageProfile
     },{

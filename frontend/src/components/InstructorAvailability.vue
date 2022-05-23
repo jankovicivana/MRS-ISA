@@ -81,15 +81,7 @@ export default {
           backgroundColor: 'green'
         }
       ],
-      events: [
-        {
-          title: 'Event 1',
-          start: '2022-05-05',
-          end: '2022-05-08',
-          categoryId: 1
-        },
-      ]
-
+      events: []
     }
   },
   methods:{
@@ -117,8 +109,7 @@ export default {
 
       this.info = {
         startDateTime: start_date,
-        endDateTime: end_date,
-        entity:2
+        endDateTime: end_date
       };
       this.newEvent = {
         title: 'Event 1',
@@ -128,7 +119,7 @@ export default {
       }
       this.events.push(this.newEvent);
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/addAvailablePeriod",this.info, {headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addForFishingInstructor",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
