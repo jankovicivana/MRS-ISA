@@ -4,10 +4,8 @@ import ftn.mrs.isa.rentalapp.dto.JwtAuthenticationRequest;
 import ftn.mrs.isa.rentalapp.dto.UserRequest;
 import ftn.mrs.isa.rentalapp.dto.UserTokenState;
 import ftn.mrs.isa.rentalapp.exception.ResourceConflictException;
-import ftn.mrs.isa.rentalapp.model.user.Role;
-import ftn.mrs.isa.rentalapp.model.user.User;
-import ftn.mrs.isa.rentalapp.service.ClientService;
-import ftn.mrs.isa.rentalapp.service.UserService;
+import ftn.mrs.isa.rentalapp.model.user.*;
+import ftn.mrs.isa.rentalapp.service.*;
 import ftn.mrs.isa.rentalapp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +40,15 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CottageOwnerService cottageOwnerService;
+
+    @Autowired
+    private BoatOwnerService boatOwnerService;
+
+    @Autowired
+    private FishingInstructorService fishingInstructorService;
 
     @Autowired
     private ClientService clientService;
@@ -88,8 +95,19 @@ public class AuthenticationController {
             User client = this.clientService.save(userRequest);
             System.out.println("Maaaaaaaaailll: " + client.getEmail());
             return new ResponseEntity<>(client, HttpStatus.CREATED);
+        }else if(userRequest.getRole().equals("ROLE_cottageOwner")){
+            CottageOwner cottageOwner = this.cottageOwnerService.save(userRequest);
+            return new ResponseEntity<>(cottageOwner, HttpStatus.CREATED);
+        }else if(userRequest.getRole().equals("ROLE_boatOwner")){
+            BoatOwner boatOwner = this.boatOwnerService.save(userRequest);
+            return new ResponseEntity<>(boatOwner, HttpStatus.CREATED);
+        }else if(userRequest.getRole().equals("ROLE_fishingInstructor")){
+            FishingInstructor fishingInstructor = this.fishingInstructorService.save(userRequest);
+            return new ResponseEntity<>(fishingInstructor, HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);  // bezveze
+
     }
 
 

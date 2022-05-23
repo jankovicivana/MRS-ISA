@@ -39,22 +39,50 @@
           </div>
         </div>
 
-        <div>
-          <span>Phone number</span>
-          <p><input required class="input" placeholder="Phone number" ref="phoneNumber"/></p>
+        <div class="columns">
+          <div class="column">
+            <span>Phone number</span>
+            <p><input required class="input" placeholder="Phone number" ref="phoneNumber"/></p>
+          </div>
+          <div class="column">
+            <span>User type</span>
+            <p><select id="user_type_input" ref="user_type_input" class="form-select" v-on:change="disableFields()" >
+              <option>client</option>
+              <option>fishing instructor</option>
+              <option>boat owner</option>
+              <option>cottage owner</option>
+            </select></p>
+          </div>
+        </div>
+        <hr />
+        <div class="columns">
+          <div class="column">
+            <span>Email</span>
+            <p><input required class="input" type="email" placeholder="Email" ref="email"/></p>
+          </div>
         </div>
 
-        <div>
-          <span>Email</span>
-          <p><input required class="input" type="email" placeholder="Email" ref="email"/></p>
+
+        <div class="columns">
+          <div class="column">
+            <span>Password</span>
+            <p><input required class="input" type="password" placeholder="Password" ref="password"/></p>
+          </div>
+          <div class="column">
+            <span>Confirm password</span>
+            <p><input required class="input" type="password" placeholder="Confirm password" ref="confirmPassword"/></p>
+          </div>
         </div>
-        <div>
-          <span>Password</span>
-          <p><input required class="input" type="password" placeholder="Password" ref="password"/></p>
-        </div>
-        <div>
-          <span>Confirm password</span>
-          <p><input required class="input" type="password" placeholder="Confirm password" ref="confirmPassword"/></p>
+
+        <div class="columns">
+          <div class="column">
+            <span>Reason for registration</span>
+            <textarea disabled="true" type="text" id="reason_input" ref="reason_input" class="textarea" required></textarea>
+          </div>
+          <div class="column">
+            <span>Biography</span>
+            <textarea disabled="true" type="text" id="biography_input" ref="biography_input" class="textarea" required></textarea>
+          </div>
         </div>
 
         <div class="mt-3 justify-content-center align-items-center is-flex">
@@ -82,7 +110,20 @@ export default {
       let text = `<p style="font-size: 20px">Successfully created an account!</p>`
       this.$notify({group, title, text, type})
     },
+    disableFields: function (){
+      let user_type = this.$refs.user_type_input.value;
+      if(user_type === 'client'){
+        document.getElementById('reason_input').disabled = true;
+        document.getElementById('biography_input').disabled = true;
+      }else if(user_type === 'fishing instructor'){
+        document.getElementById('reason_input').disabled = false;
+        document.getElementById('biography_input').disabled = false;
+      }else{
+        document.getElementById('reason_input').disabled = false;
+        document.getElementById('biography_input').disabled = true;
+      }
 
+    },
     register: function () {
       let email = this.$refs.email.value;
       let password = this.$refs.password.value;
@@ -92,9 +133,23 @@ export default {
       let country = this.$refs.country.value;
       let street = this.$refs.street.value;
       let postalCode = this.$refs.postalCode.value;
-      let role = "ROLE_client";
+      let role;
       let phoneNumber = this.$refs.phoneNumber.value;
-      this.info = {email, password, name, surname, city, country, street, postalCode, role, phoneNumber};
+      let reason = this.$refs.reason_input.value;
+      let biography = this.$refs.biography_input.value;
+
+      let user_type = this.$refs.user_type_input.value;
+      if(user_type === 'fishing instructor'){
+        role = 'ROLE_fishingInstructor';
+      }else if(user_type === 'cottage owner'){
+        role = 'ROLE_cottageOwner';
+      }else if(user_type === 'boat owner'){
+        role = 'ROLE_boatOwner';
+      }else{
+        role = "ROLE_client";
+      }
+      this.info = {email, password, name, surname, city, country, street, postalCode, role, phoneNumber,reason,biography};
+
 
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/auth/register", this.info)

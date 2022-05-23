@@ -55,7 +55,6 @@ public class ClientService {
         c.setSurname(userRequest.getSurname());
         c.setAddress(new Address(userRequest.getStreet(), userRequest.getCity(), userRequest.getPostalCode(), userRequest.getCountry()));
         c.setEnabled(true);
-        c.setEmail(userRequest.getEmail());
         c.setPhoneNumber(userRequest.getPhoneNumber());
         c.setPoints(0);
         c.setPenalties(0);
