@@ -1,24 +1,30 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.JwtAuthenticationRequest;
+import ftn.mrs.isa.rentalapp.dto.UserRequest;
 import ftn.mrs.isa.rentalapp.dto.UserTokenState;
+import ftn.mrs.isa.rentalapp.exception.ResourceConflictException;
 import ftn.mrs.isa.rentalapp.model.user.Role;
 import ftn.mrs.isa.rentalapp.model.user.User;
+import ftn.mrs.isa.rentalapp.service.ClientService;
 import ftn.mrs.isa.rentalapp.service.UserService;
 import ftn.mrs.isa.rentalapp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,6 +42,9 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ClientService clientService;
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -65,5 +74,23 @@ public class AuthenticationController {
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, role.getName()));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) {
+
+        UserDetails existUser = this.userService.loadUserByUsername(userRequest.getEmail());
+
+        if (existUser != null) {
+            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+        }
+        // treba dodati i za ostale u zavisnosti od uloge
+        if(userRequest.getRole().equals("ROLE_client")){
+            User client = this.clientService.save(userRequest);
+            System.out.println("Maaaaaaaaailll: " + client.getEmail());
+            return new ResponseEntity<>(client, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);  // bezveze
+    }
+
 
 }
