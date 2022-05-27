@@ -12,14 +12,28 @@
                   <h1 class="title">Fishing instructor availability</h1>
                   <hr />
                   <div class="row">
-                    <div class="col-8">
-                      <calendar
-                        :eventCategories="eventCategories"
-                        :events="events"
-                        ref="calendar"
-                      />
+                    <div class="col-8" id="calendar">
+<!--                      <calendar-->
+<!--                        :eventCategories="eventCategories"-->
+<!--                        :events="events"-->
+<!--                        ref="calendar"-->
+<!--                      />-->
+                      <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
+
                     </div>
                     <div class="col-4">
+                      <div>
+                        <h6>Info</h6>
+                        <hr/>
+                        <span style="color: green">● </span>- Available period <br/>
+                        <span style="color: red">● </span>- Reservation period<br/>
+                        <span style="color: blue">● </span>- Discount period <br/>
+
+
+                      </div>
+                      <br/><br/><br/>
+                      <h6>Add new available period</h6>
+                      <hr>
                       <form>
                         <div class="form-outline mb-4">
                           <label class="label">Start date:</label>
@@ -50,10 +64,10 @@
   </section>
 </template>
 
-<script>
+<script type="text/javascript">
 import axios from "axios";
-import { Calendar } from 'vue-sweet-calendar'
-import 'vue-sweet-calendar/dist/SweetCalendar.css'
+
+
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
@@ -71,18 +85,56 @@ export default {
         },
         {
           id: 2,
-          title: 'Company-wide',
+          title: 'Reservation',
           textColor: 'white',
           backgroundColor: 'red'
+
         },
         {
           id: 3,
-          title: 'National',
+          title: 'Action',
           textColor: 'white',
           backgroundColor: 'green'
         }
       ],
-      events: []
+      config: {
+        defaultView: 'month',
+        editable:true,
+        selectable:true
+      },
+      events: [
+        {
+          title: '09:00-09:30',
+          start: '2022-05-05T09:00',
+          end: '2022-05-07T09:30',
+          categoryId: 1,
+          allDaySlot: false,
+          cssClass:'bg-success'
+          //,YOUR_DATA : {"nasl":"naslov"}
+
+        },{
+          title: '09:00-09:30',
+          start: '2022-05-05T09:00',
+          end: '2022-05-05T09:30',
+          categoryId: 1,
+          allDaySlot: false,
+          cssClass:'bg-danger'
+          //,YOUR_DATA : {"nasl":"naslov"}
+
+        }
+        // ,{
+        //   title: 'Reservation',
+        //   start: '2022-05-05',
+        //   end: '2022-05-08',
+        //   categoryId: 1
+        // },{
+        //   title: 'Event 2',
+        //   start: '2022-05-06',
+        //   end: '2022-05-06',
+        //   categoryId: 2
+        // },
+      ]
+
     }
   },
   mounted: function(){
@@ -158,9 +210,12 @@ export default {
   },
   components: {
     FishingInstructorNavbar,
-    Calendar // Registering Component
+    //Calendar // Registering Component
+    'full-calendar': require('vue-fullcalendar')
   }
 }
+
+
 </script>
 
 <style scoped>
