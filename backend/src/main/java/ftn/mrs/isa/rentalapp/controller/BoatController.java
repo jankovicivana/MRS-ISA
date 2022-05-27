@@ -88,6 +88,7 @@ public class BoatController {
         Boat boat = mapper.map(boatCreateDTO,Boat.class);
         boat.setAddress(new Address(boatCreateDTO.getStreet(),boatCreateDTO.getCity(),boatCreateDTO.getPostal_code(),boatCreateDTO.getCountry()));
         boat.setType(BoatType.getTypeFromString(boatCreateDTO.getType()));
+        boat.setKind(EntityKind.BOAT);
 
         Set<Rule> rules = ruleService.createRuleFromString(boatCreateDTO.getRules(),boat);
         boat.setRules(rules);

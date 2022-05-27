@@ -90,6 +90,7 @@ public class CottageController {
         cottage.setMaxNumPerson(cottageCreateDTO.getMaxNumPerson());
         cottage.setPrice(cottageCreateDTO.getPrice());
         cottage.setAddress(new Address(cottageCreateDTO.getStreet(),cottageCreateDTO.getCity(),Integer.parseInt(cottageCreateDTO.getPostalCode()),cottageCreateDTO.getCountry()));
+        cottage.setKind(EntityKind.COTTAGE);
         //dodati i za cottageOwnera
 
         Set<Room> rooms =  roomService.createRoomFromString(cottageCreateDTO.getRooms(),cottage);

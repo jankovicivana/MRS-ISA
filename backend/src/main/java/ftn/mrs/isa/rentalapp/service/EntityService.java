@@ -27,4 +27,8 @@ public class EntityService {
     }
 
     public List<EntityType> getAll(){return entityRepository.findAll();}
+
+    public EntityType findOne(Integer id) {
+        return entityRepository.getById(id);
+    }
 }

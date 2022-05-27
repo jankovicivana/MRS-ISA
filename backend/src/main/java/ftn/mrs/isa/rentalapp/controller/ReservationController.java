@@ -1,12 +1,13 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 
-import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
-import ftn.mrs.isa.rentalapp.dto.CottageDTO;
-import ftn.mrs.isa.rentalapp.dto.ReservationDTO;
+import ftn.mrs.isa.rentalapp.dto.*;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
+import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
+import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.service.*;
@@ -47,6 +48,12 @@ public class ReservationController {
 
     @Autowired
     private FishingInstructorService fishingInstructorService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private EntityService entityService;
 
     @GetMapping(value = "/findHistoryByUser/getInstructor")
     @PreAuthorize("hasRole('fishingInstructor')")
@@ -93,6 +100,21 @@ public class ReservationController {
             Cottage cottage = cottageService.findOne(c.getEntity().getId());
             rt.setCottage(mapper.map(cottage, CottageDTO.class));
             reservationsDTO.add(rt);
+        }
+        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findHistoryByClient")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<List<ReservationDTO>> getHistoryByClient(Principal principal){
+        Client client = clientService.findByEmail(principal.getName());
+        List<Reservation> reservationList = reservationService.getHistoryByClient(client.getId());
+        System.out.println("Rezervacijeeee: " + reservationList.size());
+        List<ReservationDTO> reservationsDTO = new ArrayList<>();
+        for(Reservation r: reservationList){
+            ReservationDTO dto = mapper.map(r, ReservationDTO.class);
+            dto.getEntity().setType(EntityKind.toString(r.getEntity().getKind()));
+            reservationsDTO.add(dto);
         }
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
     }

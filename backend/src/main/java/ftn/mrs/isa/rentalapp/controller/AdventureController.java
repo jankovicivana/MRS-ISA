@@ -70,6 +70,7 @@ public class AdventureController {
         adventure.setCancelFee(adventureDTO.getCancelFee());
         adventure.setAddress(new Address(adventureDTO.getStreet(),adventureDTO.getCity(),adventureDTO.getPostal_code(),adventureDTO.getCountry()));
         adventure.setFishingInstructor(instructor);
+        adventure.setKind(EntityKind.ADVENTURE);
 
         Set<Rule> rules = ruleService.createRuleFromString(adventureDTO.getRules(),adventure);
         adventure.setRules(rules);

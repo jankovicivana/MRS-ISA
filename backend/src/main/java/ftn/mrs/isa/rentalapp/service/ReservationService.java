@@ -49,4 +49,8 @@ public class ReservationService {
         System.out.println("Reservations: " + reservations);
         return !reservations.isEmpty();
     }
+
+    public List<Reservation> getHistoryByClient(Integer id) {
+        return reservationRepository.findAllHistoryByClient(LocalDateTime.now(),id);
+    }
 }

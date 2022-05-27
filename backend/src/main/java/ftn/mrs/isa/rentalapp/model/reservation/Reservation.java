@@ -28,7 +28,7 @@ public class Reservation {
     @Column(name = "deleted")
     private boolean deleted = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "entity")
     private EntityType entity;
 
