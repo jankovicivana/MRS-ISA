@@ -12,6 +12,7 @@
                 <h1 class="title" v-if="userType === 'clients' ">Clients</h1>
                 <h1 class="title" v-if="userType === 'instructors' ">Fishing instructors</h1>
                 <h1 class="title" v-if="userType === 'boatOwners' ">Boat owners</h1>
+                <h1 class="title" v-if="userType === 'cottageOwners' ">Cottage owners</h1>
                 <hr />
                   <div>
                     <table class="table" >
@@ -71,7 +72,6 @@ export default {
     }
   },
   mounted: function () {
-    console.log("ucitava opet");
     this.userType = this.$route.params.userType;//.fullPath.substring(this.$route.fullPath.lastIndexOf('/'),this.$route.fullPath.toEnd);
     //this.userType = this.userType.substring(1,this.userType.toEnd)
     console.log(this.userType)
@@ -111,7 +111,16 @@ export default {
           this.users = response.data
     ))
     } else {
-      //cottages
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/all", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => (
+          this.users = response.data
+        ))
     }
 
   },
@@ -174,8 +183,21 @@ export default {
           alert(error.response.data);
         });
       } else {
-        //cottages
-      }
+        axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/delete/" + id, {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+          .then(response => {
+            this.show('foo-css', 'success', `<p style="font-size: 20px">Successfully deleted cottage owner!</p>`)
+            setTimeout(() => {
+            }, 3000)
+            const index = this.users.indexOf(user);
+            this.users.splice(index, 1);
+          }).catch(function error(error) {
+          alert(error.response.data);
+        });      }
     }
   }
 }

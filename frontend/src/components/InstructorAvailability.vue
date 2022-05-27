@@ -12,14 +12,28 @@
                   <h1 class="title">Fishing instructor availability</h1>
                   <hr />
                   <div class="row">
-                    <div class="col-8">
-                      <calendar
-                        :eventCategories="eventCategories"
-                        :events="events"
-                        ref="calendar"
-                      />
+                    <div class="col-8" id="calendar">
+<!--                      <calendar-->
+<!--                        :eventCategories="eventCategories"-->
+<!--                        :events="events"-->
+<!--                        ref="calendar"-->
+<!--                      />-->
+                      <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
+
                     </div>
                     <div class="col-4">
+                      <div>
+                        <h6>Info</h6>
+                        <hr/>
+                        <span style="color: green">● </span>- Available period <br/>
+                        <span style="color: red">● </span>- Reservation period<br/>
+                        <span style="color: blue">● </span>- Discount period <br/>
+
+
+                      </div>
+                      <br/><br/><br/>
+                      <h6>Add new available period</h6>
+                      <hr>
                       <form>
                         <div class="form-outline mb-4">
                           <label class="label">Start date:</label>
@@ -50,10 +64,10 @@
   </section>
 </template>
 
-<script>
+<script type="text/javascript">
 import axios from "axios";
-import { Calendar } from 'vue-sweet-calendar'
-import 'vue-sweet-calendar/dist/SweetCalendar.css'
+
+
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
@@ -71,35 +85,66 @@ export default {
         },
         {
           id: 2,
-          title: 'Company-wide',
+          title: 'Reservation',
           textColor: 'white',
           backgroundColor: 'red'
+
         },
         {
           id: 3,
-          title: 'National',
+          title: 'Action',
           textColor: 'white',
           backgroundColor: 'green'
         }
       ],
+      config: {
+        defaultView: 'month',
+        editable:true,
+        selectable:true
+      },
       events: [
         {
-          title: 'Event 1',
-          start: '2022-05-05',
-          end: '2022-05-08',
-          categoryId: 1
-        },
+          title: '09:00-09:30',
+          start: '2022-05-05T09:00',
+          end: '2022-05-07T09:30',
+          categoryId: 1,
+          allDaySlot: false,
+          cssClass:'bg-success'
+          //,YOUR_DATA : {"nasl":"naslov"}
+
+        },{
+          title: '09:00-09:30',
+          start: '2022-05-05T09:00',
+          end: '2022-05-05T09:30',
+          categoryId: 1,
+          allDaySlot: false,
+          cssClass:'bg-danger'
+          //,YOUR_DATA : {"nasl":"naslov"}
+
+        }
+        // ,{
+        //   title: 'Reservation',
+        //   start: '2022-05-05',
+        //   end: '2022-05-08',
+        //   categoryId: 1
+        // },{
+        //   title: 'Event 2',
+        //   start: '2022-05-06',
+        //   end: '2022-05-06',
+        //   categoryId: 2
+        // },
       ]
 
     }
   },
   mounted: function(){
+    //this.dispatch('eventClick', event, jsEvent, pos)
 
     axios.get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getAvailablePeriod/getInstructor", {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.periods = response.data
-        this.fillCalendar();
+        //this.fillCalendar();
       }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -107,6 +152,15 @@ export default {
 
   },
   methods:{
+    //calendar.
+    // addEventListener("eventClick", function(event) {
+    //   alert(event.detail.name);
+    // });
+
+    // calendar.dispatchEvent(new CustomEvent("hello", {
+    //   detail: { name: "John" }
+    // }));
+
     fillCalendar:function (){
       for(let p of this.periods){
         this.newEvent = {
@@ -123,6 +177,8 @@ export default {
       let text = `<p style="font-size: 20px">Successfully added available period!</p>`
       this.$notify({group, title, text, type})
     },
+
+
 
     addAvailablePeriod:function (){
       let start_date = this.$refs.start_date_input.value
@@ -149,7 +205,9 @@ export default {
         title: 'Event 1',
         start: start_date,
         end: end_date,
+        cssClass  : ['coral'],
         categoryId: 1
+
       }
       this.events.push(this.newEvent);
 
@@ -166,9 +224,12 @@ export default {
   },
   components: {
     FishingInstructorNavbar,
-    Calendar // Registering Component
+    //Calendar // Registering Component
+    'full-calendar': require('vue-fullcalendar')
   }
 }
+
+
 </script>
 
 <style scoped>
