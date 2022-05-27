@@ -38,6 +38,7 @@ import FishingInstructorHomepage from "../components/FishingInstructorHomepage";
 import Revision from "../components/Revision";
 import AdminViewUsers from "../components/AdminViewUsers";
 import Registration from "../components/Registration";
+import ClientReservationHistory from "../components/ClientReservationHistory";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -201,6 +202,11 @@ export default new Router({
       path: '/register',
       name: "Registration",
       component: Registration
+    },
+    {
+      path: '/client/reservationHistory',
+      name: "ClientReservationHistory",
+      component: ClientReservationHistory
     }
   ]
 })

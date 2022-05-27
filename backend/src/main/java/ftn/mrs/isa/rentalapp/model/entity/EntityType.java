@@ -36,6 +36,9 @@ public class EntityType {
     @Column(name = "name", nullable = false)
     protected String name;
 
+    @Column(name = "kind", nullable = false)
+    protected EntityKind kind;
+
     @Column(name = "deleted")
     private boolean deleted = false;
 

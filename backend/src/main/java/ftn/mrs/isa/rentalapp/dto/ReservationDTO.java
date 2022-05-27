@@ -15,4 +15,6 @@ public class ReservationDTO {
     private Integer personNum;
     private AdventureDTO adventure;
     private CottageDTO cottage;
+
+    private EntityTypeDTO entity;
 }

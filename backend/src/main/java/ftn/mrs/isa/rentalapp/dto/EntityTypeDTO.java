@@ -11,6 +11,8 @@ public class EntityTypeDTO {
 
     private String name;
 
+    private String type;
+
     private Double price;
 
     private AddressDTO address;

@@ -3,6 +3,7 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.EntitySearchDTO;
 import ftn.mrs.isa.rentalapp.dto.EntityTypeDTO;
+import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.service.AvailablePeriodService;
 import ftn.mrs.isa.rentalapp.service.EntityService;
@@ -12,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -36,6 +38,7 @@ public class EntityController {
     private ModelMapper mapper;
 
     @PostMapping(value = "/getAvailable")
+    @PreAuthorize("hasRole('client')")
     public ResponseEntity<List<EntityTypeDTO>> getAvailable(@RequestBody EntitySearchDTO params){
         List<EntityType> entities;
         List<EntityTypeDTO> entitiesDTO = new ArrayList<>();
@@ -53,7 +56,10 @@ public class EntityController {
         for(EntityType et: entities){
             if (et.getPrice() < params.getPrice() && et.getAddress().getCity().equals(params.getCity())){
                 if(availablePeriodService.isAvailable(et.getId(), params.getStartDate(), params.getEndDate()) && !reservationService.isReserved(et.getId(), start, end)){
-                    entitiesDTO.add(mapper.map(et, EntityTypeDTO.class));
+                    EntityKind kind = et.getKind();
+                    EntityTypeDTO dto = mapper.map(et, EntityTypeDTO.class);
+                    dto.setType(EntityKind.toString(kind));
+                    entitiesDTO.add(dto);
                 }
             }
         }
