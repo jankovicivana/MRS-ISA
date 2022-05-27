@@ -24,14 +24,14 @@
             <a class="navbar-link" style="background-color: #2e6b6b"> Reservations </a>
             <div class="navbar-dropdown is-boxed">
               <a class="navbar-item" href="#/client/reservations"> Make a reservation </a>
-              <a class="navbar-item" href="#/pastReservations"> Past Reservations </a>
+              <a class="navbar-item" href="#/client/reservationHistory"> Past Reservations </a>
               <a class="navbar-item" href="#/upcomingReservations"> Upcoming Reservations </a>
             </div>
           </div>
 
         </div>
       </div>
-      <a href="#/logout" class="px-3 mr-1" >Log out</a>
+      <a href="/" class="px-3 mr-1" >Log out</a>
   </nav>
 </template>
 

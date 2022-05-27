@@ -6,6 +6,8 @@ import {LMap,LTileLayer,LMarker} from "vue2-leaflet";
 import {Icon} from "leaflet";
 import 'leaflet/dist/leaflet.css'
 import StarRating from "vue-star-rating";
+import VueLodash from "vue-lodash";
+import lodash from 'lodash';
 import AdventureProfile from "../components/AdventureProfile";
 import AddAdventure from "../components/AddAdventure";
 import CottageProfile from "../components/CottageProfile";
@@ -44,6 +46,7 @@ Vue.use(Router)
 Vue.use(VueCarousel)
 Vue.use(VueNotification)
 Vue.use(StarRating)
+Vue.use(VueLodash, {name: 'custom', lodash: lodash})
 Vue.component('l-map',LMap)
 Vue.component('l-tile-layer',LTileLayer)
 Vue.component('l-marker',LMarker)

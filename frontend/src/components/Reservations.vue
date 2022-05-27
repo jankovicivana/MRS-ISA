@@ -91,7 +91,11 @@ export default {
       this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
         startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.$refs.rating.value};
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/entity/getAvailable", this.params)
+        .post(process.env.VUE_APP_SERVER_PORT+"/api/entity/getAvailable", this.params,{
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }})
         .then(response => (this.entities = response.data)).catch(function error(error) {
         alert(error.response.data);});
     }
