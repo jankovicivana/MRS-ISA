@@ -16,11 +16,6 @@ public class Administrator extends User{
     public Administrator() {
     }
 
-    public Administrator(Boolean isPredefined) {
-        super();
-        this.isPredefined = isPredefined;
-    }
-
     @Column(name = "isPredefined", nullable = false)
     private Boolean isPredefined;
 

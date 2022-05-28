@@ -82,19 +82,19 @@ export default {
                       <div class="form-outline mb-4">
                         <label class="label">Start date:</label>
                         <div>
-                          <input class="form-control form-control-lg" ref="start_date_input" type="date"   placeholder="Start date input" />
+                          <input class="form-control form-control-lg" ref="start_date_input" type="datetime-local"   placeholder="Start date input" />
                         </div>
                       </div>
                       <div class="form-outline mb-4">
                         <label class="label">End date:</label>
                         <div>
-                          <input class="form-control form-control-lg" type="date" ref="end_date_input"   placeholder="End date input" />
+                          <input class="form-control form-control-lg" type="datetime-local" ref="end_date_input"   placeholder="End date input" />
                         </div>
                       </div>
                       <div class="form-outline mb-4">
                         <label class="label">Expiration date:</label>
                         <div>
-                          <input class="form-control form-control-lg" type="date" ref="expiration_date_input"   placeholder="Expiration date input" />
+                          <input class="form-control form-control-lg" type="datetime-local" ref="expiration_date_input"   placeholder="Expiration date input" />
                         </div>
                       </div>
                       <hr />

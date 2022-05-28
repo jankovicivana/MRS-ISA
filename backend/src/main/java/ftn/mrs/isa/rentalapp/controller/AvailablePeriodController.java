@@ -4,6 +4,7 @@ import ftn.mrs.isa.rentalapp.dto.AvailablePeriodDTO;
 import ftn.mrs.isa.rentalapp.model.entity.AvailablePeriod;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.service.AvailablePeriodService;
+import ftn.mrs.isa.rentalapp.service.BoatService;
 import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.FishingInstructorService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,15 +35,28 @@ public class AvailablePeriodController {
     CottageService cottageService;
 
     @Autowired
+    BoatService boatService;
+
+    @Autowired
     private ModelMapper mapper;
 
-    @PostMapping(value = "/addForEntity" )
-    @PreAuthorize("hasAnyRole('boatOwner','cottageOwner')")
-    public void addAvailablePeriodForEntity(@RequestBody AvailablePeriodDTO availablePeriod, Principal principal) {
+    @PostMapping(value = "/addCottage" )
+    @PreAuthorize("hasRole('cottageOwner')")
+    public void addAvailablePeriodCottage(@RequestBody AvailablePeriodDTO availablePeriod, Principal principal) {
         AvailablePeriod a = new AvailablePeriod();
         a.setStartDateTime(availablePeriod.getStartDateTime());
         a.setEndDateTime(availablePeriod.getEndDateTime());
         a.setEntity(cottageService.findOne(availablePeriod.getEntity()));
+        availablePeriodService.add(a);
+    }
+
+    @PostMapping(value = "/addBoat" )
+    @PreAuthorize("hasRole('boatOwner')")
+    public void addAvailablePeriodBoat(@RequestBody AvailablePeriodDTO availablePeriod, Principal principal) {
+        AvailablePeriod a = new AvailablePeriod();
+        a.setStartDateTime(availablePeriod.getStartDateTime());
+        a.setEndDateTime(availablePeriod.getEndDateTime());
+        a.setEntity(boatService.findOne(availablePeriod.getEntity()));
         availablePeriodService.add(a);
     }
 
@@ -73,6 +88,7 @@ public class AvailablePeriodController {
             availablePeriodDTO.setFishingInstructor(instructor.getId());
             availablePeriodDTO.setEntity(null);
             availablePeriods.add(availablePeriodDTO);
+            LocalDateTime t = LocalDateTime.now();
         }
         return new ResponseEntity<>(availablePeriods, HttpStatus.OK);
     }

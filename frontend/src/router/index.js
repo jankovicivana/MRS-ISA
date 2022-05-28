@@ -40,6 +40,7 @@ import FishingInstructorHomepage from "../components/FishingInstructorHomepage";
 import Revision from "../components/Revision";
 import AdminViewUsers from "../components/AdminViewUsers";
 import Registration from "../components/Registration";
+import AdminHomepage from "../components/AdminHomepage";
 import ClientReservationHistory from "../components/ClientReservationHistory";
 
 Vue.use(Router)
@@ -107,13 +108,17 @@ export default new Router({
       component: AdvertiserProfile
     },
     {
-      path:'/boats/BoatProfile',
+      path:'/boats/BoatProfile/:id',
       name:'BoatProfile',
       component: BoatProfile
     },{
       path: '/admin/AddAdministrator',
       name:'AddAdministrator',
       component: AddAdministrator
+    },{
+      path: '/admin/homepage',
+      name:'AdminHomepage',
+      component: AdminHomepage
     },{
       path: '/boats/AddBoat',
       name:'AddBoat',

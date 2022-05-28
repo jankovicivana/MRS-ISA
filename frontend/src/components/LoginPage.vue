@@ -56,7 +56,7 @@ export default {
         if(response.data.role === "ROLE_client"){
           router.push('/client/clientHomepage');
         } else if (response.data.role === "ROLE_admin") {
-          router.push('/admin/AddAdministrator');
+          router.push('/admin/homepage');
         } else if (response.data.role === "ROLE_cottageOwner") {
           router.push('/cottageOwner/cottageOwnerHomepage');
         } else if (response.data.role === "ROLE_boatOwner") {

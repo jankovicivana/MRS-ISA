@@ -79,7 +79,7 @@ values (10,'20220620 10:00:00 AM','20220601 10:00:00 AM',false,10,200,'20220615 
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
                                 start_date_time, entity, reservation,discounted_price,deleted)
-values (5,'20220615 10:00:00 AM','20220522 10:00:00 AM',false,10,180,'20220610 10:00:00 AM',2,null,13,false);
+values (5,'20220615 10:00:00 AM','20220522 10:00:00 AM',false,10,180,'20220610 10:00:00 AM',3,null,13,false);
 
 
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade) values (nextval('my_seqv1'),'mika@gmail.com','Mika','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Mikic',2,null,2,0,0,'coka2.jpg',false, true, 0.0);
@@ -99,7 +99,7 @@ insert into reservations(start_date_time,end_date_time,deleted,entity,price,syst
     ('20220522 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,60,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,60,5,false,5);
+    ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,2,200,20,60,5,false,5);
 
 insert into images (path,entity,is_main_photo) values ('boat1.jpg',3,false);
 insert into images (path,entity,is_main_photo) values ('boat2.jpg',3,false);
