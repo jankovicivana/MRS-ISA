@@ -25,7 +25,7 @@
             <div class="navbar-dropdown is-boxed">
               <a class="navbar-item" href="#/client/reservations"> Make a reservation </a>
               <a class="navbar-item" href="#/client/reservationHistory"> Past Reservations </a>
-              <a class="navbar-item" href="#/upcomingReservations"> Upcoming Reservations </a>
+              <a class="navbar-item" href="#/client/upcomingReservations"> Upcoming Reservations </a>
             </div>
           </div>
 

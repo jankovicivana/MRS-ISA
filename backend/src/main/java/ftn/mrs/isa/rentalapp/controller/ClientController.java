@@ -86,13 +86,14 @@ public class ClientController {
 
     @PostMapping(value = "/updateClient" )
     @PreAuthorize("hasRole('client')")
-    public ResponseEntity<ClientDTO> updateClient(@RequestBody ClientDTO clientDTO){
-        Client client = clientService.findOne(clientDTO.getId());
+    public ResponseEntity<ClientDTO> updateClient(@RequestBody ClientDTO clientDTO, Principal principal){
+        Client client = clientService.findByEmail(principal.getName());
         if(client == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        clientService.updateClient(mapper.map(clientDTO, Client.class));
+        Client updated = mapper.map(clientDTO, Client.class);
+        updated.setRoles(client.getRoles());
+        clientService.updateClient(updated);
         return new ResponseEntity<>(clientDTO, HttpStatus.OK);
     }
 

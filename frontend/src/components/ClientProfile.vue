@@ -33,14 +33,14 @@
                   <div class="row mt-2">
                     <div class="col-md-12 inputs"><label class="labels">Email</label><input id="email" type="text" class="form-control" placeholder="email" readonly v-model="client.email"></div>
                     <div class="col-md-12 inputs"><label class="labels">Phone number</label><input type="text" class="form-control" placeholder="phone number" readonly v-model="client.phoneNumber"></div>
-                    <div class="col-md-12 inputs"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" readonly v-model="this.client.address.street"></div>
+                    <div class="col-md-12 inputs"><label class="labels">Address</label><input type="text" class="form-control" placeholder="address" readonly v-model="address.street"></div>
                   </div>
                   <div class="row mt-2">
-                    <div class="col-md-12 inputs"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" readonly v-model="this.client.address.country"></div>
+                    <div class="col-md-12 inputs"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" readonly v-model="address.country"></div>
                   </div>
                   <div class="row mt-2">
-                    <div class="col-md-6 inputs"><label class="labels">City</label><input type="text" class="form-control" readonly v-model="this.client.address.city" placeholder="city"></div>
-                    <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="this.client.address.postalCode"></div>
+                    <div class="col-md-6 inputs"><label class="labels">City</label><input type="text" class="form-control" readonly v-model="address.city" placeholder="city"></div>
+                    <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="address.postalCode"></div>
                   </div>
 
                   <div class="mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
@@ -137,7 +137,9 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")
           }
         })
-        .then(response => (this.client = response.data))
+        .then(response => (this.client = response.data, this.address = this.client.address)).catch(function error(error) {
+        alert(error.response.data);
+      });
     }
 
   },
@@ -161,9 +163,16 @@ export default {
         this.editButton.innerHTML="save" ;
       } else {
         this.editButton.innerHTML="edit" ;
-        let c = {id: this.client.id, name: this.client.name, surname: this.client.surname, email: this.client.email, password: this.client.password, address: this.client.address};
+        var c = {id: this.client.id, name: this.client.name, surname: this.client.surname,
+          email: this.client.email, password: this.client.password, address: this.address,
+          phoneNumber: this.client.phoneNumber, penalties: this.client.penalties, points: this.client.points};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/clients/updateClient", c)
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/clients/updateClient", c, {
+            headers: {
+              Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")
+            }
+          })
           .then(response => {
             this.show('foo-css', 'success')
           })
