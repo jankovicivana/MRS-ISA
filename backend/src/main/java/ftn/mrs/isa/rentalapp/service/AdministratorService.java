@@ -17,4 +17,8 @@ public class AdministratorService {
 
     public Administrator findByEmail(String string) {return administratorRepository.findByEmail(string);}
 
+    public Administrator findOne(Integer id) {
+        return administratorRepository.findById(id).orElse(null);
+    }
+
 }

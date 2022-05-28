@@ -40,13 +40,10 @@ public class FishingInstructorController {
 
     @GetMapping(value = "/getInstructor")
     public ResponseEntity<FishingInstructorDTO> getInstructor(Principal principal){
-        System.out.print("uslo");
         FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
         if(instructor == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        System.out.print("naslo");
-        System.out.print(instructor);
         return new ResponseEntity<>(mapper.map(instructor,FishingInstructorDTO.class), HttpStatus.OK);
     }
 

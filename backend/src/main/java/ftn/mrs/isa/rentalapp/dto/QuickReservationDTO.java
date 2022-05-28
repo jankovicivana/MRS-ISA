@@ -3,17 +3,18 @@ package ftn.mrs.isa.rentalapp.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class QuickReservationDTO {
 
     private Integer id;
 
-    private LocalDate startDateTime;
+    private LocalDateTime startDateTime;
 
-    private LocalDate endDateTime;
+    private LocalDateTime endDateTime;
 
-    private LocalDate expirationDateTime;
+    private LocalDateTime expirationDateTime;
 
     private Integer maxPersonNum;
 

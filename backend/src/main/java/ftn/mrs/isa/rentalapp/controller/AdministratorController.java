@@ -3,7 +3,9 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.AdministratorCreateDTO;
 import ftn.mrs.isa.rentalapp.dto.AdministratorDTO;
+import ftn.mrs.isa.rentalapp.dto.FishingInstructorDTO;
 import ftn.mrs.isa.rentalapp.model.user.Administrator;
+import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.model.user.UserType;
 import ftn.mrs.isa.rentalapp.service.AdministratorService;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -42,6 +41,17 @@ public class AdministratorController {
         administratorService.save(admin);
         return new ResponseEntity<>(mapper.map(admin, AdministratorDTO.class), HttpStatus.CREATED);
 
+    }
+
+    @GetMapping(value = "/getAdmin")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<AdministratorDTO> getAdmin(Principal principal){
+        Administrator admin = administratorService.findByEmail(principal.getName());
+        if(admin == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(mapper.map(admin,AdministratorDTO.class), HttpStatus.OK);
     }
 
 

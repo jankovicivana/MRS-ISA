@@ -44,9 +44,15 @@ public class ReservationService {
 
     public List<Reservation> findAllCurrentByCottageOwner(Integer id) {return reservationRepository.findAllCurrentByCottageOwner(LocalDateTime.now(),id); }
 
+    public List<Reservation> findAllByEntity(Integer id) {return reservationRepository.findAllByEntity(id); }
+
     public boolean isReserved(Integer id, LocalDateTime start, LocalDateTime end){
         List<Reservation> reservations = reservationRepository.getReserved(id, start, end);
         System.out.println("Reservations: " + reservations);
         return !reservations.isEmpty();
+    }
+
+    public List<Reservation> findAllByUser(Integer id) {
+        return  reservationRepository.findAllByUser(id);
     }
 }

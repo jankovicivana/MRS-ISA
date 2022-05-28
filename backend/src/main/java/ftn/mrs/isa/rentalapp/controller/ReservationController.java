@@ -5,6 +5,7 @@ import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
 import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.ReservationDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
+import ftn.mrs.isa.rentalapp.model.entity.Boat;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
@@ -46,6 +47,9 @@ public class ReservationController {
     private CottageOwnerService cottageOwnerService;
 
     @Autowired
+    private BoatService boatService;
+
+    @Autowired
     private FishingInstructorService fishingInstructorService;
 
     @GetMapping(value = "/findHistoryByUser/getInstructor")
@@ -54,6 +58,18 @@ public class ReservationController {
         FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
         List<Reservation> reservations = reservationService.findAllHistoryByUser(instructor.getId());
         System.out.print("-------------------------------->"+reservations.size());
+        return getListInstructorReservation(reservations);
+    }
+
+    @GetMapping(value = "/findAllByUser/getInstructor")
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<List<ReservationDTO>> getAllReservationByUser( Principal principal){
+        FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.findAllByUser(instructor.getId());
+        return getListInstructorReservation(reservations);
+    }
+
+    private ResponseEntity<List<ReservationDTO>> getListInstructorReservation(List<Reservation> reservations) {
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for(Reservation c : reservations){
             ReservationDTO rt = mapper.map(c, ReservationDTO.class);
@@ -84,6 +100,27 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDTO>> getAllCurrentReservationByCottageOwner(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllCurrentByCottageOwner(id);
         return getListResponseEntity(reservations);
+    }
+
+    @GetMapping(value = "/findAllOfCottage/{id}")
+    @PreAuthorize("hasRole('cottageOwner')")
+    public ResponseEntity<List<ReservationDTO>> findAllOfCottage(@PathVariable Integer id,Principal principal){
+        List<Reservation> reservations = reservationService.findAllByEntity(id);
+        return getListResponseEntity(reservations);
+    }
+
+    @GetMapping(value = "/findAllOfBoat/{id}")
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<List<ReservationDTO>> findAllOfBoat(@PathVariable Integer id,Principal principal){
+        List<Reservation> reservations = reservationService.findAllByEntity(id);
+        List<ReservationDTO> reservationsDTO = new ArrayList<>();
+        for(Reservation c : reservations){
+            ReservationDTO rt = mapper.map(c, ReservationDTO.class);
+            Boat boat = boatService.findOne(c.getEntity().getId());
+            rt.setCottage(mapper.map(boat, CottageDTO.class));
+            reservationsDTO.add(rt);
+        }
+        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
     }
 
     private ResponseEntity<List<ReservationDTO>> getListResponseEntity(List<Reservation> reservations) {
