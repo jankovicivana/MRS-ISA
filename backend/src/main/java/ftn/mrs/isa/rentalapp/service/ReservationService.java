@@ -53,4 +53,8 @@ public class ReservationService {
     public List<Reservation> getHistoryByClient(Integer id) {
         return reservationRepository.findAllHistoryByClient(LocalDateTime.now(),id);
     }
+
+    public List<Reservation> getUpcomingByClient(Integer id) {
+        return reservationRepository.findAllUpcomingByClient(LocalDateTime.now(),id);
+    }
 }

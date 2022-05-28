@@ -96,10 +96,10 @@ insert into reservations(start_date_time,end_date_time,deleted,entity,price,syst
     ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,1,200,20,60,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220522 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,60,5,false,5);
+    ('20220622 10:00:00 AM','20220625 10:00:00 AM',false,1,200,20,60,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,60,5,false,5);
+    ('20220529 10:00:00 AM','20220530 10:00:00 AM',false,1,200,20,60,5,false,5);
 
 insert into images (path,entity,is_main_photo) values ('boat1.jpg',3,false);
 insert into images (path,entity,is_main_photo) values ('boat2.jpg',3,false);

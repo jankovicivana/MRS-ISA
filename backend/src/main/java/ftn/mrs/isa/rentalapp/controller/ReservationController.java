@@ -109,7 +109,22 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDTO>> getHistoryByClient(Principal principal){
         Client client = clientService.findByEmail(principal.getName());
         List<Reservation> reservationList = reservationService.getHistoryByClient(client.getId());
-        System.out.println("Rezervacijeeee: " + reservationList.size());
+
+        // ovo moze kasnije da se izvuce u posebnu metodu
+        List<ReservationDTO> reservationsDTO = new ArrayList<>();
+        for(Reservation r: reservationList){
+            ReservationDTO dto = mapper.map(r, ReservationDTO.class);
+            dto.getEntity().setType(EntityKind.toString(r.getEntity().getKind()));
+            reservationsDTO.add(dto);
+        }
+        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findUpcomingByClient")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<List<ReservationDTO>> getUpcomingByClient(Principal principal){
+        Client client = clientService.findByEmail(principal.getName());
+        List<Reservation> reservationList = reservationService.getUpcomingByClient(client.getId());
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for(Reservation r: reservationList){
             ReservationDTO dto = mapper.map(r, ReservationDTO.class);
