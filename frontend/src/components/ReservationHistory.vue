@@ -82,7 +82,7 @@ export default {
         .then(response => (
           this.reservations = response.data
         ))
-    } else if (this.role === "ROLE_fishingInstructor") {
+    }   else if (this.role === "ROLE_fishingInstructor") {
       axios
         .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByUser/getInstructor", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
