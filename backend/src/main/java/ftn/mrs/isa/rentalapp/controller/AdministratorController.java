@@ -54,6 +54,12 @@ public class AdministratorController {
         return new ResponseEntity<>(mapper.map(admin,AdministratorDTO.class), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/updateAdmin" )
+    @PreAuthorize("hasRole('admin')")
+    public void updateAdmin(@RequestBody AdministratorDTO administratorDTO, Principal principal) {
+        administratorService.save(mapper.map(administratorDTO,Administrator.class));
+    }
+
 
 
 }
