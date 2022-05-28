@@ -19,7 +19,12 @@
           <div class="column" v-for="c in cottages">
             <div class="card col-3" v-on:click="open(c.id)">
               <div class="card-image">
-                <img class="card_image" alt="Image" :src="require('../assets/images/cottage'+c.id+'.jpg')" />
+                <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
+                  <slide v-for="i in c.images">
+                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                  </slide>
+
+                </carousel>
               </div>
 
               <div class="p-3">

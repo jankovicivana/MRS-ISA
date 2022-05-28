@@ -11,12 +11,9 @@
     <div class="container cottage_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center pt-5">
         <div class="col-md-6">
-          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="false" >
-            <slide>
-              <img class="d-block w-100" src="../assets/images/cottage4.jpg" alt="First slide" >
-            </slide>
-            <slide>
-              <img class="d-block w-100" src="../assets/images/cottage5.jpg" alt="Second slide" >
+          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" v-bind:loop="true" v-bind:speed="3000">
+            <slide v-for="i in cottage.images">
+              <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 400px">
             </slide>
 
           </carousel>
