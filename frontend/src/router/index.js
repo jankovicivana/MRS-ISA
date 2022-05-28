@@ -42,6 +42,7 @@ import AdminViewUsers from "../components/AdminViewUsers";
 import Registration from "../components/Registration";
 import AdminHomepage from "../components/AdminHomepage";
 import ClientReservationHistory from "../components/ClientReservationHistory";
+import AdminPenaltyView from "../components/AdminPenaltyView";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -119,6 +120,10 @@ export default new Router({
       path: '/admin/homepage',
       name:'AdminHomepage',
       component: AdminHomepage
+    },{
+      path: '/admin/penaltyView',
+      name:'AdminPenaltyView',
+      component: AdminPenaltyView
     },{
       path: '/boats/AddBoat',
       name:'AddBoat',

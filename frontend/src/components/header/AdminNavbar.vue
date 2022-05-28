@@ -43,7 +43,7 @@
           <a class="navbar-link" style="background-color: #2e6b6b"> Communication </a>
           <div class="navbar-dropdown is-boxed">
             <a class="navbar-item" href="#/admin/revisions"> Client reviews</a>
-            <a class="navbar-item" href="#/client/clientHomepage"> Reservation reports</a>
+            <a class="navbar-item" href="#/admin/penaltyView"> Reservation reports</a>
             <a class="navbar-item" href="#/client/clientHomepage"> Complaints </a>
           </div>
         </div>
