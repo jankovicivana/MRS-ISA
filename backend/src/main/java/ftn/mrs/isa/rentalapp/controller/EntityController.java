@@ -1,11 +1,16 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 
+import ftn.mrs.isa.rentalapp.dto.CottageDTO;
+import ftn.mrs.isa.rentalapp.dto.CottageOwnerDTO;
 import ftn.mrs.isa.rentalapp.dto.EntitySearchDTO;
 import ftn.mrs.isa.rentalapp.dto.EntityTypeDTO;
+import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
 import ftn.mrs.isa.rentalapp.service.AvailablePeriodService;
+import ftn.mrs.isa.rentalapp.service.CottageService;
 import ftn.mrs.isa.rentalapp.service.EntityService;
 import ftn.mrs.isa.rentalapp.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +33,9 @@ public class EntityController {
 
     @Autowired
     private EntityService entityService;
+
+    @Autowired
+    private CottageService cottageService;
 
     @Autowired
     private AvailablePeriodService availablePeriodService;
@@ -65,5 +74,17 @@ public class EntityController {
         }
 
         return new ResponseEntity<>(entitiesDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getAverageGrade")
+    @PreAuthorize("hasRole('cottageOwner')")
+    public ResponseEntity<Double> getCottage(Principal principal){
+        List<Cottage> cottages = cottageService.findAllByOwnerEmail(principal.getName());
+        double averageGrade = 0.0;
+        for (Cottage c : cottages){
+            averageGrade += c.getAverageGrade();
+        }
+        averageGrade = averageGrade / cottages.size();
+        return new ResponseEntity<>(averageGrade, HttpStatus.OK);
     }
 }
