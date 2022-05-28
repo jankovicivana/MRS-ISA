@@ -73,7 +73,7 @@ public class ReviewController {
         }
         advertiserReview.setStatus(RequestStatus.ACCEPTED);
         reviewService.saveAdvertiserReview(advertiserReview);
-        //azuuriraj prosjecnu ocjenu
+        reviewService.updateAverageGradeAdvertiser(advertiserReview.getAdvertiser());
         emailService.sendNotificationAsync(advertiserReview.getClient(), advertiserReview.getAdvertiser().getName()+" "+advertiserReview.getAdvertiser().getSurname());
         return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
     }
@@ -87,7 +87,7 @@ public class ReviewController {
         }
         entityReview.setStatus(RequestStatus.ACCEPTED);
         reviewService.saveEntityReview(entityReview);
-        //azuuriraj prosjecnu ocjenu
+        reviewService.updateAverageGradeEntity(entityReview.getEntity().getId());
         emailService.sendNotificationAsync(entityReview.getClient(), entityReview.getEntity().getName());
         return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
     }
