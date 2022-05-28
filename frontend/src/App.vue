@@ -34,8 +34,14 @@ export default {
 }
 
 .profile_main{
+  background-attachment: fixed;
   background-image: url('assets/images/back2.jpg');
   background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  overflow: scroll;
 }
 
 .basic_background{
