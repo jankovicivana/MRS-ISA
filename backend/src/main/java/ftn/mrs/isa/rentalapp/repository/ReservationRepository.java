@@ -1,9 +1,12 @@
 package ftn.mrs.isa.rentalapp.repository;
 
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -56,6 +59,13 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
     @Query(value = "SELECT * FROM public.reservations WHERE end_date_time < :now and client = :id ", nativeQuery = true)
     public List<Reservation> findAllHistoryByClient(@Param("now") LocalDateTime now,  @Param("id") Integer id);
 
-    @Query(value = "SELECT * FROM public.reservations WHERE start_date_time > :now and client = :id ", nativeQuery = true)
+    @Query(value = "SELECT * FROM public.reservations WHERE start_date_time > :now and client = :id and is_canceled = false", nativeQuery = true)
+   // @Where(clause = "is_canceled = false")
     public List<Reservation> findAllUpcomingByClient(@Param("now") LocalDateTime now, @Param("id") Integer id);
+
+    @Transactional
+    @Query(value = "UPDATE Reservation r SET r.isCanceled=true WHERE r.id = :id ")
+    @Modifying
+    public void cancel(@Param("id") Integer id);
+
 }

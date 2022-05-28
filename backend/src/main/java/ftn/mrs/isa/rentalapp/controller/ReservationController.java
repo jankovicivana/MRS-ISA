@@ -6,7 +6,6 @@ import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.Boat;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
@@ -18,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -168,5 +164,17 @@ public class ReservationController {
             reservationsDTO.add(dto);
         }
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/cancelReservation")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<String> cancelReservation(@RequestBody ReservationDTO r,Principal principal){
+        Client client = clientService.findByEmail(principal.getName());
+        System.out.println("Idddddddddddddddddddddddddd:" + r.getId());
+        //System.out.println("Idddddddddddddddddddddddddd2:" + res.getId());
+        //System.out.println("Canceleeeeeed:" + res.getPersonNum());
+
+        reservationService.cancelReservation(r.getId());
+        return new ResponseEntity<>("Canceled successfully.",HttpStatus.OK);
     }
 }

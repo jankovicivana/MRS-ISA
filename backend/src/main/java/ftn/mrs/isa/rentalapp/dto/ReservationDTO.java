@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class ReservationDTO {
 
+    private Integer id;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private ClientDTO client;

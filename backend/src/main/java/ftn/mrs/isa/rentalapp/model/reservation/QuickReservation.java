@@ -60,7 +60,7 @@ public class QuickReservation {
     @Column(name = "expirationDateTime", nullable = false)
     private LocalDateTime expirationDateTime;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "reservation", nullable = true)
     private Reservation reservation;
 

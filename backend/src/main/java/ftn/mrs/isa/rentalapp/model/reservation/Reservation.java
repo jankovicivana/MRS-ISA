@@ -17,7 +17,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "startDateTime", nullable = false)
     private LocalDateTime startDateTime;
@@ -51,7 +51,7 @@ public class Reservation {
     @Column(name = "isCanceled", nullable = false)
     private Boolean isCanceled;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "quickReservation", nullable = true)
     private QuickReservation quickReservation;
 

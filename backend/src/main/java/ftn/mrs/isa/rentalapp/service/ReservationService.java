@@ -2,6 +2,7 @@ package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +63,13 @@ public class ReservationService {
 
     public List<Reservation> getUpcomingByClient(Integer id) {
         return reservationRepository.findAllUpcomingByClient(LocalDateTime.now(),id);
+    }
+
+    public Reservation getById(Integer resId) {
+        return reservationRepository.getById(resId);
+    }
+
+    public void cancelReservation(Integer id) {
+        reservationRepository.cancel(id);
     }
 }
