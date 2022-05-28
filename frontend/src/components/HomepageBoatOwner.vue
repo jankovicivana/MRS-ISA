@@ -20,7 +20,11 @@
           <div class="column" v-for="b in boats">
             <div class="card col-3" v-on:click="open(b.id)">
               <div class="card-image">
-                <img class="card_image" alt="Image" :src="require('../assets/images/boat'+ (parseInt(b.id)-2).toString() +'.jpg')" />
+                <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
+                  <slide v-for="i in b.images">
+                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                  </slide>
+                </carousel>
               </div>
 
               <div class="p-3">

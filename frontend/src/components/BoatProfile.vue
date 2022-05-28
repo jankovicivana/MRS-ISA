@@ -10,7 +10,7 @@
       <div class="row align-items-center">
         <div class="col-md-6">
 
-          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true">
+          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" v-bind:loop="true" v-bind:speed="3000">
             <slide  v-for="i in boat.images">
               <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%">
             </slide>
