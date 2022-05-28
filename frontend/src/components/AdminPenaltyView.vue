@@ -23,12 +23,13 @@
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
 
                       </tr>
                       </thead>
                       <tbody>
                       <tr style="background: #ecd9c6"  v-if="reports.length == 0">
-                        <td colspan="6" class="p-3">There is no penalty report.</td>
+                        <td colspan="7" class="p-3">There is no penalty report.</td>
                       </tr>
                       <tr style="background: #ecd9c6;" v-for="r in reports">
                         <td>{{r.client.surname + " "+ r.client.name}}</td>

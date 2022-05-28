@@ -137,6 +137,7 @@ insert into boats (id, deleted, description, name, price, address, motor_num, ca
 values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Ivana',250,2,3,20,5,25,250,600,0,4,0.0, 1);
 
 insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted) values (nextval('my_seqv1'),'admin@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',false, true,false);
+insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade) values (nextval('my_seqv1'),'ikasikovic197@gmail.com','Ivana','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,0,'coka2.jpg',false, true, 0.0);
 
 insert into role (name) values ('ROLE_client');
 insert into role (name) values ('ROLE_admin');
@@ -166,4 +167,4 @@ insert into entity_reviews (id,grade,review,status,client,entity) values (nextva
 insert into available_periods (start_date_time, end_date_time,entity,fishing_instructor) values ('20220622', '20220627', 1,null);
 insert into available_periods (start_date_time, end_date_time, entity,fishing_instructor) values ('20220622', '20220627', null,3);
 
-insert into reports (id,client_showed_up,penalty_status,report_string,advertiser,client) values (nextval('my_seqv5'),true,1,'Malo je bezobrazan. Sram ga bilooooo.',1,2);
+insert into reports (id,client_showed_up,penalty_status,report_string,advertiser,client) values (nextval('my_seqv5'),true,1,'Malo je bezobrazan. Sram ga bilooooo.',7,2);

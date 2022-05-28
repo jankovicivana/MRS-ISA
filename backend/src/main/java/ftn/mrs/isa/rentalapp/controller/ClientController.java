@@ -46,6 +46,9 @@ public class ClientController {
     @Autowired
     private ReportService reportService;
 
+    @Autowired
+    private EmailService emailService;
+
 
     @GetMapping(value = "/all")
     @PreAuthorize("hasRole('admin')")
@@ -184,22 +187,26 @@ public class ClientController {
 
     @GetMapping(value = "/acceptPenalty/{id}")
     @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<String> acceptPenaltyReport(@PathVariable Integer id, Principal principal)  {
+    public ResponseEntity<String> acceptPenaltyReport(@PathVariable Integer id, Principal principal) throws MessagingException, InterruptedException {
         Report report = reportService.findOne(id);
         report.setPenaltyStatus(RequestStatus.ACCEPTED);
         Client c = clientService.findOne(report.getClient().getId());
         c.setPenalties(c.getPenalties()+1);
         clientService.save(c);
         reportService.save(report);
+        emailService.sendNotificationReportToClientAsync(c,report.getAdvertiser(),"accepted");
+        emailService.sendNotificationReportToAdvertiserAsync(c, report.getAdvertiser(),"accepted");
         return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
     }
 
     @GetMapping(value = "/rejectPenalty/{id}")
     @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<String> rejectPenaltyReport(@PathVariable Integer id, Principal principal)  {
+    public ResponseEntity<String> rejectPenaltyReport(@PathVariable Integer id, Principal principal) throws MessagingException, InterruptedException {
         Report report = reportService.findOne(id);
         report.setPenaltyStatus(RequestStatus.REJECTED);
         reportService.save(report);
+        emailService.sendNotificationReportToClientAsync(report.getClient(),report.getAdvertiser(),"rejected");
+        emailService.sendNotificationReportToAdvertiserAsync(report.getClient(), report.getAdvertiser(),"rejected");
         return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
     }
 }

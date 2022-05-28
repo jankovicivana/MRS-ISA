@@ -1,6 +1,7 @@
 package ftn.mrs.isa.rentalapp.service;
 
 
+import ftn.mrs.isa.rentalapp.model.user.Advertiser;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -46,6 +47,73 @@ public class EmailService {
                 "                Dear "+client.getName()+",\n" +
                 "                <br/>\n" +
                 "                Your review of "+ entityName +" is acccepted.\n" +
+                "                <br/>\n" +
+                "                Regards,\n" +
+                "                <br/>\n" +
+                "                <span >Rental app team</span>\n" +
+                "            </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </body>\n" +
+                "</html>",true);
+        //mail.set
+        javaMailSender.send( mail.getMimeMessage());
+        System.out.println("Email poslat!");
+    }
+
+    @Async
+    public void sendNotificationReportToClientAsync(Client client, Advertiser advertiser,String status) throws MailException, InterruptedException, MessagingException {
+        System.out.println("Slanje emaila...");
+        MimeMessageHelper mail = new MimeMessageHelper(javaMailSender.createMimeMessage(), true, "UTF-8");
+        mail.setTo(client.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+
+        mail.setSubject("Rental app notification");
+        mail.setText("<html>\n" +
+                "    <body>\n" +
+                "        <div style=\"margin: 50px;\">\n" +
+                "            <div style=\"background-color: rgb(135,206,250);height: 55px;\">\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">"+status.toUpperCase()+" </h1>\n" +
+                "            </div>\n" +
+                "            <div style=\"margin-top: 10px;\">\n" +
+                "                <div style=\"margin: 25px;\">\n" +
+                "                Dear "+client.getName()+",\n" +
+                "                <br/>\n" +
+                "                Penalty in reservation report which was given by "+advertiser.getName()+" "+ advertiser.getSurname()+" is "+status+"\n" +
+                "                <br/>\n" +
+                "                Regards,\n" +
+                "                <br/>\n" +
+                "                <span >Rental app team</span>\n" +
+                "            </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </body>\n" +
+                "</html>",true);
+        //mail.set
+        javaMailSender.send( mail.getMimeMessage());
+        System.out.println("Email poslat!");
+    }
+    @Async
+    public void sendNotificationReportToAdvertiserAsync(Client client, Advertiser advertiser,String status) throws MailException, InterruptedException, MessagingException {
+        System.out.println("Slanje emaila...");
+        MimeMessageHelper mail = new MimeMessageHelper(javaMailSender.createMimeMessage(), true, "UTF-8");
+        mail.setTo(advertiser.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+
+        mail.setSubject("Rental app notification");
+        mail.setText("<html>\n" +
+                "    <body>\n" +
+                "        <div style=\"margin: 50px;\">\n" +
+                "            <div style=\"background-color: rgb(135,206,250);height: 55px;\">\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">"+status.toUpperCase()+" </h1>\n" +
+                "            </div>\n" +
+                "            <div style=\"margin-top: 10px;\">\n" +
+                "                <div style=\"margin: 25px;\">\n" +
+                "                Dear "+advertiser.getName()+",\n" +
+                "                <br/>\n" +
+                "                Penalty which you gave to "+client.getName()+" "+ client.getSurname()+" is "+status+"\n" +
                 "                <br/>\n" +
                 "                Regards,\n" +
                 "                <br/>\n" +
