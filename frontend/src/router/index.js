@@ -41,6 +41,7 @@ import Revision from "../components/Revision";
 import AdminViewUsers from "../components/AdminViewUsers";
 import Registration from "../components/Registration";
 import ClientReservationHistory from "../components/ClientReservationHistory";
+import ClientUpcomingReservations from "../components/ClientUpcomingReservations";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -210,6 +211,11 @@ export default new Router({
       path: '/client/reservationHistory',
       name: "ClientReservationHistory",
       component: ClientReservationHistory
+    },
+    {
+      path: '/client/upcomingReservations',
+      name: "ClientUpcomingReservations",
+      component: ClientUpcomingReservations
     }
   ]
 })
