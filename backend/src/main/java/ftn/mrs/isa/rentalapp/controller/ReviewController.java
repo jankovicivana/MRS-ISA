@@ -55,7 +55,6 @@ public class ReviewController {
     @GetMapping("/getOnHoldEntityReview")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<EntityReviewDTO>> getOnHoldEntityReview(Principal principal) {
-        System.out.print("pogodjenooo");
         List<EntityReview> revisions = reviewService.getOnHoldEntityRevisions();
         List<EntityReviewDTO> revisionDTO = new ArrayList<>();
         for (EntityReview d: revisions){

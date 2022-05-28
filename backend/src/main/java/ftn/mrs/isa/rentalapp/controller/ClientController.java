@@ -1,10 +1,12 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.ClientDTO;
+import ftn.mrs.isa.rentalapp.dto.ReportCreateDTO;
 import ftn.mrs.isa.rentalapp.dto.ReportDTO;
 import ftn.mrs.isa.rentalapp.model.reservation.Report;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.user.Advertiser;
+import ftn.mrs.isa.rentalapp.model.user.AdvertiserReview;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,8 +120,8 @@ public class ClientController {
     }
 
     @PostMapping(value = "/createReport")
-    @PreAuthorize("hasAnyRole('cottageOwner','boatOwner')")
-    public ResponseEntity<String> createReport(@RequestBody ReportDTO reportDTO){
+    @PreAuthorize("hasAnyRole('cottageOwner','boatOwner','fishingInstructor')")
+    public ResponseEntity<String> createReport(@RequestBody ReportCreateDTO reportDTO){
         Client client = clientService.findOne(reportDTO.getClientId());
         Advertiser advertiser = cottageOwnerService.findOne(reportDTO.getAdvertiserId());
         if(advertiser == null){
@@ -166,4 +169,37 @@ public class ClientController {
         return new ResponseEntity<>(subscriptionsDTO, HttpStatus.OK);
     }*/
 
+
+
+    @GetMapping(value = "/getReportOnHold")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<List<ReportDTO>> getReportOnHold(Principal principal){
+        List<Report> reports = reportService.getReportsOnHold();
+        List<ReportDTO> reportDTOS = new ArrayList<>();
+        for(Report r : reports){
+            reportDTOS.add(mapper.map(r, ReportDTO.class));
+        }
+        return new ResponseEntity<>(reportDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/acceptPenalty/{id}")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> acceptPenaltyReport(@PathVariable Integer id, Principal principal)  {
+        Report report = reportService.findOne(id);
+        report.setPenaltyStatus(RequestStatus.ACCEPTED);
+        Client c = clientService.findOne(report.getClient().getId());
+        c.setPenalties(c.getPenalties()+1);
+        clientService.save(c);
+        reportService.save(report);
+        return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/rejectPenalty/{id}")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> rejectPenaltyReport(@PathVariable Integer id, Principal principal)  {
+        Report report = reportService.findOne(id);
+        report.setPenaltyStatus(RequestStatus.REJECTED);
+        reportService.save(report);
+        return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
+    }
 }

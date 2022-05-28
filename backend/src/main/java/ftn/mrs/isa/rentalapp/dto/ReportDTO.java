@@ -1,17 +1,17 @@
 package ftn.mrs.isa.rentalapp.dto;
 
+
 import lombok.Data;
 
 @Data
 public class ReportDTO {
 
-    private Integer clientId;
+    private Integer id;
 
-    private Integer advertiserId;
+    private ClientDTO client;
 
-    private Boolean didShowUp;
-
-    private Boolean sanction;
+    private AdvertiserDTO advertiser;
 
     private String reportString;
+
 }

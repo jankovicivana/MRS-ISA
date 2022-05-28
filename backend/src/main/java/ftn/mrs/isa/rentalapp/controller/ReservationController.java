@@ -64,7 +64,6 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByUser( Principal principal){
         FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
         List<Reservation> reservations = reservationService.findAllHistoryByUser(instructor.getId());
-        System.out.print("-------------------------------->"+reservations.size());
         return getListInstructorReservation(reservations);
     }
 

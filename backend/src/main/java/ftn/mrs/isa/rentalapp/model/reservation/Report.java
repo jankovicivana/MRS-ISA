@@ -14,9 +14,9 @@ import javax.persistence.*;
 @Table(name = "reports")
 public class Report {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @SequenceGenerator(name = "mySeqGenV5", sequenceName = "mySeqV5", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV5")
+    private Integer id;
 
     @Column(name = "reportString")
     private String reportString;
@@ -24,11 +24,11 @@ public class Report {
     @Column(name = "penaltyStatus", nullable = false)
     private RequestStatus penaltyStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "advertiser")
     private Advertiser advertiser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client")
     private Client client;
 
