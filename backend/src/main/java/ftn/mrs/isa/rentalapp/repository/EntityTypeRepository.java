@@ -16,4 +16,5 @@ public interface EntityTypeRepository extends JpaRepository<EntityType,Integer> 
 
     public List<EntityType> findAllByPriceLessThan(Double price);
 
+
 }
