@@ -131,25 +131,32 @@
       <div class="row">
         <h3>Add availability</h3>
         <div class="col-7 p-4" >
-          <calendar
-            :eventCategories="eventCategories"
-            :events="events"
-            ref="calendar"
-            style="background: #f8f2ec;"
-          />
+          <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
         </div>
         <div class="col-4">
+          <div>
+            <h6>Info</h6>
+            <hr/>
+            <span style="color: green">● </span>- Available period <br/>
+            <span style="color: red">● </span>- Reservation period<br/>
+            <span style="color: blue">● </span>- Discount period <br/>
+
+
+          </div>
+          <br/><br/><br/>
+          <h6>Add new available period</h6>
+          <hr>
           <form>
             <div class="form-outline mb-4">
               <label class="label">Start date:</label>
               <div>
-                <input class="form-control form-control-lg" ref="start_date_input" type="date"   placeholder="Start date input" />
+                <input class="form-control form-control-lg" ref="start_date_input" type="datetime-local"   placeholder="Start date input" />
               </div>
             </div>
             <div class="form-outline mb-4">
               <label class="label">End date:</label>
               <div>
-                <input class="form-control form-control-lg" type="date" ref="end_date_input"   placeholder="End date input" />
+                <input class="form-control form-control-lg" type="datetime-local" ref="end_date_input"   placeholder="End date input" />
               </div>
             </div>
             <div class="d-flex justify-content-center">
@@ -168,16 +175,16 @@
 <script>
 import axios from "axios";
 import AddQuickReservation from "./AddQuickReservation";
-import { Calendar } from 'vue-sweet-calendar'
-import 'vue-sweet-calendar/dist/SweetCalendar.css'
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import router from "../router";
 
 export default {
   name: "CottageProfile",
   components:{
     CottageOwnerNavbar,
     AddQuickReservation,
-    Calendar
+    'full-calendar': require('vue-fullcalendar')
+
   },
   data: function (){
     return{
@@ -195,26 +202,6 @@ export default {
       cottageId: this.$route.params.id,
       config:'',
       selectedDate: null,
-      eventCategories: [
-        {
-          id: 1,
-          title: 'InstructorAvailability',
-          textColor: 'white',
-          backgroundColor: '#2e6b6b'
-        },
-        {
-          id: 2,
-          title: 'Company-wide',
-          textColor: 'white',
-          backgroundColor: 'red'
-        },
-        {
-          id: 3,
-          title: 'National',
-          textColor: 'white',
-          backgroundColor: 'green'
-        }
-      ],
       events: []
     }
     },
@@ -246,19 +233,45 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.periods = response.data
-            this.fillCalendar();
+            this.fillCalendar(this.periods,'bg-success');
+          }).catch(function error(error) {
+          alert(error.response.data);
+        });
+        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfCottage/"+this.cottageId, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+          .then(response => {
+            this.reservations = response.data
+            this.fillCalendar(this.reservations,'bg-danger');
+          }).catch(function error(error) {
+          alert(error.response.data);
+        });
+        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.cottageId, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+          .then(response => {
+            this.discounts = response.data
+            this.fillCalendar(this.discounts,'');
           }).catch(function error(error) {
           alert(error.response.data);
         });
 
     },methods: {
-    fillCalendar:function (){
-      for(let p of this.periods){
+    fillCalendar:function (listElements,style){
+      for(let p of listElements){
+        for (let i in p.startDateTime){
+          if(p.startDateTime[i]<10){
+            p.startDateTime[i]= '0' + p.startDateTime[i];
+          }
+        }
+        for (let i in p.endDateTime){
+          if(p.endDateTime[i]<10){
+            p.endDateTime[i]= '0' + p.endDateTime[i];
+          }
+        }
         this.newEvent = {
-          title: 'Event 1',
-          start: p.startDateTime,
-          end: p.endDateTime,
-          categoryId: 1
+          title: p.startDateTime[3]+':'+p.startDateTime[4]+'-'+p.endDateTime[3]+':'+p.endDateTime[4],
+          start: p.startDateTime[0]+'-'+p.startDateTime[1]+'-'+p.startDateTime[2],
+          end: p.endDateTime[0]+'-'+p.endDateTime[1]+'-'+p.endDateTime[2],
+          cssClass:style
         }
         this.events.push(this.newEvent);
       }
@@ -307,14 +320,14 @@ export default {
           entity:this.cottageId
         };
         this.newEvent = {
-          title: 'Event 1',
+          title: start_date.split('T')[1].substring(0,5)+'-'+end_date.split('T')[1].substring(0,5),
           start: start_date,
           end: end_date,
-          categoryId: 1
+          cssClass:'bg-success'
         }
         this.events.push(this.newEvent);
 
-        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addForEntity",this.info, {headers: {Authorization:
+        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addCottage",this.info, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success')

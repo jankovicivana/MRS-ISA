@@ -143,6 +143,46 @@
           <l-marker :lat-lng="markerLatLng"></l-marker>
         </l-map>
       </div>
+      <hr />
+
+      <div class="row" style="background: aliceblue">
+        <h3>Add availability</h3>
+        <div class="col-7 p-4" >
+          <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
+        </div>
+        <div class="col-4">
+          <div>
+            <h6>Info</h6>
+            <hr/>
+            <span style="color: green">● </span>- Available period <br/>
+            <span style="color: red">● </span>- Reservation period<br/>
+            <span style="color: blue">● </span>- Discount period <br/>
+
+
+          </div>
+          <br/><br/><br/>
+          <h6>Add new available period</h6>
+          <hr>
+          <form>
+            <div class="form-outline mb-4">
+              <label class="label">Start date:</label>
+              <div>
+                <input class="form-control form-control-lg" ref="start_date_input" type="datetime-local"   placeholder="Start date input" />
+              </div>
+            </div>
+            <div class="form-outline mb-4">
+              <label class="label">End date:</label>
+              <div>
+                <input class="form-control form-control-lg" type="datetime-local" ref="end_date_input"   placeholder="End date input" />
+              </div>
+            </div>
+            <div class="d-flex justify-content-center">
+              <button type="submit"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+            </div>
+          </form>
+        </div>
+      </div>
+
 
     </div>
   </section>
@@ -158,7 +198,8 @@ export default {
   name: "BoatProfile",
   components:{
     BoatOwnerNavbar,
-    AddQuickReservation
+    AddQuickReservation,
+    'full-calendar': require('vue-fullcalendar')
   },
   data: function (){
     return{
@@ -172,7 +213,8 @@ export default {
       markerLatLng: [0, 0],
       address:'',
       boatId: this.$route.params.id,
-      config:''
+      config:'',
+      events: []
     }
   },
   mounted:function (){
@@ -194,8 +236,56 @@ export default {
         })
       })
 
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.boatId, {headers: {Authorization:
+          'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => {
+        this.periods = response.data
+        this.fillCalendar(this.periods,'bg-success');
+      }).catch(function error(error) {
+      alert(error.response.data);
+    });
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfBoat/"+this.boatId, {headers: {Authorization:
+          'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => {
+        this.reservations = response.data
+        this.fillCalendar(this.reservations,'bg-danger');
+      }).catch(function error(error) {
+      alert(error.response.data);
+    });
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.boatId, {headers: {Authorization:
+          'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => {
+        this.discounts = response.data
+        this.fillCalendar(this.discounts,'');
+      }).catch(function error(error) {
+      alert(error.response.data);
+    });
+
+
   },
   methods:{
+    fillCalendar:function (listElements,style){
+      for(let p of listElements){
+        for (let i in p.startDateTime){
+          if(p.startDateTime[i]<10){
+            p.startDateTime[i]= '0' + p.startDateTime[i];
+          }
+        }
+        for (let i in p.endDateTime){
+          if(p.endDateTime[i]<10){
+            p.endDateTime[i]= '0' + p.endDateTime[i];
+          }
+        }
+        this.newEvent = {
+          title: p.startDateTime[3]+':'+p.startDateTime[4]+'-'+p.endDateTime[3]+':'+p.endDateTime[4],
+          start: p.startDateTime[0]+'-'+p.startDateTime[1]+'-'+p.startDateTime[2],
+          end: p.endDateTime[0]+'-'+p.endDateTime[1]+'-'+p.endDateTime[2],
+          cssClass:style
+        }
+        this.events.push(this.newEvent);
+      }
+    },
+
     show: function(group, type=''){
       let title = `<p style="font-size: 25px">Successfully deleted!</p>`
       let text = `<p style="font-size: 20px">Successfully deleted boat!</p>`
@@ -216,8 +306,47 @@ export default {
         }).catch(function error(error) {
         alert(error.response.data);
       });
+    },
+  addAvailablePeriod:function (){
+    let start_date = this.$refs.start_date_input.value
+    let end_date = this.$refs.end_date_input.value
+    if(start_date === ''){
+      alert("You must enter start date!")
+      return;
     }
+    if(end_date === ''){
+      alert("You must enter end date!")
+      return;
+    }
+    if(start_date>end_date){
+      alert("End date must be after start date.")
+      return;
+    }
+
+    this.info = {
+      startDateTime: start_date,
+      endDateTime: end_date,
+      entity:this.boatId
+    };
+    this.newEvent = {
+      title: start_date.split('T')[1].substring(0,5)+'-'+end_date.split('T')[1].substring(0,5),
+      start: start_date,
+      end: end_date,
+      cssClass:'bg-success'
+    }
+    this.events.push(this.newEvent);
+
+    axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addBoat",this.info, {headers: {Authorization:
+          'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => {
+        this.show('foo-css', 'success')
+        setTimeout(() => { }, 3000)
+      }).catch(function error(error) {
+      alert(error.response.data);
+    });
   }
+
+}
 }
 </script>
 

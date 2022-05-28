@@ -3,6 +3,7 @@
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
     <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'"></BoatOwnerNavbar>
     <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
+    <AdminNavbar v-if="role === 'ROLE_admin'"></AdminNavbar>
 
   <section id = "client_profile" class="profile_main py-lg-3">
 
@@ -73,10 +74,11 @@ import axios from "axios";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
+import AdminNavbar from "./header/AdminNavbar";
 
 export default {
   name: "AdvertiserProfile",
-  components: {FishingInstructorNavbar, BoatOwnerNavbar, CottageOwnerNavbar},
+  components: {AdminNavbar, FishingInstructorNavbar, BoatOwnerNavbar, CottageOwnerNavbar},
   data: function(){
     return{
       advertiser: '',
@@ -119,6 +121,14 @@ export default {
         alert(error.response.data);
       });
     }
+    else if(this.role === "ROLE_admin"){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/administrator/getAdmin", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.advertiser = response.data,this.address = this.advertiser.address)).catch(function error(error) {
+        alert(error.response.data);
+      });
+    }
 
   },
   methods: {
@@ -156,6 +166,13 @@ export default {
         }else if (this.role === "ROLE_fishingInstructor") {
           axios
             .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c, {headers: {Authorization:
+                  'Bearer ' + sessionStorage.getItem("accessToken")}})
+            .then(response => {
+              this.show('foo-css', 'success')
+            });
+        }else if (this.role === "ROLE_admin") {
+          axios
+            .post(process.env.VUE_APP_SERVER_PORT+"/api/administrator/updateAdmin", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.show('foo-css', 'success')

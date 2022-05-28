@@ -13,11 +13,6 @@
                   <hr />
                   <div class="row">
                     <div class="col-8" id="calendar">
-<!--                      <calendar-->
-<!--                        :eventCategories="eventCategories"-->
-<!--                        :events="events"-->
-<!--                        ref="calendar"-->
-<!--                      />-->
                       <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
 
                     </div>
@@ -38,13 +33,13 @@
                         <div class="form-outline mb-4">
                           <label class="label">Start date:</label>
                           <div>
-                            <input class="form-control form-control-lg" ref="start_date_input" type="date"   placeholder="Start date input" />
+                            <input class="form-control form-control-lg" ref="start_date_input" type="datetime-local"   placeholder="Start date input" />
                           </div>
                         </div>
                         <div class="form-outline mb-4">
                           <label class="label">End date:</label>
                           <div>
-                            <input class="form-control form-control-lg" type="date" ref="end_date_input"   placeholder="End date input" />
+                            <input class="form-control form-control-lg" type="datetime-local" ref="end_date_input"   placeholder="End date input" />
                           </div>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -76,64 +71,10 @@ export default {
     return {
       selectedDate: null,
       periods:'',
-      eventCategories: [
-        {
-          id: 1,
-          title: 'InstructorAvailability',
-          textColor: 'white',
-          backgroundColor: '#2e6b6b'
-        },
-        {
-          id: 2,
-          title: 'Reservation',
-          textColor: 'white',
-          backgroundColor: 'red'
+      reservations :'',
+      discounts:'',
+      events: [ ]
 
-        },
-        {
-          id: 3,
-          title: 'Action',
-          textColor: 'white',
-          backgroundColor: 'green'
-        }
-      ],
-      config: {
-        defaultView: 'month',
-        editable:true,
-        selectable:true
-      },
-      events: [
-        {
-          title: '09:00-09:30',
-          start: '2022-05-05T09:00',
-          end: '2022-05-07T09:30',
-          categoryId: 1,
-          allDaySlot: false,
-          cssClass:'bg-success'
-          //,YOUR_DATA : {"nasl":"naslov"}
-
-        },{
-          title: '09:00-09:30',
-          start: '2022-05-05T09:00',
-          end: '2022-05-05T09:30',
-          categoryId: 1,
-          allDaySlot: false,
-          cssClass:'bg-danger'
-          //,YOUR_DATA : {"nasl":"naslov"}
-
-        }
-        // ,{
-        //   title: 'Reservation',
-        //   start: '2022-05-05',
-        //   end: '2022-05-08',
-        //   categoryId: 1
-        // },{
-        //   title: 'Event 2',
-        //   start: '2022-05-06',
-        //   end: '2022-05-06',
-        //   categoryId: 2
-        // },
-      ]
 
     }
   },
@@ -143,21 +84,52 @@ export default {
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.periods = response.data
-        this.fillCalendar();
+        this.fillCalendar(this.periods,'bg-success');
       }).catch(function error(error) {
-        alert(error.response.data);
+        alert(error.response);
       });
+
+
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllByUser/getInstructor", {headers: {Authorization:
+          'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => {
+        this.reservations = response.data
+        this.fillCalendar(this.reservations,'bg-danger');
+      }).catch(function error(error) {
+      alert(error.response);
+    });
+
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/getInstructor", {headers: {Authorization:
+          'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => {
+        this.discounts = response.data
+        console.log(this.discounts)
+        this.fillCalendar(this.discounts,'');
+      }).catch(function error(error) {
+      alert(error.response);
+    });
 
 
   },
   methods:{
-    fillCalendar:function (){
-      for(let p of this.periods){
+
+      fillCalendar:function (elements,style){
+      for(let p of elements){
+        for (let i in p.startDateTime){
+          if(p.startDateTime[i]<10){
+            p.startDateTime[i]= '0' + p.startDateTime[i];
+          }
+        }
+        for (let i in p.endDateTime){
+          if(p.endDateTime[i]<10){
+            p.endDateTime[i]= '0' + p.endDateTime[i];
+          }
+        }
         this.newEvent = {
-          title: 'Event 1',
-          start: p.startDateTime,
-          end: p.endDateTime,
-          categoryId: 1
+          title: p.startDateTime[3]+':'+p.startDateTime[4]+'-'+p.endDateTime[3]+':'+p.endDateTime[4],
+          start: p.startDateTime[0]+'-'+p.startDateTime[1]+'-'+p.startDateTime[2],
+          end: p.endDateTime[0]+'-'+p.endDateTime[1]+'-'+p.endDateTime[2],
+          cssClass:style
         }
         this.events.push(this.newEvent);
       }
@@ -189,10 +161,10 @@ export default {
         endDateTime: end_date
       };
       this.newEvent = {
-        title: 'Event 1',
+        title: start_date.split('T')[1].substring(0,5)+'-'+end_date.split('T')[1].substring(0,5),
         start: start_date,
         end: end_date,
-        categoryId: 1
+        cssClass:'bg-success'
       }
       this.events.push(this.newEvent);
 
@@ -210,7 +182,6 @@ export default {
   },
   components: {
     FishingInstructorNavbar,
-    //Calendar // Registering Component
     'full-calendar': require('vue-fullcalendar')
   }
 }
