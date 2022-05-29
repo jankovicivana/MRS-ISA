@@ -170,3 +170,6 @@ insert into available_periods (start_date_time, end_date_time,entity,fishing_ins
 insert into available_periods (start_date_time, end_date_time, entity,fishing_instructor) values ('20220622', '20220627', null,3);
 
 insert into reports (id,client_showed_up,penalty_status,report_string,advertiser,client) values (nextval('my_seqv5'),true,1,'Malo je bezobrazan. Sram ga bilooooo.',7,2);
+
+insert into account_delete_requests (id,answer,request_reason,status,user_id) values (nextval('my_seqv6'),'','dosadni ste',1,2);
+insert into account_delete_requests (id,answer,request_reason,status,user_id) values (nextval('my_seqv6'),'','ukinuli ste nam popuste',1,8);

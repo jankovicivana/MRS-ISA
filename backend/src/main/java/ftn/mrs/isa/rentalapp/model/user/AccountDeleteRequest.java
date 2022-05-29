@@ -13,9 +13,9 @@ import javax.persistence.*;
 @Table(name = "accountDeleteRequests")
 public class AccountDeleteRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @SequenceGenerator(name = "mySeqGenV6", sequenceName = "mySeqV6", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenV6")
+    private Integer id;
 
     @Column(name = "requestReason")
     private String requestReason;
@@ -26,7 +26,7 @@ public class AccountDeleteRequest {
     @Column(name = "answer", nullable = true)
     private String answer;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User userId;
 

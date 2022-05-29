@@ -53,7 +53,10 @@ public class FishingInstructorController {
     public void updateInstructor(@RequestBody FishingInstructorDTO fishingInstructorDTO, Principal principal) {
         FishingInstructor fishingInstructor = fishingInstructorService.findOne(fishingInstructorDTO.getId());
         fishingInstructorDTO.setRegistrationStatus(fishingInstructor.getRegistrationStatus());
-        fishingInstructorService.updateInstructor(mapper.map(fishingInstructorDTO,FishingInstructor.class));
+        fishingInstructorDTO.setRegistrationReason(fishingInstructor.getRegistrationReason());
+        FishingInstructor updatedInstructor = mapper.map(fishingInstructorDTO,FishingInstructor.class);
+        updatedInstructor.setRoles(fishingInstructor.getRoles());
+        fishingInstructorService.updateInstructor(updatedInstructor);
     }
 
 

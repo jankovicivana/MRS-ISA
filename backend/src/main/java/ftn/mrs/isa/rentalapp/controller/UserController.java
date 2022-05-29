@@ -1,10 +1,13 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 
+import ftn.mrs.isa.rentalapp.dto.AccountDeleteRequestDTO;
 import ftn.mrs.isa.rentalapp.dto.AdvertiserDTO;
 import ftn.mrs.isa.rentalapp.dto.RegistrationResponse;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
+import ftn.mrs.isa.rentalapp.model.user.AccountDeleteRequest;
 import ftn.mrs.isa.rentalapp.model.user.Advertiser;
+import ftn.mrs.isa.rentalapp.model.user.User;
 import ftn.mrs.isa.rentalapp.service.EmailService;
 import ftn.mrs.isa.rentalapp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +73,32 @@ public class UserController {
         return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
     }
 
+    @PostMapping(value = "/acceptDeletion")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> acceptDeletion(@RequestBody AccountDeleteRequestDTO accountDeleteRequestDTO, Principal principal) throws InterruptedException, MessagingException {
+        AccountDeleteRequest request = mapper.map(accountDeleteRequestDTO,AccountDeleteRequest.class);
+        request.setStatus(RequestStatus.ACCEPTED);
+        userService.saveDeletionRequest(request);
+        User user = userService.findUserByEmail(accountDeleteRequestDTO.getUser().getEmail());
+        user.setDeleted(true);
+        userService.saveUser(user);
+        emailService.sendDeletionProfileNotification(user,"accepted");
+        return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/rejectDeletion")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> rejectDeletion(@RequestBody AccountDeleteRequestDTO accountDeleteRequestDTO, Principal principal) throws InterruptedException, MessagingException {
+        AccountDeleteRequest request = mapper.map(accountDeleteRequestDTO,AccountDeleteRequest.class);
+        request.setStatus(RequestStatus.REJECTED);
+        userService.saveDeletionRequest(request);
+        User user = userService.findUserByEmail(accountDeleteRequestDTO.getUser().getEmail());
+        user.setDeleted(false);
+        userService.saveUser(user);
+        emailService.sendDeletionProfileNotification(user,"rejected");
+        return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
+    }
+
     @GetMapping(value = "/acceptRegistration/{id}")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> acceptRegistration(@PathVariable Integer id, Principal principal) throws InterruptedException, MessagingException {
@@ -79,6 +108,20 @@ public class UserController {
         emailService.sendRegistrationAccepted(a);
         return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
     }
+
+    @GetMapping("/getDeleteRequestsOnHold")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<List<AccountDeleteRequestDTO>> getDeleteRequestsOnHold(Principal principal) {
+        List<AccountDeleteRequest> requests = userService.getDeleteRequestOnHold();
+        List<AccountDeleteRequestDTO> requestDTOS = new ArrayList<>();
+        for (AccountDeleteRequest d: requests){
+            AccountDeleteRequestDTO a = mapper.map(d,AccountDeleteRequestDTO.class);
+            requestDTOS.add(a);
+        }
+        return new ResponseEntity<>(requestDTOS, HttpStatus.CREATED);
+
+    }
+
 
 
 }

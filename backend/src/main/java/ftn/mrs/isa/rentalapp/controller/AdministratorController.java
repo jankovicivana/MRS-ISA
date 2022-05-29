@@ -57,7 +57,10 @@ public class AdministratorController {
     @PostMapping(value = "/updateAdmin" )
     @PreAuthorize("hasRole('admin')")
     public void updateAdmin(@RequestBody AdministratorDTO administratorDTO, Principal principal) {
-        administratorService.save(mapper.map(administratorDTO,Administrator.class));
+        Administrator oldAdmin = administratorService.findOne(administratorDTO.getId());
+        Administrator a = mapper.map(administratorDTO,Administrator.class);
+        a.setRoles(oldAdmin.getRoles());
+        administratorService.save(a);
     }
 
 

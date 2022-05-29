@@ -31,7 +31,7 @@
                         <td colspan="9" class="p-3">There is no registration request.</td>
                       </tr>
                       <tr style="background: #ecd9c6;" v-for="r in requests">
-                        <td colspan="2"><router-link :to="{ name: 'AdvertiserProfile',params:{id:r.id} }" >{{r.surname + " "+ r.name}}</router-link></td>
+                        <td colspan="2"><router-link style="text-decoration: none;color: #2e6b6b" :to="{ name: 'AdvertiserProfile',params:{id:r.id} }" >{{r.surname + " "+ r.name}}</router-link></td>
                         <td colspan="2">{{r.registrationReason}}</td>
                         <td colspan="2"><textarea v-model="r.rejecting" style="width: 350px" ></textarea></td>
                         <td></td>
@@ -89,7 +89,7 @@ export default {
       axios.get(process.env.VUE_APP_SERVER_PORT + "/api/user/acceptRegistration/"+id,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully accepted penalty!</p>`)
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully accepted registration!</p>`)
           setTimeout(() => {}, 3000)
           const index = this.requests.indexOf(request);
           this.requests.splice(index, 1);
@@ -129,5 +129,7 @@ export default {
 </script>
 
 <style scoped>
-
+  textarea:focus{
+    border: 2px solid dodgerblue;
+  }
 </style>
