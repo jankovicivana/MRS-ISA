@@ -34,7 +34,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Requests </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="#/client/clientHomepage"> Registration requests</a>
+            <a class="navbar-item" href="#/admin/registrationRequests"> Registration requests</a>
             <a class="navbar-item" href="#/client/clientHomepage"> Delete account requests </a>
           </div>
         </div>

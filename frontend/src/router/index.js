@@ -44,6 +44,7 @@ import AdminHomepage from "../components/AdminHomepage";
 import ClientReservationHistory from "../components/ClientReservationHistory";
 import AdminPenaltyView from "../components/AdminPenaltyView";
 import ClientUpcomingReservations from "../components/ClientUpcomingReservations";
+import RegistrationRequest from "../components/RegistrationRequest";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -125,6 +126,10 @@ export default new Router({
       path: '/admin/penaltyView',
       name:'AdminPenaltyView',
       component: AdminPenaltyView
+    },{
+      path: '/admin/registrationRequests',
+      name:'RegistrationRequest',
+      component: RegistrationRequest
     },{
       path: '/boats/AddBoat',
       name:'AddBoat',
