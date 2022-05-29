@@ -83,7 +83,6 @@ export default {
 
       this.info = {
         clientId: this.clientId,
-        advertiserId: 1,
         reportString: this.$refs.comment_input.value,
         didShowUp: document.getElementById('flexRadioDefault1').checked,
         sanction : document.getElementById('flexCheckDefault').checked
