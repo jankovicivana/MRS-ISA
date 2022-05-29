@@ -24,6 +24,8 @@ public class FishingInstructorDTO {
 
     private String mainPhoto;
 
+    private String registrationReason;
+
     private UserType type = UserType.FISHING_INSTRUCTOR;
 
     private RequestStatus registrationStatus;

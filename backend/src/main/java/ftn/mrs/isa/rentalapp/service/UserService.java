@@ -1,10 +1,7 @@
 package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.dto.UserRequest;
-import ftn.mrs.isa.rentalapp.model.user.Address;
-import ftn.mrs.isa.rentalapp.model.user.Advertiser;
-import ftn.mrs.isa.rentalapp.model.user.Role;
-import ftn.mrs.isa.rentalapp.model.user.User;
+import ftn.mrs.isa.rentalapp.model.user.*;
 import ftn.mrs.isa.rentalapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +29,9 @@ public class UserService  implements UserDetailsService {
 
     @Autowired
     private AdvertiserRepository advertiserRepository;
+
+    @Autowired
+    private  DeleteAccountRequestRepository deleteAccountRequestRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -66,5 +66,21 @@ public class UserService  implements UserDetailsService {
 
     public void saveAdvertiser(Advertiser a) {
         advertiserRepository.save(a);
+    }
+
+    public List<AccountDeleteRequest> getDeleteRequestOnHold() {
+        return deleteAccountRequestRepository.getOnHold();
+    }
+
+    public void saveDeletionRequest(AccountDeleteRequest request) {
+        deleteAccountRequestRepository.save(request);
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    public User findUserByEmail(String email) {
+         return userRepository.findByEmail(email);
     }
 }
