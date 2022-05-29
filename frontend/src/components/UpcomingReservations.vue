@@ -16,8 +16,9 @@
                   <div>
                     <table class="table">
                       <thead>
-                      <tr style="background: #ecd9c6">
-                        <th>Cottage</th>
+                      <tr style="background: #e3c7aa">
+                        <th v-if="role === 'ROLE_cottageOwner'">Cottage</th>
+                        <th v-if="role === 'ROLE_boatOwner'">Boat</th>
                         <th>Client</th>
                         <th>Start date</th>
                         <th>End date</th>
@@ -27,9 +28,10 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr style="background: #ecd9c6;" v-for="reservation in reservations">
-                        <td>{{reservation.cottage.name}}</td>
-                        <td>{{reservation.client.surname + " "+ reservation.client.name}}</td>
+                      <tr style="background: #ede4da;" v-for="reservation in reservations">
+                        <td v-if="role === 'ROLE_cottageOwner'">{{reservation.cottage.name}}</td>
+                        <td v-if="role === 'ROLE_boatOwner'">{{reservation.boat.name}}</td>
+                        <td><router-link :to="{ name: 'ClientProfile',params:{id:reservation.client.id} }" style="text-decoration: none" >{{reservation.client.surname + " "+ reservation.client.name}}</router-link></td>
                         <td>{{reservation.startDateTime[2]+"."+reservation.startDateTime[1]+"."+reservation.startDateTime[0]+"."}}</td>
                         <td>{{reservation.endDateTime[2]+"."+reservation.endDateTime[1]+"."+reservation.endDateTime[0]+"."}}</td>
                         <td class="d-flex justify-content-center">{{reservation.personNum}}</td>
@@ -68,12 +70,29 @@ export default {
   },
   mounted:function (){
     this.role = sessionStorage.getItem("role");
-    axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findUpcomingByCottageOwner/1", {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}})
-      .then(response => (
-        this.reservations = response.data
-      ))
+    if (this.role === "ROLE_cottageOwner") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/reservation/findUpcomingByCottageOwner/1", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => (
+          this.reservations = response.data
+        ))
+    }else if (this.role === "ROLE_boatOwner") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/reservation/findUpcomingByBoatOwner", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => (
+          this.reservations = response.data
+        ))
+    }
 
 
   },

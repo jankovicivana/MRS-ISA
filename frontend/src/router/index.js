@@ -108,7 +108,7 @@ export default new Router({
       component: AdvertiserProfile
     },
     {
-      path:'/boats/BoatProfile',
+      path:'/boats/BoatProfile/:id',
       name:'BoatProfile',
       component: BoatProfile
     },{
