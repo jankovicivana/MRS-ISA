@@ -2,6 +2,7 @@
   <div>
     <client_navbar v-if="role === 'ROLE_client'"></client_navbar>
     <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
+    <boat-owner-navbar v-if="role === 'ROLE_boatOwner'" ></boat-owner-navbar>
     <section id = "client_profile" class="profile_main py-lg-3">
     <div  class="row py-5 px-auto" style="align-content: center">
       <div class="col-md-8 mx-auto">
@@ -106,10 +107,11 @@
 import axios from "axios";
 import ClientNavbar from "./header/ClientNavbar";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 
 export default {
   name: "ClientProfile",
-  components: {'client_navbar': ClientNavbar,CottageOwnerNavbar},
+  components: {BoatOwnerNavbar, 'client_navbar': ClientNavbar,CottageOwnerNavbar},
   data: function(){
     return{
       client: '',
@@ -122,7 +124,7 @@ export default {
   },
   mounted: function (){
     this.role = sessionStorage.getItem("role");
-    if (this.role === "ROLE_cottageOwner" || this.role === "ROLE_fishingInstructor" ) {
+    if (this.role === "ROLE_cottageOwner" || this.role === "ROLE_fishingInstructor" || this.role === "ROLE_boatOwner" ) {
       var clientId = this.$route.params.id;
       axios
         .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/"+clientId, {headers: {Authorization:

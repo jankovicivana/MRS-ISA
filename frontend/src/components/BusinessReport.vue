@@ -14,7 +14,8 @@
                   <h1 class="title">Business Report</h1>
                   <hr />
                   <div class="row">
-                    <p class="col-3 pt-4">Average cottage grade: </p>
+                    <p class="col-3 pt-4" v-if="role === 'ROLE_cottageOwner'">Average cottage grade: </p>
+                    <p class="col-3 pt-4" v-if="role === 'ROLE_boatOwner'">Average boat grade: </p>
                     <star-rating class="col-9" :rating="average_grade" :read-only="true" :increment="0.01" :star-size="20" :size="200"></star-rating>
 
                   </div>
@@ -61,7 +62,7 @@
                           <tr style="background: rgba(75, 192, 192, 0.2);" v-for="reservation in found_reservations">
                             <td>{{reservation.startDateTime[2]+"."+reservation.startDateTime[1]+"."+reservation.startDateTime[0]+"."}}</td>
                             <td>{{reservation.endDateTime[2]+"."+reservation.endDateTime[1]+"."+reservation.endDateTime[0]+"."}}</td>
-                            <td>{{reservation.price}}</td>
+                            <td>{{reservation.advertiserProfit}}</td>
                           </tr>
                           </tbody>
 
@@ -105,9 +106,17 @@ export default {
   }
   ,mounted:function () {
     this.role = sessionStorage.getItem("role");
+    let reservationUrl = '';
+    let gradeUrl = '';
     if (this.role === "ROLE_cottageOwner") {
+      reservationUrl = "/api/reservation/findHistoryByCottageOwner";
+      gradeUrl = "/api/cottages/getAverageGrade";
+    }else if(this.role === "ROLE_boatOwner"){
+      reservationUrl = "/api/reservation/findHistoryByBoatOwner";
+      gradeUrl = "/api/boats/getAverageGrade";
+    }
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/reservation/findHistoryByCottageOwner/getCottageOwner", {
+        .get(process.env.VUE_APP_SERVER_PORT + reservationUrl, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -121,7 +130,7 @@ export default {
           this.makeChart(data,['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'])
         })
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/entity/getAverageGrade", {
+        .get(process.env.VUE_APP_SERVER_PORT + gradeUrl, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -130,7 +139,7 @@ export default {
         .then(response => (
           this.average_grade = response.data
         ))
-    }
+
 
 
 
@@ -223,7 +232,7 @@ export default {
     getSum:function (){
       this.sum=0;
       for(let i=0;i<this.found_reservations.length;i++){
-        this.sum += this.found_reservations[i].price;
+        this.sum += this.found_reservations[i].advertiserProfit;
       }
     },
     search:function (){
