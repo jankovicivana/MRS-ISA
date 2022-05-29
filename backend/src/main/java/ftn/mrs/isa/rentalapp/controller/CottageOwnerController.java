@@ -42,13 +42,15 @@ public class CottageOwnerController {
 
     @PostMapping(value = "/updateCottageOwner" )
     @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<CottageOwnerDTO> updateCottageOwner(@RequestBody CottageOwnerDTO cottageOwnerDTO) {
-        CottageOwner cottageOwner = cottageOwnerService.findOne(cottageOwnerDTO.getId());
+    public ResponseEntity<CottageOwnerDTO> updateCottageOwner(@RequestBody CottageOwnerDTO cottageOwnerDTO,Principal principal) {
+        CottageOwner cottageOwner = cottageOwnerService.findByEmail(principal.getName());
         if(cottageOwner == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         cottageOwnerDTO.setRegistrationStatus(cottageOwner.getRegistrationStatus());
-        cottageOwnerService.updateCottageOwner(mapper.map(cottageOwnerDTO,CottageOwner.class));
+        CottageOwner updatedCottageOwner = mapper.map(cottageOwnerDTO,CottageOwner.class);
+        updatedCottageOwner.setRoles(cottageOwner.getRoles());
+        cottageOwnerService.updateCottageOwner(updatedCottageOwner);
         return new ResponseEntity<>(cottageOwnerDTO,HttpStatus.OK);
     }
 

@@ -11,12 +11,9 @@
     <div class="container cottage_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center pt-5">
         <div class="col-md-6">
-          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="false" >
-            <slide>
-              <img class="d-block w-100" src="../assets/images/cottage4.jpg" alt="First slide" >
-            </slide>
-            <slide>
-              <img class="d-block w-100" src="../assets/images/cottage5.jpg" alt="Second slide" >
+          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" v-bind:loop="true" v-bind:speed="3000">
+            <slide v-for="i in cottage.images">
+              <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 400px">
             </slide>
 
           </carousel>
@@ -276,9 +273,7 @@ export default {
         this.events.push(this.newEvent);
       }
     },
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfully added!</p>`
-      let text = `<p style="font-size: 20px">Successfully added available period!</p>`
+    show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
     },
       showModal:function() {
@@ -289,12 +284,13 @@ export default {
       },
       deleteCottage:function (){
         let id = this.cottage.id
-        axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/cottages/deleteCottage/"+id)
+        axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/cottages/deleteCottage/"+id, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
-            this.show('foo-css', 'success')
-            router.go(Co)
-          }).catch(function error(error) {
-          alert(error.response.data);
+            this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted cottage!</p>`)
+            setTimeout(() => {this.$router.push({name:"HomepageCottageOwner"}); }, 3000)
+          }).catch((error) => {
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Cottage has reservations.</p>`)
         });
 
       },

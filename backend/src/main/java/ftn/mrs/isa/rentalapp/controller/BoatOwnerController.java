@@ -52,7 +52,9 @@ public class BoatOwnerController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         boatOwnerDTO.setRegistrationStatus(boatOwner.getRegistrationStatus());
-        boatOwnerService.updateBoatOwner(mapper.map(boatOwnerDTO,BoatOwner.class));
+        BoatOwner updated = mapper.map(boatOwnerDTO,BoatOwner.class);
+        updated.setRoles(boatOwner.getRoles());
+        boatOwnerService.updateBoatOwner(updated);
         return new ResponseEntity<>(boatOwnerDTO,HttpStatus.OK);
     }
 

@@ -153,13 +153,15 @@ export default {
         var c = {id:this.advertiser.id,name :this.advertiser.name,phoneNumber:this.advertiser.phoneNumber, surname :this.advertiser.surname, email :this.advertiser.email, password :this.advertiser.password,  address :this.address, biography: this.advertiser.biography};
         if (this.role === "ROLE_cottageOwner") {
           axios
-            .post(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/updateCottageOwner", c)
+            .post(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/updateCottageOwner", c, {headers: {Authorization:
+                  'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.show('foo-css', 'success')
             })
-        }else if (this.role === "ROLE_cottageOwner") {
+        }else if (this.role === "ROLE_boatOwner") {
           axios
-            .post(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/updateBoatOwner", c)
+            .post(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/updateBoatOwner", c, {headers: {Authorization:
+                  'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.show('foo-css', 'success')
             })

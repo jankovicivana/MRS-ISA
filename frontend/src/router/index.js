@@ -45,6 +45,7 @@ import ClientReservationHistory from "../components/ClientReservationHistory";
 import AdminPenaltyView from "../components/AdminPenaltyView";
 import ClientUpcomingReservations from "../components/ClientUpcomingReservations";
 import RegistrationRequest from "../components/RegistrationRequest";
+import BusinessReport from "../components/BusinessReport";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -231,6 +232,11 @@ export default new Router({
       path: '/client/upcomingReservations',
       name: "ClientUpcomingReservations",
       component: ClientUpcomingReservations
+    },
+    {
+      path: '/businessReport',
+      name: "BusinessReport",
+      component: BusinessReport
     }
   ]
 })

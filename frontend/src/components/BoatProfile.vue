@@ -10,7 +10,7 @@
       <div class="row align-items-center">
         <div class="col-md-6">
 
-          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true">
+          <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" v-bind:loop="true" v-bind:speed="3000">
             <slide  v-for="i in boat.images">
               <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%">
             </slide>
@@ -289,6 +289,9 @@ export default {
     show: function(group, type=''){
       let title = `<p style="font-size: 25px">Successfully deleted!</p>`
       let text = `<p style="font-size: 20px">Successfully deleted boat!</p>`
+    show: function(group, type='',titleMessage,text){
+      let title = titleMessage
+
       this.$notify({group, title, text, type})
     },
     showModal:function() {
@@ -302,9 +305,11 @@ export default {
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/boats/deleteBoat/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          this.show('foo-css', 'success')
-        }).catch(function error(error) {
-        alert(error.response.data);
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted boat!</p>`)
+
+        }).catch((error) => {
+        //alert(error.response.data);
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Boat has reservations.</p>`)
       });
     },
   addAvailablePeriod:function (){

@@ -1,6 +1,5 @@
 package ftn.mrs.isa.rentalapp.dto;
 
-
 import lombok.Data;
 
 @Data
@@ -13,5 +12,4 @@ public class ReportDTO {
     private AdvertiserDTO advertiser;
 
     private String reportString;
-
 }

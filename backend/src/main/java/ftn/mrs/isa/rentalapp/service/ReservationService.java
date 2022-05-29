@@ -31,6 +31,15 @@ public class ReservationService {
     public List<Reservation> getFutureReservationByBoatOwner(Integer id) {
         return reservationRepository.getFutureReservationByBoatOwner(LocalDateTime.now(),id);
     }
+
+    public List<Reservation> getHistoryReservationByBoatOwner(Integer id) {
+        return reservationRepository.getHistoryReservationByBoatOwner(LocalDateTime.now(),id);
+    }
+
+    public List<Reservation> getCurrentReservationByBoatOwner(Integer id) {
+        return reservationRepository.getCurrentReservationByBoatOwner(LocalDateTime.now(),id);
+    }
+
     public List<Reservation> getFutureReservationByCottageOwner(Integer id) {
         return reservationRepository.getFutureReservationByCottageOwner(LocalDateTime.now(),id);
     }

@@ -32,6 +32,8 @@
 
         <a class="navbar-item" href="#/client/clientHomepage">Complaints </a>
 
+        <a class="navbar-item" href="#/businessReport">Business report </a>
+
       </div>
     </div>
     <a href="#/" class="px-3 mr-1" >Log out</a>
