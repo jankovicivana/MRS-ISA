@@ -142,10 +142,22 @@ public class CottageController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (!cottageService.canDeleteCottage(cottage)){
-            return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.OK);
+            return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
         }
         cottageService.deleteCottage(cottage);
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getAverageGrade")
+    @PreAuthorize("hasRole('cottageOwner')")
+    public ResponseEntity<Double> getCottageAverageGrade(Principal principal){
+        List<Cottage> cottages = cottageService.findAllByOwnerEmail(principal.getName());
+        double averageGrade = 0.0;
+        for (Cottage c : cottages){
+            averageGrade += c.getAverageGrade();
+        }
+        averageGrade = averageGrade / cottages.size();
+        return new ResponseEntity<>(averageGrade, HttpStatus.OK);
     }
 
 }

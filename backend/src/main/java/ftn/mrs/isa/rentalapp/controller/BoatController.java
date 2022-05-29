@@ -146,10 +146,22 @@ public class BoatController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if(!boatService.canDeleteBoat(boat)){
-            return new ResponseEntity<>("Boat has reservations.Deletion is not possible.",HttpStatus.OK);
+            return new ResponseEntity<>("Boat has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
         }
         boatService.deleteBoat(boat);
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getAverageGrade")
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<Double> getBoatGrade(Principal principal){
+        List<Boat> boats = boatService.findAllByOwnerEmail(principal.getName());
+        double averageGrade = 0.0;
+        for (Boat b : boats){
+            averageGrade += b.getAverageGrade();
+        }
+        averageGrade = averageGrade / boats.size();
+        return new ResponseEntity<>(averageGrade, HttpStatus.OK);
     }
 
 }

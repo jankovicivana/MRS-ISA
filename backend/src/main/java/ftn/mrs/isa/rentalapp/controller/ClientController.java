@@ -117,15 +117,15 @@ public class ClientController {
     }
 
     @PostMapping(value = "/createReport")
-    @PreAuthorize("hasAnyRole('cottageOwner','boatOwner')")
-    public ResponseEntity<String> createReport(@RequestBody ReportDTO reportDTO){
+    @PreAuthorize("hasAnyRole('cottageOwner','boatOwner','fishingInstructor')")
+    public ResponseEntity<String> createReport(@RequestBody ReportDTO reportDTO,Principal principal){
         Client client = clientService.findOne(reportDTO.getClientId());
-        Advertiser advertiser = cottageOwnerService.findOne(reportDTO.getAdvertiserId());
+        Advertiser advertiser = cottageOwnerService.findByEmail(principal.getName());
         if(advertiser == null){
-            advertiser = boatOwnerService.findOne(reportDTO.getAdvertiserId());
+            advertiser = boatOwnerService.findByEmail(principal.getName());
         }
         if(advertiser == null){
-            advertiser = fishingInstructorService.findOne(reportDTO.getAdvertiserId());
+            advertiser = fishingInstructorService.findByEmail(principal.getName());
         }
         if(advertiser == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
