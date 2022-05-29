@@ -45,6 +45,7 @@ import ClientReservationHistory from "../components/ClientReservationHistory";
 import AdminPenaltyView from "../components/AdminPenaltyView";
 import ClientUpcomingReservations from "../components/ClientUpcomingReservations";
 import RegistrationRequest from "../components/RegistrationRequest";
+import DeleteProfileRequests from "../components/DeleteProfileRequests";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -118,6 +119,10 @@ export default new Router({
       path: '/admin/AddAdministrator',
       name:'AddAdministrator',
       component: AddAdministrator
+    },{
+      path: '/admin/deleteProfileRequests',
+      name:'DeleteProfileRequests',
+      component: DeleteProfileRequests
     },{
       path: '/admin/homepage',
       name:'AdminHomepage',
