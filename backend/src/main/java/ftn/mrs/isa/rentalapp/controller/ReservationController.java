@@ -2,11 +2,9 @@ package ftn.mrs.isa.rentalapp.controller;
 
 
 import ftn.mrs.isa.rentalapp.dto.*;
-import ftn.mrs.isa.rentalapp.model.entity.Adventure;
-import ftn.mrs.isa.rentalapp.model.entity.Cottage;
-import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
+import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
@@ -44,6 +42,12 @@ public class ReservationController {
     private CottageService cottageService;
 
     @Autowired
+    private BoatOwnerService boatOwnerService;
+
+    @Autowired
+    private BoatService boatService;
+
+    @Autowired
     private CottageOwnerService cottageOwnerService;
 
     @Autowired
@@ -71,13 +75,15 @@ public class ReservationController {
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/findHistoryByCottageOwner/getCottageOwner")
+    @GetMapping(value = "/findHistoryByCottageOwner")
     @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByCottageOwner(Principal principal){
         CottageOwner owner = cottageOwnerService.findByEmail(principal.getName());
         List<Reservation> reservations = reservationService.findAllHistoryByCottageOwner(owner.getId());
         return getListResponseEntity(reservations);
     }
+
+
 
     @GetMapping(value = "/findUpcomingByCottageOwner/{id}")
     @PreAuthorize("hasRole('cottageOwner')")
@@ -93,12 +99,49 @@ public class ReservationController {
         return getListResponseEntity(reservations);
     }
 
+    @GetMapping(value = "/findHistoryByBoatOwner")
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByBoatOwner(Principal principal){
+        BoatOwner owner = boatOwnerService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.getHistoryReservationByBoatOwner(owner.getId());
+        return getListResponseBoat(reservations);
+    }
+
+
+
+    @GetMapping(value = "/findUpcomingByBoatOwner")
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<List<ReservationDTO>> getAllUpcomingReservationByBoatOwner(Principal principal){
+        BoatOwner owner = boatOwnerService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.getFutureReservationByBoatOwner(owner.getId());
+        return getListResponseBoat(reservations);
+    }
+
+    @GetMapping(value = "/findCurrentByBoatOwner")
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<List<ReservationDTO>> getAllCurrentReservationByCottageOwner(Principal principal) {
+        BoatOwner owner = boatOwnerService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.getCurrentReservationByBoatOwner(owner.getId());
+        return getListResponseBoat(reservations);
+    }
+
     private ResponseEntity<List<ReservationDTO>> getListResponseEntity(List<Reservation> reservations) {
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for(Reservation c : reservations){
             ReservationDTO rt = mapper.map(c, ReservationDTO.class);
             Cottage cottage = cottageService.findOne(c.getEntity().getId());
             rt.setCottage(mapper.map(cottage, CottageDTO.class));
+            reservationsDTO.add(rt);
+        }
+        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    private ResponseEntity<List<ReservationDTO>> getListResponseBoat(List<Reservation> reservations) {
+        List<ReservationDTO> reservationsDTO = new ArrayList<>();
+        for(Reservation c : reservations){
+            ReservationDTO rt = mapper.map(c, ReservationDTO.class);
+            Boat boat = boatService.findOne(c.getEntity().getId());
+            rt.setBoat(mapper.map(boat, BoatDTO.class));
             reservationsDTO.add(rt);
         }
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);

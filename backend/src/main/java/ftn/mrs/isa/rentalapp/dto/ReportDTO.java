@@ -7,8 +7,6 @@ public class ReportDTO {
 
     private Integer clientId;
 
-    private Integer advertiserId;
-
     private Boolean didShowUp;
 
     private Boolean sanction;

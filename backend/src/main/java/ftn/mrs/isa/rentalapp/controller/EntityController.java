@@ -76,15 +76,4 @@ public class EntityController {
         return new ResponseEntity<>(entitiesDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getAverageGrade")
-    @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<Double> getCottage(Principal principal){
-        List<Cottage> cottages = cottageService.findAllByOwnerEmail(principal.getName());
-        double averageGrade = 0.0;
-        for (Cottage c : cottages){
-            averageGrade += c.getAverageGrade();
-        }
-        averageGrade = averageGrade / cottages.size();
-        return new ResponseEntity<>(averageGrade, HttpStatus.OK);
-    }
 }
