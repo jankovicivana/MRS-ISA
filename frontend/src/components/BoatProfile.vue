@@ -285,13 +285,8 @@ export default {
         this.events.push(this.newEvent);
       }
     },
-
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfully deleted!</p>`
-      let text = `<p style="font-size: 20px">Successfully deleted boat!</p>`
     show: function(group, type='',titleMessage,text){
       let title = titleMessage
-
       this.$notify({group, title, text, type})
     },
     showModal:function() {
@@ -344,7 +339,7 @@ export default {
     axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addBoat",this.info, {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
-        this.show('foo-css', 'success')
+        this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added quick reservation!</p>`)
         setTimeout(() => { }, 3000)
       }).catch(function error(error) {
       alert(error.response.data);

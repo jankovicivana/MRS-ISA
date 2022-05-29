@@ -125,7 +125,7 @@ public class ClientController {
 
     @PostMapping(value = "/createReport")
     @PreAuthorize("hasAnyRole('cottageOwner','boatOwner','fishingInstructor')")
-    public ResponseEntity<String> createReport(@RequestBody ReportDTO reportDTO,Principal principal){
+    public ResponseEntity<String> createReport(@RequestBody ReportCreateDTO reportDTO,Principal principal){
         Client client = clientService.findOne(reportDTO.getClientId());
         Advertiser advertiser = cottageOwnerService.findByEmail(principal.getName());
         if(advertiser == null){
