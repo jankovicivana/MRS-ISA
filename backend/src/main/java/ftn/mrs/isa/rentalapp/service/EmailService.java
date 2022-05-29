@@ -3,6 +3,7 @@ package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.model.user.Advertiser;
 import ftn.mrs.isa.rentalapp.model.user.Client;
+import ftn.mrs.isa.rentalapp.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -159,6 +160,38 @@ public class EmailService {
                 "    </body>\n" +
                 "</html>",true);
         //mail.set
+        javaMailSender.send( mail.getMimeMessage());
+        System.out.println("Email poslat!");
+    }
+    @Async
+    public void sendDeletionProfileNotification(User a, String status) throws MessagingException {
+        MimeMessageHelper mail = new MimeMessageHelper(javaMailSender.createMimeMessage(), true, "UTF-8");
+        mail.setTo(a.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+
+        mail.setSubject("Rental app notification");
+        mail.setText("<html>\n" +
+                "    <body>\n" +
+
+                "        <div style=\"margin: 50px;\">\n" +
+                "            <div style=\"background-color: rgb(135,206,250);height: 55px;\">\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">"+status.toUpperCase()+" </h1>\n" +
+                "            </div>\n" +
+                "            <div style=\"margin-top: 10px;\">\n" +
+                "                <div style=\"margin: 25px;\">\n" +
+                "                Dear "+a.getName()+",\n" +
+                "                <br/>\n" +
+                "                Your request for deleting account is "+status+"\n" +
+                "                <br/>\n" +
+                "                Regards,\n" +
+                "                <br/>\n" +
+                "                <span >Rental app team</span>\n" +
+                "            </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </body>\n" +
+                "</html>",true);
         javaMailSender.send( mail.getMimeMessage());
         System.out.println("Email poslat!");
     }
