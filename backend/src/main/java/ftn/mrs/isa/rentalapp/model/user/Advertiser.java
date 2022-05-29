@@ -6,17 +6,16 @@ import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 @Getter
 @Setter
 @Entity
-public abstract class Advertiser extends User{
+public  class Advertiser extends User{
 
     public Advertiser() {
     }
@@ -27,7 +26,7 @@ public abstract class Advertiser extends User{
     @Column(name = "registrationStatus", nullable = false)
     protected RequestStatus registrationStatus;
 
-    @Column(name = "registrationReason", nullable = true)
+    @Column(name = "registrationReason", nullable = false)
     protected String registrationReason;
 
     @Column(name = "averageGrade")

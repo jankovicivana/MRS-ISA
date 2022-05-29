@@ -26,5 +26,10 @@ public class AdvertiserDTO {
 
     private RequestStatus registrationStatus;
 
+    private String registrationReason;
+
+    private String rejecting;
+
+
 
 }
