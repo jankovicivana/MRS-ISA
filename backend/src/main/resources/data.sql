@@ -86,20 +86,29 @@ insert into boat_owners(id,email,name,password,phone_number,surname,type,account
 
 insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
                    power, type, boat_owner, average_grade, kind)
-values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Nikolija',200,3,3,20,5,25,250,600,0,4,0.0, 1);
+values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Nikolija',200,3,3,20,5,25,250,600,0,4,3.0, 1);
 
 insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted, enabled) values (nextval('my_seqv1'), 'yahoomail', '$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K', 'ivana', 'kasikovic', '065', 3, 2, 0, 0,'pera2.jpg',false, true);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
     ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,2,200,20,60,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,1,200,20,60,5,false,5);
+    ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,1,200,20,120,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220522 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,60,5,false,5);
+    ('20220522 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,180,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,60,5,false,5);
+    ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,500,20,250,5,false,5);
+
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+    ('20220422 10:00:00 AM','20220504 10:00:00 AM',false,3,150,20,130,5,false,5);
+
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+    ('20220522 10:00:00 AM','20220603 10:00:00 AM',false,3,300,20,250,5,false,5);
+
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+    ('20220613 10:00:00 AM','20220625 10:00:00 AM',false,3,500,20,400,5,false,5);
 
 insert into images (path,entity,is_main_photo) values ('boat1.jpg',3,false);
 insert into images (path,entity,is_main_photo) values ('boat2.jpg',3,false);
@@ -139,16 +148,19 @@ insert into fishing_equipment (equipment,adventure,boat) values ('Crvici',null,3
 
 insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
                    power, type, boat_owner, average_grade, kind)
-values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Marija',300,3,3,20,5,25,250,600,0,4,0.0, 1);
+values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Marija',300,3,3,20,5,25,250,600,0,4,2.0, 1);
 
 
 insert into boats (id, deleted, description, name, price, address, motor_num, cancel_fee, capacity, length, max_speed,
                    power, type, boat_owner, average_grade, kind)
-values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Ivana',250,2,3,20,5,25,250,600,0,4,0.0, 1);
+values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Ivana',250,2,3,20,5,25,250,600,0,4,5.0, 1);
 
 
 insert into images (path,entity,is_main_photo) values ('boat4.jpg',7,false);
 insert into images (path,entity,is_main_photo) values ('boat6.jpg',7,false);
+insert into images (path,entity,is_main_photo) values ('boat8.jpg',8,false);
+insert into images (path,entity,is_main_photo) values ('boat9.jpg',8,false);
+
 
 insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted) values (nextval('my_seqv1'),'admin@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',false, true,false);
 

@@ -12,9 +12,11 @@ public class ReservationDTO {
     private LocalDateTime endDateTime;
     private ClientDTO client;
     private Double price;
+    private Double advertiserProfit;
     private Integer personNum;
     private AdventureDTO adventure;
     private CottageDTO cottage;
+    private BoatDTO boat;
 
     private EntityTypeDTO entity;
 }
