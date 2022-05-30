@@ -45,7 +45,11 @@
           <div class="column" v-for="c in cottages">
             <div class="card col-3">
               <div class="card-image">
-                <img class="card_image" alt="Image" :src="require('../assets/images/cottage'+c.id+'.jpg')" />
+                <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
+                  <slide v-for="i in c.images">
+                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                  </slide>
+                </carousel>
               </div>
 
               <div class="p-3">
@@ -72,7 +76,12 @@
           <div class="column" v-for="b in boats">
             <div class="card col-3">
               <div class="card-image">
-                <img class="card_image" alt="Image" :src="require('../assets/images/boat'+ (parseInt(b.id)-2).toString() +'.jpg')" />
+                <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
+                  <slide v-for="i in b.images">
+                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                  </slide>
+
+                </carousel>
               </div>
 
               <div class="p-3">
@@ -100,7 +109,11 @@
           <div class="column" v-for="a in adventures">
             <div class="card col-3">
               <div class="card-image">
-                <img class="card_image" alt="Image" :src="require('../assets/images/pic1.jpg')" />
+                <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
+                  <slide v-for="i in a.images">
+                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                  </slide>
+                </carousel>
               </div>
               <div class="p-3">
                 <h4>{{ a.name }}</h4>

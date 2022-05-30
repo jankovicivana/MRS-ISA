@@ -127,8 +127,8 @@
 
       <div class="row">
         <h3>Add availability</h3>
-        <div class="col-7 p-4" >
-          <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
+        <div class="col-7 m-6">
+          <full-calendar id="calendar" :events="events"   locale="en" ></full-calendar>
         </div>
         <div class="col-4">
           <div>
@@ -203,7 +203,7 @@ export default {
     }
     },
       mounted:function (){
-
+      document.getElementById("calendar").setAttribute('height', '400');
       const sumFuncy = async (a,b) => a+b;
 
         axios

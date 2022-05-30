@@ -51,7 +51,7 @@
                     <div class="col-md-12 inputs"><label class="labels">Biography</label><textarea type="text" class="form-control" placeholder="biography.." readonly v-model="advertiser.biography"/></div>
                   </div>
 
-                  <div v-if="role !== 'ROLE_admin'" class="mt-3 text-right"><button v-on:click="editAdvertiser" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
+                  <div class="mt-3 text-right"><button v-on:click="editAdvertiser" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
                 </div>
               </div>
 
@@ -86,7 +86,8 @@ export default {
       inputs: null,
       editButton: null,
       readonly: true,
-      role:''
+      role:'',
+      isAdmin: this.$route.params.isAdmin
     }
   },
   mounted: function (){

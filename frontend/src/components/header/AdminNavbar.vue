@@ -9,7 +9,7 @@
 
         <a class="navbar-item" href="#/admin/homepage">Home </a>
 
-        <a class="navbar-item" href="#/AdvertiserProfile">My profile</a>
+        <router-link class="navbar-item" :to="{name: 'AdvertiserProfile', isAdmin: 'true'}">My profile</router-link>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Rental products </a>
