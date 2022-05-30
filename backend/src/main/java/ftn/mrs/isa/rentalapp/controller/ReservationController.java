@@ -2,10 +2,7 @@ package ftn.mrs.isa.rentalapp.controller;
 
 
 import ftn.mrs.isa.rentalapp.dto.*;
-import ftn.mrs.isa.rentalapp.model.entity.Adventure;
-import ftn.mrs.isa.rentalapp.model.entity.Boat;
-import ftn.mrs.isa.rentalapp.model.entity.Cottage;
-import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
+import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
@@ -20,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,11 +168,23 @@ public class ReservationController {
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<String> cancelReservation(@RequestBody ReservationDTO r,Principal principal){
         Client client = clientService.findByEmail(principal.getName());
-        System.out.println("Idddddddddddddddddddddddddd:" + r.getId());
-        //System.out.println("Idddddddddddddddddddddddddd2:" + res.getId());
-        //System.out.println("Canceleeeeeed:" + res.getPersonNum());
-
         reservationService.cancelReservation(r.getId());
         return new ResponseEntity<>("Canceled successfully.",HttpStatus.OK);
+    }
+
+
+    @PostMapping(value = "/reserve")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal){
+        Client client = clientService.findByEmail(principal.getName());
+        LocalDateTime start = LocalDateTime.of(r.getStartDate(), r.getStartTime());
+        LocalDateTime end = LocalDateTime.of(r.getEndDate(), r.getEndTime());
+        EntityType entity = entityService.findOne(r.getEntityId());
+        System.out.println(entity.getId());
+        // odakle dobaljamo systemProfit  i advertiserProfit?
+        Reservation res = new Reservation(start, end, entity, entity.getPrice(), 0.0, 0.0, r.getPersonNum(), client, null);
+        reservationService.save(res);
+
+        return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
     }
 }

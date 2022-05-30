@@ -1,5 +1,6 @@
 package ftn.mrs.isa.rentalapp.service;
 
+import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.hibernate.Session;
@@ -72,4 +73,7 @@ public class ReservationService {
     public void cancelReservation(Integer id) {
         reservationRepository.cancel(id);
     }
+
+    public void save(Reservation reservation){reservationRepository.save(reservation);}
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,9 +20,10 @@ public class AvailablePeriodService {
         availablePeriodRepository.save(availablePeriod);
     }
 
-    public boolean isAvailable(Integer id, LocalDate startDate, LocalDate endDate){
+    public boolean isAvailable(Integer id, LocalDateTime startDate, LocalDateTime endDate){
         List<AvailablePeriod> periodList = availablePeriodRepository.getAvailable(id, startDate, endDate);
         System.out.println(periodList);
+        System.out.println(startDate.toString() + endDate.toString());
         return !periodList.isEmpty();
     }
 

@@ -53,7 +53,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
     @Query(value = "SELECT * FROM public.reservations  WHERE entity = :id  ", nativeQuery = true)
     public List<Reservation> findAllByEntity( @Param("id") Integer id);
 
-    @Query(value = "SELECT * FROM public.reservations WHERE entity = :id and ((start_date_time < :start and end_date_time > :start) or (start_date_time < :end and end_date_time > :end))", nativeQuery = true)
+    @Query(value = "SELECT * FROM public.reservations WHERE entity = :id and ((start_date_time <= :start and end_date_time >= :start) or (start_date_time <= :end and end_date_time >= :end))", nativeQuery = true)
     public List<Reservation> getReserved( @Param("id") Integer id,  @Param("start") LocalDateTime start,  @Param("end") LocalDateTime end);
 
     @Query(value = "SELECT * FROM public.reservations WHERE end_date_time < :now and client = :id ", nativeQuery = true)

@@ -2,6 +2,7 @@
   <div class="browse_main">
     <main_navbar v-if="role === ''"></main_navbar>
     <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>
+    <client-navbar v-if="role === 'ROLE_client'"></client-navbar>
     <div class="mt-5 container">
       <h1>Boats</h1>
       <hr style="color: #2e6b6b"/>

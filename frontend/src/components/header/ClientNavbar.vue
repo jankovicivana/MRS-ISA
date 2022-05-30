@@ -31,16 +31,23 @@
 
         </div>
       </div>
-      <a href="/" class="px-3 mr-1" >Log out</a>
+      <a href="/" v-on:click="logout()" class="px-3 mr-1" >Log out</a>
   </nav>
 </template>
 
 <script>
 
 import axios from "axios";
+import router from "../../router";
 
 export default {
-  name: "ClientNavbar"
+  name: "ClientNavbar",
+  methods: {
+    logout: function (){
+      sessionStorage.clear();
+      router.push('/');
+    }
+  }
 }
 </script>
 

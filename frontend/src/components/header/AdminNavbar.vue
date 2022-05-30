@@ -51,13 +51,21 @@
 
       </div>
     </div>
-    <a href="#/" class="px-3 mr-1" >Log out</a>
+    <a href="#/" v-on:click="logout()" class="px-3 mr-1" >Log out</a>
   </nav>
 </template>
 
 <script>
+import router from "../../router";
+
 export default {
-  name: "AdminNavbar"
+  name: "AdminNavbar",
+  methods: {
+    logout: function (){
+      sessionStorage.clear();
+      router.push('/');
+    }
+  }
 }
 </script>
 
