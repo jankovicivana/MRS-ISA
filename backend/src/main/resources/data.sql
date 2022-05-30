@@ -102,6 +102,9 @@ insert into reservations(start_date_time,end_date_time,deleted,entity,price,syst
     ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,500,20,250,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+    ('20220622 10:00:00 AM','20220623 10:00:00 AM',false,1,200,20,60,5,false,5);
+
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
     ('20220422 10:00:00 AM','20220504 10:00:00 AM',false,3,150,20,130,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values

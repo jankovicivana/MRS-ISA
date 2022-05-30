@@ -2,6 +2,7 @@
   <div class="browse_main">
     <main_navbar v-if="role === ''"></main_navbar>
     <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
+    <client-navbar v-if="role === 'ROLE_client'"></client-navbar>
     <div class="mt-5 container">
       <h1>Cottages</h1>
       <hr style="color: #2e6b6b"/>
@@ -50,9 +51,10 @@ import axios from "axios";
 import MainNavbar from "./header/MainNavbar";
 import CottageBrowseCard from "./CottageBrowseCard";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import ClientNavbar from "./header/ClientNavbar";
 export default {
   name: "Cottages",
-  components: {'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar,CottageOwnerNavbar},
+  components: {ClientNavbar, 'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar,CottageOwnerNavbar},
   data: function(){
     return{
       cottages: '',
