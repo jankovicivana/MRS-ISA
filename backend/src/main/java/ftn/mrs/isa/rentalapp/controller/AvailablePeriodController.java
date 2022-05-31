@@ -37,8 +37,6 @@ public class AvailablePeriodController {
     @Autowired
     BoatService boatService;
 
-    @Autowired
-    private ModelMapper mapper;
 
     @PostMapping(value = "/addCottage" )
     @PreAuthorize("hasRole('cottageOwner')")
@@ -79,7 +77,7 @@ public class AvailablePeriodController {
         if(instructor == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<AvailablePeriod> periods = availablePeriodService.getAvailablePeriodFishingInstructor(instructor.getId());
+        List<AvailablePeriod>  periods = availablePeriodService.getAvailablePeriodFishingInstructor(instructor.getId());
         List<AvailablePeriodDTO> availablePeriods = new ArrayList<>();
         for (AvailablePeriod a : periods){
             AvailablePeriodDTO availablePeriodDTO = new AvailablePeriodDTO();
@@ -88,7 +86,6 @@ public class AvailablePeriodController {
             availablePeriodDTO.setFishingInstructor(instructor.getId());
             availablePeriodDTO.setEntity(null);
             availablePeriods.add(availablePeriodDTO);
-            LocalDateTime t = LocalDateTime.now();
         }
         return new ResponseEntity<>(availablePeriods, HttpStatus.OK);
     }
