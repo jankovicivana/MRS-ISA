@@ -148,7 +148,7 @@
       <div class="row" style="background: aliceblue">
         <h3>Add availability</h3>
         <div class="col-7 p-4" >
-          <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
+          <full-calendar id="calendar" :events="events"  @eventClick="viewEvent" locale="en"></full-calendar>
         </div>
         <div class="col-4">
           <div>
@@ -264,6 +264,11 @@ export default {
 
   },
   methods:{
+    viewEvent:function (event, jsEvent, pos){
+      let info = event["YOUR_DATA"]["timeInfo"]
+      this.show('foo-css', 'success',`<p style="font-size: 25px">Time info</p>`,`<p style="font-size: 20px">`+info+`</p>`)
+      setTimeout(() => { }, 3000)      },
+
     fillCalendar:function (listElements,style){
       for(let p of listElements){
         for (let i in p.startDateTime){
@@ -277,10 +282,13 @@ export default {
           }
         }
         this.newEvent = {
-          title: p.startDateTime[3]+':'+p.startDateTime[4]+'-'+p.endDateTime[3]+':'+p.endDateTime[4],
+          title: '',
           start: p.startDateTime[0]+'-'+p.startDateTime[1]+'-'+p.startDateTime[2],
           end: p.endDateTime[0]+'-'+p.endDateTime[1]+'-'+p.endDateTime[2],
-          cssClass:style
+          cssClass:style,
+          YOUR_DATA : {
+            timeInfo: p.startDateTime[2]+'/'+p.startDateTime[1]+'/'+p.startDateTime[0] +" "+p.startDateTime[3]+':'+p.startDateTime[4]+"-"+p.endDateTime[2]+'/'+p.endDateTime[1]+'/'+p.endDateTime[0]+" "+p.endDateTime[3]+':'+p.endDateTime[4]
+          }
         }
         this.events.push(this.newEvent);
       }
@@ -329,10 +337,13 @@ export default {
       entity:this.boatId
     };
     this.newEvent = {
-      title: start_date.split('T')[1].substring(0,5)+'-'+end_date.split('T')[1].substring(0,5),
+      title: '',
       start: start_date,
       end: end_date,
-      cssClass:'bg-success'
+      cssClass:'bg-success',
+      YOUR_DATA : {
+        timeInfo: start_date +" "+start_date.split('T')[1].substring(0,5)+"-"+end_date+" "+end_date.split('T')[1].substring(0,5)
+      }
     }
     this.events.push(this.newEvent);
 

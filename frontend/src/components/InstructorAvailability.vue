@@ -13,7 +13,7 @@
                   <hr />
                   <div class="row">
                     <div class="col-8" id="calendar">
-                      <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
+                      <full-calendar id="calendar" :events="events"  @eventClick="viewEvent"  locale="en"></full-calendar>
 
                     </div>
                     <div class="col-4">
@@ -80,6 +80,7 @@ export default {
   },
   mounted: function(){
 
+    //document.getElementById('calendar').dispatchEvent('eventClick',event, jsEvent, pos)
     axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/getInstructor", {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
@@ -113,6 +114,10 @@ export default {
   },
   methods:{
 
+      viewEvent:function (event, jsEvent, pos){
+        let info = event["YOUR_DATA"]["timeInfo"]
+        this.show('foo-css', 'success',`<p style="font-size: 25px">Time info</p>`,`<p style="font-size: 20px">`+info+`</p>`)
+        setTimeout(() => { }, 3000)      },
       fillCalendar:function (elements,style){
       for(let p of elements){
         for (let i in p.startDateTime){
@@ -126,17 +131,18 @@ export default {
           }
         }
         this.newEvent = {
-          title: p.startDateTime[3]+':'+p.startDateTime[4]+'-'+p.endDateTime[3]+':'+p.endDateTime[4],
+          title: '',
           start: p.startDateTime[0]+'-'+p.startDateTime[1]+'-'+p.startDateTime[2],
           end: p.endDateTime[0]+'-'+p.endDateTime[1]+'-'+p.endDateTime[2],
-          cssClass:style
+          cssClass:style,
+          YOUR_DATA : {
+            timeInfo: p.startDateTime[2]+'/'+p.startDateTime[1]+'/'+p.startDateTime[0] +" "+p.startDateTime[3]+':'+p.startDateTime[4]+"-"+p.endDateTime[2]+'/'+p.endDateTime[1]+'/'+p.endDateTime[0]+" "+p.endDateTime[3]+':'+p.endDateTime[4]
+          }
         }
         this.events.push(this.newEvent);
       }
     },
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfully added!</p>`
-      let text = `<p style="font-size: 20px">Successfully added available period!</p>`
+    show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
     },
 
@@ -164,6 +170,9 @@ export default {
         title: start_date.split('T')[1].substring(0,5)+'-'+end_date.split('T')[1].substring(0,5),
         start: start_date,
         end: end_date,
+        YOUR_DATA : {
+          timeInfo: start_date +" "+start_date.split('T')[1].substring(0,5)+"-"+end_date+" "+end_date.split('T')[1].substring(0,5)
+        },
         cssClass:'bg-success'
       }
       this.events.push(this.newEvent);
@@ -171,7 +180,7 @@ export default {
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addForFishingInstructor",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          this.show('foo-css', 'success')
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added available period!</p>`)
           setTimeout(() => { }, 3000)
         }).catch(function error(error) {
         alert(error.response.data);
