@@ -1,6 +1,6 @@
 <template>
   <section class="profile_main vh-100" >
-    <admin_navbar></admin_navbar>
+    <admin_navbar :isAdmin="true"></admin_navbar>
   <div class="content is-medium" style=" height:80%"  >
     <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
       <div class="container h-100" >
@@ -17,7 +17,7 @@
                   <div>
                     <table class="table" >
                       <thead>
-                      <tr style="background:#ecd9c6">
+                      <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
@@ -27,10 +27,10 @@
                       </tr>
                       </thead>
                       <tbody>
-                        <tr style="background: #ecd9c6"  v-if="users.length === 0">
+                        <tr  v-if="users.length === 0">
                           <td colspan="5" class="p-3">Currently there is no any user.</td>
                         </tr>
-                        <tr style="background: #ecd9c6" v-for="user in users">
+                        <tr  v-for="user in users">
                           <td>{{user.name}}</td>
                           <td>{{user.surname}}</td>
                           <td>{{user.email}}</td>

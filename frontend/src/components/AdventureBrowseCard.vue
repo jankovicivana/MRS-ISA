@@ -4,7 +4,8 @@
       <figure class="media-left">
         <p class="image">
           <a href="/#" >
-            <img class="image" :src="require('../assets/images/pic1.jpg')" alt="Image"/>
+            <img v-if="adventure.id !== 2" class="image" :src="require('../assets/images/fish'+(parseInt(adventure.id)-7).toString()+'.jpg')" alt="Image"/>
+            <img v-if="adventure.id === 2" class="image" :src="require('../assets/images/pic1.jpg')" alt="Image"/>
           </a>
         </p>
       </figure>

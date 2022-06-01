@@ -1,6 +1,6 @@
 <template>
   <section class="basic_background vh-100" >
-    <AdminNavbar></AdminNavbar>
+    <AdminNavbar :isAdmin="true"></AdminNavbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -15,7 +15,7 @@
                   <div>
                     <table class="table">
                       <thead>
-                      <tr style="background: #ecd9c6">
+                      <tr>
 
                         <th>Client</th>
                         <th>Advertiser</th>
@@ -28,10 +28,10 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr style="background: #ecd9c6"  v-if="reports.length == 0">
+                      <tr   v-if="reports.length == 0">
                         <td colspan="7" class="p-3">There is no penalty report.</td>
                       </tr>
-                      <tr style="background: #ecd9c6;" v-for="r in reports">
+                      <tr v-for="r in reports">
                         <td>{{r.client.surname + " "+ r.client.name}}</td>
                         <td>{{r.advertiser.surname + " "+ r.advertiser.name}}</td>
                         <td colspan="2">{{r.reportString}}</td>

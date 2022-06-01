@@ -3,7 +3,7 @@
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
     <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'"></BoatOwnerNavbar>
     <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
-    <AdminNavbar v-if="role === 'ROLE_admin'"></AdminNavbar>
+    <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>
 
   <section id = "client_profile" class="profile_main py-lg-3">
 
@@ -17,7 +17,7 @@
             </div>
             <div class="pb-4 pt-4">
               <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{this.advertiser.name }}</span> <span>{{ this.advertiser.surname }}</span></h4>
-              <a v-if="role !== 'ROLE_admin'" href="#" class="btn flow delete-btn">Delete profile</a>
+              <a v-if="isAdmin || role!=='ROLE_admin'" href="#" class="btn flow delete-btn">Delete profile</a>
             </div>
           </div>
 
@@ -51,7 +51,7 @@
                     <div class="col-md-12 inputs"><label class="labels">Biography</label><textarea type="text" class="form-control" placeholder="biography.." readonly v-model="advertiser.biography"/></div>
                   </div>
 
-                  <div class="mt-3 text-right"><button v-on:click="editAdvertiser" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
+                  <div v-if="isAdmin || role!=='ROLE_admin'" class="mt-3 text-right"><button v-on:click="editAdvertiser" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
                 </div>
               </div>
 
@@ -130,7 +130,7 @@ export default {
         alert(error.response.data);
       });
     }
-
+    console.log(this.isAdmin)
   },
   methods: {
     show: function(group, type=''){

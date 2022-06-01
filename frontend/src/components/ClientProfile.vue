@@ -3,6 +3,7 @@
     <client_navbar v-if="role === 'ROLE_client'"></client_navbar>
     <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
     <boat-owner-navbar v-if="role === 'ROLE_boatOwner'" ></boat-owner-navbar>
+    <FishingInstructorNavbar v-if="role === 'ROLE_fishingInstructor'"></FishingInstructorNavbar>
     <section id = "client_profile" class="profile_main py-lg-3">
     <div  class="row py-5 px-auto" style="align-content: center">
       <div class="col-md-8 mx-auto">
@@ -14,7 +15,7 @@
             </div>
             <div class="pb-4 pt-4">
               <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{client.name}}</span> <span>{{client.surname}}</span></h4>
-              <a href="#/" class="btn delete-btn">Delete account</a>
+              <a v-if="role === 'ROLE_client'" href="#/" class="btn delete-btn">Delete account</a>
             </div>
           </div>
 
@@ -44,7 +45,7 @@
                     <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="address.postalCode"></div>
                   </div>
 
-                  <div class="mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
+                  <div v-if="role === 'ROLE_client'" class="mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
                 </div>
               </div>
 
@@ -108,10 +109,11 @@ import axios from "axios";
 import ClientNavbar from "./header/ClientNavbar";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "ClientProfile",
-  components: {BoatOwnerNavbar, 'client_navbar': ClientNavbar,CottageOwnerNavbar},
+  components: {FishingInstructorNavbar, BoatOwnerNavbar, 'client_navbar': ClientNavbar,CottageOwnerNavbar},
   data: function(){
     return{
       client: '',
@@ -129,7 +131,7 @@ export default {
       axios
         .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/"+clientId, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
-        .then(response => (this.client = response.data))
+        .then(response => (this.client = response.data, this.address = this.client.address))
     }
     if (this.role === "ROLE_client") {
       axios

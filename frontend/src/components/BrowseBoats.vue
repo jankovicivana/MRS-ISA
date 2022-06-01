@@ -2,7 +2,8 @@
   <div class="browse_main">
     <main_navbar v-if="role === ''"></main_navbar>
     <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>
-    <client-navbar v-if="role === 'ROLE_client'"></client-navbar>
+    <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
+    <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>
     <div class="mt-5 container">
       <h1>Boats</h1>
       <hr style="color: #2e6b6b"/>
@@ -53,10 +54,12 @@ import MainNavbar from "./header/MainNavbar";
 import BoatBrowseCard from "./BoatBrowseCard";
 import axios from "axios";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import ClientNavbar from "./header/ClientNavbar";
+import AdminNavbar from "./header/AdminNavbar";
 
 export default {
   name: "BrowseBoats",
-  components: {BoatOwnerNavbar, 'browse_card': BoatBrowseCard, 'main_navbar': MainNavbar},
+  components: {AdminNavbar, ClientNavbar, BoatOwnerNavbar, 'browse_card': BoatBrowseCard, 'main_navbar': MainNavbar},
   data: function(){
     return{
       boats: '',

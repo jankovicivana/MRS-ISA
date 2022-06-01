@@ -1,6 +1,6 @@
 <template>
   <div>
-  <AdminNavbar></AdminNavbar>
+  <AdminNavbar :isAdmin="true"></AdminNavbar>
   <section class="hero is-fullheight-with-navbar main_homepage">
     <div class="hero-body">
       <div class="container has-text-centered ml-4 pl-4">

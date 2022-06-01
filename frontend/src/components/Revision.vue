@@ -1,6 +1,6 @@
 <template>
   <section class="basic_background vh-100" >
-    <admin-navbar></admin-navbar>
+    <admin-navbar :isAdmin="true"></admin-navbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -14,7 +14,7 @@
                   <div>
                     <table class="table">
                       <thead>
-                      <tr style="background: #ecd9c6">
+                      <tr >
 
                         <th>Client</th>
                         <th>Advertiser</th>
@@ -26,10 +26,10 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr style="background: #ecd9c6"  v-if="advertiserReviews.length == 0">
+                      <tr v-if="advertiserReviews.length == 0">
                         <td colspan="6" class="p-3">There is no advertiser reviews.</td>
                       </tr>
-                      <tr style="background: #ecd9c6;" v-for="review in advertiserReviews">
+                      <tr  v-for="review in advertiserReviews">
                         <td>{{review.client.surname + " "+ review.client.name}}</td>
                         <td>{{review.advertiser.surname + " "+ review.advertiser.name}}</td>
                         <td>{{review.grade}}</td>
@@ -51,7 +51,7 @@
                   <div>
                     <table class="table">
                       <thead>
-                      <tr style="background: #ecd9c6">
+                      <tr >
 
                         <th>Client</th>
                         <th>Entity</th>
@@ -63,10 +63,10 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr style="background: #ecd9c6"  v-if="entityReviews.length == 0">
+                      <tr  v-if="entityReviews.length == 0">
                         <td colspan="6" class="p-3">There is no entity reviews.</td>
                       </tr>
-                      <tr style="background: #ecd9c6;" v-for="review in entityReviews">
+                      <tr v-for="review in entityReviews">
                         <td>{{review.client.surname + " "+ review.client.name}}</td>
                         <td>{{review.entity.name}}</td>
                         <td>{{review.grade}}</td>

@@ -40,6 +40,7 @@
                   View
                 </router-link>
                 <button class="button" v-if="canReserve" v-on:click="$emit('reserve', cottage)">Reserve</button>
+                <button class="button" v-if="role === 'ROLE_admin'" v-on:click="$emit('deleteCottage',cottage.id)">Delete</button>
               </div>
             </div>
           </div>
@@ -50,9 +51,21 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "CottageBrowseCard",
-  props: ['cottage', 'canReserve']
+  data: function(){
+    return{
+      role:''
+    }
+  },  props: ['cottage', 'canReserve'],
+  mounted() {
+    this.role = sessionStorage.getItem("role");
+  },
+  methods: {
+
+  }
 }
 </script>
 

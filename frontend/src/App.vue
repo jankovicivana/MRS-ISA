@@ -274,7 +274,13 @@ html {
 }
 
 
+tbody tr{
+  background-color:  #ede4da;
+}
 
+thead tr{
+  background-color: #e3c7aa
+}
 .inputs input {
   height: 40px;
   padding: 0px 10px;

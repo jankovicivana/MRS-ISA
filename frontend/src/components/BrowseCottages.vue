@@ -3,6 +3,7 @@
     <main_navbar v-if="role === ''"></main_navbar>
     <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
     <client-navbar v-if="role === 'ROLE_client'"></client-navbar>
+    <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>
     <div class="mt-5 container">
       <h1>Cottages</h1>
       <hr style="color: #2e6b6b"/>
@@ -38,7 +39,7 @@
           <p style="color: white"> No cottages for now.</p>
         </div>
         <div v-for="c in search_cottages">
-          <browse_card :cottage="c"></browse_card>
+          <browse_card :cottage="c" v-on:deleteCottage="deleteCottage($event)"></browse_card>
         </div>
       </div>
     </div>
@@ -52,9 +53,10 @@ import MainNavbar from "./header/MainNavbar";
 import CottageBrowseCard from "./CottageBrowseCard";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import ClientNavbar from "./header/ClientNavbar";
+import AdminNavbar from "./header/AdminNavbar";
 export default {
   name: "Cottages",
-  components: {ClientNavbar, 'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar,CottageOwnerNavbar},
+  components: {AdminNavbar, ClientNavbar, 'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar,CottageOwnerNavbar},
   data: function(){
     return{
       cottages: '',
@@ -197,8 +199,25 @@ export default {
         }
 
       }
+    },
+    show: function (group, type = '',title, text) {
+      this.$notify({group, title, text, type})
+    },
+
+    deleteCottage:function (id){
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/cottages/deleteCottage/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted cottage!</p>`)
+          setTimeout(() => {location.reload(); }, 3000)
+        }).catch((error) => {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Cottage has reservations.</p>`)
+      });
+
     }
-  }
+    }
+
+
 }
 </script>
 

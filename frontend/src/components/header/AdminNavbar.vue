@@ -9,12 +9,12 @@
 
         <a class="navbar-item" href="#/admin/homepage">Home </a>
 
-        <router-link class="navbar-item" :to="{name: 'AdvertiserProfile', isAdmin: 'true'}">My profile</router-link>
+        <router-link class="navbar-item" :to="{name: 'AdvertiserProfile', params: { isAdmin: true }}">My profile</router-link>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Rental products </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="#/client/clientHomepage"> Cottages</a>
+            <a class="navbar-item" href="#/cottages"> Cottages</a>
             <a class="navbar-item" href="#/client/clientHomepage"> Boats </a>
           </div>
         </div>

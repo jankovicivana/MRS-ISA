@@ -1,6 +1,6 @@
 <template>
   <section class="basic_background vh-100" >
-    <AdminNavbar></AdminNavbar>
+    <AdminNavbar :isAdmin="true"></AdminNavbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -15,7 +15,7 @@
                   <div>
                     <table class="table">
                       <thead>
-                      <tr style="background: #ecd9c6">
+                      <tr >
 
                         <th colspan="2">Client</th>
                         <th colspan="2">Reason for deleting account</th>
@@ -27,10 +27,10 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr style="background: #ecd9c6"  v-if="requests.length == 0">
+                      <tr  v-if="requests.length == 0">
                         <td colspan="9" class="p-3">There is no registration request.</td>
                       </tr>
-                      <tr style="background: #ecd9c6;" v-for="r in requests">
+                      <tr  v-for="r in requests">
                         <td colspan="2">{{r.user.surname + " "+ r.user.name}}</td>
                         <td colspan="2">{{r.requestReason}}</td>
                         <td colspan="2"><textarea v-model="r.answer" style="width: 350px" ></textarea></td>
