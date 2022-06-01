@@ -135,8 +135,8 @@ public class CottageController {
     }
 
     @DeleteMapping(value = "/deleteCottage/{id}")
-    @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<String> deleteCottage(@PathVariable Integer id){
+    @PreAuthorize("hasAnyRole('admin','cottageOwner')")
+    public ResponseEntity<String> deleteCottage(@PathVariable Integer id,Principal principal){
         Cottage cottage = cottageService.findOne(id);
         if(cottage == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -229,4 +229,14 @@ public class ReservationController {
 
         return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
     }
+
+
+    @PostMapping(value = "/delete")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> delete(@RequestBody ReserveDataDTO r,Principal principal){
+        EntityType entity = entityService.findOne(r.getEntityId());
+        entity.setDeleted(true);
+        entityService.save(entity);
+        return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
+    }
 }

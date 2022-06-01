@@ -31,4 +31,8 @@ public class EntityService {
     public EntityType findOne(Integer id) {
         return entityRepository.findById(id).orElse(null);
     }
+
+    public void save(EntityType entity) {
+        entityRepository.save(entity);
+    }
 }

@@ -202,3 +202,14 @@ insert into reports (id,client_showed_up,penalty_status,report_string,advertiser
 
 insert into account_delete_requests (id,answer,request_reason,status,user_id) values (nextval('my_seqv6'),'','dosadni ste',1,2);
 insert into account_delete_requests (id,answer,request_reason,status,user_id) values (nextval('my_seqv6'),'','ukinuli ste nam popuste',1,8);
+
+insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Nezaboravna avantura','140',1,3,10,0,false,0.0, 2);
+
+insert into images (path,entity,is_main_photo) values ('fish1.jpg',9,false);
+insert into images (path,entity,is_main_photo) values ('fish2.jpg',9,false);
+
+
+insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Coka avantura','140',1,3,10,0,false,0.0, 2);
+
+insert into images (path,entity,is_main_photo) values ('fish3.jpg',10,false);
+insert into images (path,entity,is_main_photo) values ('fish4.jpg',10,false);
