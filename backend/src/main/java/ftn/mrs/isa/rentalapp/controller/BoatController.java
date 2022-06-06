@@ -51,8 +51,9 @@ public class BoatController {
 
         List<BoatDTO> boatsDTO = new ArrayList<>();
         for (Boat b : boats){
+            if (!b.isDeleted()){
             boatsDTO.add(mapper.map(b, BoatDTO.class));
-        }
+        }}
 
         return new ResponseEntity<>(boatsDTO, HttpStatus.OK);
     }
@@ -139,7 +140,7 @@ public class BoatController {
     }
 
     @DeleteMapping(value = "/deleteBoat/{id}")
-    @PreAuthorize("hasRole('boatOwner')")
+    @PreAuthorize("hasAnyRole('admin','boatOwner')")
     public ResponseEntity<String> deleteBoat(@PathVariable Integer id,Principal principal){
         Boat boat = boatService.findOne(id);
         if(boat == null){

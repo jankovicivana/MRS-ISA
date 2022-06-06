@@ -51,8 +51,9 @@ public class CottageController {
 
         List<CottageDTO> cottagesDTO = new ArrayList<>();
         for (Cottage c : cottages){
+            if (!c.isDeleted()){
             cottagesDTO.add(mapper.map(c,CottageDTO.class));
-        }
+        }}
 
         return new ResponseEntity<>(cottagesDTO, HttpStatus.OK);
     }
