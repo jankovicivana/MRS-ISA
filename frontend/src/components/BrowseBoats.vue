@@ -41,7 +41,7 @@
           <p style="color: white"> No boats for now.</p>
         </div>
         <div v-for="b in search_boats">
-          <browse_card :boat="b"></browse_card>
+          <browse_card :boat="b" v-on:deleteBoat="deleteBoat($event)"></browse_card>
         </div>
       </div>
     </div>
@@ -84,6 +84,26 @@ export default {
     }
   },
   methods: {
+
+    show: function (group, type = '',title, text) {
+      this.$notify({group, title, text, type})
+    },
+    deleteBoat:function (id) {
+      axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/boats/deleteBoat/" + id, {
+        headers: {
+          Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")
+        }
+      })
+        .then(response => {
+          this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully deleted!</p>`, `<p style="font-size: 20px">Successfully deleted boat!</p>`)
+          setTimeout(() => {
+            location.reload();
+          }, 3000)
+        }).catch((error) => {
+        this.show('foo-css', 'error', `<p style="font-size: 25px">Deletion is not possible!</p>`, `<p style="font-size: 20px">Boat has reservations.</p>`)
+      });
+    },
     search: function (){
       if(this.searchText){
         this.search_boats = this.boats.filter(item => {

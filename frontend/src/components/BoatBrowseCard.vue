@@ -39,6 +39,7 @@
                 <router-link :to="{ name:'BoatProfile',params:{id:boat.id} }" class="button view_button is-success" style="background-color: #2e6b6b">
                   View
                 </router-link>
+                <button class="button" v-if="role === 'ROLE_admin'" v-on:click="$emit('deleteBoat',boat.id)">Delete</button>
               </div>
             </div>
           </div>
@@ -51,7 +52,14 @@
 <script>
 export default {
   name: "BoatBrowseCard",
-  props: ['boat']
+  data: function(){
+    return{
+      role:''
+    }},
+  props: ['boat'],
+  mounted() {
+    this.role = sessionStorage.getItem("role");
+  }
 }
 </script>
 

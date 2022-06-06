@@ -15,7 +15,7 @@
           <a class="navbar-link" style="background-color: #2e6b6b"> Rental products </a>
           <div class="navbar-dropdown is-boxed">
             <a class="navbar-item" href="#/cottages"> Cottages</a>
-            <a class="navbar-item" href="#/client/clientHomepage"> Boats </a>
+            <a class="navbar-item" href="#/boats"> Boats </a>
           </div>
         </div>
 
