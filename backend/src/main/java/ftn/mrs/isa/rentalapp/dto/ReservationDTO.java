@@ -14,6 +14,7 @@ public class ReservationDTO {
     private ClientDTO client;
     private Double price;
     private Double advertiserProfit;
+    private Double systemProfit;
     private Integer personNum;
     private AdventureDTO adventure;
     private CottageDTO cottage;

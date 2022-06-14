@@ -33,6 +33,7 @@ public class CottageDTO {
 
     private Set<QuickReservationDTO> quickReservations;
 
+    private Double averageGrade ;
 
 
 

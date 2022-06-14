@@ -144,6 +144,21 @@ public class ReservationController {
         return getListResponseAdventure(reservations);
     }
 
+     @GetMapping(value = "/findHistory")
+     @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<List<ReservationDTO>> getAllReservationHistory(Principal principal){
+        List<Reservation> reservations = reservationService.getHistoryReservation();
+         List<ReservationDTO> reservationsDTO = new ArrayList<>();
+         for(Reservation c : reservations){
+             ReservationDTO rt = mapper.map(c, ReservationDTO.class);
+             EntityType entity = entityService.findOne(c.getEntity().getId());
+             rt.setEntity(mapper.map(entity, EntityTypeDTO.class));
+             reservationsDTO.add(rt);
+         }
+         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+
+     }
+
 
 
     @GetMapping(value = "/findUpcomingByBoatOwner")

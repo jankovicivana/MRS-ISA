@@ -45,4 +45,7 @@ public class BoatDTO {
     private  Set<FishingEquipmentDTO> fishingEquipment = new HashSet<>();
 
     private Set<NavigationEquipmentDTO> navigationEquipment = new HashSet<>();
+
+    private Double averageGrade ;
+
 }

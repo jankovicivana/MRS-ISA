@@ -89,4 +89,7 @@ public class ReservationService {
     public void save(Reservation reservation){reservationRepository.save(reservation);}
 
 
+    public List<Reservation> getHistoryReservation() {
+        return reservationRepository.getReservationsInHistory(LocalDateTime.now());
+    }
 }

@@ -68,6 +68,10 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
     @Query(value = "SELECT * FROM public.reservations WHERE end_date_time < :now and client = :id ", nativeQuery = true)
     public List<Reservation> findAllHistoryByClient(@Param("now") LocalDateTime now,  @Param("id") Integer id);
 
+
+    @Query(value = "SELECT * FROM public.reservations WHERE end_date_time < :now ", nativeQuery = true)
+    public List<Reservation> getReservationsInHistory(@Param("now") LocalDateTime now);
+
     @Query(value = "SELECT * FROM public.reservations WHERE start_date_time > :now and client = :id and is_canceled = false", nativeQuery = true)
    // @Where(clause = "is_canceled = false")
     public List<Reservation> findAllUpcomingByClient(@Param("now") LocalDateTime now, @Param("id") Integer id);
