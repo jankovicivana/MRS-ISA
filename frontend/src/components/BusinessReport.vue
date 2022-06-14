@@ -16,6 +16,7 @@
                   <div class="row">
                     <p class="col-3 pt-4" v-if="role === 'ROLE_cottageOwner'">Average cottage grade: </p>
                     <p class="col-3 pt-4" v-if="role === 'ROLE_boatOwner'">Average boat grade: </p>
+                    <p class="col-3 pt-4" v-if="role === 'ROLE_fishingInstructor'">Average adventure grade: </p>
                     <star-rating class="col-9" :rating="average_grade" :read-only="true" :increment="0.01" :star-size="20" :size="200"></star-rating>
 
                   </div>
@@ -114,6 +115,9 @@ export default {
     }else if(this.role === "ROLE_boatOwner"){
       reservationUrl = "/api/reservation/findHistoryByBoatOwner";
       gradeUrl = "/api/boats/getAverageGrade";
+    }else if (this.role === "ROLE_fishingInstructor"){
+      reservationUrl = "/api/reservation/findHistoryByInstructor";
+      gradeUrl = "/api/adventures/getAverageGrade";
     }
       axios
         .get(process.env.VUE_APP_SERVER_PORT + reservationUrl, {
