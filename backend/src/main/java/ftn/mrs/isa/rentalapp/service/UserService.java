@@ -1,6 +1,10 @@
 package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.dto.UserRequest;
+import ftn.mrs.isa.rentalapp.model.entity.Adventure;
+import ftn.mrs.isa.rentalapp.model.entity.Boat;
+import ftn.mrs.isa.rentalapp.model.entity.Cottage;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.user.*;
 import ftn.mrs.isa.rentalapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
@@ -29,6 +34,15 @@ public class UserService  implements UserDetailsService {
 
     @Autowired
     private AdvertiserRepository advertiserRepository;
+
+    @Autowired
+    private AdventureService adventureService;
+
+    @Autowired
+    private BoatService boatService;
+
+    @Autowired
+    private CottageService cottageService;
 
     @Autowired
     private  DeleteAccountRequestRepository deleteAccountRequestRepository;
@@ -82,5 +96,24 @@ public class UserService  implements UserDetailsService {
 
     public User findUserByEmail(String email) {
          return userRepository.findByEmail(email);
+    }
+
+    public User findUserByEntity(EntityType entity) {
+        User u = null;
+        System.out.print(entity.getClass());
+        Adventure i = adventureService.findOne(entity.getId());
+        if(i!= null){
+            u = i.getFishingInstructor();
+        }
+        Cottage c = cottageService.findOne(entity.getId());
+        if(c!= null){
+            u = c.getCottageOwner();
+        }
+        Boat b = boatService.findOne(entity.getId());
+        if(b!= null){
+            u = b.getBoatOwner();
+        }
+
+        return u;
     }
 }

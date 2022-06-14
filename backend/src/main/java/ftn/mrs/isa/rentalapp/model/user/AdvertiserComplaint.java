@@ -15,7 +15,7 @@ public class AdvertiserComplaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "complaint", nullable = false)
     private String complaint;
@@ -23,18 +23,15 @@ public class AdvertiserComplaint {
     @Column(name = "answer", nullable = false)
     private String answer;
 
-    @Column(name = "isAnswered", nullable = false)
-    private Boolean isAnswered;
-
 
     @Column(name = "status", nullable = false)
     private RequestStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "advertiser")
     private Advertiser advertiser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client")
     private Client client;
 

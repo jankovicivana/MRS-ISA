@@ -228,4 +228,46 @@ public class EmailService {
         javaMailSender.send( mail.getMimeMessage());
         System.out.println("Email poslat!");
     }
+
+    @Async
+    public void sendComplaint(User a,String complaint,String reason,boolean b) throws MessagingException {
+        MimeMessageHelper mail = new MimeMessageHelper(javaMailSender.createMimeMessage(), true, "UTF-8");
+        mail.setTo(a.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+
+        String status;
+        String status1;
+        if (b)
+            {status = "Successful";
+            status1 = "approved";
+            }else{status = "Rejected";
+                status1= "rejected";
+            }
+        mail.setSubject("Rental app notification");
+        mail.setText("<html>\n" +
+                "    <body>\n" +
+                "        <div style=\"margin: 50px;\">\n" +
+                "            <div style=\"background-color: rgb(135,206,250);height: 55px;\">\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">"+status+" </h1>\n" +
+                "            </div>\n" +
+                "            <div style=\"margin-top: 10px;\">\n" +
+                "                <div style=\"margin: 25px;\">\n" +
+                "                Dear "+a.getName()+",\n" +
+                "                <br/>\n" +
+                "                Complaint ' "+complaint+" ' is "+status1.toLowerCase()+" .\n" +
+                "                   The reason is "+reason+" .\n" +
+                "                <br/>\n" +
+                "                Regards,\n" +
+                "                <br/>\n" +
+                "                <span >Rental app team</span>\n" +
+                "            </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </body>\n" +
+                "</html>",true);
+        //mail.set
+        javaMailSender.send( mail.getMimeMessage());
+        System.out.println("Email poslat!");
+    }
 }

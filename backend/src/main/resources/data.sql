@@ -213,3 +213,6 @@ insert into adventures (id,description,name,price,address,fishing_instructor_id,
 
 insert into images (path,entity,is_main_photo) values ('fish3.jpg',10,false);
 insert into images (path,entity,is_main_photo) values ('fish4.jpg',10,false);
+
+insert into advertiser_complaints (client,advertiser,status,complaint,answer) values (2,1,1,'dosadnjakovic','');
+insert into entity_complaints (client,entity,status,complaint,answer) values (2,1,1,'prljavoo','');

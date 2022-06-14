@@ -16,7 +16,7 @@ public class EntityComplaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "complaint", nullable = false)
     private String complaint;
@@ -24,10 +24,9 @@ public class EntityComplaint {
     @Column(name = "answer", nullable = false)
     private String answer;
 
-    @Column(name = "isAnswered", nullable = false)
-    private Boolean isAnswered;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "entity")
     private EntityType entity;
 
@@ -35,9 +34,10 @@ public class EntityComplaint {
     @Column(name = "status", nullable = false)
     private RequestStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client")
     private Client client;
+
 
 
 }
