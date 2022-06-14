@@ -136,6 +136,14 @@ public class ReservationController {
         return getListResponseBoat(reservations);
     }
 
+     @GetMapping(value = "/findHistoryByInstructor")
+     @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByInstructor(Principal principal){
+        FishingInstructor owner = fishingInstructorService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.getHistoryReservationByInstructor(owner.getId());
+        return getListResponseAdventure(reservations);
+    }
+
 
 
     @GetMapping(value = "/findUpcomingByBoatOwner")
@@ -171,6 +179,17 @@ public class ReservationController {
             ReservationDTO rt = mapper.map(c, ReservationDTO.class);
             Boat boat = boatService.findOne(c.getEntity().getId());
             rt.setBoat(mapper.map(boat, BoatDTO.class));
+            reservationsDTO.add(rt);
+        }
+        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    private ResponseEntity<List<ReservationDTO>> getListResponseAdventure(List<Reservation> reservations) {
+        List<ReservationDTO> reservationsDTO = new ArrayList<>();
+        for(Reservation c : reservations){
+            ReservationDTO rt = mapper.map(c, ReservationDTO.class);
+            Adventure adventure = adventureService.findOne(c.getEntity().getId());
+            rt.setAdventure(mapper.map(adventure, AdventureDTO.class));
             reservationsDTO.add(rt);
         }
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);

@@ -21,6 +21,9 @@ public class ReservationService {
     public List<Reservation> getFutureReservationByFishingInstructor(Integer id) {
         return reservationRepository.getFutureReservationByFishingInstructor(LocalDateTime.now(),id);
     }
+     public List<Reservation> getHistoryReservationByInstructor(Integer id) {
+        return reservationRepository.getHistoryReservationByFishingInstructor(LocalDateTime.now(),id);
+        }
 
     public List<Reservation> getReservationByFishingInstructor(Integer id) {
         return reservationRepository.getReservationByFishingInstructor(id);
@@ -84,5 +87,6 @@ public class ReservationService {
     }
 
     public void save(Reservation reservation){reservationRepository.save(reservation);}
+
 
 }

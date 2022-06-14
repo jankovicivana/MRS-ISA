@@ -162,5 +162,17 @@ public class AdventureController {
         return new ResponseEntity<>(mapper.map(adventure,AdventureDTO.class),HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getAverageGrade")
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<Double> getBoatGrade(Principal principal){
+        List<Adventure> adventures = adventureService.findAllByOwnerEmail(principal.getName());
+        double averageGrade = 0.0;
+        for (Adventure b : adventures){
+            averageGrade += b.getAverageGrade();
+        }
+        averageGrade = averageGrade / adventures.size();
+        return new ResponseEntity<>(averageGrade, HttpStatus.OK);
+    }
+
     }
 
