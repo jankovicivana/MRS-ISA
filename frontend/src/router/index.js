@@ -48,6 +48,7 @@ import RegistrationRequest from "../components/RegistrationRequest";
 import BusinessReport from "../components/BusinessReport";
 import DeleteProfileRequests from "../components/DeleteProfileRequests";
 import AdminReportResponse from "../components/AdminComplaintResponse";
+import AverageGradeReport from "../components/AverageGradeReport";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -248,6 +249,11 @@ export default new Router({
       path: '/businessReport',
       name: "BusinessReport",
       component: BusinessReport
+    },
+    {
+      path: '/averageGrade',
+      name: "AverageGradeReport",
+      component: AverageGradeReport
     }
   ]
 })
