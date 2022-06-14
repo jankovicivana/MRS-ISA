@@ -47,7 +47,7 @@
             <a class="navbar-item" href="#/admin/complaints"> Complaints </a>
           </div>
         </div>
-
+        <a class="navbar-item" href="#/admin/businessReport">Business report </a>
 
       </div>
     </div>

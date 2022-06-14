@@ -32,8 +32,13 @@
 
         <a class="navbar-item" href="#/client/clientHomepage">Complaints </a>
 
-        <a class="navbar-item" href="#/businessReport">Business report </a>
-
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" style="background-color: #2e6b6b"> Reports </a>
+          <div class="navbar-dropdown is-boxed">
+            <a class="navbar-item" href="#/businessReport">Business report </a>
+            <a class="navbar-item" href="#/averageGrade"> Average grade report </a>
+          </div>
+        </div>
       </div>
     </div>
     <a href="#/" v-on:click="logout()" class="px-3 mr-1" >Log out</a>
