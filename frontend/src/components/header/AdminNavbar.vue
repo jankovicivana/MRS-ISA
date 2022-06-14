@@ -44,7 +44,7 @@
           <div class="navbar-dropdown is-boxed">
             <a class="navbar-item" href="#/admin/revisions"> Client reviews</a>
             <a class="navbar-item" href="#/admin/penaltyView"> Reservation reports</a>
-            <a class="navbar-item" href="#/client/clientHomepage"> Complaints </a>
+            <a class="navbar-item" href="#/admin/complaints"> Complaints </a>
           </div>
         </div>
 

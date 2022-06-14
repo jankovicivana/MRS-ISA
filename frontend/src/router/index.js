@@ -47,6 +47,7 @@ import ClientUpcomingReservations from "../components/ClientUpcomingReservations
 import RegistrationRequest from "../components/RegistrationRequest";
 import BusinessReport from "../components/BusinessReport";
 import DeleteProfileRequests from "../components/DeleteProfileRequests";
+import AdminReportResponse from "../components/AdminComplaintResponse";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -207,6 +208,11 @@ export default new Router({
       path: '/login',
       name: "LoginPage",
       component: LoginPage
+    },
+    {
+      path: '/admin/complaints',
+      name: "AdminReportResponse",
+      component: AdminReportResponse
     },
     {
       path: '/cottageOwner/cottageOwnerHomepage',
