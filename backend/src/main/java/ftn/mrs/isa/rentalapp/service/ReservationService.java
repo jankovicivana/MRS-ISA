@@ -76,7 +76,7 @@ public class ReservationService {
     }
 
     public Reservation getById(Integer resId) {
-        return reservationRepository.getById(resId);
+        return reservationRepository.findById(resId).orElse(null);
     }
 
     public void cancelReservation(Integer id) {

@@ -104,6 +104,10 @@ insert into reservations(start_date_time,end_date_time,deleted,entity,price,syst
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
     ('20220622 10:00:00 AM','20220623 10:00:00 AM',false,1,200,20,60,5,false,5);
 
+
+insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
+    ('20220530 10:00:00 AM','20220605 10:00:00 AM',false,1,200,20,60,5,false,5);
+
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
     ('20220422 10:00:00 AM','20220504 10:00:00 AM',false,3,150,20,130,5,false,5);
 
@@ -182,10 +186,10 @@ insert into user_role (user_id, role_id) values (1, 3);
 insert into user_role (user_id, role_id) values (4, 4);
 insert into user_role (user_id, role_id) values (3, 5);
 insert into user_role (user_id, role_id) values (6, 2);
-insert into subscriptions (id, client, entity) values (1, 2, 1);
-insert into subscriptions (id, client, entity) values (2, 2, 2);
-insert into subscriptions (id, client, entity) values (3, 2, 3);
-insert into subscriptions (id, client, entity) values (4, 2, 4);
+insert into subscriptions (id, client, entity) values (1, 5, 1);
+insert into subscriptions (id, client, entity) values (2, 5, 2);
+insert into subscriptions (id, client, entity) values (3, 5, 3);
+insert into subscriptions (id, client, entity) values (4, 5, 4);
 
 
 insert into advertiser_reviews (id,grade,review,status,client,advertiser) values (nextval('my_seqv3'),1,'Nekomunikativan je.',1,2,1);

@@ -15,7 +15,7 @@
 
           <a class="navbar-item" href="#/client/subscriptions">Subscriptions </a>
 
-          <a class="navbar-item" href="#/client/clientHomepage">Reviews </a>
+          <a class="navbar-item" href="#/client/review">Reviews </a>
 
           <a class="navbar-item" href="#/client/clientHomepage">Complaints </a>
 
