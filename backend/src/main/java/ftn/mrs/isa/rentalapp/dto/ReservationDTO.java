@@ -21,4 +21,7 @@ public class ReservationDTO {
     private BoatDTO boat;
 
     private EntityTypeDTO entity;
+
+    private Boolean isReviewed;
+    private Boolean isComplained;
 }

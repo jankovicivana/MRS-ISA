@@ -57,6 +57,12 @@ export default {
       .then(response => (this.subscriptions = response.data))
   },
   methods: {
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Unsubscribed!</p>`
+      let text = `<p style="font-size: 15px">You won't recieve emails about special offers anymore.</p>`
+      this.$notify({group, title, text, type})
+    },
+
     unsubscribe: function (s) {
       let id = s.id;
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/sub/delete/"+id, {headers: {Authorization:
@@ -64,6 +70,7 @@ export default {
         .then(response => {
           const index = this.subscriptions.indexOf(s);
           this.subscriptions.splice(index, 1);
+          this.show('foo-css', 'success');
         }).catch(function error(error) {
         alert(error.response.data);
       });
@@ -80,13 +87,13 @@ export default {
   background-position-y: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: auto;
   opacity: 1;
   position: absolute;
   top: 0;
   transition: opacity 0.3s linear 0s;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 h1{

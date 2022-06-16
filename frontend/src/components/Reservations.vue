@@ -51,7 +51,7 @@
 
         <div class="column col-2">
           <span style="color: white">Rating</span>
-          <input class="input" type="number" placeholder="Rating" value="3" ref="rating" min="0" max="5" style="height: 40px">
+          <star-rating :rating="4" :read-only="false" :increment="1" :show-rating="false"  @rating-selected="setRating" :star-size="35" :size="300" style="height: 40px"></star-rating>
         </div>
         <div class="column col-2">
           <button type="submit" v-on:click="search()" class="btn search_btn" style="float: left">Search</button>
@@ -82,7 +82,8 @@ export default {
       addresses: '',
       entities: '',
       params: '',
-      type: ''
+      type: '',
+      rating: 3
     }
   },
   mounted: function () {
@@ -94,7 +95,7 @@ export default {
   methods: {
     search: function (){
       this.params = {type: this.$refs.type.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
-        startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.$refs.rating.value};
+        startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/api/entity/getAvailable", this.params,{
           headers: {
@@ -109,6 +110,10 @@ export default {
       let title = `<p style="font-size: 25px">Reserved!</p>`
       let text = `<p style="font-size: 20px">Successfully reserved ` + entityType + `!</p>`
       this.$notify({group, title, text, type})
+    },
+
+    setRating: function (rating){
+      this.rating = rating;
     },
 
     reserve: function (entity){
@@ -141,7 +146,7 @@ export default {
   top: 0;
   transition: opacity 0.3s linear 0s;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 h1{
@@ -177,5 +182,9 @@ button:active {
 
 a{
   text-decoration: none;
+}
+
+star-rating{
+  align-self: normal;
 }
 </style>

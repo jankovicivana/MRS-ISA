@@ -38,10 +38,10 @@ export default {
   background-image: url('assets/images/back2.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100%;
+  height: auto;
   width: 100%;
   object-fit: cover;
-  overflow: scroll;
+  overflow: visible;
 }
 
 .basic_background{

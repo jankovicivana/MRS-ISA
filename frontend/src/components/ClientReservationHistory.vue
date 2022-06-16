@@ -18,7 +18,7 @@
                   <div>
                     <table>
                       <thead>
-                      <tr>
+                      <tr style="background: #e3c7aa">
                         <th class="sortable" v-on:click="orderReservations('name')">Name</th>
                         <th class="sortable" v-on:click="orderReservations('startDateTime')">Start</th>
                         <th class="sortable" v-on:click="orderReservations('endDateTime')">End</th>
@@ -29,14 +29,17 @@
                       </thead>
 
                       <tbody>
-                      <tr v-for="r in orderedReservations" v-if="type === r.entity.type">
+                      <tr style="background:  #ede4da;" v-for="r in orderedReservations" v-if="type === r.entity.type">
                         <td>{{r.entity.name}}</td>
                         <td>{{r.startDateTime[2]+"."+r.startDateTime[1]+"."+r.startDateTime[0]+"."}}</td>
                         <td>{{r.endDateTime[2]+"."+r.endDateTime[1]+"."+r.endDateTime[0]+"."}}</td>
                         <td>{{r.entity.address.city+", "+r.entity.address.country}}</td>
                         <td>{{r.price}}</td>
-
-                        <td><button v-on:click="review(r)">Write a review</button></td>
+                        <!-- treba dodati provjeru da li je vec napisao review -->
+                        <td>
+                            <button v-if="r.isReviewed"  class="disabled button" title="Already reviewed">Write a review</button>
+                            <button v-else v-on:click="review(r)" class="button">Write a review</button>
+                        </td>
                       </tr>
                       </tbody>
                     </table>
@@ -63,7 +66,8 @@ export default {
       reservations: '',
       type: '',
       currentSort: 'name',
-      currentSortDir: 'asc'
+      currentSortDir: 'asc',
+      clientId: this.$route.params.id
     }
   },
 
@@ -84,9 +88,6 @@ export default {
   },
 
   methods: {
-    review: function (res){
-      alert('not implemented yet')
-    },
 
     orderReservations: function (param){
       if(param === this.currentSort){
@@ -94,6 +95,10 @@ export default {
       }
       this.currentSort = param;
       this.orderedReservations = _orderBy(this.reservations, param);
+    },
+
+    review: function (res){
+      this.$router.push({path:"/client/review/"+res.id});
     }
 
   }
@@ -124,8 +129,30 @@ button{
   border-color: #FFFFFF
 }
 
+.button{
+  background: #2e6b6b;
+  border-radius: 8px;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+  text-decoration: none;
+}
+
+button.disabled{
+  background: grey;
+}
+
 select{
   border: none;
+  background-color: #ecd9c6;
+}
+
+select:hover{
+  cursor: pointer;
+}
+
+select:focus{
+  border: none;
+  outline: none;
   background-color: #ecd9c6;
 }
 

@@ -13,7 +13,7 @@
                   <div>
                     <table>
                       <thead>
-                      <tr>
+                      <tr style="background: #e3c7aa">
                         <th>Type</th>
                         <th>Name</th>
                         <th>Start</th>
@@ -25,7 +25,7 @@
                       </thead>
 
                       <tbody>
-                      <tr v-for="r in reservations">
+                      <tr style="background:  #ede4da;" v-for="r in reservations">
                         <td>{{r.entity.type}}</td>
                         <td>{{r.entity.name}}</td>
                         <td>{{r.startDateTime[2]+"."+r.startDateTime[1]+"."+r.startDateTime[0]+"."}}</td>

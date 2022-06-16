@@ -58,6 +58,27 @@ public class ReservationController {
     @Autowired
     private EntityService entityService;
 
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasRole('client')")  // dodati ovdje ako treba jos nekoga
+    public ResponseEntity<ReservationDTO> getById(@PathVariable Integer id, Principal principal){
+        Reservation r = reservationService.getById(id);
+        System.out.println(r.getEntity().getName() + "***********************************");
+        ReservationDTO rdto = mapper.map(r, ReservationDTO.class);
+        String entityType = EntityKind.toString(r.getEntity().getKind());
+        rdto.getEntity().setType(entityType);
+        if(entityType.equals("Cottage")){
+            Cottage c = cottageService.findOne(r.getEntity().getId());
+            rdto.setCottage(mapper.map(c, CottageDTO.class));
+        } else  if(entityType.equals("Boat")){
+            Boat b = boatService.findOne(r.getEntity().getId());
+            rdto.setBoat(mapper.map(b, BoatDTO.class));
+        } else{
+            Adventure a = adventureService.findOne(r.getEntity().getId());
+            rdto.setAdventure(mapper.map(a, AdventureDTO.class));
+        }
+        return new ResponseEntity<>(rdto, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/findHistoryByUser/getInstructor")
     @PreAuthorize("hasRole('fishingInstructor')")
     public ResponseEntity<List<ReservationDTO>> getAllReservationHistoryByUser( Principal principal){
