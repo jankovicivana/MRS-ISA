@@ -71,8 +71,7 @@ public class BoatController {
     }
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasRole('boatOwner')")
-    public ResponseEntity<BoatDTO> getBoat(@PathVariable Integer id,Principal principal){
+    public ResponseEntity<BoatDTO> getBoat(@PathVariable Integer id){
         Boat boat = boatService.findOne(id);
         if(boat == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

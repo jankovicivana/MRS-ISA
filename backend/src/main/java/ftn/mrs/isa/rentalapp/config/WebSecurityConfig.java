@@ -79,10 +79,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()		// /auth/**
                 .antMatchers("/api/cottages/all").permitAll()
+                .antMatchers("/api/cottages/{id}").permitAll()
                 .antMatchers("/api/boats/all").permitAll()
+                .antMatchers("/api/boats/{id}").permitAll()
                 .antMatchers("/api/adventures/all").permitAll()
+                .antMatchers("/api/adventures/{id}").permitAll()
                 .antMatchers("/api/client/all").permitAll()
                 .antMatchers("/api/address/all").permitAll()
+                .antMatchers("/api/availablePeriod/getAvailablePeriod/{id}").permitAll()
+                .antMatchers("/api/reservation/findAllOfCottage/{id}").permitAll()
+                .antMatchers("/api/quickReservation/findQuickReservationBy/{id}").permitAll()
+                .antMatchers("/api/reservation/findAllOfBoat/{id}").permitAll()
 
 
                 // za svaki drugi zahtev korisnik mora biti autentifikovan

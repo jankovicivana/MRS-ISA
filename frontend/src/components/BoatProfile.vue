@@ -1,6 +1,8 @@
 <template>
   <div>
-    <BoatOwnerNavbar></BoatOwnerNavbar>
+    <BoatOwnerNavbar  v-if="role === 'ROLE_boatOwner'"></BoatOwnerNavbar>
+    <MainNavbar v-if="role === null"></MainNavbar>
+    <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
   <section class="profile_boat py-lg-3" >
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
       <router-link class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: #2e6b6b;margin: 5px;color: white;border-color: white" tag="button">Edit</router-link>
@@ -23,7 +25,7 @@
         <div class="col-md-6 pt-5" >
           <div class="row m-2">
             <h1 class="col-9 " >{{boat.name}}</h1>
-            <div class="col-3 pt-3">Grade 5 <font-awesome-icon icon="fa-solid fa-star" style="color: gold"/></div>
+            <star-rating class="col-3" :rating="5" :read-only="true" :increment="0.01" :star-size="25" :size="200"></star-rating>
           </div>
 
           <div class="fs-5 m-3 row">
@@ -47,59 +49,50 @@
 
           <hr style="color: blue" />
           <div class="row p-3">
-            <div class="col-6">
+            <div class="col-12">
               <p style="font-size: 25px">Additional services</p>
-              <div class="services">
-                <p v-for="as in boat.additionalServices"><font-awesome-icon class="small-icon" icon="fa-solid fa-check-circle" /> {{as.name}}</p>
+              <div class="row services">
+                <p class="col-5" v-for="as in boat.additionalServices"><font-awesome-icon class="small-icon" icon="fa-solid fa-check-circle" /> {{as.name}}</p>
               </div>
             </div>
-            <div class="col-6">
-              <p style="font-size: 25px">Navigation equipment</p>
-              <div>
-                <p v-for="ne in boat.navigationEquipment"><font-awesome-icon class="small-icon" icon="fa-solid fa-check-circle" /> {{ne.equipment}}</p>
-              </div>
-            </div>
+
 
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-4 p-3" style="background:aliceblue;border-radius: 5%">
-          <p style="font-size: 25px;">Fishing equipment</p>
-          <div class="rules">
-            <p v-for="fe in boat.fishingEquipment"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{fe.equipment}}</p>
-          </div>
-        </div>
-        <div class="col-8" style="padding-left: 15px;">
-          <div class="px-3" style="background: aliceblue;border-radius: 2%;">
-            <p class="pt-3" style="font-size: 25px;">Reservation</p>
-            <div class="pl-3 row">
-              <div class="col-5">
-                Start date:
-                <input type="date" name="startDate" placeholder="dd-mm-yyyy">
-              </div>
-              <div class="col-5">
-                End date:
-                <input type="date" name="endDate" placeholder="dd-mm-yyyy">
-              </div>
-              <div class="col-4 pt-4">
-                Person number:
-                <input type="number" name="numPeople" min="1" max="10" style="width: 50px">
-              </div>
-
-            </div>
-            <div class="res_button"><button type="button" class="btn ">Reserve</button></div>
-          </div>
-        </div>
-      </div>
-      <div class="row py-3">
-        <div class="col-4" style="background:aliceblue;border-radius: 5%">
+        <div class="col-3 my-4 p-3" style="background:aliceblue;border-radius: 5%">
           <p style="font-size: 25px;">Rules</p>
           <div class="rules">
             <p v-for="r in boat.rules"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{r.rule}}</p>
           </div>
         </div>
+        <div class="col-1" style="width: 50px"></div>
+        <div class="col-8  py-4"  style="background:aliceblue;border-radius: 5%">
+          <h4><b>Location:</b>  {{address.country}}, {{address.city}}, {{address.street}}</h4>
+          <l-map style="height: 300px" :zoom="zoom" :center="center">
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-marker :lat-lng="markerLatLng"></l-marker>
+          </l-map>
+        </div>
       </div>
+      <div class="row py-2 px-5">
+        <div class="col-5 my-4 p-3" style="background:aliceblue;border-radius: 5%;">
+          <p style="font-size: 25px;">Fishing equipment</p>
+          <div class="rules">
+            <p v-for="fe in boat.fishingEquipment"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{fe.equipment}}</p>
+          </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5 my-4 p-3" style="background:aliceblue;border-radius: 5%">
+          <p style="font-size: 25px;">Navigation equipment</p>
+          <div>
+            <p v-for="ne in boat.navigationEquipment"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{ne.equipment}}</p>
+          </div>
+        </div>
+      </div>
+
+
 
       <div class="row" >
         <div class="col-12" style="background: aliceblue">
@@ -128,7 +121,7 @@
               <p class="py-2"><font-awesome-icon icon="fa-solid fa-user-friends"/> {{q.maxPersonNum}}</p>
               $<span class="text-decoration-line-through">{{q.price}}</span>
               $<span class="before_price">{{q.discountedPrice}}</span>
-              <div class="quick_res_btn"><button type="button" class="btn">RESERVE</button></div>
+              <div class="quick_res_btn"><button type="button" v-on:click="reserve(q.id)" class="btn">RESERVE</button></div>
             </div>
 
           </div>
@@ -136,13 +129,7 @@
         </div>
       </div>
 
-      <div class="row  py-4 mt-3">
-        <h4><b>Location:</b>  {{address.country}}, {{address.city}}, {{address.street}}</h4>
-        <l-map style="height: 300px" :zoom="zoom" :center="center">
-          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-          <l-marker :lat-lng="markerLatLng"></l-marker>
-        </l-map>
-      </div>
+
       <hr />
 
       <div class="row" style="background: aliceblue">
@@ -193,10 +180,14 @@
 import axios from "axios";
 import AddQuickReservation from "./AddQuickReservation";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import MainNavbar from "./header/MainNavbar";
+import ClientNavbar from "./header/ClientNavbar";
 
 export default {
   name: "BoatProfile",
   components:{
+    ClientNavbar,
+    MainNavbar,
     BoatOwnerNavbar,
     AddQuickReservation,
     'full-calendar': require('vue-fullcalendar')
@@ -214,13 +205,14 @@ export default {
       address:'',
       boatId: this.$route.params.id,
       config:'',
-      events: []
+      events: [],
+      role:''
     }
   },
   mounted:function (){
+    this.role = sessionStorage.getItem("role");
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+this.boatId, {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+this.boatId)
       .then(response => {
         this.boat = response.data
         this.quick=this.boat.quickReservations
@@ -236,24 +228,21 @@ export default {
         })
       })
 
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.boatId, {headers: {Authorization:
-          'Bearer ' + sessionStorage.getItem("accessToken")}})
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.boatId)
       .then(response => {
         this.periods = response.data
         this.fillCalendar(this.periods,'bg-success');
       }).catch(function error(error) {
       alert(error.response.data);
     });
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfBoat/"+this.boatId, {headers: {Authorization:
-          'Bearer ' + sessionStorage.getItem("accessToken")}})
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfBoat/"+this.boatId)
       .then(response => {
         this.reservations = response.data
         this.fillCalendar(this.reservations,'bg-danger');
       }).catch(function error(error) {
       alert(error.response.data);
     });
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.boatId, {headers: {Authorization:
-          'Bearer ' + sessionStorage.getItem("accessToken")}})
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.boatId)
       .then(response => {
         this.discounts = response.data
         this.fillCalendar(this.discounts,'');
@@ -344,7 +333,18 @@ export default {
       }).catch(function error(error) {
       alert(error.response.data);
     });
-  }
+  },
+    reserve:function(id) {
+      console.log(id);
+      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)
+          setTimeout(() => { location.reload(); }, 2000)
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
+    }
 
 }
 }

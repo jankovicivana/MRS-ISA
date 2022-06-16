@@ -70,8 +70,7 @@ public class CottageController {
     }
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<CottageDTO> getCottage(@PathVariable Integer id,Principal principal){
+    public ResponseEntity<CottageDTO> getCottage(@PathVariable Integer id){
         System.out.println(id);
         Cottage cottage = cottageService.findOne(id);
         if(cottage == null){

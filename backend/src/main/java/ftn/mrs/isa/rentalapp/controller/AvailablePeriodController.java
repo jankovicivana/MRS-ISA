@@ -94,8 +94,7 @@ public class AvailablePeriodController {
     }
 
     @GetMapping(value = "/getAvailablePeriod/{id}")
-    @PreAuthorize("hasAnyRole('boatOwner','cottageOwner')")
-    public ResponseEntity<List<AvailablePeriodDTO>> getAvailablePeriodOfInstructor(@PathVariable Integer id,Principal principal){
+    public ResponseEntity<List<AvailablePeriodDTO>> getAvailablePeriodOfInstructor(@PathVariable Integer id){
         List<AvailablePeriod> periods = availablePeriodService.getAvailablePeriodEntity(id);
         List<AvailablePeriodDTO> availablePeriods = new ArrayList<>();
         for (AvailablePeriod a : periods){

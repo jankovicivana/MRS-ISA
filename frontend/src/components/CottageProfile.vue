@@ -1,8 +1,9 @@
 <template>
   <div>
-    <CottageOwnerNavbar></CottageOwnerNavbar>
-
-  <section class="profile_main py-lg-3">
+    <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
+    <MainNavbar v-if="role === null || role==='null'"></MainNavbar>
+    <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
+    <section class="profile_main py-lg-3">
 
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
       <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateCottage',id:cottage.id }" style="background: #2e6b6b;margin: 5px;border: none;color: white" tag="button">Edit</router-link>
@@ -22,9 +23,9 @@
           </div>
         </div>
         <div class="col-md-6" >
-          <div class="row m-2">
+          <div class="row mx-2 mb-6">
             <div class="col-9 fw-bolder" style="font-size: 35px">{{cottage.name}}</div>
-            <div class="col-3 pt-3">Grade 5 <font-awesome-icon icon="fa-solid fa-star" /></div>
+            <star-rating class="col-3" :rating="5" :read-only="true" :increment="0.01" :star-size="25" :size="200" ></star-rating>
           </div>
 
           <div class="fs-5 m-3 row">
@@ -45,40 +46,26 @@
           </div>
           <div class="row p-3">
             <p style="font-size: 25px">Additional services</p>
-            <div class="services">
-              <p v-for="as in cottage.additionalServices"><font-awesome-icon class="small-icon" icon="fa-solid fa-check-circle" /> {{as.name}}</p>
+            <div class="row services">
+              <p class="col-5" v-for="as in cottage.additionalServices"><font-awesome-icon class="small-icon" icon="fa-solid fa-check-circle" /> {{as.name}}</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row py-4">
-        <div class="col-4" style="background: #f8f2ec;border-radius: 5%">
+      <div class="row py-5">
+        <div class="col-3 my-4 mr-4" style="background: #f8f2ec;border-radius: 5%">
           <p style="font-size: 25px;">Rules</p>
           <div class="rules">
             <p v-for="r in cottage.rules"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{r.rule}}</p>
           </div>
         </div>
-        <div class="col-8" style="padding-left: 15px;">
-          <div class="px-3" style="background: #f8f2ec;">
-            <p class="pt-3" style="font-size: 25px;">Reservation</p>
-            <div class="pl-3 row">
-              <div class="col-5">
-                Start date:
-                <input type="date" name="startDate" placeholder="dd-mm-yyyy">
-              </div>
-              <div class="col-5">
-                End date:
-                <input type="date" name="endDate" placeholder="dd-mm-yyyy">
-              </div>
-              <div class="col-4 pt-5">
-                Person number:
-                <input type="number" name="numPeople" min="1" max="10" style="width: 50px">
-              </div>
-              <div class="res_button col-2"><button type="button" class="btn ">Reserve</button></div>
-            </div>
-
-          </div>
-
+        <div class="col-1" style="width: 50px"></div>
+        <div class="col-8 py-4" style="background: #f8f2ec;border-radius: 5%">
+          <h4><b>Location:</b>  {{address.country}}, {{address.city}}, {{address.street}}</h4>
+          <l-map style="height: 300px" :zoom="zoom" :center="center">
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-marker :lat-lng="markerLatLng"></l-marker>
+          </l-map>
         </div>
       </div>
 
@@ -89,7 +76,7 @@
           <div class="row pt-3">
             <h3 id="quick_heading" class="col-10">Quick reservations - enormous discounts!</h3>
             <span class="col-2" style="float: right;background: #f8f2ec;">
-            <button type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg ">Add new</button>
+            <button type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg " v-if="this.role === 'ROLE_cottageOwner'">Add new</button>
             <AddQuickReservation
               :id="cottage.id"
               style="width: 300px"
@@ -98,9 +85,12 @@
             />
             </span>
           </div>
+          <div v-if="quick.length === 0">
+            <h4 class="p-3">There are no quick reservations for now.</h4>
+          </div>
 
           <div class="row p-3">
-            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in cottage.quickReservations">
+            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in cottage.quickReservations" v-if="!q.isReserved">
               <div>
                 <h4 class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</h4>
                 <div class="discount">{{q.discount}}%</div>
@@ -108,20 +98,13 @@
               <p class="py-2"><font-awesome-icon icon="fa-solid fa-user-friends"/> {{q.maxPersonNum}}</p>
               $<span class="text-decoration-line-through">{{q.price}}</span>
               $<span class="before_price">{{q.discountedPrice}}</span>
-              <div class="quick_res_btn"><button type="button" class="btn">RESERVE</button></div>
+              <div class="quick_res_btn"><button type="button" class="btn" v-on:click="reserve(q.id)">RESERVE</button></div>
             </div>
-
           </div>
 
         </div>
       </div>
-      <div class="row  py-4 mt-3">
-        <h4><b>Location:</b>  {{address.country}}, {{address.city}}, {{address.street}}</h4>
-        <l-map style="height: 300px" :zoom="zoom" :center="center">
-          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-          <l-marker :lat-lng="markerLatLng"></l-marker>
-        </l-map>
-      </div>
+
 
       <hr />
 
@@ -174,10 +157,14 @@ import axios from "axios";
 import AddQuickReservation from "./AddQuickReservation";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import router from "../router";
+import MainNavbar from "./header/MainNavbar";
+import ClientNavbar from "./header/ClientNavbar";
 
 export default {
   name: "CottageProfile",
   components:{
+    ClientNavbar,
+    MainNavbar,
     CottageOwnerNavbar,
     AddQuickReservation,
     'full-calendar': require('vue-fullcalendar')
@@ -199,16 +186,16 @@ export default {
       cottageId: this.$route.params.id,
       config:'',
       selectedDate: null,
-      events: []
+      events: [],
+      role:''
     }
     },
       mounted:function (){
-
-      const sumFuncy = async (a,b) => a+b;
+        this.role = sessionStorage.getItem("role");
+        const sumFuncy = async (a,b) => a+b;
 
         axios
-          .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+this.cottageId, {headers: {Authorization:
-                'Bearer ' + sessionStorage.getItem("accessToken")}})
+          .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+this.cottageId)
           .then(first_response => {
             this.cottage = first_response.data
             this.address=first_response.data.address
@@ -226,24 +213,21 @@ export default {
             })
           })
 
-        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.cottageId, {headers: {Authorization:
-              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.cottageId)
           .then(response => {
             this.periods = response.data
             this.fillCalendar(this.periods,'bg-success');
           }).catch(function error(error) {
           alert(error.response.data);
         });
-        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfCottage/"+this.cottageId, {headers: {Authorization:
-              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfCottage/"+this.cottageId)
           .then(response => {
             this.reservations = response.data
             this.fillCalendar(this.reservations,'bg-danger');
           }).catch(function error(error) {
           alert(error.response.data);
         });
-        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.cottageId, {headers: {Authorization:
-              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.cottageId)
           .then(response => {
             this.discounts = response.data
             this.fillCalendar(this.discounts,'');
@@ -326,12 +310,24 @@ export default {
         axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addCottage",this.info, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
-            this.show('foo-css', 'success')
+            this.show('foo-css', 'success','`<p style="font-size: 25px">Successfully added!</p>','`<p style="font-size: 20px">Successfully added available period.</p>')
             setTimeout(() => { }, 3000)
             //this.$router.push({name:"CottageProfile",params:{id:this.cottageId}});
           }).catch(function error(error) {
           alert(error.response.data);
         });
+    },
+    reserve:function(id) {
+
+      console.log(id);
+      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)
+          setTimeout(() => { location.reload(); }, 2000)
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
     }
 
   }

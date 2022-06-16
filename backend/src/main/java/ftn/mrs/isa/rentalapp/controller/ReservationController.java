@@ -8,6 +8,7 @@ import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.*;
+import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
 import ftn.mrs.isa.rentalapp.model.user.Client;
@@ -20,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -60,6 +58,9 @@ public class ReservationController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private QuickReservationService quickReservationService;
 
     @Autowired
     private EntityService entityService;
@@ -114,15 +115,13 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/findAllOfCottage/{id}")
-    @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<List<ReservationDTO>> findAllOfCottage(@PathVariable Integer id,Principal principal){
+    public ResponseEntity<List<ReservationDTO>> findAllOfCottage(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllByEntity(id);
         return getListResponseEntity(reservations);
     }
 
     @GetMapping(value = "/findAllOfBoat/{id}")
-    @PreAuthorize("hasRole('boatOwner')")
-    public ResponseEntity<List<ReservationDTO>> findAllOfBoat(@PathVariable Integer id,Principal principal){
+    public ResponseEntity<List<ReservationDTO>> findAllOfBoat(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllByEntity(id);
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for(Reservation c : reservations){
@@ -211,4 +210,29 @@ public class ReservationController {
         }
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
     }
+
+    @PutMapping("/makeReservationFromQuick/{id}")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<String> makeReservationFromQuick(@PathVariable(value = "id") Integer id,Principal principal){
+        System.out.println(id+"****************************************");
+        Client c = clientService.findByEmail(principal.getName());
+        QuickReservation quickReservation = quickReservationService.findOne(id);
+        quickReservation.setIsReserved(true);
+        Reservation r = new Reservation();
+        r.setQuickReservation(quickReservation);
+        r.setEntity(quickReservation.getEntity());
+        r.setClient(c);
+        r.setPrice(quickReservation.getDiscountedPrice());
+        r.setStartDateTime(quickReservation.getStartDateTime());
+        r.setEndDateTime(quickReservation.getEndDateTime());
+        r.setIsCanceled(false);
+        r.setPersonNum(quickReservation.getMaxPersonNum());
+        r.setAdvertiserProfit(0.0);
+        r.setSystemProfit(0.0);
+        reservationService.save(r);
+        quickReservationService.save(quickReservation);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

@@ -20,7 +20,7 @@ public class QuickReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "startDateTime", nullable = false)
     private LocalDateTime startDateTime;

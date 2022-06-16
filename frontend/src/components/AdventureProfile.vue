@@ -1,6 +1,7 @@
 <template>
   <div class="AdventureProfile">
-    <fishing-instructor-navbar></fishing-instructor-navbar>
+    <fishing-instructor-navbar  v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
+    <MainNavbar  v-if="role === null"></MainNavbar>
     <section class="profile_main py-lg-3" style="background-image: url('https://images.unsplash.com/photo-1645032492550-4cf6a31c3cea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY5fHxncmVlbiUyMGJsdWUlMjBwaG90b3N8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60');background-size: 100% 100%; ">
       <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
         <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateAdventure',id:adventure.id }" style="background: #2e6b6b;border: none;color: white;margin: 5px" tag="button">Edit</router-link>
@@ -161,10 +162,12 @@
 import axios from "axios";
 import AddQuickReservation from "./AddQuickReservation";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
+import MainNavbar from "./header/MainNavbar";
 
 export default {
   name: "AdventureProfile",
   components: {
+    MainNavbar,
     FishingInstructorNavbar,
     AddQuickReservation,
   },
@@ -182,13 +185,14 @@ export default {
       markerLatLng: [0, 0],
       address:'',
       adventureId: this.$route.params.id,
-      config:''
+      config:'',
+      role:''
     }
   },
   mounted:function (){
+    this.role = sessionStorage.getItem("role");
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/"+this.adventureId, {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/"+this.adventureId)
       .then(response => {
         this.adventure = response.data
         this.fishingInstructor = this.adventure.fishingInstructor

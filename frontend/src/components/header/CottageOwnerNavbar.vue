@@ -36,13 +36,18 @@
 
       </div>
     </div>
-    <a href="#/" class="px-3 mr-1" >Log out</a>
+    <a href="#/" v-on:click="logout()" class="px-3 mr-1" >Log out</a>
   </nav>
 </template>
 
 <script>
 export default {
-  name: "CottageOwnerNavbar"
+  name: "CottageOwnerNavbar",
+  methods:{
+    logout:function (){
+      sessionStorage.setItem("role", null);
+    }
+  }
 }
 </script>
 
