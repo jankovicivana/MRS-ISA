@@ -14,7 +14,7 @@ public class RankingInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "rank", nullable = false)
     private RankType rank;

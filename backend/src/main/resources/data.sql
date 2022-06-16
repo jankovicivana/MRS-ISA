@@ -220,3 +220,8 @@ insert into images (path,entity,is_main_photo) values ('fish4.jpg',10,false);
 
 insert into advertiser_complaints (client,advertiser,status,complaint,answer) values (2,1,1,'dosadnjakovic','');
 insert into entity_complaints (client,entity,status,complaint,answer) values (2,1,1,'prljavoo','');
+
+
+insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (1,0,10,10,10);
+insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (2,1,20,20,20);
+insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (3,2,20,30,30);
