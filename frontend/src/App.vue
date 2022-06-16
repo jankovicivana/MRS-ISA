@@ -264,6 +264,12 @@ html {
   align-items: center;
   background-color: burlywood;
 }
+.container #loyalty_container{
+  height: 60vh;
+  justify-content: left;
+  align-items: center;
+  background-color: burlywood;
+}
 
 
 
@@ -271,6 +277,11 @@ html {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
+}
+
+.input_loyalty {
+  flex-direction: column;
+  display: inline-block;
 }
 
 
@@ -290,6 +301,18 @@ thead tr{
   background-color: white;
 }
 .inputs input[type="text"][readonly] {
+  border: 2px solid rgba(0, 0, 0, 0);
+  background-color: white;
+}
+.input_loyalty input {
+  height: 40px;
+  padding: 0px 10px;
+  font-size: 17px;
+  box-shadow: none;
+  outline: none;
+  background-color: white;
+}
+.input_loyalty input[type="text"][readonly] {
   border: 2px solid rgba(0, 0, 0, 0);
   background-color: white;
 }
