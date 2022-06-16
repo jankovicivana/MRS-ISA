@@ -146,7 +146,7 @@ export default {
   top: 0;
   transition: opacity 0.3s linear 0s;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 h1{

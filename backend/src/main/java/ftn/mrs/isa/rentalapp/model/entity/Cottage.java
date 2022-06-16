@@ -17,8 +17,6 @@ import java.util.Set;
 public class Cottage extends EntityType{
 
 
-
-
     @Column(name = "maxNumPerson", nullable = false)
     private Integer maxNumPerson;
 

@@ -32,6 +32,7 @@ public class Reservation {
         this.client = client;
         this.isCanceled = false;
         this.quickReservation = quickReservation;
+
     }
 
     @Id
@@ -74,5 +75,11 @@ public class Reservation {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "quickReservation", nullable = true)
     private QuickReservation quickReservation;
+
+    @Column(name="isReviewed", nullable = true) // bice false
+    private Boolean isReviewed = false;
+
+    @Column(name="isComplained", nullable = true) // bice false
+    private Boolean isComplained = false;
 
 }

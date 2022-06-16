@@ -1,28 +1,29 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 
-import ftn.mrs.isa.rentalapp.dto.AdvertiserReviewDTO;
-import ftn.mrs.isa.rentalapp.dto.EntityReviewDTO;
-import ftn.mrs.isa.rentalapp.model.entity.EntityReview;
+import ftn.mrs.isa.rentalapp.dto.*;
+import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
+import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
+import ftn.mrs.isa.rentalapp.model.user.Advertiser;
 import ftn.mrs.isa.rentalapp.model.user.AdvertiserReview;
-import ftn.mrs.isa.rentalapp.service.EmailService;
-import ftn.mrs.isa.rentalapp.service.ReviewService;
+import ftn.mrs.isa.rentalapp.model.user.Client;
+import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
+import ftn.mrs.isa.rentalapp.repository.AdministratorRepository;
+import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,7 +37,72 @@ public class ReviewController {
     private EmailService emailService;
 
     @Autowired
+    private ClientService clientService;
+
+    @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private CottageOwnerService cottageOwnerService;
+
+    @Autowired
+    private BoatService boatService;
+
+    @Autowired
+    private AdventureService adventureService;
+
+    @Autowired
+    private EntityService entityService;
+
+    @Autowired
+    private ReservationService reservationService;
+
+    @PostMapping(value = "/addReview")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<String> addReview(@RequestBody ReviewDTO r, Principal principal){
+
+        Client client = clientService.findByEmail(principal.getName());
+        EntityType e = entityService.findOne(r.getEntityId());
+        Advertiser a = null;
+        String kind = EntityKind.toString(e.getKind());
+
+        if(kind.equals("Cottage")){
+            Cottage c = (Cottage)e;
+            a = c.getCottageOwner();
+        } else if(kind.equals("Boat")){
+            Boat b = (Boat)e;
+            a = b.getBoatOwner();
+        } else{
+            Adventure adv = (Adventure)e;
+            a = adv.getFishingInstructor();
+        }
+
+        if(!kind.equals("Adventure")){
+            EntityReview entityReview = new EntityReview();
+            entityReview.setEntity(e);
+            entityReview.setStatus(RequestStatus.ON_HOLD);
+            entityReview.setReview(r.getEntityReview());
+            entityReview.setGrade(r.getEntityGrade());
+            entityReview.setClient(client);
+            reviewService.saveEntityReview(entityReview);
+        }
+
+        AdvertiserReview aReview = new AdvertiserReview();
+        aReview.setReview(r.getOwnerReview());
+        aReview.setGrade(r.getOwnerGrade());
+        aReview.setStatus(RequestStatus.ON_HOLD);
+        aReview.setClient(client);
+        aReview.setAdvertiser(a);
+
+        reviewService.saveAdvertiserReview(aReview);
+
+        Reservation res = reservationService.getById(r.getReservationId());
+        res.setIsReviewed(true);  // oznaka da je review napisan
+        reservationService.save(res);
+
+        return new ResponseEntity<>("Successfully sent review.",HttpStatus.OK);
+    }
+
 
     @GetMapping("/getOnHoldAdvertiserReview")
     @PreAuthorize("hasRole('admin')")
@@ -50,7 +116,6 @@ public class ReviewController {
         return new ResponseEntity<>(revisionDTO, HttpStatus.CREATED);
 
     }
-
 
     @GetMapping("/getOnHoldEntityReview")
     @PreAuthorize("hasRole('admin')")

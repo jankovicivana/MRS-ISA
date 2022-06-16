@@ -20,7 +20,6 @@ public class CottageOwner extends Advertiser{
     public CottageOwner() {
     }
 
-
     @OneToMany(mappedBy = "cottageOwner", fetch = FetchType.EAGER)
     private Set<Cottage> cottages = new HashSet<Cottage>();
 

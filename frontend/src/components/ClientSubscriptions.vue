@@ -87,13 +87,13 @@ export default {
   background-position-y: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: auto;
   opacity: 1;
   position: absolute;
   top: 0;
   transition: opacity 0.3s linear 0s;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 h1{

@@ -79,6 +79,7 @@ public class ReservationService {
         return reservationRepository.findById(resId).orElse(null);
     }
 
+
     public void cancelReservation(Integer id) {
         reservationRepository.cancel(id);
     }

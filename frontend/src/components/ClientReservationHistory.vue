@@ -36,7 +36,10 @@
                         <td>{{r.entity.address.city+", "+r.entity.address.country}}</td>
                         <td>{{r.price}}</td>
                         <!-- treba dodati provjeru da li je vec napisao review -->
-                        <td><button v-on:click="review(r)" class="button">Write a review</button></td>
+                        <td>
+                            <button v-if="r.isReviewed"  class="disabled button" title="Already reviewed">Write a review</button>
+                            <button v-else v-on:click="review(r)" class="button">Write a review</button>
+                        </td>
                       </tr>
                       </tbody>
                     </table>
@@ -132,6 +135,10 @@ button{
   color: #FFFFFF;
   border-color: #FFFFFF;
   text-decoration: none;
+}
+
+button.disabled{
+  background: grey;
 }
 
 select{

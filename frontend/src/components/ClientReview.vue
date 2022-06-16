@@ -45,7 +45,8 @@
                         <textarea type="text" class="form-control form-control-lg" ref="ownerReview" id="ownerReview" />
 
                         <div class="d-flex justify-content-center pt-4">
-                          <button type="submit" v-on:click="sendReview()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><span style="color:white">Send</span></button>
+                          <button v-if="this.reservation.isReviewed" title="Already reviewed" style="background-color: grey;" class="button">Send</button>
+                          <button v-else v-on:click="sendReview()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><span style="color:white">Send</span></button>
                         </div>
                       </form>
 
@@ -63,6 +64,7 @@
 <script>
 import ClientNavbar from "./header/ClientNavbar";
 import axios from "axios";
+import ClientReservationHistory from "./ClientReservationHistory";
 export default {
   name: "ClientReview",
   components: {ClientNavbar},
@@ -91,14 +93,49 @@ export default {
       })
   },
   methods: {
-    setEntityRating: function (){
+    show: function(group, type=''){
+      let title = `<p style="font-size: 25px">Review sent</p>`
+      let text = `<p style="font-size: 15px">Review successfuly sent!</p>`
+      this.$notify({group, title, text, type})
+    },
+
+    setEntityRating: function (rating){
+      this.entityRating = rating;
+    },
+    setOwnerRating: function (rating){
+      this.ownerRating = rating;
+    },
+
+    canReview(r){
 
     },
-    setOwnerRating: function (){
 
-    },
     sendReview: function (){
-        // ako je avantura, onda se salje samo ownerReview
+      var data = ''
+      if(this.reservation.entity.type === "Adventure"){
+        data = {clientId: this.reservation.client.id, entityId: this.reservation.entity.id,
+          entityReview: "", entityGrade: 0,
+          ownerReview: this.$refs.ownerReview.value, ownerGrade: this.ownerRating,
+          reservationId: this.reservationId
+        }
+      } else{
+        data = {clientId: this.reservation.client.id, entityId: this.reservation.entity.id,
+          entityReview: this.$refs.entityReview.value, entityGrade: this.entityRating,
+          ownerReview: this.$refs.ownerReview.value, ownerGrade: this.ownerRating,
+          reservationId: this.reservationId
+        }
+      }
+
+      axios
+        .post(process.env.VUE_APP_SERVER_PORT+"/api/review/addReview", data,{
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }})
+        .then(response => {
+          this.show('foo-css', 'success');
+          this.$router.push({name: "ClientReservationHistory"}); }).catch((error) => {alert("error")});
+
     }
   }
 }
