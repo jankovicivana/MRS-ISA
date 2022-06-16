@@ -14,7 +14,7 @@ public class SystemInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "clientPoints", nullable = false)
     private Integer clientPoints;

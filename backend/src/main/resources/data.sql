@@ -229,3 +229,6 @@ insert into entity_complaints (client,entity,status,complaint,answer) values (2,
 insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (1,0,10,10,10);
 insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (2,1,20,20,20);
 insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (3,2,20,30,30);
+
+
+insert into system_info (id,client_points,advertiser_points,system_profit) values (1,2,1,30)
