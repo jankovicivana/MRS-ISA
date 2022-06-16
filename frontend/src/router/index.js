@@ -52,6 +52,7 @@ import AverageGradeReport from "../components/AverageGradeReport";
 import AdminBusinessReport from "../components/AdminBusinessReport";
 import ClientReview from "../components/ClientReview";
 import ClientComplaint from "../components/ClientComplaint";
+import LoyaltyProgram from "../components/LoyaltyProgram";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -272,6 +273,11 @@ export default new Router({
       path: '/client/complaint/:id',
       name: "ClientComplaint",
       component: ClientComplaint
+    },
+    {
+      path: '/admin/loyalty',
+      name: "LoyaltyProgram",
+      component: LoyaltyProgram
     }
   ]
 })
