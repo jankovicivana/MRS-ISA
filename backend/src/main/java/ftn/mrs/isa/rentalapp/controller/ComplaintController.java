@@ -2,18 +2,11 @@ package ftn.mrs.isa.rentalapp.controller;
 
 
 import ftn.mrs.isa.rentalapp.dto.*;
-import ftn.mrs.isa.rentalapp.model.entity.Adventure;
-import ftn.mrs.isa.rentalapp.model.entity.EntityComplaint;
-import ftn.mrs.isa.rentalapp.model.entity.EntityReview;
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
-import ftn.mrs.isa.rentalapp.model.user.AdvertiserComplaint;
-import ftn.mrs.isa.rentalapp.model.user.AdvertiserReview;
-import ftn.mrs.isa.rentalapp.model.user.User;
-import ftn.mrs.isa.rentalapp.service.ComplaintService;
-import ftn.mrs.isa.rentalapp.service.EmailService;
-import ftn.mrs.isa.rentalapp.service.ReviewService;
-import ftn.mrs.isa.rentalapp.service.UserService;
+import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
+import ftn.mrs.isa.rentalapp.model.user.*;
+import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +19,7 @@ import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,6 +37,61 @@ public class ComplaintController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private EntityService entityService;
+
+    @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @PostMapping(value = "/addComplaint")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<String> addComplaint(@RequestBody ComplaintDTO com, Principal principal){
+        Client client = clientService.findByEmail(principal.getName());
+        EntityType e = entityService.findOne(com.getEntityId());
+        Advertiser a = null;
+        String kind = EntityKind.toString(e.getKind());
+        if(kind.equals("Cottage")){
+            Cottage c = (Cottage)e;
+            a = c.getCottageOwner();
+        } else if(kind.equals("Boat")){
+            Boat b = (Boat)e;
+            a = b.getBoatOwner();
+        } else{
+            Adventure adv = (Adventure)e;
+            a = adv.getFishingInstructor();
+        }
+
+        if(!kind.equals("Adventure") && !(com.getEntityComplaint().equals(""))){
+            EntityComplaint entityComplaint = new EntityComplaint();
+            entityComplaint.setEntity(e);
+            entityComplaint.setStatus(RequestStatus.ON_HOLD);
+            entityComplaint.setComplaint(com.getEntityComplaint());
+            entityComplaint.setClient(client);
+            entityComplaint.setAnswer("");
+            complaintService.saveEntityComplaint(entityComplaint);
+        }
+
+        if(!com.getOwnerComplaint().equals("")){
+            AdvertiserComplaint aComplaint = new AdvertiserComplaint();
+            aComplaint.setComplaint(com.getOwnerComplaint());
+            aComplaint.setStatus(RequestStatus.ON_HOLD);
+            aComplaint.setClient(client);
+            aComplaint.setAdvertiser(a);
+            aComplaint.setAnswer("");
+            complaintService.saveAdvertiserComplaint(aComplaint);
+        }
+
+
+        Reservation res = reservationService.getById(com.getReservationId());
+        res.setIsComplained(true);  // oznaka da je complaint napisan
+        reservationService.save(res);
+
+        return new ResponseEntity<>("Successfully sent complaint.",HttpStatus.OK);
+    }
 
     @GetMapping("/getOnHoldAdvertiserComplaint")
     @PreAuthorize("hasRole('admin')")

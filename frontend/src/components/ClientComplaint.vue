@@ -91,7 +91,7 @@ export default {
       this.$notify({group, title, text, type})
     },
 
-    sendComplaint: function (){
+    sendComplaint: function (){     // treba provjera da je unio bar jednu zalbu - ili za vlasnika ili za entitet
       var data = ''
       if(this.reservation.entity.type === "Adventure"){
         data = {clientId: this.reservation.client.id, entityId: this.reservation.entity.id,
