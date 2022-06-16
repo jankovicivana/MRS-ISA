@@ -95,7 +95,7 @@ export default {
   methods: {
     show: function(group, type=''){
       let title = `<p style="font-size: 25px">Review sent</p>`
-      let text = `<p style="font-size: 15px">Review successfuly sent!</p>`
+      let text = `<p style="font-size: 15px">Review successfully sent!</p>`
       this.$notify({group, title, text, type})
     },
 
@@ -104,10 +104,6 @@ export default {
     },
     setOwnerRating: function (rating){
       this.ownerRating = rating;
-    },
-
-    canReview(r){
-
     },
 
     sendReview: function (){

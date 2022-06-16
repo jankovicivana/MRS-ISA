@@ -25,6 +25,7 @@
                         <th>Location</th>
                         <th class="sortable" v-on:click="orderReservations('price')">Price</th>
                         <th>Review</th>
+                        <th>Complaint</th>
                       </tr>
                       </thead>
 
@@ -39,6 +40,10 @@
                         <td>
                             <button v-if="r.isReviewed"  class="disabled button" title="Already reviewed">Write a review</button>
                             <button v-else v-on:click="review(r)" class="button">Write a review</button>
+                        </td>
+                        <td>
+                          <button v-if="r.isComplained"  class="disabled button" title="Already sent a complaint">Write a complaint</button>
+                          <button v-else v-on:click="complain(r)" class="button">Write a complaint</button>
                         </td>
                       </tr>
                       </tbody>
@@ -99,6 +104,10 @@ export default {
 
     review: function (res){
       this.$router.push({path:"/client/review/"+res.id});
+    },
+
+    complain: function (res){
+      this.$router.push({path:"/client/complaint/"+res.id});
     }
 
   }

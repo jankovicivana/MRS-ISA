@@ -51,6 +51,7 @@ import AdminReportResponse from "../components/AdminComplaintResponse";
 import AverageGradeReport from "../components/AverageGradeReport";
 import AdminBusinessReport from "../components/AdminBusinessReport";
 import ClientReview from "../components/ClientReview";
+import ClientComplaint from "../components/ClientComplaint";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -266,6 +267,11 @@ export default new Router({
       path: '/client/review/:id',
       name: "ClientReview",
       component: ClientReview
+    },
+    {
+      path: '/client/complaint/:id',
+      name: "ClientComplaint",
+      component: ClientComplaint
     }
   ]
 })
