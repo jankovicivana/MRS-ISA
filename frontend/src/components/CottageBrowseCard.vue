@@ -36,9 +36,12 @@
             <div
               class="column is-flex is-justify-content-flex-end is-align-items-right">
               <div class="buttons ml-5">
+                <button class="button is-success" style="background-color: #2e6b6b" v-on:click="$emit('subscribe', cottage.id)">Subscribe</button>
+
                 <router-link :to="{ name:'CottageProfile',params:{id:cottage.id} }" class="button view_button is-success" style="background-color: #2e6b6b">
                   View
                 </router-link>
+
                 <button class="button" v-if="canReserve" v-on:click="$emit('reserve', cottage)">Reserve</button>
                 <button class="button" v-if="role === 'ROLE_admin'" v-on:click="$emit('deleteCottage',cottage.id)">Delete</button>
               </div>
@@ -51,7 +54,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   name: "CottageBrowseCard",

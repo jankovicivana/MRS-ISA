@@ -39,7 +39,7 @@
           <p style="color: white"> No cottages for now.</p>
         </div>
         <div v-for="c in search_cottages">
-          <browse_card :cottage="c" v-on:deleteCottage="deleteCottage($event)"></browse_card>
+          <browse_card :cottage="c" v-on:deleteCottage="deleteCottage($event)" v-on:subscribe="subscribe($event)"></browse_card>
         </div>
       </div>
     </div>
@@ -54,6 +54,7 @@ import CottageBrowseCard from "./CottageBrowseCard";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import ClientNavbar from "./header/ClientNavbar";
 import AdminNavbar from "./header/AdminNavbar";
+
 export default {
   name: "Cottages",
   components: {AdminNavbar, ClientNavbar, 'browse_card': CottageBrowseCard, 'main_navbar': MainNavbar,CottageOwnerNavbar},
@@ -63,7 +64,8 @@ export default {
       searchText: '',
       searchSort: '',
       search_cottages: '',
-      role:''
+      role:'',
+      can: ''
     }
   },
   mounted: function (){
@@ -214,10 +216,40 @@ export default {
         this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Cottage has reservations.</p>`)
       });
 
-    }
-    }
+    },
 
+    subscribe: function (id){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/sub/subscribe/"+id, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          if (response.data === "Already subscribed"){
+            this.show('foo-css', 'warning',`<p style="font-size: 25px">Subscribed</p>`,`<p style="font-size: 20px">You are already subscribed!</p>`)
+          } else{
+            this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully subscribed!</p>`,`<p style="font-size: 20px">You will now receive email notifications about special offers.</p>`)
 
+          }
+    });
+    },
+
+  /*  canSubscribe: function (c){
+      const res = this.checkSubscribe(c).then(value => {return value})
+      return res
+    },
+
+    checkSubscribe: function (c){
+      if(this.role !== "ROLE_client") return false;
+      const res =  axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/sub/canSubscribe/" + c.id, {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        }).then(response => {return response.data});
+      return res
+    }*/
+
+    }
 }
 </script>
 
