@@ -92,7 +92,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/reservation/findAllOfBoat/{id}").permitAll()
                 .antMatchers("/api/images/getImage/{name}").permitAll()
 
-
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
 
