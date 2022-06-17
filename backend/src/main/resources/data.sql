@@ -100,7 +100,7 @@ insert into reservations(start_date_time,end_date_time,deleted,entity,price,syst
     ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,1,200,20,120,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220522 10:00:00 AM','20220525 10:00:00 AM',false,1,200,20,180,5,false,5);
+    ('20220615 10:00:00 AM','20220625 10:00:00 AM',false,1,200,20,180,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
     ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,500,20,250,5,false,5);
@@ -224,3 +224,11 @@ insert into images (path,entity,is_main_photo) values ('fish4.jpg',10,false);
 
 insert into advertiser_complaints (client,advertiser,status,complaint,answer) values (2,1,1,'dosadnjakovic','');
 insert into entity_complaints (client,entity,status,complaint,answer) values (2,1,1,'prljavoo','');
+
+
+insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (1,0,10,10,10);
+insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (2,1,20,20,20);
+insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (3,2,20,30,30);
+
+
+insert into system_info (id,client_points,advertiser_points,system_profit) values (1,2,1,30)

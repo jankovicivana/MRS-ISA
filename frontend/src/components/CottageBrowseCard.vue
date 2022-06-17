@@ -92,18 +92,17 @@ export default {
   color: white;
 }
 
-.view_button:hover{
-  background-color: #2e6b6b;
-}
-
-
 button{
   background-color: #2e6b6b;
   color: white;
 }
-
 button:hover{
   background-color: #2e6b6b;
+}
+
+
+.view_button:hover{
+  background-color: #4AAE9B;
 }
 
 a{

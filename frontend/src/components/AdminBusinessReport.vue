@@ -48,8 +48,8 @@
                             <td colspan="2">{{reservation.entity.name}}</td>
                             <td>{{reservation.startDateTime[2]+"."+reservation.startDateTime[1]+"."+reservation.startDateTime[0]+"."}}</td>
                             <td>{{reservation.endDateTime[2]+"."+reservation.endDateTime[1]+"."+reservation.endDateTime[0]+"."}}</td>
-                            <td>{{reservation.systemProfit*reservation.price/100}}</td>
-                            <td>{{reservation.advertiserProfit*reservation.price/100}}</td>
+                            <td>{{reservation.systemProfit}}</td>
+                            <td>{{reservation.advertiserProfit}}</td>
                           </tr>
                           </tbody>
 
@@ -113,8 +113,8 @@ export default {
       this.sumSystem=0;
       this.sumAdvertiser=0;
       for(let i=0;i<this.found_reservations.length;i++){
-        this.sumAdvertiser += this.found_reservations[i].advertiserProfit * this.found_reservations[i].price/100;
-        this.sumSystem += this.found_reservations[i].systemProfit * this.found_reservations[i].price/100;
+        this.sumAdvertiser += this.found_reservations[i].advertiserProfit ;
+        this.sumSystem += this.found_reservations[i].systemProfit ;
       }
     },
     search:function (){

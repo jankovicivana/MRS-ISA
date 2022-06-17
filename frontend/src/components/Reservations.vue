@@ -1,12 +1,15 @@
 <template>
   <div class="reservations_main">
-    <ClientNavbar></ClientNavbar>
+    <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
+    <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
     <div class="container pt-5">
       <h1> Browse available entities </h1>
       <div class="search_div row">
         <div class="column col-2">
-          <span style="color: white">Type</span>
-          <select ref="type" v-model="type" style="height: 40px; width:200px">
+          <span style="color: white "  v-if="role !== 'ROLE_client'">Name</span>
+          <input v-if="role !== 'ROLE_client'" class="input" ref="name"  type="text"  placeholder="Name"/>
+          <span style="color: white "  v-if="role === 'ROLE_client'">Type</span>
+          <select  v-if="role === 'ROLE_client'" ref="type" v-model="type" style="height: 40px; width:200px">
             <option>Cottage</option>
             <option>Boat</option>
             <option>Adventure</option>
@@ -74,19 +77,23 @@
 import ClientNavbar from "./header/ClientNavbar";
 import axios from "axios";
 import CottageBrowseCard from "./CottageBrowseCard";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 export default {
   name: "Reservations",
-  components: {ClientNavbar, 'browse_card': CottageBrowseCard},
+  components: {CottageOwnerNavbar, ClientNavbar, 'browse_card': CottageBrowseCard},
   data: function(){
     return{
       addresses: '',
       entities: '',
       params: '',
       type: '',
-      rating: 3
+      rating: 3,
+      role:'',
+      clientId: this.$route.params.clientId,
     }
   },
   mounted: function () {
+    this.role = sessionStorage.getItem("role");
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/address/all")
       .then(response => (this.addresses = response.data));
@@ -94,31 +101,42 @@ export default {
   },
   methods: {
     search: function (){
-      this.params = {type: this.$refs.type.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
-        startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
-      axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/entity/getAvailable", this.params,{
-          headers: {
-            Authorization:
-              'Bearer ' + sessionStorage.getItem("accessToken")
-          }})
-        .then(response => (this.entities = response.data)).catch(function error(error) {
-        alert(error.response.data);});
-    },
+      if(this.role === 'ROLE_client'){
+        this.params = {type: this.$refs.type.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
+          startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
+        axios
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/entity/getAvailable", this.params,{
+            headers: {
+              Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")
+            }})
+          .then(response => (this.entities = response.data)).catch(function error(error) {
+          alert(error.response.data);});
+      }else if(this.role === 'ROLE_cottageOwner'){
+        this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
+          startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
+        axios
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/getAvailable", this.params,{
+            headers: {
+              Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")
+            }})
+          .then(response => (this.entities = response.data)).catch(function error(error) {
+          alert(error.response.data);});
+      }
 
+    },
     show: function(group, type='', entityType){
       let title = `<p style="font-size: 25px">Reserved!</p>`
       let text = `<p style="font-size: 20px">Successfully reserved ` + entityType + `!</p>`
       this.$notify({group, title, text, type})
     },
-
     setRating: function (rating){
       this.rating = rating;
     },
-
     reserve: function (entity){
       var data = {personNum: this.$refs.people.value, startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value,
-        endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, entityId: entity.id}
+        endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, entityId: entity.id,clientId:this.clientId}
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/api/reservation/reserve", data,{
           headers: {
@@ -133,7 +151,6 @@ export default {
 </script>
 
 <style scoped>
-
 .reservations_main {
   background-attachment: fixed;
   background-image: url('../assets/images/back2.jpg');
@@ -148,13 +165,10 @@ export default {
   width: 100%;
   overflow: visible;
 }
-
 h1{
   padding-bottom: 30px;
   color: white;
 }
-
-
 button {
   box-shadow: none;
   border: none;
@@ -165,25 +179,20 @@ button {
   margin-top: 25px;
   height: 40px;
 }
-
 button:hover {
   background: darkcyan;
 }
-
 button:focus {
   background: darkcyan;
   box-shadow: none
 }
-
 button:active {
   background: darkcyan;
   box-shadow: none
 }
-
 a{
   text-decoration: none;
 }
-
 star-rating{
   align-self: normal;
 }

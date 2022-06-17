@@ -85,8 +85,7 @@ public class QuickReservationController {
 
 
     @GetMapping(value = "/findQuickReservationBy/{id}")
-    @PreAuthorize("hasAnyRole('boatOwner','cottageOwner')")
-    public ResponseEntity<List<QuickReservationDTO>> findQuickReservationOfEntity(@PathVariable Integer id,Principal principal){
+    public ResponseEntity<List<QuickReservationDTO>> findQuickReservationOfEntity(@PathVariable Integer id){
         List<QuickReservation> reservations = quickReservationService.findQuickReservationByEntity(id);
         List<QuickReservationDTO> reservationsDTO = new ArrayList<>();
         for(QuickReservation c : reservations){

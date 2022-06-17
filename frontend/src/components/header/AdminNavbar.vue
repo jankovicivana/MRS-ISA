@@ -48,6 +48,7 @@
           </div>
         </div>
         <a class="navbar-item" href="#/admin/businessReport">Business report </a>
+        <a class="navbar-item" href="#/admin/loyalty">Loyalty program </a>
 
       </div>
     </div>

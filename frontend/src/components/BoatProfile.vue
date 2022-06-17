@@ -1,29 +1,31 @@
 <template>
   <div>
-    <BoatOwnerNavbar></BoatOwnerNavbar>
+    <BoatOwnerNavbar  v-if="role === 'ROLE_boatOwner'"></BoatOwnerNavbar>
+    <MainNavbar v-if="role === null"></MainNavbar>
+    <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
   <section class="profile_boat py-lg-3" >
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
-      <router-link class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: #2e6b6b;margin: 5px;color: white;border-color: white" tag="button">Edit</router-link>
-      <button type="button" class="col-1 rounded-pill" v-on:click="deleteBoat()" style="background:#2e6b6b;margin: 5px;color: white;border-color: white">Delete</button>
+      <router-link v-if="role === 'ROLE_boatOwner'" class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: #2e6b6b;margin: 5px;color: white;border-color: white" tag="button">Edit</router-link>
+      <button v-if="role === 'ROLE_boatOwner'" type="button" class="col-1 rounded-pill" v-on:click="deleteBoat()" style="background:#2e6b6b;margin: 5px;color: white;border-color: white">Delete</button>
     </div>
     <div class="container boat_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center">
         <div class="col-md-6">
 
           <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" v-bind:loop="true" v-bind:speed="3000">
-            <slide  v-for="i in boat.images">
-              <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%">
+            <slide  v-for="url in imagesUrl" >
+              <img class="d-block w-100" :src="url"  alt="First slide" style="border-radius: 2%">
             </slide>
           </carousel>
 
           <div class="row thumbs pt-3 ">
-            <span v-for="i in boat.images" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="require('../assets/images/'+i.path)" alt="Boat photo" class="img-responsive" width="130px" height="130px"></span>
+            <span v-for="url in imagesUrl" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="url" alt="Boat photo" class="img-responsive" width="130px" height="130px"></span>
           </div>
         </div>
         <div class="col-md-6 pt-5" >
           <div class="row m-2">
             <h1 class="col-9 " >{{boat.name}}</h1>
-            <div class="col-3 pt-3">Grade 5 <font-awesome-icon icon="fa-solid fa-star" style="color: gold"/></div>
+            <star-rating class="col-3" :rating="5" :read-only="true" :increment="0.01" :star-size="25" :size="200"></star-rating>
           </div>
 
           <div class="fs-5 m-3 row">
@@ -47,66 +49,57 @@
 
           <hr style="color: blue" />
           <div class="row p-3">
-            <div class="col-6">
+            <div class="col-12">
               <p style="font-size: 25px">Additional services</p>
-              <div class="services">
-                <p v-for="as in boat.additionalServices"><font-awesome-icon class="small-icon" icon="fa-solid fa-check-circle" /> {{as.name}}</p>
+              <div class="row services">
+                <p class="col-5" v-for="as in boat.additionalServices"><font-awesome-icon class="small-icon" icon="fa-solid fa-check-circle" /> {{as.name}}</p>
               </div>
             </div>
-            <div class="col-6">
-              <p style="font-size: 25px">Navigation equipment</p>
-              <div>
-                <p v-for="ne in boat.navigationEquipment"><font-awesome-icon class="small-icon" icon="fa-solid fa-check-circle" /> {{ne.equipment}}</p>
-              </div>
-            </div>
+
 
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-4 p-3" style="background:aliceblue;border-radius: 5%">
-          <p style="font-size: 25px;">Fishing equipment</p>
-          <div class="rules">
-            <p v-for="fe in boat.fishingEquipment"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{fe.equipment}}</p>
-          </div>
-        </div>
-        <div class="col-8" style="padding-left: 15px;">
-          <div class="px-3" style="background: aliceblue;border-radius: 2%;">
-            <p class="pt-3" style="font-size: 25px;">Reservation</p>
-            <div class="pl-3 row">
-              <div class="col-5">
-                Start date:
-                <input type="date" name="startDate" placeholder="dd-mm-yyyy">
-              </div>
-              <div class="col-5">
-                End date:
-                <input type="date" name="endDate" placeholder="dd-mm-yyyy">
-              </div>
-              <div class="col-4 pt-4">
-                Person number:
-                <input type="number" name="numPeople" min="1" max="10" style="width: 50px">
-              </div>
-
-            </div>
-            <div class="res_button"><button type="button" class="btn ">Reserve</button></div>
-          </div>
-        </div>
-      </div>
-      <div class="row py-3">
-        <div class="col-4" style="background:aliceblue;border-radius: 5%">
+        <div class="col-3 my-4 p-3" style="background:aliceblue;border-radius: 5%">
           <p style="font-size: 25px;">Rules</p>
           <div class="rules">
             <p v-for="r in boat.rules"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{r.rule}}</p>
           </div>
         </div>
+        <div class="col-1" style="width: 50px"></div>
+        <div class="col-8  py-4"  style="background:aliceblue;border-radius: 5%">
+          <h4><b>Location:</b>  {{address.country}}, {{address.city}}, {{address.street}}</h4>
+          <l-map style="height: 300px" :zoom="zoom" :center="center">
+            <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+            <l-marker :lat-lng="markerLatLng"></l-marker>
+          </l-map>
+        </div>
       </div>
+      <div class="row py-2">
+        <div class="col-5 my-4 p-3" style="background:aliceblue;border-radius: 5%;">
+          <p style="font-size: 25px;">Fishing equipment</p>
+          <div class="rules">
+            <p v-for="fe in boat.fishingEquipment"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{fe.equipment}}</p>
+          </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5 my-4 p-3" style="background:aliceblue;border-radius: 5%">
+          <p style="font-size: 25px;">Navigation equipment</p>
+          <div>
+            <p v-for="ne in boat.navigationEquipment"><font-awesome-icon class="fa" icon="fa-solid fa-circle"/> {{ne.equipment}}</p>
+          </div>
+        </div>
+      </div>
+
+
 
       <div class="row" >
         <div class="col-12" style="background: aliceblue">
           <div class="row pt-3" style="padding-left: 10px;">
             <h3 id="quick_heading" class="col-10">Quick reservations - enormous discounts!</h3>
             <span class="col-2" style="float: right;">
-            <button type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg ">Add new</button>
+            <button v-if="role === 'ROLE_boatOwner'" type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg ">Add new</button>
             <AddQuickReservation
               :id="boat.id"
               style="width: 300px"
@@ -120,7 +113,7 @@
           </div>
 
           <div class="row p-3">
-            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in boat.quickReservations">
+            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in boat.quickReservations" v-if="!q.isReserved">
               <div>
                 <h4 class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</h4>
                 <div class="discount">{{q.discount}}%</div>
@@ -128,7 +121,7 @@
               <p class="py-2"><font-awesome-icon icon="fa-solid fa-user-friends"/> {{q.maxPersonNum}}</p>
               $<span class="text-decoration-line-through">{{q.price}}</span>
               $<span class="before_price">{{q.discountedPrice}}</span>
-              <div class="quick_res_btn"><button type="button" class="btn">RESERVE</button></div>
+              <div class="quick_res_btn"><button type="button" v-on:click="reserve(q.id)" class="btn">RESERVE</button></div>
             </div>
 
           </div>
@@ -136,23 +129,17 @@
         </div>
       </div>
 
-      <div class="row  py-4 mt-3">
-        <h4><b>Location:</b>  {{address.country}}, {{address.city}}, {{address.street}}</h4>
-        <l-map style="height: 300px" :zoom="zoom" :center="center">
-          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-          <l-marker :lat-lng="markerLatLng"></l-marker>
-        </l-map>
-      </div>
+
       <hr />
 
       <div class="row" style="background: aliceblue">
-        <h3>Add availability</h3>
+        <h3 v-if="role === 'ROLE_boatOwner'">Add availability</h3>
         <div class="col-7 p-4" >
           <full-calendar id="calendar" :events="events"  @eventClick="viewEvent" locale="en"></full-calendar>
         </div>
-        <div class="col-4">
-          <div>
-            <h6>Info</h6>
+        <div class="col-4 mt-3">
+          <div class="p-3">
+            <h5>Info</h5>
             <hr/>
             <span style="color: green">● </span>- Available period <br/>
             <span style="color: red">● </span>- Reservation period<br/>
@@ -161,9 +148,9 @@
 
           </div>
           <br/><br/><br/>
-          <h6>Add new available period</h6>
-          <hr>
-          <form>
+          <h6 v-if="role === 'ROLE_boatOwner'">Add new available period</h6>
+          <hr v-if="role === 'ROLE_boatOwner'">
+          <form v-if="role === 'ROLE_boatOwner'">
             <div class="form-outline mb-4">
               <label class="label">Start date:</label>
               <div>
@@ -193,10 +180,14 @@
 import axios from "axios";
 import AddQuickReservation from "./AddQuickReservation";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import MainNavbar from "./header/MainNavbar";
+import ClientNavbar from "./header/ClientNavbar";
 
 export default {
   name: "BoatProfile",
   components:{
+    ClientNavbar,
+    MainNavbar,
     BoatOwnerNavbar,
     AddQuickReservation,
     'full-calendar': require('vue-fullcalendar')
@@ -214,17 +205,22 @@ export default {
       address:'',
       boatId: this.$route.params.id,
       config:'',
-      events: []
+      events: [],
+      role:'',
+      imagesUrl:[]
     }
   },
   mounted:function (){
+    this.role = sessionStorage.getItem("role");
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+this.boatId, {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+this.boatId)
       .then(response => {
         this.boat = response.data
         this.quick=this.boat.quickReservations
         this.address=response.data.address
+        response.data.images.forEach(image => {
+          this.loadImage(image.path);
+        });
         this.config = {
           method: 'get',
           url: 'https://api.geoapify.com/v1/geocode/search?text='+this.address.street+' '+this.address.city+' '+this.address.postal_code+' '+this.address.country+'&apiKey=edff0ba2d6d545279a82d4d37402a851',
@@ -236,24 +232,21 @@ export default {
         })
       })
 
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.boatId, {headers: {Authorization:
-          'Bearer ' + sessionStorage.getItem("accessToken")}})
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.boatId)
       .then(response => {
         this.periods = response.data
         this.fillCalendar(this.periods,'bg-success');
       }).catch(function error(error) {
       alert(error.response.data);
     });
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfBoat/"+this.boatId, {headers: {Authorization:
-          'Bearer ' + sessionStorage.getItem("accessToken")}})
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfBoat/"+this.boatId)
       .then(response => {
         this.reservations = response.data
         this.fillCalendar(this.reservations,'bg-danger');
       }).catch(function error(error) {
       alert(error.response.data);
     });
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.boatId, {headers: {Authorization:
-          'Bearer ' + sessionStorage.getItem("accessToken")}})
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.boatId)
       .then(response => {
         this.discounts = response.data
         this.fillCalendar(this.discounts,'');
@@ -292,6 +285,15 @@ export default {
         }
         this.events.push(this.newEvent);
       }
+    },
+    loadImage(name) {
+      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+        .then(response => {
+          this.imagesUrl.push(URL.createObjectURL(response.data));
+        })
+        .catch((error) =>{
+          console.log(error);
+        });
     },
     show: function(group, type='',titleMessage,text){
       let title = titleMessage
@@ -355,7 +357,18 @@ export default {
       }).catch(function error(error) {
       alert(error.response.data);
     });
-  }
+  },
+    reserve:function(id) {
+      console.log(id);
+      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)
+          setTimeout(() => { location.reload(); }, 2000)
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
+    }
 
 }
 }
