@@ -36,6 +36,12 @@ import router from "../router";
 
 export default {
   name: "LoginPage",
+  data: function (){
+    return{
+      admin: '',
+      changed:''
+    }
+  },
   components: {"main_navbar": MainNavbar},
   methods:{
     login: function(){
@@ -47,23 +53,34 @@ export default {
         .then(response => { this.loginSuccessful(response);})
         .catch((error) => { this.loginFailed(); })
     },
+  loginSuccessful: function(response){
+    sessionStorage.setItem("accessToken", response.data.accessToken);
+    sessionStorage.setItem("expiresIn", response.data.expiresIn);
+    sessionStorage.setItem("role", response.data.role);
 
-    loginSuccessful: function(response){
-        sessionStorage.setItem("accessToken", response.data.accessToken);
-        sessionStorage.setItem("expiresIn", response.data.expiresIn);
-        sessionStorage.setItem("role", response.data.role);
-
-        if(response.data.role === "ROLE_client"){
-          router.push('/client/clientHomepage');
-        } else if (response.data.role === "ROLE_admin") {
+    if(response.data.role === "ROLE_client"){
+      router.push('/client/clientHomepage');
+    } else if (response.data.role === "ROLE_admin") {
+      this.findAdmin();
+    } else if (response.data.role === "ROLE_cottageOwner") {
+      router.push('/cottageOwner/cottageOwnerHomepage');
+    } else if (response.data.role === "ROLE_boatOwner") {
+      router.push('/boatOwner/boatOwnerHomepage');
+    } else if (response.data.role === "ROLE_fishingInstructor") {
+      router.push('/fishingInstructor/instructorHomepage');
+    }
+  },
+    findAdmin:function (){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/administrator/getAdmin", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+        if (response.data.passwordChanged===true)
+        {
           router.push('/admin/homepage');
-        } else if (response.data.role === "ROLE_cottageOwner") {
-          router.push('/cottageOwner/cottageOwnerHomepage');
-        } else if (response.data.role === "ROLE_boatOwner") {
-          router.push('/boatOwner/boatOwnerHomepage');
-        } else if (response.data.role === "ROLE_fishingInstructor") {
-          router.push('/fishingInstructor/instructorHomepage');
-        }
+        }else{
+          router.push('/user/passwordChange');
+        }})
     },
 
     loginFailed(){

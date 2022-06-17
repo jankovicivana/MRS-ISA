@@ -6,6 +6,7 @@ import ftn.mrs.isa.rentalapp.dto.AdministratorDTO;
 import ftn.mrs.isa.rentalapp.dto.FishingInstructorDTO;
 import ftn.mrs.isa.rentalapp.model.user.Administrator;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
+import ftn.mrs.isa.rentalapp.model.user.User;
 import ftn.mrs.isa.rentalapp.model.user.UserType;
 import ftn.mrs.isa.rentalapp.service.AdministratorService;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.security.Principal;
 
 
@@ -38,6 +42,7 @@ public class AdministratorController {
     public ResponseEntity<AdministratorDTO> addAdventure(@RequestBody AdministratorCreateDTO administratorCreateDTO, Principal principal) {
         Administrator admin = mapper.map(administratorCreateDTO,Administrator.class);
         admin.setType(String.valueOf(UserType.ADMINISTRATOR));
+        admin.setPasswordChanged(false);
         administratorService.save(admin);
         return new ResponseEntity<>(mapper.map(admin, AdministratorDTO.class), HttpStatus.CREATED);
 
@@ -50,8 +55,11 @@ public class AdministratorController {
         if(admin == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(mapper.map(admin,AdministratorDTO.class), HttpStatus.OK);
+        AdministratorDTO dto = mapper.map(admin,AdministratorDTO.class);
+        System.out.print(dto.getEmail());
+        System.out.print(dto.isPasswordChanged());
+        System.out.print(dto.getSurname());
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PostMapping(value = "/updateAdmin" )
@@ -61,6 +69,25 @@ public class AdministratorController {
         Administrator a = mapper.map(administratorDTO,Administrator.class);
         a.setRoles(oldAdmin.getRoles());
         administratorService.save(a);
+    }
+
+    @PostMapping(value = "/changePassword")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<String> changePassword(@RequestBody String newPassword, Principal principal) throws InterruptedException, MessagingException {
+        Administrator u = administratorService.findByEmail(principal.getName());
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.print("adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
+                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
+                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
+                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
+                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
+                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
+                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
+                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+newPassword);
+        u.setPassword(passwordEncoder.encode(newPassword.substring(0,newPassword.length()-1)));
+        u.setPasswordChanged(true);
+        administratorService.save(u);
+        return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
     }
 
 

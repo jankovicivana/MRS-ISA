@@ -53,6 +53,7 @@ import AdminBusinessReport from "../components/AdminBusinessReport";
 import ClientReview from "../components/ClientReview";
 import ClientComplaint from "../components/ClientComplaint";
 import LoyaltyProgram from "../components/LoyaltyProgram";
+import PasswordChange from "../components/PasswordChange";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -278,6 +279,11 @@ export default new Router({
       path: '/admin/loyalty',
       name: "LoyaltyProgram",
       component: LoyaltyProgram
+    },
+    {
+      path: '/user/passwordChange',
+      name: "PasswordChange",
+      component: PasswordChange
     }
   ]
 })
