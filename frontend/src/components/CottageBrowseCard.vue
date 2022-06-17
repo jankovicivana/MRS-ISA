@@ -39,6 +39,8 @@
                 <router-link :to="{ name:'CottageProfile',params:{id:cottage.id} }" class="button view_button is-success" style="background-color: #2e6b6b">
                   View
                 </router-link>
+                <button class="button" v-if="canReserve" v-on:click="$emit('reserve', cottage)">Reserve</button>
+                <button class="button" v-if="role === 'ROLE_admin'" v-on:click="$emit('deleteCottage',cottage.id)">Delete</button>
               </div>
             </div>
           </div>
@@ -51,7 +53,16 @@
 <script>
 export default {
   name: "CottageBrowseCard",
-  props: ['cottage']
+  data: function(){
+    return{
+      role:''
+    }
+  },  props: ['cottage', 'canReserve'],
+  mounted() {
+    this.role = sessionStorage.getItem("role");
+  },
+  methods: {
+  }
 }
 </script>
 
@@ -75,6 +86,15 @@ export default {
   background-color: #2e6b6b;
   color: white;
 }
+
+button{
+  background-color: #2e6b6b;
+  color: white;
+}
+button:hover{
+  background-color: #2e6b6b;
+}
+
 
 .view_button:hover{
   background-color: #4AAE9B;

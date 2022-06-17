@@ -6,20 +6,20 @@
     <section class="profile_main py-lg-3">
 
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
-      <router-link class="col-1 rounded-pill" :to="{ name: 'UpdateCottage',id:cottage.id }" style="background: #2e6b6b;margin: 5px;border: none;color: white" tag="button">Edit</router-link>
-      <button type="button" class="col-1 rounded-pill " v-on:click="deleteCottage()" style="background: #2e6b6b;border: none;margin: 5px;color: white">Delete</button>
+      <router-link v-if="role === 'ROLE_cottageOwner'" class="col-1 rounded-pill" :to="{ name: 'UpdateCottage',id:cottage.id }" style="background: #2e6b6b;margin: 5px;border: none;color: white" tag="button">Edit</router-link>
+      <button v-if="role === 'ROLE_cottageOwner'" type="button" class="col-1 rounded-pill " v-on:click="deleteCottage()" style="background: #2e6b6b;border: none;margin: 5px;color: white">Delete</button>
     </div>
     <div class="container cottage_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center pt-5">
         <div class="col-md-6">
           <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" v-bind:loop="true" v-bind:speed="3000">
-            <slide v-for="i in cottage.images">
-              <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 400px">
+            <slide v-for="url in imagesUrl">
+              <img class="d-block w-100" :src="url" alt="First slide" style="height: 400px">
             </slide>
 
           </carousel>
           <div class="row thumbs pt-3 ">
-            <span v-for="i in cottage.images" class="side_photo col-3 px-1" style="padding-top: 10px"><img :src="require('../assets/images/'+i.path)" alt="Cottage photo1" class="img-responsive" width="130px" height="130px" style="width: 130px; height: 130px"></span>
+            <span v-for="url in imagesUrl" class="side_photo col-3 px-1" style="padding-top: 10px"><img :src="url" alt="Cottage photo1" class="img-responsive" width="130px" height="130px" style="width: 130px; height: 130px"></span>
           </div>
         </div>
         <div class="col-md-6" >
@@ -109,13 +109,13 @@
       <hr />
 
       <div class="row">
-        <h3>Add availability</h3>
+        <h3 v-if="role === 'ROLE_cottageOwner'">Add availability</h3>
         <div class="col-7 p-4" >
           <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
         </div>
-        <div class="col-4">
-          <div>
-            <h6>Info</h6>
+        <div class="col-4 mt-3">
+          <div class="p-3">
+            <h5>Info</h5>
             <hr/>
             <span style="color: green">● </span>- Available period <br/>
             <span style="color: red">● </span>- Reservation period<br/>
@@ -124,9 +124,9 @@
 
           </div>
           <br/><br/><br/>
-          <h6>Add new available period</h6>
-          <hr>
-          <form>
+          <h6 v-if="role === 'ROLE_cottageOwner'">Add new available period</h6>
+          <hr v-if="role === 'ROLE_cottageOwner'">
+          <form v-if="role === 'ROLE_cottageOwner'">
             <div class="form-outline mb-4">
               <label class="label">Start date:</label>
               <div>
@@ -140,7 +140,7 @@
               </div>
             </div>
             <div class="d-flex justify-content-center">
-              <button type="submit"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+              <button type="submit" v-if="role === 'ROLE_cottageOwner'"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
             </div>
           </form>
         </div>
@@ -187,7 +187,8 @@ export default {
       config:'',
       selectedDate: null,
       events: [],
-      role:''
+      role:'',
+      imagesUrl:[]
     }
     },
       mounted:function (){
@@ -200,6 +201,9 @@ export default {
             this.cottage = first_response.data
             this.address=first_response.data.address
             this.quick=this.cottage.quickReservations
+            first_response.data.images.forEach(image => {
+              this.loadImage(image.path);
+            });
             this.num_rooms=first_response.data.rooms.length
             first_response.data.rooms.forEach(async (room) => {this.num_beds=await sumFuncy(this.num_beds,room.bedNumber)})
             this.config = {
@@ -278,6 +282,15 @@ export default {
         });
 
       },
+    loadImage(name) {
+      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+        .then(response => {
+          this.imagesUrl.push(URL.createObjectURL(response.data));
+        })
+        .catch((error) =>{
+          console.log(error);
+        });
+    },
     addAvailablePeriod:function (){
         let start_date = this.$refs.start_date_input.value
         let end_date = this.$refs.end_date_input.value

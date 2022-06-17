@@ -5,21 +5,21 @@
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
   <section class="profile_boat py-lg-3" >
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
-      <router-link class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: #2e6b6b;margin: 5px;color: white;border-color: white" tag="button">Edit</router-link>
-      <button type="button" class="col-1 rounded-pill" v-on:click="deleteBoat()" style="background:#2e6b6b;margin: 5px;color: white;border-color: white">Delete</button>
+      <router-link v-if="role === 'ROLE_boatOwner'" class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: #2e6b6b;margin: 5px;color: white;border-color: white" tag="button">Edit</router-link>
+      <button v-if="role === 'ROLE_boatOwner'" type="button" class="col-1 rounded-pill" v-on:click="deleteBoat()" style="background:#2e6b6b;margin: 5px;color: white;border-color: white">Delete</button>
     </div>
     <div class="container boat_profile px-4 px-lg-5 my-5">
       <div class="row align-items-center">
         <div class="col-md-6">
 
           <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" v-bind:loop="true" v-bind:speed="3000">
-            <slide  v-for="i in boat.images">
-              <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="border-radius: 2%">
+            <slide  v-for="url in imagesUrl" >
+              <img class="d-block w-100" :src="url"  alt="First slide" style="border-radius: 2%">
             </slide>
           </carousel>
 
           <div class="row thumbs pt-3 ">
-            <span v-for="i in boat.images" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="require('../assets/images/'+i.path)" alt="Boat photo" class="img-responsive" width="130px" height="130px"></span>
+            <span v-for="url in imagesUrl" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="url" alt="Boat photo" class="img-responsive" width="130px" height="130px"></span>
           </div>
         </div>
         <div class="col-md-6 pt-5" >
@@ -76,7 +76,7 @@
           </l-map>
         </div>
       </div>
-      <div class="row py-2 px-5">
+      <div class="row py-2">
         <div class="col-5 my-4 p-3" style="background:aliceblue;border-radius: 5%;">
           <p style="font-size: 25px;">Fishing equipment</p>
           <div class="rules">
@@ -99,7 +99,7 @@
           <div class="row pt-3" style="padding-left: 10px;">
             <h3 id="quick_heading" class="col-10">Quick reservations - enormous discounts!</h3>
             <span class="col-2" style="float: right;">
-            <button type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg ">Add new</button>
+            <button v-if="role === 'ROLE_boatOwner'" type="button" v-on:click="showModal()" style="color: white;background: #c91d1d;" class="btn btn-info btn-lg ">Add new</button>
             <AddQuickReservation
               :id="boat.id"
               style="width: 300px"
@@ -113,7 +113,7 @@
           </div>
 
           <div class="row p-3">
-            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in boat.quickReservations">
+            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in boat.quickReservations" v-if="!q.isReserved">
               <div>
                 <h4 class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</h4>
                 <div class="discount">{{q.discount}}%</div>
@@ -133,13 +133,13 @@
       <hr />
 
       <div class="row" style="background: aliceblue">
-        <h3>Add availability</h3>
+        <h3 v-if="role === 'ROLE_boatOwner'">Add availability</h3>
         <div class="col-7 p-4" >
           <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
         </div>
-        <div class="col-4">
-          <div>
-            <h6>Info</h6>
+        <div class="col-4 mt-3">
+          <div class="p-3">
+            <h5>Info</h5>
             <hr/>
             <span style="color: green">● </span>- Available period <br/>
             <span style="color: red">● </span>- Reservation period<br/>
@@ -148,9 +148,9 @@
 
           </div>
           <br/><br/><br/>
-          <h6>Add new available period</h6>
-          <hr>
-          <form>
+          <h6 v-if="role === 'ROLE_boatOwner'">Add new available period</h6>
+          <hr v-if="role === 'ROLE_boatOwner'">
+          <form v-if="role === 'ROLE_boatOwner'">
             <div class="form-outline mb-4">
               <label class="label">Start date:</label>
               <div>
@@ -206,7 +206,8 @@ export default {
       boatId: this.$route.params.id,
       config:'',
       events: [],
-      role:''
+      role:'',
+      imagesUrl:[]
     }
   },
   mounted:function (){
@@ -217,6 +218,9 @@ export default {
         this.boat = response.data
         this.quick=this.boat.quickReservations
         this.address=response.data.address
+        response.data.images.forEach(image => {
+          this.loadImage(image.path);
+        });
         this.config = {
           method: 'get',
           url: 'https://api.geoapify.com/v1/geocode/search?text='+this.address.street+' '+this.address.city+' '+this.address.postal_code+' '+this.address.country+'&apiKey=edff0ba2d6d545279a82d4d37402a851',
@@ -273,6 +277,15 @@ export default {
         }
         this.events.push(this.newEvent);
       }
+    },
+    loadImage(name) {
+      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+        .then(response => {
+          this.imagesUrl.push(URL.createObjectURL(response.data));
+        })
+        .catch((error) =>{
+          console.log(error);
+        });
     },
     show: function(group, type='',titleMessage,text){
       let title = titleMessage
