@@ -14,6 +14,27 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "reservations")
 public class Reservation {
+
+    public Reservation(){
+    }
+
+    public Reservation(LocalDateTime startDateTime, LocalDateTime endDateTime,
+                       EntityType entity, Double price, Double systemProfit, Double advertiserProfit,
+                       Integer personNum, Client client, QuickReservation quickReservation) {
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.deleted = false;
+        this.entity = entity;
+        this.price = price;
+        this.systemProfit = systemProfit;
+        this.advertiserProfit = advertiserProfit;
+        this.personNum = personNum;
+        this.client = client;
+        this.isCanceled = false;
+        this.quickReservation = quickReservation;
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

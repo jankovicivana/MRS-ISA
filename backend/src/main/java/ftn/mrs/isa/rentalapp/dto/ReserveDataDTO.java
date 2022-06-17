@@ -6,17 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-public class EntitySearchDTO {
+public class ReserveDataDTO {
 
-    private String type;
+    private Integer entityId;
 
-    private String name;
-
-    private Integer price;
-
-    private Integer people;
-
-    private String city;
+    private Integer personNum;
 
     private LocalDate startDate;
 
@@ -26,7 +20,5 @@ public class EntitySearchDTO {
 
     private LocalTime endTime;
 
-    private Integer rating;
-
-
+    private Integer clientId;
 }
