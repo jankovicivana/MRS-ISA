@@ -41,7 +41,7 @@
           <p style="color: white"> No boats for now.</p>
         </div>
         <div v-for="b in search_boats">
-          <browse_card :boat="b" v-on:deleteBoat="deleteBoat($event)"></browse_card>
+          <browse_card :boat="b" v-on:deleteBoat="deleteBoat($event)" v-on:subscribe="subscribe($event)"></browse_card>
         </div>
       </div>
     </div>
@@ -104,6 +104,21 @@ export default {
         this.show('foo-css', 'error', `<p style="font-size: 25px">Deletion is not possible!</p>`, `<p style="font-size: 20px">Boat has reservations.</p>`)
       });
     },
+
+    subscribe: function (id){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/sub/subscribe/"+id, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          if (response.data === "Already subscribed"){
+            this.show('foo-css', 'warning',`<p style="font-size: 25px">Subscribed</p>`,`<p style="font-size: 20px">You are already subscribed!</p>`)
+          } else{
+            this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully subscribed!</p>`,`<p style="font-size: 20px">You will now receive email notifications about special offers.</p>`)
+
+          }
+        });
+    },
+
     search: function (){
       if(this.searchText){
         this.search_boats = this.boats.filter(item => {
@@ -240,7 +255,7 @@ export default {
   top: 0;
   transition: opacity 0.3s linear 0s;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 h1{

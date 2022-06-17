@@ -38,7 +38,7 @@
           <p style="color: white"> No adventures  for now.</p>
         </div>
         <div v-for="a in search_adventures">
-          <browse_card :adventure="a"></browse_card>
+          <browse_card :adventure="a" v-on:subscribe="subscribe($event)"></browse_card>
         </div>
       </div>
     </div>
@@ -79,6 +79,25 @@ export default {
       .then(response => (this.adventures = this.search_adventures = response.data))
     }},
   methods: {
+
+    show: function (group, type = '',title, text) {
+      this.$notify({group, title, text, type})
+    },
+
+    subscribe: function (id){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/sub/subscribe/"+id, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          if (response.data === "Already subscribed"){
+            this.show('foo-css', 'warning',`<p style="font-size: 25px">Subscribed</p>`,`<p style="font-size: 20px">You are already subscribed!</p>`)
+          } else{
+            this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully subscribed!</p>`,`<p style="font-size: 20px">You will now receive email notifications about special offers.</p>`)
+
+          }
+        });
+    },
+
     search: function (){
       if(this.searchText){
         this.search_adventures = this.adventures.filter(item => {
