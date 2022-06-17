@@ -9,10 +9,10 @@
 
     <div  class="row py-5 px-auto">
       <div class="col-md-8 mx-auto">
-        <div class="bg-white shadow rounded overflow-hidden">
+        <div class="bg-white shadow rounded">
           <div class="px-4 pt-0 pb-4 cover">
             <div class="media align-items-end profile-head">
-              <div class="profile mr-3"><img :src="require('../assets/images/'+advertiser.mainPhoto)" alt="..." width="250" class="rounded mb-2 img-thumbnail">
+              <div class="profile mr-3"><img :src="mainPhoto" alt="..." width="250" class="rounded mb-2 img-thumbnail">
               </div>
             </div>
             <div class="pb-4 pt-4">
@@ -50,8 +50,20 @@
                   <div v-if="role === 'ROLE_fishingInstructor'" class="row mt-2">
                     <div class="col-md-12 inputs"><label class="labels">Biography</label><textarea type="text" class="form-control" placeholder="biography.." readonly v-model="advertiser.biography"/></div>
                   </div>
+                  <div class="row">
+                    <div v-if="isAdmin || role!=='ROLE_admin'" class="col-2 mt-3 text-right"><button v-on:click="editAdvertiser" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
+                    <div v-if="isAdmin || role!=='ROLE_admin'" class="col-4 mt-3 text-right" ><button v-on:click="showChangePass" id="editButton" class="btn btn-primary edit-button" type="button" >Change password</button></div>
+                  </div>
+                  <div class="row mt-4 mb-3" id="change_pass" hidden>
+                    <div class="col-md-5 inputs"><label class="labels">Current password</label><input id="current" type="password" ref="current" class="form-control" placeholder="current password" ></div>
+                    <div class="col-7"></div>
+                    <div class="col-md-5 inputs"><label class="labels">New password</label><input id="new_pass" type="text" ref="new_pass" class="form-control" placeholder="new password" ></div>
+                    <div class="col-7"></div>
+                    <div class="col-md-5 inputs"><label class="labels">Re-enter new password</label><input  type="text" ref="new_pass_2" class="form-control" placeholder="re-enter new password" ></div>
+                    <div class="col-7"></div>
+                    <div v-if="isAdmin || role!=='ROLE_admin'" class="col-2 mt-3 text-right"><button v-on:click="savePass" id="editButton" class="btn btn-primary edit-button" type="button">save</button></div>
+                  </div>
 
-                  <div v-if="isAdmin || role!=='ROLE_admin'" class="mt-3 text-right"><button v-on:click="editAdvertiser" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
                 </div>
               </div>
 
@@ -75,6 +87,7 @@ import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 import AdminNavbar from "./header/AdminNavbar";
+import router from "../router";
 
 export default {
   name: "AdvertiserProfile",
@@ -87,7 +100,8 @@ export default {
       editButton: null,
       readonly: true,
       role:'',
-      isAdmin: this.$route.params.isAdmin
+      isAdmin: this.$route.params.isAdmin,
+      mainPhoto:''
     }
   },
   mounted: function (){
@@ -100,7 +114,7 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")
           }
         })
-        .then(response => (this.advertiser = response.data, this.address = this.advertiser.address)).catch(function error(error) {
+        .then(response => (this.advertiser = response.data, this.address = this.advertiser.address,this.loadOnlyOneImage(response.data.mainPhoto))).catch(function error(error) {
         alert(error.response.data);
       });
     }else if (this.role === "ROLE_boatOwner") {
@@ -111,14 +125,14 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")
           }
         })
-        .then(response => (this.advertiser = response.data, this.address = this.advertiser.address)).catch(function error(error) {
+        .then(response => (this.advertiser = response.data, this.address = this.advertiser.address,this.loadOnlyOneImage(response.data.mainPhoto))).catch(function error(error) {
         alert(error.response.data);
       });
     }else if (this.role === "ROLE_fishingInstructor") {
       axios
         .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getInstructor", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
-        .then(response => (this.advertiser = response.data,this.address = this.advertiser.address)).catch(function error(error) {
+        .then(response => (this.advertiser = response.data,this.address = this.advertiser.address,this.loadOnlyOneImage(response.data.mainPhoto))).catch(function error(error) {
         alert(error.response.data);
       });
     }
@@ -126,23 +140,29 @@ export default {
       axios
         .get(process.env.VUE_APP_SERVER_PORT+"/api/administrator/getAdmin", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
-        .then(response => (this.advertiser = response.data,this.address = this.advertiser.address)).catch(function error(error) {
+        .then(response => (this.advertiser = response.data,this.address = this.advertiser.address,this.loadOnlyOneImage(response.data.mainPhoto))).catch(function error(error) {
         alert(error.response.data);
       });
     }
     console.log(this.isAdmin)
   },
   methods: {
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfull edit</p>`
-      let text = `<p style="font-size: 20px">Successfully edited data!</p>`
+    show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
+    },
+    loadOnlyOneImage(name) {
+      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+        .then(response => {
+          this.mainPhoto=URL.createObjectURL(response.data);
+        })
+        .catch((error) =>{
+          console.log(error);
+        });
     },
     deleteProfile:function (){
 
       this.$router.push({path:"/user/passwordChange/"+2});
     },
-
     editAdvertiser: function() {
       this.inputs = document.querySelectorAll('input[type="text"]');
       for (var i=0; i<this.inputs.length; i++) {
@@ -161,31 +181,61 @@ export default {
             .post(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/updateCottageOwner", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
-              this.show('foo-css', 'success')
+              this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
             })
         }else if (this.role === "ROLE_boatOwner") {
           axios
             .post(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/updateBoatOwner", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
-              this.show('foo-css', 'success')
+              this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
             })
         }else if (this.role === "ROLE_fishingInstructor") {
           axios
             .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
-              this.show('foo-css', 'success')
+              this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
             });
         }else if (this.role === "ROLE_admin") {
           axios
             .post(process.env.VUE_APP_SERVER_PORT+"/api/administrator/updateAdmin", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
-              this.show('foo-css', 'success')
+              this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
             });
         }
       }
+    },
+    showChangePass:function (){
+      if(document.getElementById('change_pass').hidden===true){
+        document.getElementById('change_pass').hidden=false;
+      }else{
+        document.getElementById('change_pass').hidden=true;
+      }
+
+    },
+    savePass:function (){
+      let current_pass = this.$refs.current.value;
+      let new_pass = this.$refs.new_pass.value;
+      let new_pass2 = this.$refs.new_pass_2.value;
+      if(new_pass !== new_pass2){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful change</p>`,`<p style="font-size: 20px">Entered passwords are not same!</p>`)
+      }else{
+        let c = {currentPassword:current_pass,newPassword:new_pass};
+        axios
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/user/changePassword", c, {headers: {Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")}})
+          .then(response => {
+            this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull change</p>`,`<p style="font-size: 20px">Successfully changed password!</p>`)
+            sessionStorage.clear();
+            setTimeout(() => {this.$router.push({name:"LoginPage"}); }, 2000)
+          }).catch((error) =>{
+            console.log(error);
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful change</p>`,`<p style="font-size: 20px">Current password does not match!</p>`)
+        });
+      }
+
     }
 
   }
@@ -194,7 +244,6 @@ export default {
 
 <style scoped>
 #cottage_owner_profile{
-  height: 90vh;
   padding-left: 15%;
   display: inline-block;
   justify-content: center;

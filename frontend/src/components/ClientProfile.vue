@@ -44,9 +44,23 @@
                     <div class="col-md-6 inputs"><label class="labels">City</label><input type="text" class="form-control" readonly v-model="address.city" placeholder="city"></div>
                     <div class="col-md-6 inputs"><label class="labels">Postal code</label><input type="text" class="form-control" placeholder="postal code" readonly v-model="address.postalCode"></div>
                   </div>
+                  <div class="row">
+                    <div v-if="role === 'ROLE_client'" class="col-2 mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
+                    <div v-if="role === 'ROLE_client'" class="col-7 mt-3 text-right" ><button v-on:click="showChangePass" id="editButton" class="btn btn-primary edit-button" type="button" >Change password</button></div>
+                  </div>
 
-                  <div v-if="role === 'ROLE_client'" class="mt-3 text-right"><button v-on:click="editClient" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
+                  <div class="row mt-4 mb-3" id="change_pass" hidden>
+                    <div class="col-md-6 inputs"><label class="labels">Current password</label><input id="current" type="password" ref="current" class="form-control" placeholder="current password" ></div>
+                    <div class="col-6"></div>
+                    <div class="col-md-6 inputs"><label class="labels">New password</label><input id="new_pass" type="text" ref="new_pass" class="form-control" placeholder="new password" ></div>
+                    <div class="col-6"></div>
+                    <div class="col-md-6 inputs"><label class="labels">Re-enter new password</label><input  type="text" ref="new_pass_2" class="form-control" placeholder="re-enter new password" ></div>
+                    <div class="col-6"></div>
+                    <div  v-if="role === 'ROLE_client'" class="col-2 mt-3 text-right"><button v-on:click="savePass" id="editButton" class="btn btn-primary edit-button" type="button">save</button></div>
+                  </div>
                 </div>
+
+
               </div>
 
               <div class="col-md-6 border-right">
@@ -149,9 +163,7 @@ export default {
   },
 
   methods: {
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfull edit!</p>`
-      let text = `<p style="font-size: 20px">Successfully edited data!</p>`
+    show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
     },
 
@@ -178,9 +190,39 @@ export default {
             }
           })
           .then(response => {
-            this.show('foo-css', 'success')
+            this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
           })
       }
+    },
+    showChangePass:function (){
+      if(document.getElementById('change_pass').hidden===true){
+        document.getElementById('change_pass').hidden=false;
+      }else{
+        document.getElementById('change_pass').hidden=true;
+      }
+
+    },
+    savePass:function (){
+      let current_pass = this.$refs.current.value;
+      let new_pass = this.$refs.new_pass.value;
+      let new_pass2 = this.$refs.new_pass_2.value;
+      if(new_pass !== new_pass2){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful change</p>`,`<p style="font-size: 20px">Entered passwords are not same!</p>`)
+      }else{
+        let c = {currentPassword:current_pass,newPassword:new_pass};
+        axios
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/user/changePassword", c, {headers: {Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")}})
+          .then(response => {
+            this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull change</p>`,`<p style="font-size: 20px">Successfully changed password!</p>`)
+            sessionStorage.clear();
+            setTimeout(() => {this.$router.push({name:"LoginPage"}); }, 2000)
+          }).catch((error) =>{
+          console.log(error);
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful change</p>`,`<p style="font-size: 20px">Current password does not match!</p>`)
+        });
+      }
+
     }
   }
 }
