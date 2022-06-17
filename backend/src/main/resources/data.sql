@@ -190,10 +190,10 @@ insert into user_role (user_id, role_id) values (1, 3);
 insert into user_role (user_id, role_id) values (4, 4);
 insert into user_role (user_id, role_id) values (3, 5);
 insert into user_role (user_id, role_id) values (6, 2);
-insert into subscriptions (id, client, entity) values (1, 5, 1);
-insert into subscriptions (id, client, entity) values (2, 5, 2);
-insert into subscriptions (id, client, entity) values (3, 5, 3);
-insert into subscriptions (id, client, entity) values (4, 5, 4);
+insert into subscriptions (client, entity) values (5, 1);
+insert into subscriptions (client, entity) values (5, 2);
+insert into subscriptions (client, entity) values (5, 3);
+insert into subscriptions (client, entity) values (5, 4);
 
 
 insert into advertiser_reviews (id,grade,review,status,client,advertiser) values (nextval('my_seqv3'),1,'Nekomunikativan je.',1,2,1);

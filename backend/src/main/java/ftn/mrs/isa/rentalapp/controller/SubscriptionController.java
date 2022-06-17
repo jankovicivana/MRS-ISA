@@ -1,9 +1,11 @@
 package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.SubscriptionDTO;
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Subscription;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.service.ClientService;
+import ftn.mrs.isa.rentalapp.service.EntityService;
 import ftn.mrs.isa.rentalapp.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -32,6 +34,9 @@ public class SubscriptionController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private EntityService entityService;
+
     @GetMapping(value = "/getSubscriptions")
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<List<SubscriptionDTO>> getSubscriptions(Principal principal){
@@ -45,6 +50,36 @@ public class SubscriptionController {
             subsDTO.add(subDTO);
         }
         return new ResponseEntity<>(subsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/subscribe/{id}")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<String> subscribe(@PathVariable Integer id, Principal principal) {
+        Client c = clientService.findByEmail(principal.getName());
+        EntityType e = entityService.findOne(id);
+        for(Subscription sub: c.getSubscriptions()){
+            if(sub.getEntity().getId().equals(e.getId())){
+                return new ResponseEntity<>("Already subscribed", HttpStatus.OK);
+            }
+        }
+        Subscription s = new Subscription();
+        s.setEntity(e);  // fale neke provjere
+        s.setClient(c);
+        subscriptionService.save(s);
+        return new ResponseEntity<>("Successfully subscribed", HttpStatus.OK);
+    }
+
+    @GetMapping(value="/canSubscribe/{id}")
+    @PreAuthorize("hasRole('client')")
+    public Boolean canSubscribe(@PathVariable Integer id, Principal principal) {
+        Client c = clientService.findByEmail(principal.getName());
+        EntityType e = entityService.findOne(id);
+        for(Subscription s: c.getSubscriptions()){
+            if(s.getEntity().getId().equals(e.getId())){
+                return false;
+            }
+        }
+        return true;
     }
 
     @DeleteMapping(value = "/delete/{id}")

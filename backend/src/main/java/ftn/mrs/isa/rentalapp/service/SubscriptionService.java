@@ -24,4 +24,6 @@ public class SubscriptionService {
     public void deleteSubscription(Subscription sub) {
         subscriptionRepository.delete(sub);
     }
+
+    public void save(Subscription s){ subscriptionRepository.save(s); }
 }
