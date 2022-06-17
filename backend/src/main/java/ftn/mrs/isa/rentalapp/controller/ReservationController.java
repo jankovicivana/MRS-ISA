@@ -24,6 +24,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -233,6 +234,24 @@ public class ReservationController {
         quickReservationService.save(quickReservation);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/reserve")
+    @PreAuthorize("hasAnyRole('client','cottageOwner')")
+    public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal){
+        Client client = clientService.findByEmail(principal.getName());
+        if(client == null){
+            client = clientService.findOne(r.getClientId());
+        }
+        LocalDateTime start = LocalDateTime.of(r.getStartDate(), r.getStartTime());
+        LocalDateTime end = LocalDateTime.of(r.getEndDate(), r.getEndTime());
+        EntityType entity = entityService.findOne(r.getEntityId());
+        System.out.println(entity.getId());
+        // odakle dobaljamo systemProfit  i advertiserProfit?
+        Reservation res = new Reservation(start, end, entity, entity.getPrice(), 0.0, 0.0, r.getPersonNum(), client, null);
+        reservationService.save(res);
+
+        return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
     }
 
 }

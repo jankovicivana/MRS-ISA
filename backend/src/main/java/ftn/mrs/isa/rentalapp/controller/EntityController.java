@@ -63,8 +63,8 @@ public class EntityController {
 
         entities = entityService.getAll();
         for(EntityType et: entities){
-            if (et.getPrice() < params.getPrice() && et.getAddress().getCity().equals(params.getCity())){
-                if(availablePeriodService.isAvailable(et.getId(), params.getStartDate(), params.getEndDate()) && !reservationService.isReserved(et.getId(), start, end)){
+            if (EntityKind.toString(et.getKind()).equals(params.getType()) && et.getPrice() <= params.getPrice() && et.getAddress().getCity().equals(params.getCity())){
+                if(availablePeriodService.isAvailable(et.getId(), start, end) && !reservationService.isReserved(et.getId(), start, end)){
                     EntityKind kind = et.getKind();
                     EntityTypeDTO dto = mapper.map(et, EntityTypeDTO.class);
                     dto.setType(EntityKind.toString(kind));
