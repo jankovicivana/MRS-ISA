@@ -105,7 +105,6 @@ public class AdventureController {
     }
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasRole('fishingInstructor')")
     public ResponseEntity<AdventureDTO> getAdventure(@PathVariable Integer id,Principal principal){
         Adventure adventure = adventureService.findOne(id);
         if(adventure == null){

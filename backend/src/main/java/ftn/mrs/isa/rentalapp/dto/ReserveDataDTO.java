@@ -19,4 +19,6 @@ public class ReserveDataDTO {
     private LocalDate endDate;
 
     private LocalTime endTime;
+
+    private Integer clientId;
 }

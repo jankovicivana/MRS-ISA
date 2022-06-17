@@ -43,7 +43,7 @@
         <br />
         <div class="columns">
           <div class="column" v-for="c in cottages">
-            <div class="card col-3">
+            <div class="card col-3" v-on:click="openCottage(c.id)">
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
                   <slide v-for="i in c.images">
@@ -74,7 +74,7 @@
         <br />
         <div class="columns">
           <div class="column" v-for="b in boats">
-            <div class="card col-3">
+            <div class="card col-3" v-on:click="openBoat(b.id)">
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
                   <slide v-for="i in b.images">
@@ -107,7 +107,7 @@
         <br />
         <div class="columns">
           <div class="column" v-for="a in adventures">
-            <div class="card col-3">
+            <div class="card col-3" v-on:click="openAdventure(a.id)">
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
                   <slide v-for="i in a.images">
@@ -160,6 +160,17 @@ export default {
       .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/all")
       .then(response => (this.adventures = response.data))
   },
+  methods:{
+    openCottage:function (id){
+      this.$router.push({name:"CottageProfile",params:{id:id}});
+    },
+    openBoat:function (id){
+      this.$router.push({name:"BoatProfile",params:{id:id}});
+    },
+    openAdventure:function (id){
+      this.$router.push({name:"AdventureProfile",params:{id:id}});
+    }
+  }
 }
 </script>
 

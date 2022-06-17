@@ -4,6 +4,7 @@ package ftn.mrs.isa.rentalapp.controller;
 import ftn.mrs.isa.rentalapp.dto.*;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.entity.*;
+import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
 import ftn.mrs.isa.rentalapp.model.user.Client;
@@ -54,6 +55,9 @@ public class ReservationController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private QuickReservationService quickReservationService;
 
     @Autowired
     private EntityService entityService;
@@ -129,15 +133,13 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/findAllOfCottage/{id}")
-    @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<List<ReservationDTO>> findAllOfCottage(@PathVariable Integer id,Principal principal){
+    public ResponseEntity<List<ReservationDTO>> findAllOfCottage(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllByEntity(id);
         return getListResponseEntity(reservations);
     }
 
     @GetMapping(value = "/findAllOfBoat/{id}")
-    @PreAuthorize("hasRole('boatOwner')")
-    public ResponseEntity<List<ReservationDTO>> findAllOfBoat(@PathVariable Integer id,Principal principal){
+    public ResponseEntity<List<ReservationDTO>> findAllOfBoat(@PathVariable Integer id){
         List<Reservation> reservations = reservationService.findAllByEntity(id);
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for(Reservation c : reservations){
@@ -270,10 +272,36 @@ public class ReservationController {
     }
 
 
-    @PostMapping(value = "/reserve")
+    @PutMapping("/makeReservationFromQuick/{id}")
     @PreAuthorize("hasRole('client')")
+    public ResponseEntity<String> makeReservationFromQuick(@PathVariable(value = "id") Integer id,Principal principal){
+        Client c = clientService.findByEmail(principal.getName());
+        QuickReservation quickReservation = quickReservationService.findOne(id);
+        quickReservation.setIsReserved(true);
+        Reservation r = new Reservation();
+        r.setQuickReservation(quickReservation);
+        r.setEntity(quickReservation.getEntity());
+        r.setClient(c);
+        r.setPrice(quickReservation.getDiscountedPrice());
+        r.setStartDateTime(quickReservation.getStartDateTime());
+        r.setEndDateTime(quickReservation.getEndDateTime());
+        r.setIsCanceled(false);
+        r.setPersonNum(quickReservation.getMaxPersonNum());
+        r.setAdvertiserProfit(0.0);
+        r.setSystemProfit(0.0);
+        reservationService.save(r);
+        quickReservationService.save(quickReservation);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/reserve")
+    @PreAuthorize("hasAnyRole('client','cottageOwner')")
     public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal){
         Client client = clientService.findByEmail(principal.getName());
+        if(client == null){
+            client = clientService.findOne(r.getClientId());
+        }
         LocalDateTime start = LocalDateTime.of(r.getStartDate(), r.getStartTime());
         LocalDateTime end = LocalDateTime.of(r.getEndDate(), r.getEndTime());
         EntityType entity = entityService.findOne(r.getEntityId());

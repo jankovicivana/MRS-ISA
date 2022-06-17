@@ -39,7 +39,7 @@
                         <td class="d-flex justify-content-center">{{reservation.personNum}}</td>
                         <td>{{reservation.price}}</td>
 
-                        <td><button v-on:click="createReport(reservation)" style="background: #2e6b6b; border-radius: 8px;color: #FFFFFF; border-color: #FFFFFF">Add reservation</button></td>
+                        <td><button v-on:click="makeReservation(reservation.client.id)" style="background: #2e6b6b; border-radius: 8px;color: #FFFFFF; border-color: #FFFFFF">Add reservation</button></td>
                       </tr>
                       </tbody>
 
@@ -101,8 +101,8 @@ export default {
     }
   },
   methods:{
-    createReport:function (reservation){
-
+    makeReservation:function (id){
+      this.$router.push({name:"Reservations",params:{clientId:id}});
     }
 
   }

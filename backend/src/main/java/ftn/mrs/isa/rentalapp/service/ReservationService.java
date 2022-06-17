@@ -16,6 +16,8 @@ public class ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    public void save(Reservation reservation){reservationRepository.save(reservation);}
+
     public List<Reservation> findAllHistoryByUser(Integer id) {return reservationRepository.findAllHistoryByUser(LocalDateTime.now(),id); }
 
     public List<Reservation> getFutureReservationByFishingInstructor(Integer id) {

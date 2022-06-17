@@ -28,4 +28,5 @@ public class EntitySearchDTO {
 
     private Integer rating;
 
+
 }

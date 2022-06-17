@@ -10,15 +10,21 @@ import ftn.mrs.isa.rentalapp.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Base64;
 
@@ -92,6 +98,29 @@ public class ImageController {
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/getImage/{name}")
+    public ResponseEntity<InputStreamResource> getImage(@PathVariable String name) {
+        try {
+            FileSystemResource imgFile = new FileSystemResource("src/main/resources/static/images/" + name);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(new InputStreamResource(imgFile.getInputStream()));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(value = "/uploadImage")
+    public ResponseEntity<String> savePhoto(@RequestParam("image") MultipartFile image) throws IOException{
+        try {
+            String name = "cottage";
+            Files.copy(image.getInputStream(), Paths.get("src\\main\\resources\\static").resolve("images").resolve(name + ".jpg").toAbsolutePath());
+            return new ResponseEntity<>(name, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

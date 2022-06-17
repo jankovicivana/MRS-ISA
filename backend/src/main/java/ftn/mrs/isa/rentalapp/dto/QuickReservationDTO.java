@@ -26,4 +26,6 @@ public class QuickReservationDTO {
 
     private Integer entId;
 
+    private Boolean isReserved;
+
 }

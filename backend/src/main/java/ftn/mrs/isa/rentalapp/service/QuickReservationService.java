@@ -1,5 +1,6 @@
 package ftn.mrs.isa.rentalapp.service;
 
+import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.repository.QuickReservationRepository;
@@ -14,6 +15,8 @@ public class QuickReservationService {
 
     @Autowired
     private QuickReservationRepository quickReservationRepository;
+
+    public QuickReservation findOne(Integer id){return quickReservationRepository.findById(id).orElse(null);}
 
     public void save(QuickReservation quickReservation){quickReservationRepository.save(quickReservation);}
 
