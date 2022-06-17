@@ -196,7 +196,7 @@ export default {
       document.getElementById("calendar").setAttribute('height', '400');
       const sumFuncy = async (a,b) => a+b;
       this.role = sessionStorage.getItem("role");
-
+      window.scrollTo(0, 0)
 
         axios
           .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+this.cottageId)
