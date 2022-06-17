@@ -17,7 +17,7 @@
             </div>
             <div class="pb-4 pt-4">
               <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{this.advertiser.name }}</span> <span>{{ this.advertiser.surname }}</span></h4>
-              <a v-if="isAdmin || role!=='ROLE_admin'" href="#" class="btn flow delete-btn">Delete profile</a>
+              <a v-if="isAdmin || role!=='ROLE_admin'" v-on:click="deleteProfile()" href="#" class="btn flow delete-btn">Delete profile</a>
             </div>
           </div>
 
@@ -137,6 +137,10 @@ export default {
       let title = `<p style="font-size: 25px">Successfull edit</p>`
       let text = `<p style="font-size: 20px">Successfully edited data!</p>`
       this.$notify({group, title, text, type})
+    },
+    deleteProfile:function (){
+
+      this.$router.push({path:"/user/passwordChange/"+2});
     },
 
     editAdvertiser: function() {
