@@ -22,7 +22,12 @@ public class AvailablePeriodService {
     public boolean isAvailable(Integer id, LocalDateTime startDate, LocalDateTime endDate){
         List<AvailablePeriod> periodList = availablePeriodRepository.getAvailable(id, startDate, endDate);
         System.out.println(periodList);
+        System.out.println(periodList.isEmpty());
         System.out.println(startDate.toString() + endDate.toString());
+        return !periodList.isEmpty();
+    }
+    public boolean isAvailableInstructor(Integer id, LocalDateTime startDate, LocalDateTime endDate){
+        List<AvailablePeriod> periodList = availablePeriodRepository.getAvailableInstructor(id, startDate, endDate);
         return !periodList.isEmpty();
     }
 

@@ -6,10 +6,9 @@ import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
-import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
-import ftn.mrs.isa.rentalapp.model.user.Client;
-import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
-import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
+import ftn.mrs.isa.rentalapp.model.system_info.RankingInfo;
+import ftn.mrs.isa.rentalapp.model.system_info.SystemInfo;
+import ftn.mrs.isa.rentalapp.model.user.*;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -61,6 +60,15 @@ public class ReservationController {
 
     @Autowired
     private EntityService entityService;
+
+    @Autowired
+    private RankingInfoService rankingInfoService;
+
+    @Autowired
+    private SystemInfoService systemInfoService;
+
+    @Autowired
+    private  UserService userService;
 
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasRole('client')")  // dodati ovdje ako treba jos nekoga
@@ -191,6 +199,13 @@ public class ReservationController {
         List<Reservation> reservations = reservationService.getFutureReservationByBoatOwner(owner.getId());
         return getListResponseBoat(reservations);
     }
+    @GetMapping(value = "/findUpcomingByInstructor")
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<List<ReservationDTO>> getAllUpcomingReservationByInstructor(Principal principal){
+        FishingInstructor owner = fishingInstructorService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.getFutureReservationByInstructor(owner.getId());
+        return getListResponseAdventure(reservations);
+    }
 
     @GetMapping(value = "/findCurrentByBoatOwner")
     @PreAuthorize("hasRole('boatOwner')")
@@ -198,6 +213,14 @@ public class ReservationController {
         BoatOwner owner = boatOwnerService.findByEmail(principal.getName());
         List<Reservation> reservations = reservationService.getCurrentReservationByBoatOwner(owner.getId());
         return getListResponseBoat(reservations);
+    }
+
+    @GetMapping(value = "/findCurrentByInstructor")
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<List<ReservationDTO>> getAllCurrentReservationByInstructor(Principal principal) {
+        FishingInstructor owner = fishingInstructorService.findByEmail(principal.getName());
+        List<Reservation> reservations = reservationService.getCurrentReservationByInstructor(owner.getId());
+        return getListResponseAdventure(reservations);
     }
 
     private ResponseEntity<List<ReservationDTO>> getListResponseEntity(List<Reservation> reservations) {
@@ -287,8 +310,10 @@ public class ReservationController {
         r.setEndDateTime(quickReservation.getEndDateTime());
         r.setIsCanceled(false);
         r.setPersonNum(quickReservation.getMaxPersonNum());
-        r.setAdvertiserProfit(0.0);
-        r.setSystemProfit(0.0);
+        double systemProfit = systemInfoService.calculateSystemProfit(quickReservation.getEntity().getId(),quickReservation.getDiscountedPrice(),c);
+        double advertiserProfit = quickReservation.getDiscountedPrice() - systemProfit;
+        r.setAdvertiserProfit(advertiserProfit);
+        r.setSystemProfit(systemProfit);
         reservationService.save(r);
         quickReservationService.save(quickReservation);
 
@@ -296,7 +321,7 @@ public class ReservationController {
     }
 
     @PostMapping(value = "/reserve")
-    @PreAuthorize("hasAnyRole('client','cottageOwner')")
+    @PreAuthorize("hasAnyRole('client','cottageOwner','fishingInstructor')")
     public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal){
         Client client = clientService.findByEmail(principal.getName());
         if(client == null){
@@ -305,9 +330,11 @@ public class ReservationController {
         LocalDateTime start = LocalDateTime.of(r.getStartDate(), r.getStartTime());
         LocalDateTime end = LocalDateTime.of(r.getEndDate(), r.getEndTime());
         EntityType entity = entityService.findOne(r.getEntityId());
-        System.out.println(entity.getId());
-        // odakle dobaljamo systemProfit  i advertiserProfit?
-        Reservation res = new Reservation(start, end, entity, entity.getPrice(), 0.0, 0.0, r.getPersonNum(), client, null);
+        RankingInfo clientRank = rankingInfoService.findRank(client.getPoints());
+        double price = entity.getPrice()-entity.getPrice()*clientRank.getClientDiscount()/100;
+        double systemProfit = systemInfoService.calculateSystemProfit(r.getEntityId(),price,client);
+        double advertiserProfit = price - systemProfit;
+        Reservation res = new Reservation(start, end, entity, price, systemProfit, advertiserProfit, r.getPersonNum(), client, null);
         reservationService.save(res);
 
         return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);

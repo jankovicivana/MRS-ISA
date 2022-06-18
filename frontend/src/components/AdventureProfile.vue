@@ -196,11 +196,10 @@ export default {
 
   },
   methods:{
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfully deleted!</p>`
-      let text = `<p style="font-size: 20px">Successfully deleted adventure!</p>`
+    show: function (group, type = '',title, text) {
       this.$notify({group, title, text, type})
     },
+
     showModal:function() {
       this.isModalVisible = true;
     },
@@ -212,10 +211,11 @@ export default {
       axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          this.show('foo-css', 'success')
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted adventure!</p>`)
+          setTimeout(() => { }, 3000)
 
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch((error) => {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Adventure has reservations.</p>`)
       });
 
 

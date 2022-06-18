@@ -141,8 +141,8 @@ export default {
           }, 3000)
           const index = this.advertiserComplaints.indexOf(review);
           this.advertiserComplaints.splice(index, 1);
-        }).catch(function error(error) {
-        alert(error.response);
+        }).catch((error) => {
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Another admin answered this complaint!</p>`)
       });
     },
     acceptEntityComplaint:function (review) {
@@ -165,8 +165,8 @@ export default {
           }, 3000)
           const index = this.entityComplaints.indexOf(review);
           this.entityComplaints.splice(index, 1);
-        }).catch(function error(error) {
-        alert(error.response);
+        }).catch((error) =>  {
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Another admin answered this complaint!</p>`)
       });
     },
     rejectEntityComplaint:function (review) {
@@ -189,8 +189,8 @@ export default {
           }, 3000)
           const index = this.entityComplaints.indexOf(review);
           this.entityComplaints.splice(index, 1);
-        }).catch(function error(error) {
-        alert(error.response);
+        }).catch((error) =>  {
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Another admin answered this complaint!</p>`)
       });
     },
     rejectAdvertiserComplaint:function (review) {
@@ -209,8 +209,8 @@ export default {
           }, 3000)
           const index = this.advertiserComplaints.indexOf(review);
           this.advertiserComplaints.splice(index, 1);
-        }).catch(function error(error) {
-        alert(error.response);
+        }).catch((error) =>  {
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Another admin answered this complaint!</p>`)
       });
     }
 

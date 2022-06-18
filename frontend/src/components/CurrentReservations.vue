@@ -19,6 +19,8 @@
                       <tr style="background: #e3c7aa">
                         <th v-if="role === 'ROLE_cottageOwner'">Cottage</th>
                         <th v-if="role === 'ROLE_boatOwner'">Boat</th>
+                        <th v-if="role === 'ROLE_fishingInstructor'">Adventure</th>
+
 
                         <th>Client</th>
                         <th>Start date</th>
@@ -33,6 +35,7 @@
                       <tr style="background: #ede4da;" v-for="reservation in reservations">
                         <td v-if="role === 'ROLE_cottageOwner'">{{reservation.cottage.name}}</td>
                         <td v-if="role === 'ROLE_boatOwner'">{{reservation.boat.name}}</td>
+                        <td v-if="role === 'ROLE_fishingInstructor'">{{reservation.adventure.name}}</td>
                         <td><router-link :to="{ name: 'ClientProfile',params:{id:reservation.client.id} }" style="text-decoration: none" >{{reservation.client.surname + " "+ reservation.client.name}}</router-link></td>
                         <td>{{reservation.startDateTime[2]+"."+reservation.startDateTime[1]+"."+reservation.startDateTime[0]+"."}}</td>
                         <td>{{reservation.endDateTime[2]+"."+reservation.endDateTime[1]+"."+reservation.endDateTime[0]+"."}}</td>
@@ -90,6 +93,17 @@ export default {
     }else if (this.role === "ROLE_boatOwner") {
       axios
         .get(process.env.VUE_APP_SERVER_PORT + "/api/reservation/findCurrentByBoatOwner", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => (
+          this.reservations = response.data
+        ))
+    }else if (this.role === "ROLE_fishingInstructor"){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/reservation/findCurrentByInstructor", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")

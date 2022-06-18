@@ -86,7 +86,7 @@ export default {
         ))
     }   else if (this.role === "ROLE_fishingInstructor") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByUser/getInstructor", {headers: {Authorization:
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByInstructor", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (
           this.reservations = response.data

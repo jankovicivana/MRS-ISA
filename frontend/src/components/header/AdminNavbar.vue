@@ -16,6 +16,7 @@
           <div class="navbar-dropdown is-boxed">
             <a class="navbar-item" href="#/cottages"> Cottages</a>
             <a class="navbar-item" href="#/boats"> Boats </a>
+            <a class="navbar-item" href="#/adventures"> Adventures </a>
           </div>
         </div>
 
@@ -47,9 +48,8 @@
             <a class="navbar-item" href="#/admin/complaints"> Complaints </a>
           </div>
         </div>
-        <a class="navbar-item" href="#/admin/businessReport">Business report </a>
+        <a class="navbar-item" href="#/businessReport">Business report </a>
         <a class="navbar-item" href="#/admin/loyalty">Loyalty program </a>
-        <a class="navbar-item" href="#/user/passwordChange">Password </a>
 
       </div>
     </div>

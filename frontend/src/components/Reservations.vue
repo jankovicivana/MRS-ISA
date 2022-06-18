@@ -1,6 +1,7 @@
 <template>
   <div class="reservations_main">
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
+    <FishingInstructorNavbar v-if="role === 'ROLE_fishingInstructor'"></FishingInstructorNavbar>
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
     <div class="container pt-5">
       <h1> Browse available entities </h1>
@@ -72,8 +73,9 @@
         </div>
 
         <div v-for="e in entities">
-          <browse_card :cottage="e" :canReserve="true"  v-on:reserve="reserve($event)" ></browse_card>
-        </div>
+        <browse_card v-if="role === 'ROLE_cottageOwner'" :cottage="e" :canReserve="true"  v-on:reserve="reserve($event)"></browse_card>
+        <adventure_card v-if="role === 'ROLE_fishingInstructor'" :adventure="e" :canReserve="true"  v-on:reserve="reserve($event)"></adventure_card>
+             </div>
       </div>
 
 
@@ -87,9 +89,12 @@ import ClientNavbar from "./header/ClientNavbar";
 import axios from "axios";
 import CottageBrowseCard from "./CottageBrowseCard";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
+import router from "../router";
+import AdventureBrowseCard from "./AdventureBrowseCard";
 export default {
   name: "Reservations",
-  components: {CottageOwnerNavbar, ClientNavbar, 'browse_card': CottageBrowseCard},
+  components: {FishingInstructorNavbar, CottageOwnerNavbar, ClientNavbar, 'browse_card': CottageBrowseCard,'adventure_card': AdventureBrowseCard},
   data: function(){
     return{
       addresses: '',
@@ -147,12 +152,23 @@ export default {
             }})
           .then(response => (this.entities = response.data)).catch(function error(error) {
           alert(error.response.data);});
+      }else if(this.role === 'ROLE_fishingInstructor'){
+        this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
+          startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
+        axios
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/adventures/getAvailable", this.params,{
+            headers: {
+              Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")
+            }})
+          .then(response => (this.entities = response.data)).catch(function error(error) {
+          alert(error.response.data);});
       }
 
     },
     show: function(group, type='', entityType){
       let title = `<p style="font-size: 25px">Reserved!</p>`
-      let text = `<p style="font-size: 20px">Successfully reserved ` + entityType + `!</p>`
+      let text = `<p style="font-size: 20px">Successfully reserved!</p>`
       this.$notify({group, title, text, type})
     },
     setRating: function (rating){
@@ -167,7 +183,13 @@ export default {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
           }})
-        .then(response => {this.show('foo-css', 'success', entity.type); setTimeout(() => {location.reload(); }, 1500) }).catch(function error(error) {
+        .then(response => {this.show('foo-css', 'success', entity.type); setTimeout(() => {
+          if(this.role === 'ROLE_client'){
+          location.reload(); }else{
+            router.push('/currentReservations');
+          }
+
+          }, 1500) }).catch(function error(error) {
         alert(error.response.data);});
     }
   }

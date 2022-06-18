@@ -45,8 +45,6 @@ public class Client extends User{
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Subscription> subscriptions = new HashSet<Subscription>();
 
-    @Column(name = "points", nullable = false)
-    private Integer points;
 
     @Column(name = "penalties", nullable = false)
     private Integer penalties;
