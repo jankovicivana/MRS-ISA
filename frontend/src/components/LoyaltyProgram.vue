@@ -29,28 +29,28 @@
                               <div class="col-3 align-content-center">
                                 <span class="col-1 input_loyalty"><label  style="background-color: antiquewhite" /></span>
                                 <span class="col-2 "><  </span>
-                                <span class="col-5 input_loyalty"><input type="text" class="form-control" placeholder="to"  v-model="regular.pointsLimit"></span>
+                                <span class="col-5 input_loyalty"><input type="number" min="0" class="form-control" placeholder="to"  v-model="regular.pointsLimit"></span>
                               </div>
                               <div class="col-3">
-                                <span class="col-10 input_loyalty"><input type="text" class="form-control" placeholder="discount"  v-model="regular.clientDiscount"></span>
+                                <span class="col-10 input_loyalty"><input type="number" min="0" class="form-control" placeholder="discount"  v-model="regular.clientDiscount"></span>
                               </div>
                               <div class="col-3">
-                                <span class="col-10 input_loyalty"><input type="text" class="form-control" placeholder="benefit"  v-model="regular.advertiserBenefits"></span>
+                                <span class="col-10 input_loyalty"><input type="number" min="0" class="form-control" placeholder="benefit"  v-model="regular.advertiserBenefits"></span>
                               </div>
 
                             </div>
                               <div class="row mt-4 mb-5">
                               <div class="col-2" style="color: slategrey;  ">&#127941;  SILVER</div>
                                 <div class="col-4 align-content-center">
-                                    <span class="col-4 input_loyalty ml-1"><input  type="text" class="form-control" placeholder="from"  v-model="regular.pointsLimit"></span>
+                                    <span class="col-4 input_loyalty ml-1"><input  type="number" min="0" class="form-control" placeholder="from"  v-model="regular.pointsLimit"></span>
                                     <span class="col-2 ">-</span>
-                                    <span class="col-4 input_loyalty"><input type="text" class="form-control" placeholder="to"  v-model="silver.pointsLimit"></span>
+                                    <span class="col-4 input_loyalty"><input type="number" min="0" class="form-control" placeholder="to"  v-model="silver.pointsLimit"></span>
                                 </div>
                                 <div class="col-3">
-                                  <span class="col-10 input_loyalty"><input type="text" class="form-control" placeholder="discount"  v-model="silver.clientDiscount"></span>
+                                  <span class="col-10 input_loyalty"><input type="number" min="0" class="form-control" placeholder="discount"  v-model="silver.clientDiscount"></span>
                                 </div>
                                 <div class="col-3">
-                                  <span class="col-10 input_loyalty"><input type="text" class="form-control" placeholder="benefit"  v-model="silver.advertiserBenefits"></span>
+                                  <span class="col-10 input_loyalty"><input type="number" min="0" class="form-control" placeholder="benefit"  v-model="silver.advertiserBenefits"></span>
                                 </div>
 
                                 </div>
@@ -61,13 +61,13 @@
                               <div class="col-3 align-content-center">
                                 <span class="col-1 input_loyalty"><label  style="background-color: antiquewhite" /></span>
                                 <span class="col-2 ">>  </span>
-                                <span class="col-5 input_loyalty"><input type="text" class="form-control" placeholder="to"  v-model="silver.pointsLimit"></span>
+                                <span class="col-5 input_loyalty"><input type="number" min="0" class="form-control" placeholder="to"  v-model="silver.pointsLimit"></span>
                               </div>
                               <div class="col-3">
-                                <span class="col-10 input_loyalty"><input type="text" class="form-control" placeholder="discount"  v-model="gold.clientDiscount"></span>
+                                <span class="col-10 input_loyalty"><input type="number" min="0" class="form-control" placeholder="discount"  v-model="gold.clientDiscount"></span>
                               </div>
                               <div class="col-3">
-                                <span class="col-10 input_loyalty"><input type="text" class="form-control" placeholder="benefit"  v-model="gold.advertiserBenefits"></span>
+                                <span class="col-10 input_loyalty"><input type="number" min="0" class="form-control" placeholder="benefit"  v-model="gold.advertiserBenefits"></span>
                               </div>
                             </div>
 
@@ -101,21 +101,21 @@
                               <div class="row mt-4 mb-5">
                                 <div>
                                 <label style="float: left;margin-right: 30px;margin-left: 80px;width: 190px" >Client points: </label>
-                                <input style="width: 140px;" type="text" class="form-control" placeholder="points"  v-model="systemInfo.clientPoints">
+                                <input style="width: 140px;" type="number" min="0" class="form-control" placeholder="points"  v-model="systemInfo.clientPoints">
                                 </div>
 
                               </div>
                               <div class="row mt-4 mb-5">
                                 <div>
                                   <label style="float: left;margin-right: 30px;margin-left: 80px;width: 190px" >Advertiser points: </label>
-                                  <input style="width: 140px;" type="text" class="form-control" placeholder="points"  v-model="systemInfo.advertiserPoints">
+                                  <input style="width: 140px;" type="number" min="0" class="form-control" placeholder="points"  v-model="systemInfo.advertiserPoints">
                                 </div>
                               </div>
 
                               <div class="row mt-2">
                                 <div>
                                   <label style="float: left;margin-right: 30px;margin-left: 80px;width: 190px" >System profit (%): </label>
-                                  <input style="width: 140px;" type="text" class="form-control" placeholder="profit"  v-model="systemInfo.systemProfit">
+                                  <input style="width: 140px;" type="number" min="0" class="form-control" placeholder="profit"  v-model="systemInfo.systemProfit">
                                 </div>
                               </div>
 
@@ -201,14 +201,6 @@ export default {
     },
 
     edit:function (){
-      for(let i of [this.regular.pointsLimit,this.regular.clientDiscount,this.regular.advertiserBenefits,
-                    this.silver.pointsLimit,this.silver.clientDiscount,this.silver.advertiserBenefits,
-                    this.gold.clientDiscount,this.gold.advertiserBenefits]){
-        if (!this.check_input(i)){
-          this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Info must be positive numbers!</p>`)
-          return;
-        }
-      }
       if (parseInt(this.regular.pointsLimit)>parseInt(this.silver.pointsLimit)){
         this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Point limits are incorrect!</p>`)
         return;
@@ -231,18 +223,7 @@ export default {
         });
     },
     save:function (){
-      if (!this.check_input(this.systemInfo.clientPoints)){
-        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Client points must be positive number!</p>`)
-        return;
-      }
-      if (!this.check_input(this.systemInfo.advertiserPoints)){
-        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Advertiser points must be positive number!</p>`)
-        return;
-      }
-      if (!this.check_input(this.systemInfo.systemProfit)){
-        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">System profit must be positive number!</p>`)
-        return;
-      }
+
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/api/system/saveSystemInfo",this.systemInfo, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})

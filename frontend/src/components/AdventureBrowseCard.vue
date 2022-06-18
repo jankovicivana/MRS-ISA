@@ -37,10 +37,13 @@
             <div
               class="column is-flex is-justify-content-flex-end is-align-items-right">
               <div class="buttons ml-5">
-                <button class="button is-success" style="background-color: #2e6b6b" v-on:click="$emit('subscribe', adventure.id)">Subscribe</button>
+                <button v-if="role === 'ROLE_client'" class="button is-success" style="background-color: #2e6b6b" v-on:click="$emit('subscribe', adventure.id)">Subscribe</button>
                 <router-link :to="{ name:'AdventureProfile',params:{id:adventure.id} }" class="button view_button is-success" style="background-color: #2e6b6b">
                   View
                 </router-link>
+                <button class="button" v-if="canReserve" v-on:click="$emit('reserve', adventure)">Reserve</button>
+                <button class="button" v-if="role === 'ROLE_admin'" v-on:click="$emit('deleteAdventure',adventure.id)">Delete</button>
+
               </div>
             </div>
           </div>
@@ -53,7 +56,15 @@
 <script>
 export default {
   name: "AdventureBrowseCard",
-  props: ['adventure']
+  data: function(){
+    return{
+      role:''
+    }
+  },
+  props: ['adventure', 'canReserve'],
+  mounted() {
+    this.role = sessionStorage.getItem("role");
+  }
 }
 </script>
 
@@ -80,6 +91,12 @@ export default {
 
 .view_button:hover{
   background-color: #4AAE9B;
+}
+
+
+button{
+  background-color: #2e6b6b;
+  color: white;
 }
 
 a{

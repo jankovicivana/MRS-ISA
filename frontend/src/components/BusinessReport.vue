@@ -3,6 +3,7 @@
     <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
     <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
     <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>
+    <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
         <div class="container h-100" >
@@ -17,7 +18,7 @@
                     <p class="col-3 pt-4" v-if="role === 'ROLE_cottageOwner'">Average cottage grade: </p>
                     <p class="col-3 pt-4" v-if="role === 'ROLE_boatOwner'">Average boat grade: </p>
                     <p class="col-3 pt-4" v-if="role === 'ROLE_fishingInstructor'">Average adventure grade: </p>
-                    <star-rating class="col-9" :rating="average_grade" :read-only="true" :increment="0.01" :star-size="20" :size="200"></star-rating>
+                    <star-rating  v-if="role !== 'ROLE_admin'"  class="col-9" :rating="average_grade" :read-only="true" :increment="0.01" :star-size="20" :size="200"></star-rating>
 
                   </div>
                   <div class="row">
@@ -55,7 +56,7 @@
                           <tr style="background:rgba(75, 192, 192, 0.4)">
                             <th>Start date</th>
                             <th>End date</th>
-                            <th>Price</th>
+                            <th>Profit</th>
 
                           </tr>
                           </thead>
@@ -63,7 +64,8 @@
                           <tr style="background: rgba(75, 192, 192, 0.2);" v-for="reservation in found_reservations">
                             <td>{{reservation.startDateTime[2]+"."+reservation.startDateTime[1]+"."+reservation.startDateTime[0]+"."}}</td>
                             <td>{{reservation.endDateTime[2]+"."+reservation.endDateTime[1]+"."+reservation.endDateTime[0]+"."}}</td>
-                            <td>{{reservation.advertiserProfit}}</td>
+                            <td  v-if="role !== 'ROLE_admin'">{{reservation.advertiserProfit}}</td>
+                            <td  v-if="role === 'ROLE_admin'">{{reservation.systemProfit}}</td>
                           </tr>
                           </tbody>
 
@@ -91,11 +93,12 @@ import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 import axios from "axios";
 import Bar from 'vue-chartjs'
+import AdminNavbar from "./header/AdminNavbar";
 
 
 export default {
   name: "BusinessReport",
-  components: {BoatOwnerNavbar, CottageOwnerNavbar, FishingInstructorNavbar,Bar},
+  components: {AdminNavbar, BoatOwnerNavbar, CottageOwnerNavbar, FishingInstructorNavbar,Bar},
   data(){
     return{
       reservations: [],
@@ -118,6 +121,8 @@ export default {
     }else if (this.role === "ROLE_fishingInstructor"){
       reservationUrl = "/api/reservation/findHistoryByInstructor";
       gradeUrl = "/api/adventures/getAverageGrade";
+    }else if (this.role === "ROLE_admin"){
+      reservationUrl = "/api/reservation/findHistory";
     }
       axios
         .get(process.env.VUE_APP_SERVER_PORT + reservationUrl, {
@@ -133,6 +138,8 @@ export default {
           let data = this.monthReservations(this.reservations);
           this.makeChart(data,['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'])
         })
+
+    if (this.role !== "ROLE_admin"){
       axios
         .get(process.env.VUE_APP_SERVER_PORT + gradeUrl, {
           headers: {
@@ -142,7 +149,7 @@ export default {
         })
         .then(response => (
           this.average_grade = response.data
-        ))
+        ))}
 
 
 
@@ -236,7 +243,10 @@ export default {
     getSum:function (){
       this.sum=0;
       for(let i=0;i<this.found_reservations.length;i++){
-        this.sum += this.found_reservations[i].advertiserProfit;
+        if (this.role !== "ROLE_admin"){
+        this.sum += this.found_reservations[i].advertiserProfit;}else{
+          this.sum += this.found_reservations[i].systemProfit;
+        }
       }
     },
     search:function (){

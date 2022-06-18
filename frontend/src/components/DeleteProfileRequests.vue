@@ -95,8 +95,8 @@ export default {
           setTimeout(() => {}, 3000)
           const index = this.requests.indexOf(request);
           this.requests.splice(index, 1);
-        }).catch(function error(error) {
-        alert(error.response);
+        }).catch((error) =>  {
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Another admin answered this request!</p>`)
       });
 
 
@@ -115,8 +115,8 @@ export default {
           setTimeout(() => {}, 3000)
           const index = this.requests.indexOf(request);
           this.requests.splice(index, 1);
-        }).catch(function error(error) {
-        alert(error.response);
+        }).catch((error) =>  {
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Another admin answered this request!</p>`)
       });
 
     }

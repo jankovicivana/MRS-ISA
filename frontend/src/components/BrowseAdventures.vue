@@ -3,6 +3,7 @@
     <main_navbar v-if="role === ''"></main_navbar>
     <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
     <client-navbar v-if="role === 'ROLE_client'"></client-navbar>
+    <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>
     <div class="mt-5 container">
       <h1>Adventures</h1>
       <hr style="color: #2e6b6b"/>
@@ -38,7 +39,7 @@
           <p style="color: white"> No adventures  for now.</p>
         </div>
         <div v-for="a in search_adventures">
-          <browse_card :adventure="a" v-on:subscribe="subscribe($event)"></browse_card>
+          <browse_card :adventure="a" v-on:deleteAdventure="deleteAdventure($event)" v-on:subscribe="subscribe($event)"></browse_card>
         </div>
       </div>
     </div>
@@ -51,10 +52,12 @@ import MainNavbar from "./header/MainNavbar";
 import AdventureBrowseCard from "./AdventureBrowseCard";
 import axios from "axios";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
+import ClientNavbar from "./header/ClientNavbar";
+import AdminNavbar from "./header/AdminNavbar";
 
 export default {
   name: "BrowseAdventures",
-  components: {FishingInstructorNavbar, 'main_navbar': MainNavbar, 'browse_card': AdventureBrowseCard},
+  components: {AdminNavbar, ClientNavbar, FishingInstructorNavbar, 'main_navbar': MainNavbar, 'browse_card': AdventureBrowseCard},
   data: function (){
     return {
       adventures: '',
@@ -83,6 +86,19 @@ export default {
     show: function (group, type = '',title, text) {
       this.$notify({group, title, text, type})
     },
+
+    deleteAdventure:function (id){
+      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted adventure!</p>`)
+          setTimeout(() => {location.reload(); }, 3000)
+        }).catch((error) => {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Adventure has reservations.</p>`)
+      });
+
+    },
+
 
     subscribe: function (id){
       axios
