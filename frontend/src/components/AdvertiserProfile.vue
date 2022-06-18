@@ -183,7 +183,7 @@ export default {
     show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
     },
-    loadOnlyOneImage(name) {
+    loadOnlyOneImage:function(name) {
       axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
         .then(response => {
           this.mainPhoto=URL.createObjectURL(response.data);
@@ -191,10 +191,6 @@ export default {
         .catch((error) =>{
           console.log(error);
         });
-    },
-    deleteProfile:function (){
-
-      this.$router.push({path:"/user/passwordChange/"+2});
     },
     editAdvertiser: function() {
       this.inputs = document.querySelectorAll('input[type="text"]');
