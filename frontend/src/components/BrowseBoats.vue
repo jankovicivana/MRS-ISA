@@ -1,5 +1,5 @@
 <template>
-  <div class="browse_main">
+  <div class="browse_main is-fullheight min-vh-100">
     <main_navbar v-if="role === ''"></main_navbar>
     <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
@@ -56,6 +56,8 @@ import axios from "axios";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 import ClientNavbar from "./header/ClientNavbar";
 import AdminNavbar from "./header/AdminNavbar";
+import _orderBy from 'lodash/orderBy';
+
 
 export default {
   name: "BrowseBoats",
@@ -64,7 +66,7 @@ export default {
     return{
       boats: '',
       searchText: '',
-      searchSort: '',
+      searchSort: "NO_SORT",
       search_boats: '',
       role:''
     }
@@ -128,113 +130,25 @@ export default {
       else{
         this.search_boats = this.boats;
       }
-      if(this.searchSort !== "NO_SORT"){
-        if (this.searchSort === "NAME_ASC"){
-          this.search_boats = this.search_boats.sort((a, b) => {
-            let aName = a.name.toLowerCase();
-            let bName = b.name.toLowerCase();
-            if(aName < bName){
-              return -1;
-            }
-            if(aName > bName){
-              return 1;
-            }
-            return 0;
-          })
+
+      if(this.searchSort !== "NO_SORT") {
+        if (this.searchSort === "NAME_ASC") {
+          this.search_boats = _orderBy(this.search_boats, 'name', 'asc')
+        } else if (this.searchSort === "NAME_DESC") {
+          this.search_boats = _orderBy(this.search_boats, 'name', 'desc')
+        } else if (this.searchSort === "PRICE_ASC") {
+          this.search_boats = _orderBy(this.search_boats, 'price', 'asc')
+        } else if (this.searchSort === "PRICE_DESC") {
+          this.search_boats = _orderBy(this.search_boats, 'price', 'desc')
+        } else if (this.searchSort === "RATING_ASC") {
+          this.search_boats = _orderBy(this.search_boats, 'averageGrade', 'asc')
+        } else if (this.searchSort === "RATING_DESC") {
+          this.search_boats = _orderBy(this.search_boats, 'averageGrade', 'desc')
+        } else if (this.searchSort === "ADDRESS_ASC") {
+          this.search_boats = _orderBy(this.search_boats, 'address.street', 'asc')
+        } else if (this.searchSort === "ADDRESS_DESC") {
+          this.search_boats = _orderBy(this.search_boats, 'address.street', 'desc')
         }
-        else if(this.searchSort === "NAME_DESC"){
-          this.search_boats = this.search_boats.sort((a, b) => {
-            let aName = a.name.toLowerCase();
-            let bName = b.name.toLowerCase();
-            if(aName < bName){
-              return 1;
-            }
-            if(aName > bName){
-              return -1;
-            }
-            return 0;
-          })
-        }
-
-        else if(this.searchSort === "PRICE_ASC"){
-          this.search_boats = this.search_boats.sort((a, b) => {
-
-            if(a.price < b.price){
-              return -1;
-            }
-            if(a.price > b.price){
-              return 1;
-            }
-            return 0;
-          })
-        }
-
-        else if(this.searchSort === "PRICE_DESC"){
-          this.search_boats = this.search_boats.sort((a, b) => {
-
-            if(a.price < b.price){
-              return 1;
-            }
-            if(a.price > b.price){
-              return -1;
-            }
-            return 0;
-          })
-        }
-
-        else if(this.searchSort === "RATING_ASC"){
-          this.search_boats = this.search_boats.sort((a, b) => {
-
-            if(a.rating < b.rating){
-              return -1;
-            }
-            if(a.rating > b.rating){
-              return 1;
-            }
-            return 0;
-          })
-        }
-
-        else if(this.searchSort === "RATING_DESC"){
-          this.search_boats = this.search_boats.sort((a, b) => {
-
-            if(a.rating < b.rating){
-              return 1;
-            }
-            if(a.rating > b.rating){
-              return -1;
-            }
-            return 0;
-          })
-        }
-
-        else if (this.searchSort === "ADDRESS_ASC"){
-          this.search_boats = this.search_boats.sort((a, b) => {
-            let aAddress = a.address.street.toLowerCase();
-            let bAddress = b.address.street.toLowerCase();
-            if(aAddress < bAddress){
-              return -1;
-            }
-            if(aAddress > bAddress){
-              return 1;
-            }
-            return 0;
-          })
-        }
-        else if(this.searchSort === "ADDRESS_DESC"){
-          this.search_boats = this.search_boats.sort((a, b) => {
-            let aAddress = a.address.street.toLowerCase();
-            let bAddress = b.address.street.toLowerCase();
-            if(aAddress < bAddress){
-              return 1;
-            }
-            if(aAddress > bAddress){
-              return -1;
-            }
-            return 0;
-          })
-        }
-
       }
     }
   }
@@ -249,7 +163,7 @@ export default {
   background-position-y: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: fit-content;
   opacity: 1;
   position: absolute;
   top: 0;

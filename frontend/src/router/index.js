@@ -53,6 +53,7 @@ import AdminBusinessReport from "../components/AdminBusinessReport";
 import ClientReview from "../components/ClientReview";
 import ClientComplaint from "../components/ClientComplaint";
 import LoyaltyProgram from "../components/LoyaltyProgram";
+import RegistrationActivate from "../components/RegistrationActivate";
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -278,6 +279,12 @@ export default new Router({
       path: '/admin/loyalty',
       name: "LoyaltyProgram",
       component: LoyaltyProgram
+    },
+    {
+      path: '/activate/:token',
+      name: "RegistrationActivate",
+      component: RegistrationActivate,
+      props: true
     }
   ]
 })

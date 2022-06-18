@@ -38,13 +38,23 @@ export default {
   name: "LoginPage",
   components: {"main_navbar": MainNavbar},
   methods:{
+    show: function (group, type = '',title, text) {
+      this.$notify({group, title, text, type})
+    },
+
     login: function(){
       let username = this.$refs.email.value;
       let password = this.$refs.password.value;
       this.info = {username, password}
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/auth/login", this.info)
-        .then(response => { this.loginSuccessful(response);})
+        .then(response => {
+          if(response.data === ""){
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Not activated</p>`,`<p style="font-size: 20px">You must activate your account first</p>`)
+          } else{
+            this.loginSuccessful(response);
+          }
+        })
         .catch((error) => { this.loginFailed(); })
     },
 
@@ -66,7 +76,8 @@ export default {
         }
     },
 
-    loginFailed(){
+    loginFailed(error){
+      this.show('foo-css', 'error',`<p style="font-size: 25px">Wrong credentials</p>`,`<p style="font-size: 20px">Wrong username or password</p>`)
       this.error = 'Login failed!';
       delete localStorage.token
     }

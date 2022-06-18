@@ -57,35 +57,34 @@
                   </div>
 
                   <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6>&#127941; Status: Regular </h6>
+                    <h6>&#127941; Status: {{ status }} </h6>
                     <h6>&#11088; Points: <span>{{client.points}}</span> </h6>
                     <h6>&#10060; Penalties: <span>{{client.penalties}}</span></h6>
                   </div>
 
                   <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
-                    <p><i>What is loyalty program? You get points with each reservation you make. Collect points to gain
+                    <p><i>What is loyalty program? You get {{systemInfo.clientPoints}} points with each reservation you make. Collect points to gain
                       a certain user status which brings you
                       special benefits.
                     </i></p>
                   </div>
 
-                  <div style="background: #ecd9c6; border:2px solid #ecd9c6" class="d-flex justify-content-between align-items-center mb-3 mt-3">
+                  <div style="background: #ecd9c6; border:2px solid #ecd9c6" class="d-flex justify-content-between align-items-center mb-2 mt-3">
                     <h5> <span style="color: slategrey; padding-left: 5px;  margin-left: 20px">&#127941;  SILVER</span> </h5>
                     <span style="margin-right: 10px; padding-right: 25px;">
-                    <ul>
-                      <li>Collect 20 points to unlock</li>
-                      <li>10% off for all reservations</li>
+                    <ul class="pt-3">
+                      <li>Collect {{ regular.pointsLimit }} points to unlock</li>
+                      <li>{{ silver.clientDiscount }}% off of all reservations</li>
                     </ul>
                       </span>
                   </div>
 
                   <div style="background: #ecd9c6; border:2px solid #ecd9c6" class="d-flex justify-content-between align-items-center mt-3">
-                    <h5> <span style="color: gold; padding-left: 5px; margin-left: 20px">&#127941;  GOLD</span> </h5>
+                    <h5> <span style="color: goldenrod; padding-left: 5px; margin-left: 20px">&#127941;  GOLD</span> </h5>
                     <span style="margin-right: 10px; padding-right: 25px;">
-                    <ul>
-                      <li>Collect 50 points to unlock</li>
-                      <li>20% off for all reservations</li>
-                      <li>No penalties</li>
+                    <ul class="pt-3">
+                      <li>Collect {{ gold.pointsLimit }} points to unlock</li>
+                      <li>{{gold.clientDiscount}}% off of all reservations</li>
                     </ul>
                     </span>
                   </div>
@@ -121,7 +120,12 @@ export default {
       inputs: null,
       editButton: null,
       readonly: true,
-      role:''
+      role:'',
+      systemInfo: '',
+      regular: '',
+      silver: '',
+      gold: '',
+      status: ''
     }
   },
   mounted: function (){
@@ -141,9 +145,58 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")
           }
         })
-        .then(response => (this.client = response.data, this.address = this.client.address)).catch(function error(error) {
+        .then(response => {this.client = response.data
+                           this.address = this.client.address
+          axios
+            .get(process.env.VUE_APP_SERVER_PORT+"/api/system/getRankingInfo/1", {headers: {Authorization:
+                  'Bearer ' + sessionStorage.getItem("accessToken")}})
+            .then(response => {
+              this.regular = response.data
+
+              axios
+                .get(process.env.VUE_APP_SERVER_PORT + "/api/system/getRankingInfo/2", {
+                  headers: {
+                    Authorization:
+                      'Bearer ' + sessionStorage.getItem("accessToken")
+                  }
+                })
+                .then(response => {
+                  this.silver = response.data
+
+                  axios
+                    .get(process.env.VUE_APP_SERVER_PORT+"/api/system/getRankingInfo/3", {headers: {Authorization:
+                          'Bearer ' + sessionStorage.getItem("accessToken")}})
+                    .then(response => {
+                      this.gold = response.data
+                      if (this.client.points < this.regular.pointsLimit) {
+                        this.status = "Regular"
+                      } else if (this.client.points < this.silver.pointsLimit) {
+                        this.status = "Silver"
+                      } else {
+                        this.status = "Gold"
+                      }
+
+                    });
+
+                });
+
+            });
+
+        }).catch(function error(error) {
         alert(error.response.data);
       });
+
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/system/getSystemInfo", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => (this.systemInfo = response.data)).catch(function error(error) {
+        alert(error.response.data);
+      });
+
     }
 
   },
@@ -181,7 +234,8 @@ export default {
             this.show('foo-css', 'success')
           })
       }
-    }
+    },
+
   }
 }
 </script>

@@ -26,7 +26,7 @@ public class EntitySearchDTO {
 
     private LocalTime endTime;
 
-    private Integer rating;
+    private Double rating;
 
 
 }

@@ -54,11 +54,10 @@ public class ClientService {
         c.setName(userRequest.getName());
         c.setSurname(userRequest.getSurname());
         c.setAddress(new Address(userRequest.getStreet(), userRequest.getCity(), userRequest.getPostalCode(), userRequest.getCountry()));
-        c.setEnabled(true);
+        c.setEnabled(false);
         c.setPhoneNumber(userRequest.getPhoneNumber());
         c.setPoints(0);
         c.setPenalties(0);
-
         List<Role> roles = roleService.findByName(userRequest.getRole());
         c.setRoles(roles);
 

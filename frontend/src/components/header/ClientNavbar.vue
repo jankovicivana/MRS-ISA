@@ -15,11 +15,6 @@
 
           <a class="navbar-item" href="#/client/subscriptions">Subscriptions </a>
 
-          <a class="navbar-item" href="#/client/review">Reviews </a>
-
-          <a class="navbar-item" href="#/client/clientHomepage">Complaints </a>
-
-
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link" style="background-color: #2e6b6b"> Reservations </a>
             <div class="navbar-dropdown is-boxed">

@@ -4,6 +4,7 @@ package ftn.mrs.isa.rentalapp.service;
 import ftn.mrs.isa.rentalapp.model.user.Advertiser;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.User;
+import ftn.mrs.isa.rentalapp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -25,6 +26,9 @@ public class EmailService {
      */
     @Autowired
     private Environment env;
+
+    @Autowired
+    private TokenUtils tokenUtils;
 
     /*
      * Anotacija za oznacavanje asinhronog zadatka
@@ -270,4 +274,41 @@ public class EmailService {
         javaMailSender.send( mail.getMimeMessage());
         System.out.println("Email poslat!");
     }
+
+    @Async
+    public void sendRegistrationActivation(Client c) throws MessagingException {
+        MimeMessageHelper mail = new MimeMessageHelper(javaMailSender.createMimeMessage(), true, "UTF-8");
+        mail.setTo(c.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Rental app notification");
+        String token = tokenUtils.generateToken(c.getEmail());
+        String link = "http://localhost:4000/#/activate/" + token;
+        mail.setText("<html>\n" +
+                "    <body>\n" +
+                "        <div style=\"margin: 50px;\">\n" +
+                "            <div style=\"background-color: rgb(99, 216, 99);height: 55px;\">\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">Successful </h1>\n" +
+                "            </div>\n" +
+                "            <div style=\"margin-top: 10px;\">\n" +
+                "                <div style=\"margin: 25px;\">\n" +
+                "                Dear "+c.getName()+",\n" +
+                "                <br/>\n" +
+                "                Click the link below to activate your account: \n" +
+                "                <br/>\n" +
+                "                "+ link + " \n" +
+                "                <br/>\n" +
+                "                Regards,\n" +
+                "                <br/>\n" +
+                "                <span >Rental app team</span>\n" +
+                "            </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </body>\n" +
+                "</html>",true);
+        //mail.set
+        javaMailSender.send( mail.getMimeMessage());
+        System.out.println("Email poslat!");
+    }
+
 }

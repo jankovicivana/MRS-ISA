@@ -1,5 +1,5 @@
 <template>
-  <div class="browse_main">
+  <div  class="browse_main is-fullheight min-vh-100">
     <main_navbar v-if="role === ''"></main_navbar>
     <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
     <client-navbar v-if="role === 'ROLE_client'"></client-navbar>
@@ -54,6 +54,7 @@ import CottageBrowseCard from "./CottageBrowseCard";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import ClientNavbar from "./header/ClientNavbar";
 import AdminNavbar from "./header/AdminNavbar";
+import _orderBy from 'lodash/orderBy';
 
 export default {
   name: "Cottages",
@@ -62,7 +63,7 @@ export default {
     return{
       cottages: '',
       searchText: '',
-      searchSort: '',
+      searchSort: "NO_SORT",
       search_cottages: '',
       role:'',
       can: ''
@@ -95,109 +96,33 @@ export default {
       }
       if(this.searchSort !== "NO_SORT"){
         if (this.searchSort === "NAME_ASC"){
-          this.search_cottages = this.search_cottages.sort((a, b) => {
-            let aName = a.name.toLowerCase();
-            let bName = b.name.toLowerCase();
-            if(aName < bName){
-              return -1;
-            }
-            if(aName > bName){
-              return 1;
-            }
-            return 0;
-          })
+          this.search_cottages = _orderBy(this.search_cottages, 'name', 'asc')
         }
         else if(this.searchSort === "NAME_DESC"){
-          this.search_cottages = this.search_cottages.sort((a, b) => {
-            let aName = a.name.toLowerCase();
-            let bName = b.name.toLowerCase();
-            if(aName < bName){
-              return 1;
-            }
-            if(aName > bName){
-              return -1;
-            }
-            return 0;
-          })
+          this.search_cottages = _orderBy(this.search_cottages, 'name', 'desc')
         }
 
         else if(this.searchSort === "PRICE_ASC"){
-          this.search_cottages = this.search_cottages.sort((a, b) => {
-
-            if(a.price < b.price){
-              return -1;
-            }
-            if(a.price > b.price){
-              return 1;
-            }
-            return 0;
-          })
+          this.search_cottages = _orderBy(this.search_cottages, 'price', 'asc')
         }
 
         else if(this.searchSort === "PRICE_DESC"){
-          this.search_cottages = this.search_cottages.sort((a, b) => {
-
-            if(a.price < b.price){
-              return 1;
-            }
-            if(a.price > b.price){
-              return -1;
-            }
-            return 0;
-          })
+          this.search_cottages = _orderBy(this.search_cottages, 'price', 'desc')
         }
 
         else if(this.searchSort === "RATING_ASC"){
-          this.search_cottages = this.search_cottages.sort((a, b) => {
-
-            if(a.rating < b.rating){
-              return -1;
-            }
-            if(a.rating > b.rating){
-              return 1;
-            }
-            return 0;
-          })
+          this.search_cottages = _orderBy(this.search_cottages, 'averageGrade', 'asc')
         }
 
         else if(this.searchSort === "RATING_DESC"){
-          this.search_cottages = this.search_cottages.sort((a, b) => {
-
-            if(a.rating < b.rating){
-              return 1;
-            }
-            if(a.rating > b.rating){
-              return -1;
-            }
-            return 0;
-          })
+          this.search_cottages = _orderBy(this.search_cottages, 'averageGrade', 'desc')
         }
 
         else if (this.searchSort === "ADDRESS_ASC"){
-          this.search_cottages = this.search_cottages.sort((a, b) => {
-            let aAddress = a.address.street.toLowerCase();
-            let bAddress = b.address.street.toLowerCase();
-            if(aAddress < bAddress){
-              return -1;
-            }
-            if(aAddress > bAddress){
-              return 1;
-            }
-            return 0;
-          })
+          this.search_cottages = _orderBy(this.search_cottages, 'address.street', 'asc')
         }
         else if(this.searchSort === "ADDRESS_DESC"){
-          this.search_cottages = this.search_cottages.sort((a, b) => {
-            let aAddress = a.address.street.toLowerCase();
-            let bAddress = b.address.street.toLowerCase();
-            if(aAddress < bAddress){
-              return 1;
-            }
-            if(aAddress > bAddress){
-              return -1;
-            }
-            return 0;
-          })
+          this.search_cottages = _orderBy(this.search_cottages, 'address.street', 'desc')
         }
 
       }
@@ -261,13 +186,14 @@ export default {
   background-position-y: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: fit-content;
   opacity: 1;
   position: absolute;
   top: 0;
   transition: opacity 0.3s linear 0s;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
+
 }
 
 h1{

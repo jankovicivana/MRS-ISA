@@ -1,5 +1,5 @@
 <template>
-  <div class="subscriptions_main">
+  <div class="subscriptions_main is-fullheight min-vh-100">
     <ClientNavbar></ClientNavbar>
     <div class="mt-5 container">
       <h1>My subscriptions</h1>

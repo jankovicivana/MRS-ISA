@@ -54,16 +54,11 @@ public class EntityController {
         LocalDateTime start = LocalDateTime.of(params.getStartDate(), params.getStartTime());
         LocalDateTime end = LocalDateTime.of(params.getEndDate(), params.getEndTime());
 
-        /*entities = entityService.getByParams(params);
-        for(EntityType e: entities){
-            if(availablePeriodService.isAvailable(e.getId(), params.getStartDate(), params.getEndDate()) && !reservationService.isReserved(e.getId(), start, end)){
-                entitiesDTO.add(mapper.map(e, EntityTypeDTO.class));
-            }
-        }*/
 
         entities = entityService.getAll();
         for(EntityType et: entities){
-            if (EntityKind.toString(et.getKind()).equals(params.getType()) && et.getPrice() <= params.getPrice() && et.getAddress().getCity().equals(params.getCity())){
+            if (EntityKind.toString(et.getKind()).equals(params.getType()) && et.getPrice() <= params.getPrice()
+                    && et.getAddress().getCity().equals(params.getCity()) && et.getAverageGrade() > params.getRating()  ){
                 if(availablePeriodService.isAvailable(et.getId(), start, end) && !reservationService.isReserved(et.getId(), start, end)){
                     EntityKind kind = et.getKind();
                     EntityTypeDTO dto = mapper.map(et, EntityTypeDTO.class);

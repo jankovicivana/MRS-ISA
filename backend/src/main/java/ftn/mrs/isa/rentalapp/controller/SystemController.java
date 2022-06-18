@@ -34,7 +34,7 @@ public class SystemController {
     private ModelMapper mapper;
 
     @GetMapping(value = "/getRankingInfo/{id}")
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAnyRole('admin', 'client')")
     public ResponseEntity<RankingInfoDTO> getRankingInfo(@PathVariable Integer id, Principal principal){
         RankingInfo rankingInfo = rankingInfoService.findOne(id);
         if(rankingInfo == null){
@@ -61,7 +61,7 @@ public class SystemController {
     }
 
     @GetMapping(value = "/getSystemInfo")
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAnyRole('admin', 'client')")
     public ResponseEntity<SystemInfoDTO> getRankingInfo(Principal principal){
         SystemInfo systemInfo = systemInfoService.findById(1);
         if(systemInfo == null){

@@ -46,7 +46,7 @@
 
                         <div class="d-flex justify-content-center pt-4">
                           <button v-if="this.reservation.isReviewed" title="Already reviewed" style="background-color: grey;" class="button">Send</button>
-                          <button v-else v-on:click="sendReview()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><span style="color:white">Send</span></button>
+                          <button type="button" v-else v-on:click="sendReview()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><span style="color:white">Send</span></button>
                         </div>
                       </form>
 

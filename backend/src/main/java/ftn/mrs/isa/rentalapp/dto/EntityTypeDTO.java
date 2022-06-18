@@ -23,4 +23,6 @@ public class EntityTypeDTO {
 
     private Set<AdditionalServiceDTO> additionalServices;
 
+    private Double averageGrade;
+
 }

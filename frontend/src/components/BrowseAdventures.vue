@@ -1,8 +1,8 @@
 <template>
-  <div class="browse_main">
+  <div class="browse_main is-fullheight min-vh-100">
     <main_navbar v-if="role === ''"></main_navbar>
     <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
-    <client-navbar v-if="role === 'ROLE_client'"></client-navbar>
+    <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
     <div class="mt-5 container">
       <h1>Adventures</h1>
       <hr style="color: #2e6b6b"/>
@@ -51,15 +51,18 @@ import MainNavbar from "./header/MainNavbar";
 import AdventureBrowseCard from "./AdventureBrowseCard";
 import axios from "axios";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
+import _orderBy from 'lodash/orderBy';
+import ClientNavbar from "./header/ClientNavbar";
+
 
 export default {
   name: "BrowseAdventures",
-  components: {FishingInstructorNavbar, 'main_navbar': MainNavbar, 'browse_card': AdventureBrowseCard},
+  components: {ClientNavbar, FishingInstructorNavbar, 'main_navbar': MainNavbar, 'browse_card': AdventureBrowseCard},
   data: function (){
     return {
       adventures: '',
       searchText: '',
-      searchSort: '',
+      searchSort: "NO_SORT",
       search_adventures: '',
       role:''
     }
@@ -107,113 +110,24 @@ export default {
       else{
         this.search_adventures = this.adventures;
       }
-      if(this.searchSort !== "NO_SORT"){
-        if (this.searchSort === "NAME_ASC"){
-          this.search_adventures = this.search_adventures.sort((a, b) => {
-            let aName = a.name.toLowerCase();
-            let bName = b.name.toLowerCase();
-            if(aName < bName){
-              return -1;
-            }
-            if(aName > bName){
-              return 1;
-            }
-            return 0;
-          })
+      if(this.searchSort !== "NO_SORT") {
+        if (this.searchSort === "NAME_ASC") {
+          this.search_adventures = _orderBy(this.search_adventures, 'name', 'asc')
+        } else if (this.searchSort === "NAME_DESC") {
+          this.search_adventures = _orderBy(this.search_adventures, 'name', 'desc')
+        } else if (this.searchSort === "PRICE_ASC") {
+          this.search_adventures = _orderBy(this.search_adventures, 'price', 'asc')
+        } else if (this.searchSort === "PRICE_DESC") {
+          this.search_adventures = _orderBy(this.search_adventures, 'price', 'desc')
+        } else if (this.searchSort === "RATING_ASC") {
+          this.search_adventures = _orderBy(this.search_adventures, 'averageGrade', 'asc')
+        } else if (this.searchSort === "RATING_DESC") {
+          this.search_adventures = _orderBy(this.search_adventures, 'averageGrade', 'desc')
+        } else if (this.searchSort === "ADDRESS_ASC") {
+          this.search_adventures = _orderBy(this.search_adventures, 'address.street', 'asc')
+        } else if (this.searchSort === "ADDRESS_DESC") {
+          this.search_adventures = _orderBy(this.search_adventures, 'address.street', 'desc')
         }
-        else if(this.searchSort === "NAME_DESC"){
-          this.search_adventures = this.search_adventures.sort((a, b) => {
-            let aName = a.name.toLowerCase();
-            let bName = b.name.toLowerCase();
-            if(aName < bName){
-              return 1;
-            }
-            if(aName > bName){
-              return -1;
-            }
-            return 0;
-          })
-        }
-
-        else if(this.searchSort === "PRICE_ASC"){
-          this.search_adventures = this.search_adventures.sort((a, b) => {
-
-            if(a.price < b.price){
-              return -1;
-            }
-            if(a.price > b.price){
-              return 1;
-            }
-            return 0;
-          })
-        }
-
-        else if(this.searchSort === "PRICE_DESC"){
-          this.search_adventures = this.search_adventures.sort((a, b) => {
-
-            if(a.price < b.price){
-              return 1;
-            }
-            if(a.price > b.price){
-              return -1;
-            }
-            return 0;
-          })
-        }
-
-        else if(this.searchSort === "RATING_ASC"){
-          this.search_adventures = this.search_adventures.sort((a, b) => {
-
-            if(a.rating < b.rating){
-              return -1;
-            }
-            if(a.rating > b.rating){
-              return 1;
-            }
-            return 0;
-          })
-        }
-
-        else if(this.searchSort === "RATING_DESC"){
-          this.search_adventures = this.search_adventures.sort((a, b) => {
-
-            if(a.rating < b.rating){
-              return 1;
-            }
-            if(a.rating > b.rating){
-              return -1;
-            }
-            return 0;
-          })
-        }
-
-        else if (this.searchSort === "ADDRESS_ASC"){
-          this.search_adventures = this.search_adventures.sort((a, b) => {
-            let aAddress = a.address.street.toLowerCase();
-            let bAddress = b.address.street.toLowerCase();
-            if(aAddress < bAddress){
-              return -1;
-            }
-            if(aAddress > bAddress){
-              return 1;
-            }
-            return 0;
-          })
-        }
-        else if(this.searchSort === "ADDRESS_DESC"){
-          this.search_adventures = this.search_adventures.sort((a, b) => {
-            let aAddress = a.address.street.toLowerCase();
-            let bAddress = b.address.street.toLowerCase();
-            if(aAddress < bAddress){
-              return 1;
-            }
-            if(aAddress > bAddress){
-              return -1;
-            }
-            return 0;
-          })
-        }
-
       }
     }
   }
@@ -228,13 +142,13 @@ export default {
   background-position-y: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: fit-content;
   opacity: 1;
   position: absolute;
   top: 0;
   transition: opacity 0.3s linear 0s;
   width: 100%;
-  overflow: scroll;
+  overflow: visible;
 }
 
 h1{

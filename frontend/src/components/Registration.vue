@@ -153,12 +153,20 @@ export default {
 
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/auth/register", this.info)
-        .then(response => { this.registerSuccessful(response);})
+        .then(response => { this.registerSuccessful(role);})
         .catch((error) => { this.registerFailed(); })
     },
 
-    registerSuccessful: function(response){
-      this.show('foo-css', 'success');
+    registerSuccessful: function(role){
+      if(role === "ROLE_client"){
+        let title = `<p style="font-size: 25px">Successfull registration</p>`
+        let text = `<p style="font-size: 20px">Check you mail to activate your account!</p>`
+        this.$notify({group:'foo-css', title, text, type:'success'})
+      }
+      else{
+        this.show('foo-css', 'success');
+      }
+
       setTimeout(() => { router.push('/login'); }, 1500);
     },
 

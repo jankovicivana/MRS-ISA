@@ -12,8 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
 
@@ -53,6 +57,9 @@ public class AuthenticationController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private EmailService emailService;
+
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
     @PostMapping("/login")
@@ -64,16 +71,25 @@ public class AuthenticationController {
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         System.out.println("Lozinkaaaaaaa: " + passwordEncoder.encode("pass"));
+        Authentication authentication;
+        try{
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+        } catch(InternalAuthenticationServiceException e){
+            return ResponseEntity.badRequest().body(null);
+        } catch (DisabledException e){
+            return  ResponseEntity.ok(null);
+        }
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-
+        // InternalAuthenticationServiceException - ako ne postoji
+        //DisabledException - ako je disabled
         // Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security
         // kontekst
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Kreiraj token za tog korisnika
         User user = (User) authentication.getPrincipal();
+
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
         Role role = user.getRoles().get(0);
@@ -83,17 +99,18 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) throws MessagingException {
 
         UserDetails existUser = this.userService.loadUserByUsername(userRequest.getEmail());
 
         if (existUser != null) {
-            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+            throw new ResourceConflictException(userRequest.getId(), "Username already exists"); // vrati bad request
         }
         // treba dodati i za ostale u zavisnosti od uloge
         if(userRequest.getRole().equals("ROLE_client")){
-            User client = this.clientService.save(userRequest);
+            Client client = this.clientService.save(userRequest);
             System.out.println("Maaaaaaaaailll: " + client.getEmail());
+            emailService.sendRegistrationActivation(client);
             return new ResponseEntity<>(client, HttpStatus.CREATED);
         }else if(userRequest.getRole().equals("ROLE_cottageOwner")){
             CottageOwner cottageOwner = this.cottageOwnerService.save(userRequest);

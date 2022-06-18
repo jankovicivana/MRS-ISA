@@ -54,19 +54,28 @@
 
         <div class="column col-2">
           <span style="color: white">Rating</span>
-          <star-rating :rating="4" :read-only="false" :increment="1" :show-rating="false"  @rating-selected="setRating" :star-size="35" :size="300" style="height: 40px"></star-rating>
+          <star-rating :rating="4" :read-only="false" :increment="1" :show-rating="false"  @rating-selected="setRating" :star-size="35" :size="300" style="height: 40px" ></star-rating>
         </div>
         <div class="column col-2">
-          <button type="submit" v-on:click="search()" class="btn search_btn" style="float: left">Search</button>
+          <button v-if="client.penalties < 3" type="submit" v-on:click="search()" class="btn search_btn" style="float: left">Search</button>
+          <button v-else class="disabled btn" style="background-color: grey">Search</button>
         </div>
       </div>
 
-      <div v-if="entities.length === 0">
-        <p style="color: white"> Nothing to show for now.</p>
+      <div v-if="client.penalties >= 3">
+        <p style="color: white"> You already have 3 penalties, so you can't make any reservations this month. Come back next month.</p>
       </div>
-      <div v-for="e in entities">
-        <browse_card :cottage="e" :canReserve="true"  v-on:reserve="reserve($event)"></browse_card>
+
+      <div v-else>
+        <div v-if="entities.length === 0">
+          <p style="color: white"> Nothing to show for now.</p>
+        </div>
+
+        <div v-for="e in entities">
+          <browse_card :cottage="e" :canReserve="true"  v-on:reserve="reserve($event)" ></browse_card>
+        </div>
       </div>
+
 
     </div>
 
@@ -87,9 +96,10 @@ export default {
       entities: '',
       params: '',
       type: '',
-      rating: 3,
+      rating: 4,
       role:'',
       clientId: this.$route.params.clientId,
+      client: ''
     }
   },
   mounted: function () {
@@ -97,6 +107,20 @@ export default {
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/address/all")
       .then(response => (this.addresses = response.data));
+
+    if (this.role === "ROLE_client") {
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/clients/getClient", {
+          headers: {
+            Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")
+          }
+        })
+        .then(response => {
+          this.client = response.data
+        });
+    }
+
     this.type = "Cottage";
   },
   methods: {
@@ -136,7 +160,7 @@ export default {
     },
     reserve: function (entity){
       var data = {personNum: this.$refs.people.value, startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value,
-        endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, entityId: entity.id,clientId:this.clientId}
+        endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, entityId: entity.id, clientId:this.clientId, rating: this.rating}
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/api/reservation/reserve", data,{
           headers: {
@@ -196,4 +220,5 @@ a{
 star-rating{
   align-self: normal;
 }
+
 </style>

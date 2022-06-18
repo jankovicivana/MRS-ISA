@@ -9,7 +9,9 @@ import ftn.mrs.isa.rentalapp.model.user.Advertiser;
 import ftn.mrs.isa.rentalapp.model.user.AdvertiserReview;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.service.*;
+import ftn.mrs.isa.rentalapp.util.TokenUtils;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 
 @RestController
@@ -49,6 +53,27 @@ public class ClientController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private TokenUtils tokenUtils;
+
+    @GetMapping(value = "/activate/{token}" )
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<String> activate(@PathVariable String token){
+        String username = tokenUtils.getUsernameFromToken(token);
+        System.out.println("usernameeeeeeeeeeeee" + username);
+        Client client = clientService.findByEmail(username);
+        System.out.println("usernameeeeeeeeeeeee " + username);
+        System.out.println("tokeeeeeeeeeeeeen " + token);
+        if(client == null){
+            return new ResponseEntity<>("Ne postoji", HttpStatus.NOT_FOUND);
+        }
+        if(client.isEnabled()){
+            return new ResponseEntity<>("Vec aktiviran", HttpStatus.BAD_REQUEST);
+        }
+        client.setEnabled(true);
+        clientService.save(client);
+        return new ResponseEntity<>("super", HttpStatus.OK);
+    }
 
     @GetMapping(value = "/all")
     @PreAuthorize("hasRole('admin')")
