@@ -59,7 +59,7 @@
           <star-rating :rating="4" :read-only="false" :increment="1" :show-rating="false"  @rating-selected="setRating" :star-size="35" :size="300" style="height: 40px" ></star-rating>
         </div>
         <div class="column col-2">
-          <button v-if="client.penalties < 3" type="submit" v-on:click="search()" class="btn search_btn" style="float: left">Search</button>
+          <button v-if="role!=='ROLE_client' || client.penalties < 3" type="submit" v-on:click="search()" class="btn search_btn" style="float: left">Search</button>
           <button v-else class="disabled btn" style="background-color: grey">Search</button>
         </div>
       </div>
