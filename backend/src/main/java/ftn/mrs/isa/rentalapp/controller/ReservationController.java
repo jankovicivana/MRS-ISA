@@ -296,7 +296,7 @@ public class ReservationController {
     }
 
     @PostMapping(value = "/reserve")
-    @PreAuthorize("hasAnyRole('client','cottageOwner')")
+    @PreAuthorize("hasAnyRole('client','cottageOwner','boatOwner')")
     public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal){
         Client client = clientService.findByEmail(principal.getName());
         if(client == null){
