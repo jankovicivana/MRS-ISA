@@ -31,15 +31,15 @@ insert into rules (rule,entity) values ('Decu drzati podalje',1);
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
                                 start_date_time, entity, reservation,discounted_price,deleted)
-values (5,'20220528','20220522 10:00:00 AM',false,10,150,'20220524',1,null,145,false);
+values (5,'20220710','20220629 10:00:00 AM',false,10,150,'20220702',1,null,145,false);
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
                                 start_date_time, entity, reservation,discounted_price,deleted)
-values (10,'20220620','20220601 10:00:00 AM',false,10,200,'20220615',1,null,180,false);
+values (10,'20220630','20220625 10:00:00 AM',false,10,200,'20220628',1,null,180,false);
 
 insert into quick_reservations (discount, end_date_time, expiration_date_time, is_reserved, max_person_num, price,
                                 start_date_time, entity, reservation,discounted_price,deleted)
-values (5,'20220615','20220522 10:00:00 AM',false,10,180,'20220610',1,null,170,false);
+values (5,'20220625','20220621 10:00:00 AM',false,10,180,'20220622',1,null,170,false);
 
 
 
@@ -173,7 +173,7 @@ insert into images (path,entity,is_main_photo) values ('boat8.jpg',8,false);
 insert into images (path,entity,is_main_photo) values ('boat9.jpg',8,false);
 
 
-insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted) values (nextval('my_seqv1'),'admin@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',false, true,false);
+insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted,password_changed) values (nextval('my_seqv1'),'admin@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',false, true,false,false);
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'ikasikovic1977@gmail.com','Ivana','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,0,'coka2.jpg',false, true, 0.0,'tezak zivot ovaj');
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'ikasikovic197@gmail.com','Ivanaaa','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,1,'coka2.jpg',false, true, 0.0,'ovo mi je zivotna zelja');
 insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'peraaaaa@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,1,'Ovo bi trebao da je biografija instruktora.','pera2.jpg',false, true, 0.0,'ja bih da se registrujem');

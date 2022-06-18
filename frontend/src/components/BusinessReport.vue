@@ -1,5 +1,5 @@
 <template>
-  <section class="profile_main vh-100" >
+  <section class="profile_main" >
     <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
     <cottage-owner-navbar v-if="role === 'ROLE_cottageOwner'"></cottage-owner-navbar>
     <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>

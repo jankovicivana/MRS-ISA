@@ -54,6 +54,8 @@ import ClientReview from "../components/ClientReview";
 import ClientComplaint from "../components/ClientComplaint";
 import LoyaltyProgram from "../components/LoyaltyProgram";
 import RegistrationActivate from "../components/RegistrationActivate";
+import PasswordChange from "../components/PasswordChange";
+
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -200,7 +202,7 @@ export default new Router({
       component: CurrentReservations
     },
     {
-      path: '/createReport/:id',
+      path: '/createReport',
       name: "CreateReport",
       component: Report
     },
@@ -281,10 +283,16 @@ export default new Router({
       component: LoyaltyProgram
     },
     {
+
       path: '/activate/:token',
       name: "RegistrationActivate",
       component: RegistrationActivate,
       props: true
+    },
+    {
+      path: '/user/passwordChange',
+      name: "PasswordChange",
+      component: PasswordChange
     }
   ]
 })

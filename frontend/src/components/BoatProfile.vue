@@ -113,7 +113,7 @@
           </div>
 
           <div class="row p-3">
-            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in boat.quickReservations" v-if="!q.isReserved">
+            <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in quick" v-if="!q.isReserved">
               <div>
                 <h4 class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</h4>
                 <div class="discount">{{q.discount}}%</div>
@@ -212,14 +212,20 @@ export default {
   },
   mounted:function (){
     this.role = sessionStorage.getItem("role");
+    window.scrollTo(0, 0)
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+this.boatId)
       .then(response => {
         this.boat = response.data
-        this.quick=this.boat.quickReservations
         this.address=response.data.address
         response.data.images.forEach(image => {
           this.loadImage(image.path);
+        });
+        response.data.quickReservations.forEach(q => {
+          let date = new Date(q.expirationDateTime[0],q.expirationDateTime[1]-1,q.expirationDateTime[2])
+          if(date > this.today){
+            this.quick.push(q);
+          }
         });
         this.config = {
           method: 'get',

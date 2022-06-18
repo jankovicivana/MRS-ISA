@@ -105,7 +105,7 @@ export default {
   methods:{
     createReport:function (reservation){
       console.log(reservation.client.id)
-      this.$router.push({path:"/createReport/"+reservation.client.id});
+      this.$router.push({name:"CreateReport",params:{clientId:reservation.client.id}});
     }
 
   }

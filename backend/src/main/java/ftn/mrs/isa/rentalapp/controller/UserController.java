@@ -3,10 +3,14 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.AccountDeleteRequestDTO;
 import ftn.mrs.isa.rentalapp.dto.AdvertiserDTO;
+import ftn.mrs.isa.rentalapp.dto.PasswordDTO;
 import ftn.mrs.isa.rentalapp.dto.RegistrationResponse;
+import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
+import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.AccountDeleteRequest;
 import ftn.mrs.isa.rentalapp.model.user.Advertiser;
+import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.User;
 import ftn.mrs.isa.rentalapp.service.EmailService;
 import ftn.mrs.isa.rentalapp.service.UserService;
@@ -16,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -122,6 +128,31 @@ public class UserController {
 
     }
 
+    @PostMapping(value = "/changePassword")
+    @PreAuthorize("hasAnyRole('admin','cottageOwner','boatOwner','fishingInstructor','client')")
+    public ResponseEntity<String> changePass(@RequestBody PasswordDTO passwordDTO, Principal principal) {
+        User u = userService.findUserByEmail(principal.getName());
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+        if(passwordEncoder.matches(passwordDTO.currentPassword,u.getPassword())){
+            u.setPassword(passwordEncoder.encode(passwordDTO.newPassword));
+            userService.saveUser(u);
+            return new ResponseEntity<>("Changing is successful.",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Changing password is unsuccessful.",HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/deleteAccount")
+    @PreAuthorize("hasAnyRole('admin','cottageOwner','boatOwner','fishingInstructor','client')")
+    public ResponseEntity<String> deleteAccount(@RequestBody AccountDeleteRequestDTO accountDeleteRequestDTO,Principal principal){
+        User u = userService.findUserByEmail(principal.getName());
+        AccountDeleteRequest accountDeleteRequest = new AccountDeleteRequest();
+        accountDeleteRequest.setUserId(u);
+        accountDeleteRequest.setRequestReason(accountDeleteRequestDTO.getRequestReason());
+        accountDeleteRequest.setStatus(RequestStatus.ON_HOLD);
+        userService.saveDeleteRequest(accountDeleteRequest);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

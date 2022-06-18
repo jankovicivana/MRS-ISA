@@ -1,5 +1,5 @@
 <template>
-  <section class="vh-80" style="background-image: url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'); background-size: 100% 100%;">
+  <section class="add_cottage vh-80">
     <CottageOwnerNavbar></CottageOwnerNavbar>
     <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
       <div class="container h-100" >
@@ -316,5 +316,18 @@ export default {
 </script>
 
 <style scoped>
-
+.add_cottage{
+  background-attachment: fixed;
+  background-image: url('../assets/images/back2.jpg');
+  background-position-y: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: fit-content;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  transition: opacity 0.3s linear 0s;
+  width: 100%;
+  overflow: visible;
+}
 </style>

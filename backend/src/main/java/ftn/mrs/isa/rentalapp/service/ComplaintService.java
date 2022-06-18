@@ -3,7 +3,6 @@ package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.model.entity.EntityComplaint;
 import ftn.mrs.isa.rentalapp.model.user.AdvertiserComplaint;
-import ftn.mrs.isa.rentalapp.model.user.AdvertiserReview;
 import ftn.mrs.isa.rentalapp.repository.AdvertiserComplaintRepository;
 import ftn.mrs.isa.rentalapp.repository.EntityComplaintRepository;
 import org.springframework.beans.factory.annotation.Autowired;

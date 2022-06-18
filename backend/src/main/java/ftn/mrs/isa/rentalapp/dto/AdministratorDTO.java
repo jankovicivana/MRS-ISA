@@ -18,6 +18,7 @@ public class AdministratorDTO {
     private boolean enabled;
     private boolean deleted;
     private String mainPhoto;
+    private boolean passwordChanged;
 
 
 

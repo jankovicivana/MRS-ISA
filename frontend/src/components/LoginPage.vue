@@ -1,5 +1,5 @@
 <template>
-  <div class="login_main vh-100" >
+  <div class="login_main vh-100 " >
     <main_navbar></main_navbar>
     <div class="is-flex content my-5 is-justify-content-center" style="height: 100%;">
       <div class="box p-6" style="height: 400px; width: 400px">
@@ -36,6 +36,12 @@ import router from "../router";
 
 export default {
   name: "LoginPage",
+  data: function (){
+    return{
+      admin: '',
+      changed:''
+    }
+  },
   components: {"main_navbar": MainNavbar},
   methods:{
     show: function (group, type = '',title, text) {
@@ -57,23 +63,34 @@ export default {
         })
         .catch((error) => { this.loginFailed(); })
     },
+  loginSuccessful: function(response){
+    sessionStorage.setItem("accessToken", response.data.accessToken);
+    sessionStorage.setItem("expiresIn", response.data.expiresIn);
+    sessionStorage.setItem("role", response.data.role);
 
-    loginSuccessful: function(response){
-        sessionStorage.setItem("accessToken", response.data.accessToken);
-        sessionStorage.setItem("expiresIn", response.data.expiresIn);
-        sessionStorage.setItem("role", response.data.role);
-
-        if(response.data.role === "ROLE_client"){
-          router.push('/client/clientHomepage');
-        } else if (response.data.role === "ROLE_admin") {
+    if(response.data.role === "ROLE_client"){
+      router.push('/client/clientHomepage');
+    } else if (response.data.role === "ROLE_admin") {
+      this.findAdmin();
+    } else if (response.data.role === "ROLE_cottageOwner") {
+      router.push('/cottageOwner/cottageOwnerHomepage');
+    } else if (response.data.role === "ROLE_boatOwner") {
+      router.push('/boatOwner/boatOwnerHomepage');
+    } else if (response.data.role === "ROLE_fishingInstructor") {
+      router.push('/fishingInstructor/instructorHomepage');
+    }
+  },
+    findAdmin:function (){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/administrator/getAdmin", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+        if (response.data.passwordChanged===true)
+        {
           router.push('/admin/homepage');
-        } else if (response.data.role === "ROLE_cottageOwner") {
-          router.push('/cottageOwner/cottageOwnerHomepage');
-        } else if (response.data.role === "ROLE_boatOwner") {
-          router.push('/boatOwner/boatOwnerHomepage');
-        } else if (response.data.role === "ROLE_fishingInstructor") {
-          router.push('/fishingInstructor/instructorHomepage');
-        }
+        }else{
+          router.push('/user/passwordChange');
+        }})
     },
 
     loginFailed(error){
@@ -91,10 +108,16 @@ export default {
   background-attachment: fixed;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5),
   rgba(0, 0, 0, 0.5)), url('../assets/images/login.jpg') ;
-  background-size: cover;
+  background-position-y: 0;
   background-repeat: no-repeat;
+  background-size: cover;
   height: 100%;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  transition: opacity 0.3s linear 0s;
   width: 100%;
+  overflow: visible;
 }
 
 

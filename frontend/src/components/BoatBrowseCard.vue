@@ -36,7 +36,7 @@
             <div
               class="column is-flex is-justify-content-flex-end is-align-items-right">
               <div class="buttons ml-5">
-                <button class="button is-success" style="background-color: #2e6b6b" v-on:click="$emit('subscribe', boat.id)">Subscribe</button>
+                <button v-if="role ==='ROLE_client'" class="button is-success" style="background-color: #2e6b6b" v-on:click="$emit('subscribe', boat.id)">Subscribe</button>
                 <router-link :to="{ name:'BoatProfile',params:{id:boat.id} }" class="button view_button is-success" style="background-color: #2e6b6b">
                   View
                 </router-link>

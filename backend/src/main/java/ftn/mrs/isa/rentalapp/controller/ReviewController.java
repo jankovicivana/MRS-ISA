@@ -8,8 +8,6 @@ import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Advertiser;
 import ftn.mrs.isa.rentalapp.model.user.AdvertiserReview;
 import ftn.mrs.isa.rentalapp.model.user.Client;
-import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
-import ftn.mrs.isa.rentalapp.repository.AdministratorRepository;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,7 +21,6 @@ import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor

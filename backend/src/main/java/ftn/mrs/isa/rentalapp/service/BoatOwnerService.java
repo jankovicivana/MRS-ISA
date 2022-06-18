@@ -6,7 +6,6 @@ import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
-import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
 import ftn.mrs.isa.rentalapp.model.user.Role;
 import ftn.mrs.isa.rentalapp.repository.BoatOwnerRepository;
 import ftn.mrs.isa.rentalapp.repository.BoatRepository;

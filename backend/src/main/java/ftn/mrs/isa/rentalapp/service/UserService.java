@@ -5,8 +5,10 @@ import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.Boat;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.repository.AdvertiserRepository;
+import ftn.mrs.isa.rentalapp.repository.DeleteAccountRequestRepository;
+import ftn.mrs.isa.rentalapp.repository.UserRepository;
 import ftn.mrs.isa.rentalapp.model.user.*;
-import ftn.mrs.isa.rentalapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
@@ -45,7 +46,7 @@ public class UserService  implements UserDetailsService {
     private CottageService cottageService;
 
     @Autowired
-    private  DeleteAccountRequestRepository deleteAccountRequestRepository;
+    private DeleteAccountRequestRepository deleteAccountRequestRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -85,6 +86,8 @@ public class UserService  implements UserDetailsService {
     public List<AccountDeleteRequest> getDeleteRequestOnHold() {
         return deleteAccountRequestRepository.getOnHold();
     }
+
+    public void saveDeleteRequest(AccountDeleteRequest accountDeleteRequest){deleteAccountRequestRepository.save(accountDeleteRequest);}
 
     public void saveDeletionRequest(AccountDeleteRequest request) {
         deleteAccountRequestRepository.save(request);

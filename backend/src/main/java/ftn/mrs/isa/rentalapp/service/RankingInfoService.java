@@ -2,7 +2,6 @@ package ftn.mrs.isa.rentalapp.service;
 
 
 import ftn.mrs.isa.rentalapp.model.system_info.RankingInfo;
-import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
 import ftn.mrs.isa.rentalapp.repository.RankingInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
