@@ -56,6 +56,10 @@ public class FishingInstructorController {
         fishingInstructorDTO.setRegistrationReason(fishingInstructor.getRegistrationReason());
         FishingInstructor updatedInstructor = mapper.map(fishingInstructorDTO,FishingInstructor.class);
         updatedInstructor.setRoles(fishingInstructor.getRoles());
+        updatedInstructor.setMainPhoto(fishingInstructor.getMainPhoto());
+        updatedInstructor.setPoints(fishingInstructor.getPoints());
+        updatedInstructor.setEnabled(fishingInstructor.isEnabled());
+        updatedInstructor.setType(fishingInstructor.getType());
         fishingInstructorService.updateInstructor(updatedInstructor);
     }
 
