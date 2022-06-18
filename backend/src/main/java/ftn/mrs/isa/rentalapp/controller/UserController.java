@@ -78,27 +78,19 @@ public class UserController {
     @PostMapping(value = "/acceptDeletion")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> acceptDeletion(@RequestBody AccountDeleteRequestDTO accountDeleteRequestDTO, Principal principal) throws InterruptedException, MessagingException {
-        AccountDeleteRequest request = mapper.map(accountDeleteRequestDTO,AccountDeleteRequest.class);
-        request.setStatus(RequestStatus.ACCEPTED);
-        userService.saveDeletionRequest(request);
-        User user = userService.findUserByEmail(accountDeleteRequestDTO.getUser().getEmail());
-        user.setDeleted(true);
-        userService.saveUser(user);
-        emailService.sendDeletionProfileNotification(user,"accepted");
+        if(userService.setDeletionStatus(accountDeleteRequestDTO,RequestStatus.ACCEPTED)){
         return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value = "/rejectDeletion")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> rejectDeletion(@RequestBody AccountDeleteRequestDTO accountDeleteRequestDTO, Principal principal) throws InterruptedException, MessagingException {
-        AccountDeleteRequest request = mapper.map(accountDeleteRequestDTO,AccountDeleteRequest.class);
-        request.setStatus(RequestStatus.REJECTED);
-        userService.saveDeletionRequest(request);
-        User user = userService.findUserByEmail(accountDeleteRequestDTO.getUser().getEmail());
-        user.setDeleted(false);
-        userService.saveUser(user);
-        emailService.sendDeletionProfileNotification(user,"rejected");
-        return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
+        if(userService.setDeletionStatus(accountDeleteRequestDTO,RequestStatus.REJECTED)){
+            return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Rejecting is denied.",HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "/acceptRegistration/{id}")

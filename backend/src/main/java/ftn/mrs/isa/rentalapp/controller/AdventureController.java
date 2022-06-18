@@ -2,6 +2,8 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.AdventureCreateDTO;
 import ftn.mrs.isa.rentalapp.dto.AdventureDTO;
+import ftn.mrs.isa.rentalapp.dto.CottageDTO;
+import ftn.mrs.isa.rentalapp.dto.EntitySearchDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +38,12 @@ public class AdventureController {
     private AdditionalServiceService additionalServiceService;
 
     @Autowired
+    private AvailablePeriodService availablePeriodService;
+
+    @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
     private ImageService imageService;
 
     @Autowired
@@ -50,12 +59,7 @@ public class AdventureController {
     public ResponseEntity<List<AdventureDTO>> getAllAdventures(){
         List<Adventure> adventures = adventureService.findAll();
 
-        List<AdventureDTO> adventuresDTO = new ArrayList<>();
-        for (Adventure a : adventures){
-            adventuresDTO.add(mapper.map(a, AdventureDTO.class));
-        }
-
-        return new ResponseEntity<>(adventuresDTO, HttpStatus.OK);
+        return getListResponseEntity(adventures);
     }
 
     @PostMapping("/addAdventure")
@@ -91,14 +95,14 @@ public class AdventureController {
     }
 
     @DeleteMapping(value = "/deleteAdventure/{id}")
-    @PreAuthorize("hasRole('fishingInstructor')")
+    @PreAuthorize("hasAnyRole('fishingInstructor','admin')")
     public ResponseEntity<String> deleteAdventure(@PathVariable Integer id,Principal principal){
         Adventure adventure = adventureService.findOne(id);
         if(adventure == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (!adventureService.canDeleteAdventure(adventure)){
-            return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.OK);
+            return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
         }
         adventureService.deleteAdventure(adventure);
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
@@ -121,9 +125,15 @@ public class AdventureController {
     @PreAuthorize("hasRole('fishingInstructor')")
     public ResponseEntity<List<AdventureDTO>> getAllAdventuresByOwnerId(Principal principal){
         List<Adventure> adventures = adventureService.findAllByOwnerEmail(principal.getName());
+        return getListResponseEntity(adventures);
+    }
+
+    private ResponseEntity<List<AdventureDTO>> getListResponseEntity(List<Adventure> adventures) {
         List<AdventureDTO> adventureDTO = new ArrayList<>();
         for (Adventure c : adventures){
-            adventureDTO.add(mapper.map(c,AdventureDTO.class));
+            if (!c.isDeleted()){
+                adventureDTO.add(mapper.map(c,AdventureDTO.class));
+            }
         }
         return new ResponseEntity<>(adventureDTO, HttpStatus.OK);
     }
@@ -173,5 +183,28 @@ public class AdventureController {
         return new ResponseEntity<>(averageGrade, HttpStatus.OK);
     }
 
+
+    @PostMapping(value = "/getAvailable")
+    @PreAuthorize("hasRole('fishingInstructor')")
+    public ResponseEntity<List<AdventureDTO>> getAvailable(@RequestBody EntitySearchDTO params, Principal principal){
+        List<Adventure> entities;
+        List<AdventureDTO> entitiesDTO = new ArrayList<>();
+        LocalDateTime start = LocalDateTime.of(params.getStartDate(), params.getStartTime());
+        LocalDateTime end = LocalDateTime.of(params.getEndDate(), params.getEndTime());
+
+        entities = adventureService.findAllByOwnerEmail(principal.getName());
+        for(Adventure c: entities){
+            if (c.getName().contains(params.getName()) && c.getPrice() <= params.getPrice() && c.getAddress().getCity().equals(params.getCity())){
+                if(availablePeriodService.isAvailableInstructor(c.getFishingInstructor().getId(), start, end) && !reservationService.isAvailableInstructor(c.getFishingInstructor().getId(), start, end)){
+                    AdventureDTO dto = mapper.map(c, AdventureDTO.class);
+                    entitiesDTO.add(dto);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(entitiesDTO, HttpStatus.OK);
     }
+
+
+}
 

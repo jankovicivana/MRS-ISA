@@ -64,6 +64,9 @@ public class User implements UserDetails {
     @Column(name = "type", nullable = true)
     protected String type;
 
+    @Column(name = "points", nullable = false)
+    private Integer points;
+
     @Column(name = "mainPhoto", nullable = true)
     protected String mainPhoto;
 

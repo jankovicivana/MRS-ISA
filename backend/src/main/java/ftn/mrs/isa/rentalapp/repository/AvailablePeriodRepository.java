@@ -17,6 +17,9 @@ public interface AvailablePeriodRepository extends  JpaRepository<AvailablePerio
     @Query(value = "SELECT * FROM public.available_periods WHERE entity = :id and start_date_time < :start and end_date_time > :end", nativeQuery = true)
     public List<AvailablePeriod> getAvailable(@Param("id") Integer id, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
+    @Query(value = "SELECT * FROM public.available_periods WHERE available_periods.fishing_instructor = :id and start_date_time < :start and end_date_time > :end", nativeQuery = true)
+    public List<AvailablePeriod> getAvailableInstructor(@Param("id") Integer id, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
     @Query(value = "SELECT * FROM public.available_periods WHERE fishing_instructor = :id ", nativeQuery = true)
     public List<AvailablePeriod> getAvailablePeriodFishingInstructor(Integer id);
 

@@ -90,11 +90,11 @@ values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On
 
 insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted, enabled) values (nextval('my_seqv1'), 'yahoomail', '$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K', 'ivana', 'kasikovic', '065', 3, 2, 0, 0,'pera2.jpg',false, true);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,2,200,20,60,5,false,5);
+    ('20220612 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,5);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,2,200,20,60,5,false,5);
+    ('20220622 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,5);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,2,200,20,60,5,false,5);
+    ('20220615 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,5);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
     ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,1,200,20,120,5,false,5);
@@ -173,7 +173,7 @@ insert into images (path,entity,is_main_photo) values ('boat8.jpg',8,false);
 insert into images (path,entity,is_main_photo) values ('boat9.jpg',8,false);
 
 
-insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted,password_changed) values (nextval('my_seqv1'),'admin@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',false, true,false,false);
+insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted,password_changed,points) values (nextval('my_seqv1'),'admin@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',false, true,false,false,0);
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'ikasikovic1977@gmail.com','Ivana','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,0,'coka2.jpg',false, true, 0.0,'tezak zivot ovaj');
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'ikasikovic197@gmail.com','Ivanaaa','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,1,'coka2.jpg',false, true, 0.0,'ovo mi je zivotna zelja');
 insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'peraaaaa@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,1,'Ovo bi trebao da je biografija instruktora.','pera2.jpg',false, true, 0.0,'ja bih da se registrujem');
@@ -204,7 +204,7 @@ insert into entity_reviews (id,grade,review,status,client,entity) values (nextva
 
 
 insert into available_periods (start_date_time, end_date_time,entity,fishing_instructor) values ('20220622', '20220627', 1,null);
-insert into available_periods (start_date_time, end_date_time, entity,fishing_instructor) values ('20220622', '20220627', null,3);
+insert into available_periods (start_date_time, end_date_time, entity,fishing_instructor) values ('20220610', '20220727', null,3);
 
 insert into reports (id,client_showed_up,penalty_status,report_string,advertiser,client) values (nextval('my_seqv5'),true,1,'Malo je bezobrazan. Sram ga bilooooo.',7,2);
 

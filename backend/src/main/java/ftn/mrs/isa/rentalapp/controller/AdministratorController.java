@@ -43,6 +43,7 @@ public class AdministratorController {
         Administrator admin = mapper.map(administratorCreateDTO,Administrator.class);
         admin.setType(String.valueOf(UserType.ADMINISTRATOR));
         admin.setPasswordChanged(false);
+        admin.setPoints(0);
         administratorService.save(admin);
         return new ResponseEntity<>(mapper.map(admin, AdministratorDTO.class), HttpStatus.CREATED);
 
@@ -68,6 +69,7 @@ public class AdministratorController {
         Administrator oldAdmin = administratorService.findOne(administratorDTO.getId());
         Administrator a = mapper.map(administratorDTO,Administrator.class);
         a.setRoles(oldAdmin.getRoles());
+        a.setPoints(0);
         administratorService.save(a);
     }
 
@@ -76,14 +78,6 @@ public class AdministratorController {
     public ResponseEntity<String> changePassword(@RequestBody String newPassword, Principal principal) throws InterruptedException, MessagingException {
         Administrator u = administratorService.findByEmail(principal.getName());
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.print("adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
-                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
-                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
-                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
-                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
-                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
-                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+
-                "adjjjjeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"+newPassword);
         u.setPassword(passwordEncoder.encode(newPassword.substring(0,newPassword.length()-1)));
         u.setPasswordChanged(true);
         administratorService.save(u);

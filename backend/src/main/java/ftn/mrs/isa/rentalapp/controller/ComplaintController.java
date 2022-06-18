@@ -122,60 +122,38 @@ public class ComplaintController {
     @PostMapping(value = "/acceptAdvertiserComplaint")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> acceptAdvertiserComplaint(@RequestBody AdvertiserComplaintDTO advertiserComplaintDTO, Principal principal) throws InterruptedException, MessagingException {
-        AdvertiserComplaint advertiserComplaint = mapper.map(advertiserComplaintDTO,AdvertiserComplaint.class);
-        if(advertiserComplaint == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(complaintService.answerAdvertiserComplaint(advertiserComplaintDTO,RequestStatus.ACCEPTED)) {
+            return new ResponseEntity<>("Accepting is successful.", HttpStatus.OK);
         }
-        advertiserComplaint.setStatus(RequestStatus.ACCEPTED);
-        complaintService.saveAdvertiserComplaint(advertiserComplaint);
-        emailService.sendComplaint(advertiserComplaint.getClient(), advertiserComplaint.getComplaint(),advertiserComplaint.getAnswer(),true);
-        emailService.sendComplaint(advertiserComplaint.getAdvertiser(), advertiserComplaint.getComplaint(),advertiserComplaint.getAnswer(),true);
-        return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value = "/acceptEntityComplaint")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> acceptEntityComplaint(@RequestBody EntityComplaintDTO entityDTO, Principal principal) throws MessagingException, InterruptedException {
-        EntityComplaint entityComplaint = mapper.map(entityDTO, EntityComplaint.class);
-        if(entityComplaint == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (complaintService.answerEntityComplaint(entityDTO,RequestStatus.ACCEPTED)) {
+            return new ResponseEntity<>("Accepting is successful.", HttpStatus.OK);
         }
-        entityComplaint.setStatus(RequestStatus.ACCEPTED);
-        complaintService.saveEntityComplaint(entityComplaint);
-        emailService.sendComplaint(entityComplaint.getClient(), entityComplaint.getComplaint(),entityComplaint.getAnswer(),true);
-        User u = userService.findUserByEntity(entityComplaint.getEntity());
-        emailService.sendComplaint(u, entityComplaint.getComplaint(),entityComplaint.getAnswer(),true);
-        return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
+
     }
 
     @PostMapping(value = "/rejectAdvertiserComplaint")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> rejectAdvertiserComplaint(@RequestBody AdvertiserComplaintDTO advertiserComplaintDTO, Principal principal) throws MessagingException {
-        AdvertiserComplaint advertiserComplaint = mapper.map(advertiserComplaintDTO,AdvertiserComplaint.class);
-        if(advertiserComplaint == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (complaintService.answerAdvertiserComplaint(advertiserComplaintDTO,RequestStatus.REJECTED)) {
+            return new ResponseEntity<>("Rejecting is successful.", HttpStatus.OK);
         }
-        advertiserComplaint.setStatus(RequestStatus.REJECTED);
-        complaintService.saveAdvertiserComplaint(advertiserComplaint);
-        emailService.sendComplaint(advertiserComplaint.getClient(), advertiserComplaint.getComplaint(),advertiserComplaint.getAnswer(),false);
-        emailService.sendComplaint(advertiserComplaint.getAdvertiser(), advertiserComplaint.getComplaint(),advertiserComplaint.getAnswer(),false);
-
-        return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
+        return new ResponseEntity<>("Rejecting is denied.",HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value = "/rejectEntityComplaint")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> rejectEntityComplaint(@RequestBody EntityComplaintDTO entityDTO, Principal principal) throws MessagingException {
-        EntityComplaint entityComplaint = mapper.map(entityDTO, EntityComplaint.class);
-        if(entityComplaint == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (complaintService.answerEntityComplaint(entityDTO,RequestStatus.REJECTED)){
+            return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
         }
-        entityComplaint.setStatus(RequestStatus.REJECTED);
-        complaintService.saveEntityComplaint(entityComplaint);
-        emailService.sendComplaint(entityComplaint.getClient(), entityComplaint.getComplaint(),entityComplaint.getAnswer(),false);
-        User u = userService.findUserByEntity(entityComplaint.getEntity());
-        emailService.sendComplaint(u, entityComplaint.getComplaint(),entityComplaint.getAnswer(),false);
-        return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
+        return new ResponseEntity<>("Rejecting is denied.",HttpStatus.BAD_REQUEST);
     }
 
 }

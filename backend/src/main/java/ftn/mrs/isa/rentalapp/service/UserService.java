@@ -1,10 +1,12 @@
 package ftn.mrs.isa.rentalapp.service;
 
+import ftn.mrs.isa.rentalapp.dto.AccountDeleteRequestDTO;
 import ftn.mrs.isa.rentalapp.dto.UserRequest;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.Boat;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.user.*;
 import ftn.mrs.isa.rentalapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService  implements UserDetailsService {
 
 
@@ -26,7 +31,7 @@ public class UserService  implements UserDetailsService {
     private UserRepository userRepository;
 
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     @Autowired
@@ -43,6 +48,9 @@ public class UserService  implements UserDetailsService {
 
     @Autowired
     private CottageService cottageService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private  DeleteAccountRequestRepository deleteAccountRequestRepository;
@@ -115,5 +123,32 @@ public class UserService  implements UserDetailsService {
         }
 
         return u;
+    }
+
+    public void setPoints(User user, int i) {
+        user.setPoints(i);
+        saveUser(user);
+    }
+
+    public boolean setDeletionStatus(AccountDeleteRequestDTO accountDeleteRequestDTO, RequestStatus status) throws MessagingException {
+        AccountDeleteRequest request = deleteAccountRequestRepository.getDeletionRequest(accountDeleteRequestDTO.getId());
+        if (request.getStatus()!=RequestStatus.ON_HOLD){
+            return false;
+        }
+        request.setAnswer(accountDeleteRequestDTO.getAnswer());
+        request.setStatus(status);
+        saveDeletionRequest(request);
+        User user = findUserByEmail(accountDeleteRequestDTO.getUser().getEmail());
+        String s;
+        if (status.equals(RequestStatus.ACCEPTED)){
+            user.setDeleted(true);
+            s = "accepted";
+        }else{
+            user.setDeleted(false);
+            s = "rejected";
+        }
+        saveUser(user);
+        emailService.sendDeletionProfileNotification(user,s);
+        return true;
     }
 }

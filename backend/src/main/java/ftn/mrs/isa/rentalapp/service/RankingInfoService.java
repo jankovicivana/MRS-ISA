@@ -18,4 +18,14 @@ public class RankingInfoService {
     public void save(RankingInfo info) {
         rankingInfoRepository.save(info);
     }
+
+    public RankingInfo findRank(Integer points) {
+        RankingInfo r = findOne(1);
+        if (points<r.getPointsLimit()){return r;}
+        RankingInfo r1 = findOne(2);
+        if (points<=r1.getPointsLimit()){return r1;}
+        return  findOne(3);
+    }
+
+
 }

@@ -68,6 +68,12 @@ public class ReservationService {
         return !reservations.isEmpty();
     }
 
+public boolean isAvailableInstructor(Integer id, LocalDateTime start, LocalDateTime end){
+        List<Reservation> reservations = reservationRepository.getReservedByInstructor(id, start, end);
+        System.out.println("Reservations: " + reservations);
+        return !reservations.isEmpty();
+    }
+
     public List<Reservation> findAllByUser(Integer id) {
         return  reservationRepository.findAllByUser(id);
     }
@@ -92,5 +98,13 @@ public class ReservationService {
 
     public List<Reservation> getHistoryReservation() {
         return reservationRepository.getReservationsInHistory(LocalDateTime.now());
+    }
+
+    public List<Reservation> getCurrentReservationByInstructor(Integer id) {
+        return reservationRepository.findAllCurrentByInstructor(LocalDateTime.now(),id);
+    }
+
+    public List<Reservation> getFutureReservationByInstructor(Integer id) {
+        return reservationRepository.findAllUpcomingByInstructor(LocalDateTime.now(),id);
     }
 }

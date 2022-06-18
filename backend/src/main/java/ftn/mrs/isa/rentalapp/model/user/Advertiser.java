@@ -20,9 +20,6 @@ public  class Advertiser extends User{
     public Advertiser() {
     }
 
-    @Column(name = "points")
-    protected Integer points;
-
     @Column(name = "registrationStatus", nullable = false)
     protected RequestStatus registrationStatus;
 
