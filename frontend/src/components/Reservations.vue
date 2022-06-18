@@ -2,6 +2,7 @@
   <div class="reservations_main">
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
     <FishingInstructorNavbar v-if="role === 'ROLE_fishingInstructor'"></FishingInstructorNavbar>
+    <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'" ></BoatOwnerNavbar>
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
     <div class="container pt-5">
       <h1> Browse available entities </h1>
@@ -78,7 +79,6 @@
              </div>
       </div>
 
-
     </div>
 
   </div>
@@ -92,9 +92,10 @@ import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 import router from "../router";
 import AdventureBrowseCard from "./AdventureBrowseCard";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 export default {
   name: "Reservations",
-  components: {FishingInstructorNavbar, CottageOwnerNavbar, ClientNavbar, 'browse_card': CottageBrowseCard,'adventure_card': AdventureBrowseCard},
+  components: {BoatOwnerNavbar,FishingInstructorNavbar, CottageOwnerNavbar, ClientNavbar, 'browse_card': CottageBrowseCard,'adventure_card': AdventureBrowseCard},
   data: function(){
     return{
       addresses: '',
@@ -146,6 +147,17 @@ export default {
           startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
         axios
           .post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/getAvailable", this.params,{
+            headers: {
+              Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")
+            }})
+          .then(response => (this.entities = response.data)).catch(function error(error) {
+          alert(error.response.data);});
+      }else if(this.role === 'ROLE_boatOwner'){
+        this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
+          startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
+        axios
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/boats/getAvailable", this.params,{
             headers: {
               Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")
@@ -242,5 +254,4 @@ a{
 star-rating{
   align-self: normal;
 }
-
 </style>

@@ -2,6 +2,8 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.BoatCreateDTO;
 import ftn.mrs.isa.rentalapp.dto.BoatDTO;
+import ftn.mrs.isa.rentalapp.dto.CottageDTO;
+import ftn.mrs.isa.rentalapp.dto.EntitySearchDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.service.*;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +47,12 @@ public class BoatController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private AvailablePeriodService availablePeriodService;
+
+    @Autowired
+    private ReservationService reservationService;
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<BoatDTO>> getAllBoats(){
@@ -162,6 +171,27 @@ public class BoatController {
         }
         averageGrade = averageGrade / boats.size();
         return new ResponseEntity<>(averageGrade, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/getAvailable")
+    @PreAuthorize("hasRole('boatOwner')")
+    public ResponseEntity<List<BoatDTO>> getAvailable(@RequestBody EntitySearchDTO params, Principal principal){
+        List<Boat> entities;
+        List<BoatDTO> entitiesDTO = new ArrayList<>();
+        LocalDateTime start = LocalDateTime.of(params.getStartDate(), params.getStartTime());
+        LocalDateTime end = LocalDateTime.of(params.getEndDate(), params.getEndTime());
+
+        entities = boatService.findAllByOwnerEmail(principal.getName());
+        for(Boat c: entities){
+            if (c.getName().contains(params.getName()) && c.getPrice() <= params.getPrice() && c.getAddress().getCity().equals(params.getCity())){
+                if(availablePeriodService.isAvailable(c.getId(), start, end) && !reservationService.isReserved(c.getId(), start, end)){
+                    BoatDTO dto = mapper.map(c, BoatDTO.class);
+                    entitiesDTO.add(dto);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(entitiesDTO, HttpStatus.OK);
     }
 
 }

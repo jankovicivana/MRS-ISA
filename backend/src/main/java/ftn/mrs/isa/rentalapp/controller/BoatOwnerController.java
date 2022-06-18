@@ -45,7 +45,7 @@ public class BoatOwnerController {
 
 
     @PostMapping(value = "/updateBoatOwner" )
-    @PreAuthorize("hasRole('baotOwner')")
+    @PreAuthorize("hasRole('boatOwner')")
     public ResponseEntity<BoatOwnerDTO> updateBoatOwner(@RequestBody BoatOwnerDTO boatOwnerDTO) {
         BoatOwner boatOwner = boatOwnerService.findOne(boatOwnerDTO.getId());
         if(boatOwner == null){
@@ -54,6 +54,11 @@ public class BoatOwnerController {
         boatOwnerDTO.setRegistrationStatus(boatOwner.getRegistrationStatus());
         BoatOwner updated = mapper.map(boatOwnerDTO,BoatOwner.class);
         updated.setRoles(boatOwner.getRoles());
+        updated.setMainPhoto(boatOwner.getMainPhoto());
+        updated.setPoints(boatOwner.getPoints());
+        updated.setEnabled(boatOwner.isEnabled());
+        updated.setRegistrationReason(boatOwner.getRegistrationReason());
+        updated.setType(boatOwner.getType());
         boatOwnerService.updateBoatOwner(updated);
         return new ResponseEntity<>(boatOwnerDTO,HttpStatus.OK);
     }

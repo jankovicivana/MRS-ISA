@@ -371,8 +371,10 @@ export default {
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)
           setTimeout(() => { location.reload(); }, 2000)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch(error => {
+        if(!error.response || error.response.status === 403){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Forbidden Error!</p>`,`<p style="font-size: 20px">You can not make quick reservation.</p>`)
+        }
       });
     }
 

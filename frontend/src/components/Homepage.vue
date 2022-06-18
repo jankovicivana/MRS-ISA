@@ -46,8 +46,8 @@
             <div class="card col-3" v-on:click="openCottage(c.id)">
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
-                  <slide v-for="i in c.images">
-                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                  <slide v-for="url in c.images">
+                    <img class="d-block w-100" :src="url" alt="First slide" style="height: 250px">
                   </slide>
                 </carousel>
               </div>
@@ -78,7 +78,7 @@
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
                   <slide v-for="i in b.images">
-                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                    <img class="d-block w-100" :src="i" alt="First slide" style="height: 250px">
                   </slide>
 
                 </carousel>
@@ -111,7 +111,7 @@
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
                   <slide v-for="i in a.images">
-                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                    <img class="d-block w-100" :src="i" alt="First slide" style="height: 250px">
                   </slide>
                 </carousel>
               </div>
@@ -146,19 +146,63 @@ export default {
     return{
       cottages: '',
       boats: '',
-      adventures: ''
+      adventures: '',
+      imagesUrl:[]
     }
   },
   mounted: function (){
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/all")
-      .then(response => (this.cottages = response.data))
+      .then(response => {this.cottages = response.data
+                        response.data.forEach(cottage => {
+                          var images = []
+                          cottage.images.forEach(image => {
+                            axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image.path,{responseType:"blob"})
+                              .then(response => {
+                                images.push(URL.createObjectURL(response.data));
+                                  cottage.images = images;
+                              })
+                              .catch((error) =>{
+                                console.log(error);
+                              });
+                          });
+                        });
+      });
+
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/all")
-      .then(response => (this.boats = response.data))
+      .then(response => {this.boats = response.data
+                    response.data.forEach(boat => {
+                    var images = []
+                      boat.images.forEach(image => {
+                      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image.path,{responseType:"blob"})
+                        .then(response => {
+                          images.push(URL.createObjectURL(response.data));
+                          boat.images = images;
+                        })
+                        .catch((error) =>{
+                          console.log(error);
+                        });
+                    });
+                  });
+      })
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/all")
-      .then(response => (this.adventures = response.data))
+      .then(response => {this.adventures = response.data
+                        response.data.forEach(adventure => {
+                          var images = []
+                          adventure.images.forEach(image => {
+                            axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image.path,{responseType:"blob"})
+                              .then(response => {
+                                images.push(URL.createObjectURL(response.data));
+                                adventure.images = images;
+                              })
+                              .catch((error) =>{
+                                console.log(error);
+                              });
+                          });
+                        });
+      })
   },
   methods:{
     openCottage:function (id){
@@ -169,6 +213,15 @@ export default {
     },
     openAdventure:function (id){
       this.$router.push({name:"AdventureProfile",params:{id:id}});
+    },
+    loadOnlyOneImage:function (name) {
+      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+        .then(response => {
+          this.imagesUrl.push(URL.createObjectURL(response.data));
+        })
+        .catch((error) =>{
+          console.log(error);
+        });
     }
   }
 }

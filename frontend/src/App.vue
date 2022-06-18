@@ -42,10 +42,7 @@ export default {
   height: fit-content;
   opacity: 1;
   position: absolute;
-  top: 0;
-  transition: opacity 0.3s linear 0s;
   width: 100%;
-  overflow: visible;
 }
 
 .basic_background{
@@ -53,10 +50,9 @@ export default {
   background-image: url('assets/images/back2.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100%;
+  height: fit-content;
   width: 100%;
   object-fit: cover;
-  overflow: scroll;
 }
 
 .profile_boat{
@@ -80,10 +76,9 @@ export default {
   background-image: url('assets/images/back1.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100%;
+  height: fit-content;
   width: 100%;
   object-fit: cover;
-  overflow: scroll;
 }
 
 .update_adventure{

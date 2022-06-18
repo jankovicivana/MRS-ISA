@@ -50,6 +50,11 @@ public class CottageOwnerController {
         cottageOwnerDTO.setRegistrationStatus(cottageOwner.getRegistrationStatus());
         CottageOwner updatedCottageOwner = mapper.map(cottageOwnerDTO,CottageOwner.class);
         updatedCottageOwner.setRoles(cottageOwner.getRoles());
+        updatedCottageOwner.setMainPhoto(cottageOwner.getMainPhoto());
+        updatedCottageOwner.setPoints(cottageOwner.getPoints());
+        updatedCottageOwner.setEnabled(cottageOwner.isEnabled());
+        updatedCottageOwner.setRegistrationReason(cottageOwner.getRegistrationReason());
+        updatedCottageOwner.setType(cottageOwner.getType());
         cottageOwnerService.updateCottageOwner(updatedCottageOwner);
         return new ResponseEntity<>(cottageOwnerDTO,HttpStatus.OK);
     }

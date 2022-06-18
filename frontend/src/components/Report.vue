@@ -1,18 +1,15 @@
 <template>
-  <transition name="modal-fade">
-    <div class="modal-backdrop">
-      <div class="modal"
-           role="dialog"
-           aria-labelledby="modalTitle"
-           aria-describedby="modalDescription"
-           style="background-image: url('https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'); background-size: 100% 100%;"
-      >
-        <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
-          <div class="container h-100" >
-            <div class="row d-flex justify-content-center align-items-center h-100" >
-              <div class="col-12 col-md-9 col-lg-7 col-xl-6" >
-                <div class="card" style="border-radius: 15px; background: #ecd9c6;width: 1000px">
-                  <div class="card-body p-5">
+  <div class="main vh-100">
+    <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'"></BoatOwnerNavbar>
+    <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
+    <FishingInstructorNavbar v-if="role === 'ROLE_fishingInstructor'" ></FishingInstructorNavbar>
+    <div>
+      <div class="mask d-flex align-items-center pt-3 h-100 gradient-custom-3">
+        <div class="container h-100" >
+          <div class="row d-flex justify-content-center align-items-center h-100" >
+            <div class="col-12 col-md-8 col-lg-7 col-xl-5" >
+              <div class="card mt-5" style="border-radius: 15px; background: #ecd9c6; width: 1200px">
+                <div class="card-body p-5">
                     <h2 class="text-uppercase text-center mb-5" style=" color: #04414d; font-family: 'Bookman Old Style',serif;">Create report</h2>
                     <form>
                       <hr/>
@@ -44,10 +41,9 @@
 
 
                       <div class="d-flex justify-content-center">
-                        <button type="submit" v-on:click="createReport()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Send report</div></button>
+                        <button type="button" v-on:click="createReport()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Send report</div></button>
                       </div>
                     </form>
-                    <br/>
 
                   </div>
 
@@ -58,17 +54,23 @@
         </div>
       </div>
     </div>
-  </transition>
+
 </template>
 
 <script>
 import axios from "axios";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 
 export default {
   name: "Report",
+  components: {FishingInstructorNavbar, CottageOwnerNavbar, BoatOwnerNavbar},
   data: function (){
     return{
-      clientId: ''
+      clientId: '',
+      role: sessionStorage.getItem("role")
+
     }
   }
   ,methods:{
@@ -114,23 +116,15 @@ export default {
 </script>
 
 <style scoped>
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.main{
+  background-attachment: fixed;
+  background-image: url('../assets/images/back2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
-.modal {
-  background: #FFFFFF;
-  box-shadow: 2px 2px 20px 1px;
-  overflow-x: auto;
-  display: flex;
-  flex-direction: column;
-}
 </style>

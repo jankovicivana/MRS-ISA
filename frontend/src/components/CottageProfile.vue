@@ -3,7 +3,7 @@
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
     <MainNavbar v-if="role === null || role==='null'"></MainNavbar>
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
-    <section class="profile_main py-lg-3">
+    <section class="profile_main py-lg-3 min-vh-100">
 
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
       <router-link v-if="role === 'ROLE_cottageOwner'" class="col-1 rounded-pill" :to="{ name: 'UpdateCottage',id:cottage.id }" style="background: #2e6b6b;margin: 5px;border: none;color: white" tag="button">Edit</router-link>
@@ -359,8 +359,10 @@ export default {
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)
           setTimeout(() => { location.reload(); }, 2000)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch(error => {
+          if(!error.response || error.response.status === 403){
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Forbidden Error!</p>`,`<p style="font-size: 20px">You can not make quick reservation.</p>`)
+          }
       });
     }
 

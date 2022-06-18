@@ -115,7 +115,7 @@
                 <p class="py-2"><font-awesome-icon icon="fa-solid fa-user-friends"/> {{q.maxPersonNum}}</p>
                 $<span class="text-decoration-line-through">{{q.price}}</span>
                 $<span class="before_price">{{q.discountedPrice}}</span>
-                <div class="quick_res_btn"><button type="button" class="btn">RESERVE</button></div>
+                <div class="quick_res_btn"><button type="button" class="btn" v-on:click="reserve(q.id)">RESERVE</button></div>
               </div>
 
             </div>
@@ -196,10 +196,9 @@ export default {
 
   },
   methods:{
-    show: function (group, type = '',title, text) {
+    show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
     },
-
     showModal:function() {
       this.isModalVisible = true;
     },
@@ -237,6 +236,18 @@ export default {
         .catch((error) =>{
           console.log(error);
         });
+    },
+    reserve:function(id) {
+      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)
+          setTimeout(() => { location.reload(); }, 2000)
+        }).catch(error => {
+        if(!error.response || error.response.status === 403){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Forbidden Error!</p>`,`<p style="font-size: 20px">You can not make quick reservation.</p>`)
+        }
+      });
     }
   }
 
