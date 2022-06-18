@@ -78,7 +78,7 @@ export default {
       this.$notify({group, title, text, type})
     },
     createReport:function(){
-      this.clientId = this.$route.params.id;
+      this.clientId = this.$route.params.clientId;
       console.log(this.clientId)
 
       this.info = {
@@ -92,7 +92,7 @@ export default {
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
-          setTimeout(() => {this.$router.push({path:"/ReservationHistory"}); }, 3000)
+          setTimeout(() => {this.$router.push({name:"ReservationHistory"}); }, 3000)
         }).catch(function error(error) {
         alert(error.response.data);
       });

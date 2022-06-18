@@ -104,10 +104,10 @@
             </div>
 
             <div class="row p-3">
-              <div v-if="adventure.quickReservations.length === 0">
+              <div v-if="quick.length === 0">
                 <h4 class="p-3">There are no quick reservations for now.</h4>
               </div>
-              <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in adventure.quickReservations" v-if="!q.isReserved">
+              <div class="col-4 p-3 m-2 quick_res zoom" v-for="q in quick" v-if="!q.isReserved">
                 <div>
                   <h4 class="res_date">{{q.startDateTime[2]+"."+q.startDateTime[1]+"."+q.startDateTime[0]+"."}} - {{q.endDateTime[2]+"."+q.endDateTime[1]+"."+q.endDateTime[0]+"."}}</h4>
                   <div class="discount">{{q.discount}}%</div>
@@ -159,11 +159,13 @@ export default {
       config:'',
       role:'',
       mainImg:'',
-      imagesUrl:[]
+      imagesUrl:[],
+      quick:[]
     }
   },
   mounted:function (){
     this.role = sessionStorage.getItem("role");
+    window.scrollTo(0, 0)
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/"+this.adventureId)
       .then(response => {
@@ -174,6 +176,12 @@ export default {
           this.loadImage(image.path);
         });
         this.loadOnlyOneImage(this.adventure.fishingInstructor.mainPhoto);
+        response.data.quickReservations.forEach(q => {
+          let date = new Date(q.expirationDateTime[0],q.expirationDateTime[1]-1,q.expirationDateTime[2])
+          if(date > this.today){
+            this.quick.push(q);
+          }
+        });
         this.config = {
           method: 'get',
           url: 'https://api.geoapify.com/v1/geocode/search?text='+this.address.street+' '+this.address.city+' '+this.address.postal_code+' '+this.address.country+'&apiKey=edff0ba2d6d545279a82d4d37402a851',

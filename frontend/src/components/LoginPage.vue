@@ -1,5 +1,5 @@
 <template>
-  <div class="login_main vh-100" >
+  <div class="login_main vh-100 " >
     <main_navbar></main_navbar>
     <div class="is-flex content my-5 is-justify-content-center" style="height: 100%;">
       <div class="box p-6" style="height: 400px; width: 400px">
@@ -97,10 +97,16 @@ export default {
   background-attachment: fixed;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5),
   rgba(0, 0, 0, 0.5)), url('../assets/images/login.jpg') ;
-  background-size: cover;
+  background-position-y: 0;
   background-repeat: no-repeat;
+  background-size: cover;
   height: 100%;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  transition: opacity 0.3s linear 0s;
   width: 100%;
+  overflow: visible;
 }
 
 

@@ -200,7 +200,7 @@ export default new Router({
       component: CurrentReservations
     },
     {
-      path: '/createReport/:id',
+      path: '/createReport',
       name: "CreateReport",
       component: Report
     },

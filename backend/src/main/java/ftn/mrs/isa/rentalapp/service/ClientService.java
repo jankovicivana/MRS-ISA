@@ -5,7 +5,6 @@ import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.Role;
-import ftn.mrs.isa.rentalapp.model.user.User;
 import ftn.mrs.isa.rentalapp.repository.AddressRepository;
 import ftn.mrs.isa.rentalapp.repository.ClientRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;

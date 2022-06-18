@@ -17,9 +17,40 @@
             </div>
             <div class="pb-4 pt-4">
               <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{this.advertiser.name }}</span> <span>{{ this.advertiser.surname }}</span></h4>
-              <a v-if="isAdmin || role!=='ROLE_admin'" v-on:click="deleteProfile()" href="#" class="btn flow delete-btn">Delete profile</a>
+              <button v-if="isAdmin || role!=='ROLE_admin'"  @click="showModal = true" class="btn flow delete-btn">Delete profile</button>
             </div>
           </div>
+
+          <div id="app">
+            <div v-if="showModal">
+              <transition name="modal">
+                <div class="modal-mask">
+                  <div class="modal-wrapper">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Account delete request</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" @click="showModal = false">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Enter reason to delete account.</p>
+                          <textarea type="text" class="form-control form-control-lg" ref="request_input" id="request_input"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" @click="showModal = false">CLOSE</button>
+                          <button type="button" class="btn btn-primary edit-button" v-on:click="sendRequest()">Send</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </transition>
+            </div>
+          </div>
+
+
 
 
           <div style="background-color: antiquewhite" class="container rounded mt-1" id = "cottage_owner_profile">
@@ -89,6 +120,7 @@ import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 import AdminNavbar from "./header/AdminNavbar";
 import router from "../router";
 
+
 export default {
   name: "AdvertiserProfile",
   components: {AdminNavbar, FishingInstructorNavbar, BoatOwnerNavbar, CottageOwnerNavbar},
@@ -101,7 +133,8 @@ export default {
       readonly: true,
       role:'',
       isAdmin: this.$route.params.isAdmin,
-      mainPhoto:''
+      mainPhoto:'',
+      showModal:false
     }
   },
   mounted: function (){
@@ -208,11 +241,7 @@ export default {
       }
     },
     showChangePass:function (){
-      if(document.getElementById('change_pass').hidden===true){
-        document.getElementById('change_pass').hidden=false;
-      }else{
-        document.getElementById('change_pass').hidden=true;
-      }
+      document.getElementById('change_pass').hidden = document.getElementById('change_pass').hidden !== true;
 
     },
     savePass:function (){
@@ -236,6 +265,19 @@ export default {
         });
       }
 
+    },
+    sendRequest:function (){
+      this.showModal = false;
+      console.log(this.$refs.request_input.value)
+      axios
+        .post(process.env.VUE_APP_SERVER_PORT+"/api/user/deleteAccount", {requestReason:this.$refs.request_input.value}, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successful</p>`,`<p style="font-size: 20px">Successfully sent request!</p>`)
+          setTimeout(() => { }, 2000)
+        }).catch((error) =>{
+        console.log(error);
+      });
     }
 
   }
@@ -260,7 +302,22 @@ export default {
   background-color: white;
 }
 
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
 
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
 
 </style>
 

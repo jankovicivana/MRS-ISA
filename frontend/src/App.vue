@@ -36,11 +36,15 @@ export default {
 .profile_main{
   background-attachment: fixed;
   background-image: url('assets/images/back2.jpg');
-  background-size: cover;
+  background-position-y: 0;
   background-repeat: no-repeat;
-  height: auto;
+  background-size: cover;
+  height: fit-content;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  transition: opacity 0.3s linear 0s;
   width: 100%;
-  object-fit: cover;
   overflow: visible;
 }
 
@@ -65,10 +69,10 @@ export default {
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100%;
+  height: fit-content;
   width: 100%;
   object-fit: cover;
-  overflow: scroll;
+  overflow: visible;
 }
 
 .update_cottage{
