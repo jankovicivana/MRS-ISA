@@ -40,6 +40,8 @@
                 <router-link :to="{ name:'BoatProfile',params:{id:boat.id} }" class="button view_button is-success" style="background-color: #2e6b6b">
                   View
                 </router-link>
+
+                <button class="button" v-if="canReserve" v-on:click="$emit('reserve', boat)">Reserve</button>
                 <button class="button" v-if="role === 'ROLE_admin'" v-on:click="$emit('deleteBoat',boat.id)">Delete</button>
               </div>
             </div>
@@ -57,7 +59,7 @@ export default {
     return{
       role:''
     }},
-  props: ['boat'],
+  props: ['boat', 'canReserve'],
   mounted() {
     this.role = sessionStorage.getItem("role");
   }

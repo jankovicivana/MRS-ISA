@@ -74,9 +74,11 @@
         </div>
 
         <div v-for="e in entities">
-        <browse_card v-if="role === 'ROLE_cottageOwner'" :cottage="e" :canReserve="true"  v-on:reserve="reserve($event)"></browse_card>
-        <adventure_card v-if="role === 'ROLE_fishingInstructor'" :adventure="e" :canReserve="true"  v-on:reserve="reserve($event)"></adventure_card>
-             </div>
+        <CottageBrowseCard v-if="e.type === 'Cottage'" :cottage="e" :canReserve="true"  v-on:reserve="reserve($event)"></CottageBrowseCard>
+        <AdventureBrowseCard v-if="e.type === 'Adventure'" :adventure="e" :canReserve="true"  v-on:reserve="reserve($event)"></AdventureBrowseCard>
+          <BoatBrowseCard v-if="e.type === 'Boat'" :boat="e" :canReserve="true"  v-on:reserve="reserve($event)"></BoatBrowseCard>
+
+        </div>
       </div>
 
     </div>
@@ -93,9 +95,13 @@ import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 import router from "../router";
 import AdventureBrowseCard from "./AdventureBrowseCard";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
+import BoatBrowseCard from "./BoatBrowseCard";
 export default {
   name: "Reservations",
-  components: {BoatOwnerNavbar,FishingInstructorNavbar, CottageOwnerNavbar, ClientNavbar, 'browse_card': CottageBrowseCard,'adventure_card': AdventureBrowseCard},
+  components: {
+    BoatBrowseCard,
+    CottageBrowseCard,
+    BoatOwnerNavbar,FishingInstructorNavbar, CottageOwnerNavbar, ClientNavbar, AdventureBrowseCard},
   data: function(){
     return{
       addresses: '',

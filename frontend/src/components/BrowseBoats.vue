@@ -1,6 +1,6 @@
 <template>
   <div class="browse_main is-fullheight min-vh-100">
-    <main_navbar v-if="role === ''"></main_navbar>
+    <main_navbar v-if="role === null"></main_navbar>
     <boat-owner-navbar v-if="role === 'ROLE_boatOwner'"></boat-owner-navbar>
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
     <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>

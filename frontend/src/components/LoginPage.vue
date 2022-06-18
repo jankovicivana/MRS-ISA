@@ -1,7 +1,7 @@
 <template>
-  <div class="login_main vh-100 " >
+  <div class="login_main vh-100 is-fullheight" >
     <main_navbar></main_navbar>
-    <div class="is-flex content my-5 is-justify-content-center" style="height: 100%;">
+    <div class="is-flex mt-5 is-justify-content-center">
       <div class="box p-6" style="height: 400px; width: 400px">
         <h1 class="title justify-content-center is-flex">Login</h1>
         <hr/>
@@ -108,12 +108,10 @@ export default {
   background-attachment: fixed;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5),
   rgba(0, 0, 0, 0.5)), url('../assets/images/login.jpg') ;
-  background-position-y: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: fit-content;
   opacity: 1;
-  position: absolute;
   top: 0;
   transition: opacity 0.3s linear 0s;
   width: 100%;
