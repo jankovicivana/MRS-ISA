@@ -1,6 +1,7 @@
 <template>
   <div class="reservations_main">
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
+    <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'" ></BoatOwnerNavbar>
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
     <div class="container pt-5">
       <h1> Browse available entities </h1>
@@ -78,9 +79,10 @@ import ClientNavbar from "./header/ClientNavbar";
 import axios from "axios";
 import CottageBrowseCard from "./CottageBrowseCard";
 import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
+import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 export default {
   name: "Reservations",
-  components: {CottageOwnerNavbar, ClientNavbar, 'browse_card': CottageBrowseCard},
+  components: {BoatOwnerNavbar, CottageOwnerNavbar, ClientNavbar, 'browse_card': CottageBrowseCard},
   data: function(){
     return{
       addresses: '',
@@ -117,6 +119,17 @@ export default {
           startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
         axios
           .post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/getAvailable", this.params,{
+            headers: {
+              Authorization:
+                'Bearer ' + sessionStorage.getItem("accessToken")
+            }})
+          .then(response => (this.entities = response.data)).catch(function error(error) {
+          alert(error.response.data);});
+      }else if(this.role === 'ROLE_boatOwner'){
+        this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
+          startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
+        axios
+          .post(process.env.VUE_APP_SERVER_PORT+"/api/boats/getAvailable", this.params,{
             headers: {
               Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")
