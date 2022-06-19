@@ -330,7 +330,7 @@ public class EmailService {
                 "    <body>\n" +
                 "        <div style=\"margin: 50px;\">\n" +
                 "            <div style=\"background-color: rgb(99, 216, 99);height: 55px;\">\n" +
-                "                    <h1 style=\"margin-left:15px; color: white;\">Successful </h1>\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">Reserved </h1>\n" +
                 "            </div>\n" +
                 "            <div style=\"margin-top: 10px;\">\n" +
                 "                <div style=\"margin: 25px;\">\n" +
@@ -353,4 +353,39 @@ public class EmailService {
         javaMailSender.send( mail.getMimeMessage());
         System.out.println("Email poslat!");
     }
+
+    @Async
+    public void sendQuickReservationNotification(String email, String name, String entity) throws MessagingException {
+        MimeMessageHelper mail = new MimeMessageHelper(javaMailSender.createMimeMessage(), true, "UTF-8");
+        mail.setTo(email);
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Rental app notification");
+
+        mail.setText("<html>\n" +
+                "    <body>\n" +
+                "        <div style=\"margin: 50px;\">\n" +
+                "            <div style=\"background-color: rgb(99, 216, 99);height: 55px;\">\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">Special offer </h1>\n" +
+                "            </div>\n" +
+                "            <div style=\"margin-top: 10px;\">\n" +
+                "                <div style=\"margin: 25px;\">\n" +
+                "                Dear "+ name +",\n" +
+                "                <br/>\n" +
+                "                There is a new special offer for " + entity + " - check it out! \n" +
+                "                <br/>\n" +
+                "                Regards,\n" +
+                "                <br/>\n" +
+                "                <span >Rental app team</span>\n" +
+                "            </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </body>\n" +
+                "</html>",true);
+        //mail.set
+        javaMailSender.send( mail.getMimeMessage());
+        System.out.println("Email poslat!");
+    }
+
+
 }

@@ -6,6 +6,7 @@ import ftn.mrs.isa.rentalapp.dto.QuickReservationDTO;
 import ftn.mrs.isa.rentalapp.dto.ReservationDTO;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.model.entity.Subscription;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
@@ -44,8 +45,8 @@ public class QuickReservationController {
     @Autowired
     private FishingInstructorService fishingInstructorService;
 
-
-
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/addQuickReservation")
     @PreAuthorize("hasAnyRole('boatOwner','cottageOwner','fishingInstructor')")
@@ -64,6 +65,10 @@ public class QuickReservationController {
         quickReservation.setReservation(null);
         System.out.print(quickReservation.getExpirationDateTime());
         quickReservationService.save(quickReservation);
+
+        for(Subscription s: entity.getSubscriptions()){
+            emailService.sendQuickReservationNotification(s.getClient().getEmail(), s.getClient().getName(), entity.getName());
+        }
 
         return new ResponseEntity<>(mapper.map(quickReservation,QuickReservationDTO.class), HttpStatus.CREATED);
 

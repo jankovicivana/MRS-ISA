@@ -73,7 +73,7 @@ public class EntityType {
     @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     protected Set<AvailablePeriod> availablePeriods = new HashSet<AvailablePeriod>();
 
-    @OneToMany(mappedBy = "entity")
+    @OneToMany(mappedBy = "entity", fetch = FetchType.EAGER)
     private Set<Subscription> subscriptions = new HashSet<Subscription>();
 
 }

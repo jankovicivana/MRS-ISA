@@ -90,36 +90,36 @@ values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On
 
 insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted, enabled) values (nextval('my_seqv1'), 'yahoomail', '$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K', 'ivana', 'kasikovic', '065', 3, 2, 0, 0,'pera2.jpg',false, true);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220612 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,5);
+    ('20220612 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,2);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220622 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,5);
+    ('20220622 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,2);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220615 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,5);
+    ('20220615 10:00:00 AM','20220625 10:00:00 AM',false,2,200,20,60,5,false,2);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,1,200,20,120,5,false,5);
+    ('20210522 10:00:00 AM','20210525 10:00:00 AM',false,1,200,20,120,5,false,2);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220615 10:00:00 AM','20220625 10:00:00 AM',false,1,200,20,180,5,false,5);
+    ('20220615 10:00:00 AM','20220625 10:00:00 AM',false,1,200,20,180,5,false,2);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,500,20,250,5,false,5);
+    ('20220513 10:00:00 AM','20220525 10:00:00 AM',false,1,500,20,250,5,false,2);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220622 10:00:00 AM','20220623 10:00:00 AM',false,1,200,20,60,5,false,5);
+    ('20220622 10:00:00 AM','20220623 10:00:00 AM',false,1,200,20,60,5,false,2);
 
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220530 10:00:00 AM','20220605 10:00:00 AM',false,1,200,20,60,5,false,5);
+    ('20220530 10:00:00 AM','20220605 10:00:00 AM',false,1,200,20,60,5,false,2);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220422 10:00:00 AM','20220504 10:00:00 AM',false,3,150,20,130,5,false,5);
+    ('20220422 10:00:00 AM','20220504 10:00:00 AM',false,3,150,20,130,5,false,2);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220522 10:00:00 AM','20220603 10:00:00 AM',false,3,300,20,250,5,false,5);
+    ('20220522 10:00:00 AM','20220603 10:00:00 AM',false,3,300,20,250,5,false,2);
 
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220613 10:00:00 AM','20220625 10:00:00 AM',false,3,500,20,400,5,false,5);
+    ('20220613 10:00:00 AM','20220625 10:00:00 AM',false,3,500,20,400,5,false,2);
 
 insert into images (path,entity,is_main_photo) values ('boat1.jpg',3,false);
 insert into images (path,entity,is_main_photo) values ('boat2.jpg',3,false);
@@ -190,10 +190,10 @@ insert into user_role (user_id, role_id) values (1, 3);
 insert into user_role (user_id, role_id) values (4, 4);
 insert into user_role (user_id, role_id) values (3, 5);
 insert into user_role (user_id, role_id) values (6, 2);
-insert into subscriptions (client, entity) values (5, 1);
-insert into subscriptions (client, entity) values (5, 2);
-insert into subscriptions (client, entity) values (5, 3);
-insert into subscriptions (client, entity) values (5, 4);
+insert into subscriptions (client, entity) values (2, 1);
+insert into subscriptions (client, entity) values (2, 2);
+insert into subscriptions (client, entity) values (2, 3);
+insert into subscriptions (client, entity) values (2, 4);
 
 
 insert into advertiser_reviews (id,grade,review,status,client,advertiser) values (nextval('my_seqv3'),1,'Nekomunikativan je.',1,2,1);
