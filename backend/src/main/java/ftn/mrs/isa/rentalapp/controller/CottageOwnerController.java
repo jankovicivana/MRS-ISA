@@ -42,11 +42,23 @@ public class CottageOwnerController {
 
     @PostMapping(value = "/updateCottageOwner" )
     @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<CottageOwnerDTO> updateCottageOwner(@RequestBody CottageOwnerDTO cottageOwnerDTO,Principal principal) {
+    public ResponseEntity<String> updateCottageOwner(@RequestBody CottageOwnerDTO cottageOwnerDTO,Principal principal) {
         CottageOwner cottageOwner = cottageOwnerService.findByEmail(principal.getName());
         if(cottageOwner == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Owner not found.",HttpStatus.BAD_REQUEST);
         }
+        if(cottageOwnerDTO.getName().length() == 0 || cottageOwnerDTO.getSurname().length() == 0 || cottageOwnerDTO.getAddress().getCity().length() == 0
+        || cottageOwnerDTO.getAddress().getCountry().length()==0 || cottageOwnerDTO.getAddress().getStreet().length() == 0){
+            return new ResponseEntity<>("Values must not be empty.",HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            Integer.parseInt(cottageOwnerDTO.getPhoneNumber());
+            Integer.parseInt(cottageOwnerDTO.getAddress().getPostalCode());
+        }catch (NumberFormatException nfe){
+            return new ResponseEntity<>("Phone number and postal code must be numbers.",HttpStatus.BAD_REQUEST);
+        }
+
         cottageOwnerDTO.setRegistrationStatus(cottageOwner.getRegistrationStatus());
         CottageOwner updatedCottageOwner = mapper.map(cottageOwnerDTO,CottageOwner.class);
         updatedCottageOwner.setRoles(cottageOwner.getRoles());
@@ -56,7 +68,8 @@ public class CottageOwnerController {
         updatedCottageOwner.setRegistrationReason(cottageOwner.getRegistrationReason());
         updatedCottageOwner.setType(cottageOwner.getType());
         cottageOwnerService.updateCottageOwner(updatedCottageOwner);
-        return new ResponseEntity<>(cottageOwnerDTO,HttpStatus.OK);
+
+        return new ResponseEntity<>("Successfully edited.",HttpStatus.OK);
     }
 
     @GetMapping(value = "/all")

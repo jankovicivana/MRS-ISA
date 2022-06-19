@@ -4,8 +4,7 @@
       <figure class="media-left">
         <p class="image">
           <a href="/#" >
-            <img v-if="adventure.id !== 2" class="image" :src="require('../assets/images/fish'+(parseInt(adventure.id)-7).toString()+'.jpg')" alt="Image"/>
-            <img v-if="adventure.id === 2" class="image" :src="require('../assets/images/pic1.jpg')" alt="Image"/>
+            <img class="image" :src="photo" alt="Image"/>
           </a>
         </p>
       </figure>
@@ -54,15 +53,25 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "AdventureBrowseCard",
   props: ['adventure'],
   data: function(){
     return{
-      role:''
+      role:'',
+      photo:''
     }},
   mounted() {
     this.role = sessionStorage.getItem("role");
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+this.adventure.images[0].path,{responseType:"blob"})
+      .then(response => {
+        this.photo = URL.createObjectURL(response.data);
+      })
+      .catch((error) =>{
+        console.log(error);
+      });
   }
 }
 </script>

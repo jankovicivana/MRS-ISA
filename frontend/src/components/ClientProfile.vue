@@ -15,7 +15,36 @@
             </div>
             <div class="pb-4 pt-4">
               <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{client.name}}</span> <span>{{client.surname}}</span></h4>
-              <a v-if="role === 'ROLE_client'" href="#/" class="btn delete-btn">Delete account</a>
+              <button v-if="role==='ROLE_client'"  @click="showModal = true" class="btn flow delete-btn">Delete profile</button>
+            </div>
+          </div>
+
+          <div id="app">
+            <div v-if="showModal">
+              <transition name="modal">
+                <div class="modal-mask">
+                  <div class="modal-wrapper">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Account delete request</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" @click="showModal = false">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Enter reason to delete account.</p>
+                          <textarea type="text" class="form-control form-control-lg" ref="request_input" id="request_input"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" @click="showModal = false">CLOSE</button>
+                          <button type="button" class="btn btn-primary edit-button" v-on:click="sendRequest()">Send</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </transition>
             </div>
           </div>
 
@@ -52,9 +81,9 @@
                   <div class="row mt-4 mb-3" id="change_pass" hidden>
                     <div class="col-md-6 inputs"><label class="labels">Current password</label><input id="current" type="password" ref="current" class="form-control" placeholder="current password" ></div>
                     <div class="col-6"></div>
-                    <div class="col-md-6 inputs"><label class="labels">New password</label><input id="new_pass" type="text" ref="new_pass" class="form-control" placeholder="new password" ></div>
+                    <div class="col-md-6 inputs"><label class="labels">New password</label><input id="new_pass" type="password" ref="new_pass" class="form-control" placeholder="new password" ></div>
                     <div class="col-6"></div>
-                    <div class="col-md-6 inputs"><label class="labels">Re-enter new password</label><input  type="text" ref="new_pass_2" class="form-control" placeholder="re-enter new password" ></div>
+                    <div class="col-md-6 inputs"><label class="labels">Re-enter new password</label><input  type="password" ref="new_pass_2" class="form-control" placeholder="re-enter new password" ></div>
                     <div class="col-6"></div>
                     <div  v-if="role === 'ROLE_client'" class="col-2 mt-3 text-right"><button v-on:click="savePass" id="editButton" class="btn btn-primary edit-button" type="button">save</button></div>
                   </div>
@@ -139,7 +168,8 @@ export default {
       regular: '',
       silver: '',
       gold: '',
-      status: ''
+      status: '',
+      showModal:false
     }
   },
   mounted: function (){
@@ -262,6 +292,9 @@ export default {
       let new_pass2 = this.$refs.new_pass_2.value;
       if(new_pass !== new_pass2){
         this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful change</p>`,`<p style="font-size: 20px">Entered passwords are not same!</p>`)
+      }else if (new_pass.length === 0 || new_pass2.length === 0 || current_pass.length === 0)
+      {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful change</p>`,`<p style="font-size: 20px">Password can not be empty!</p>`)
       }else{
         let c = {currentPassword:current_pass,newPassword:new_pass};
         axios
@@ -277,6 +310,23 @@ export default {
         });
       }
 
+    },
+    sendRequest:function (){
+      this.showModal = false;
+      console.log(this.$refs.request_input.value)
+      if(this.$refs.request_input.value.length === 0){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful</p>`,`<p style="font-size: 20px">You must enter reason!</p>`)
+        return;
+      }
+      axios
+        .post(process.env.VUE_APP_SERVER_PORT+"/api/user/deleteAccount", {requestReason:this.$refs.request_input.value}, {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => {
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successful</p>`,`<p style="font-size: 20px">Successfully sent request!</p>`)
+          setTimeout(() => { }, 2000)
+        }).catch((error) =>{
+        console.log(error);
+      });
     }
 
   }
@@ -284,5 +334,20 @@ export default {
 </script>
 
 <style scoped>
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
 
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
 </style>

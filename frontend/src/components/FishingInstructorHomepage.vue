@@ -21,7 +21,7 @@
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
                   <slide v-for="i in a.images">
-                    <img class="d-block w-100" :src="require('../assets/images/'+i.path)" alt="First slide" style="height: 250px">
+                    <img class="d-block w-100" :src="i" alt="First slide" style="height: 250px">
                   </slide>
                 </carousel>
               </div>
@@ -61,7 +61,21 @@ export default {
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/allByOwner", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
-      .then(response => (this.adventures = response.data))
+      .then(response => {this.adventures = response.data
+        response.data.forEach(adventure => {
+          var images = []
+          adventure.images.forEach(image => {
+            axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image.path,{responseType:"blob"})
+              .then(response => {
+                images.push(URL.createObjectURL(response.data));
+                adventure.images = images;
+              })
+              .catch((error) =>{
+                console.log(error);
+              });
+          });
+        });
+      })
   },
   methods:{
     open:function (id){

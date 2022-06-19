@@ -46,11 +46,23 @@ public class BoatOwnerController {
 
     @PostMapping(value = "/updateBoatOwner" )
     @PreAuthorize("hasRole('boatOwner')")
-    public ResponseEntity<BoatOwnerDTO> updateBoatOwner(@RequestBody BoatOwnerDTO boatOwnerDTO) {
+    public ResponseEntity<String> updateBoatOwner(@RequestBody BoatOwnerDTO boatOwnerDTO) {
         BoatOwner boatOwner = boatOwnerService.findOne(boatOwnerDTO.getId());
         if(boatOwner == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Owner not found",HttpStatus.BAD_REQUEST);
         }
+        if(boatOwnerDTO.getName().length() == 0 || boatOwnerDTO.getSurname().length() == 0 || boatOwnerDTO.getAddress().getCity().length() == 0
+                || boatOwnerDTO.getAddress().getCountry().length()==0 || boatOwnerDTO.getAddress().getStreet().length() == 0){
+            return new ResponseEntity<>("Values must not be empty.",HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            Integer.parseInt(boatOwnerDTO.getPhoneNumber());
+            Integer.parseInt(boatOwnerDTO.getAddress().getPostalCode());
+        }catch (NumberFormatException nfe){
+            return new ResponseEntity<>("Phone number and postal code must be numbers.",HttpStatus.BAD_REQUEST);
+        }
+
         boatOwnerDTO.setRegistrationStatus(boatOwner.getRegistrationStatus());
         BoatOwner updated = mapper.map(boatOwnerDTO,BoatOwner.class);
         updated.setRoles(boatOwner.getRoles());
@@ -60,7 +72,7 @@ public class BoatOwnerController {
         updated.setRegistrationReason(boatOwner.getRegistrationReason());
         updated.setType(boatOwner.getType());
         boatOwnerService.updateBoatOwner(updated);
-        return new ResponseEntity<>(boatOwnerDTO,HttpStatus.OK);
+        return new ResponseEntity<>("Successfully edited.",HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{id}")

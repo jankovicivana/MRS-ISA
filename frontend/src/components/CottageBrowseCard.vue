@@ -4,7 +4,7 @@
       <figure class="media-left">
         <p class="image">
           <a href="/#" >
-            <img class="image" :src="require('../assets/images/cottage'+cottage.id+'.jpg')" alt="Image"/>
+            <img class="image" :src="photo" alt="Image"/>
           </a>
         </p>
       </figure>
@@ -55,17 +55,29 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: "CottageBrowseCard",
   data: function(){
     return{
-      role:''
+      role:'',
+      photo:''
     }
   },  props: ['cottage', 'canReserve'],
   mounted() {
     this.role = sessionStorage.getItem("role");
+
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+this.cottage.images[0].path,{responseType:"blob"})
+      .then(response => {
+        this.photo = URL.createObjectURL(response.data);
+      })
+      .catch((error) =>{
+        console.log(error);
+      });
   },
   methods: {
+
 
   }
 }

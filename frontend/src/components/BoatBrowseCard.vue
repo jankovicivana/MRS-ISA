@@ -4,7 +4,7 @@
       <figure class="media-left">
         <p class="image">
           <a href="/#" >
-            <img class="image" :src="require('../assets/images/boat'+(parseInt(boat.id)-2).toString()+'.jpg')" alt="Image"/>
+            <img class="image" :src="photo" alt="Image"/>
           </a>
         </p>
       </figure>
@@ -53,15 +53,25 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "BoatBrowseCard",
   data: function(){
     return{
-      role:''
+      role:'',
+      photo:''
     }},
   props: ['boat', 'canReserve'],
   mounted() {
     this.role = sessionStorage.getItem("role");
+    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+this.boat.images[0].path,{responseType:"blob"})
+      .then(response => {
+        this.photo = URL.createObjectURL(response.data);
+      })
+      .catch((error) =>{
+        console.log(error);
+      });
   }
 }
 </script>

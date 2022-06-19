@@ -88,9 +88,9 @@
                   <div class="row mt-4 mb-3" id="change_pass" hidden>
                     <div class="col-md-5 inputs"><label class="labels">Current password</label><input id="current" type="password" ref="current" class="form-control" placeholder="current password" ></div>
                     <div class="col-7"></div>
-                    <div class="col-md-5 inputs"><label class="labels">New password</label><input id="new_pass" type="text" ref="new_pass" class="form-control" placeholder="new password" ></div>
+                    <div class="col-md-5 inputs"><label class="labels">New password</label><input id="new_pass" type="password" ref="new_pass" class="form-control" placeholder="new password" ></div>
                     <div class="col-7"></div>
-                    <div class="col-md-5 inputs"><label class="labels">Re-enter new password</label><input  type="text" ref="new_pass_2" class="form-control" placeholder="re-enter new password" ></div>
+                    <div class="col-md-5 inputs"><label class="labels">Re-enter new password</label><input  type="password" ref="new_pass_2" class="form-control" placeholder="re-enter new password" ></div>
                     <div class="col-7"></div>
                     <div v-if="isAdmin || role!=='ROLE_admin'" class="col-2 mt-3 text-right"><button v-on:click="savePass" id="editButton" class="btn btn-primary edit-button" type="button">save</button></div>
                   </div>
@@ -205,13 +205,20 @@ export default {
       } else {
         this.editButton.innerHTML="edit" ;
         var c = {id:this.advertiser.id,name :this.advertiser.name,phoneNumber:this.advertiser.phoneNumber, surname :this.advertiser.surname, email :this.advertiser.email, password :this.advertiser.password,  address :this.address, biography: this.advertiser.biography};
+
+
         if (this.role === "ROLE_cottageOwner") {
           axios
             .post(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/updateCottageOwner", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
-            })
+            }).catch(error => {
+              if(!error.response || error.response.status === 400){
+                this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful edit</p>`,`<p style="font-size: 20px">`+ error.response.data +`</p>`)
+                setTimeout(() => {location.reload(); }, 1500)
+              }
+          })
         }else if (this.role === "ROLE_boatOwner") {
           axios
             .post(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/updateBoatOwner", c, {headers: {Authorization:
@@ -246,6 +253,9 @@ export default {
       let new_pass2 = this.$refs.new_pass_2.value;
       if(new_pass !== new_pass2){
         this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful change</p>`,`<p style="font-size: 20px">Entered passwords are not same!</p>`)
+      }else if (new_pass.length === 0 || new_pass2.length === 0 || current_pass.length === 0)
+      {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful change</p>`,`<p style="font-size: 20px">Password can not be empty!</p>`)
       }else{
         let c = {currentPassword:current_pass,newPassword:new_pass};
         axios
@@ -263,6 +273,10 @@ export default {
 
     },
     sendRequest:function (){
+      if(this.$refs.request_input.value.length === 0){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful</p>`,`<p style="font-size: 20px">You must enter reason!</p>`)
+        return;
+      }
       this.showModal = false;
       console.log(this.$refs.request_input.value)
       axios
