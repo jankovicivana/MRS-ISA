@@ -177,6 +177,7 @@ insert into admins(id,email,name,password,phone_number,surname,type,account_dele
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'ikasikovic1977@gmail.com','Ivana','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,0,'coka2.jpg',false, true, 0.0,'tezak zivot ovaj');
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'ikasikovic197@gmail.com','Ivanaaa','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,1,'coka2.jpg',false, true, 0.0,'ovo mi je zivotna zelja');
 insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'peraaaaa@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,1,'Ovo bi trebao da je biografija instruktora.','pera2.jpg',false, true, 0.0,'ja bih da se registrujem');
+insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted,password_changed,points) values (nextval('my_seqv1'),'admin2@gmail.com','Mikica','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',true, true,false,false,0);
 
 insert into role (name) values ('ROLE_client');
 insert into role (name) values ('ROLE_admin');
@@ -190,6 +191,8 @@ insert into user_role (user_id, role_id) values (1, 3);
 insert into user_role (user_id, role_id) values (4, 4);
 insert into user_role (user_id, role_id) values (3, 5);
 insert into user_role (user_id, role_id) values (6, 2);
+insert into user_role (user_id, role_id) values (10, 2);
+
 insert into subscriptions (client, entity) values (2, 1);
 insert into subscriptions (client, entity) values (2, 2);
 insert into subscriptions (client, entity) values (2, 3);
@@ -231,4 +234,4 @@ insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefi
 insert into ranking_info (id,rank,points_limit,client_discount,advertiser_benefits) values (3,2,20,30,30);
 
 
-insert into system_info (id,client_points,advertiser_points,system_profit) values (1,2,1,30)
+insert into system_info (id,client_points,advertiser_points,system_profit) values (1,2,1,30);

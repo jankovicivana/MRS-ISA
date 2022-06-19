@@ -89,6 +89,9 @@ public class AdventureController {
         adventure.setImages(images);
 
         adventureService.save(adventure);
+        ruleService.addRules(rules);
+        additionalServiceService.addAdditionalServices(services);
+        imageService.addImages(images);
 
         return new ResponseEntity<>(mapper.map(adventure,AdventureDTO.class), HttpStatus.CREATED);
 

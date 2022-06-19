@@ -143,6 +143,7 @@
 <script>
 import axios from "axios";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
+import router from "../router";
 
 export default {
   name: "AddAdventure",
@@ -303,6 +304,7 @@ export default {
         .then(response => {
           this.show('foo-css', 'success')
           setTimeout(() => {location.reload(); }, 3000)
+          router.push('/adventures');
         }).catch(function error(error) {
         alert(error.response.data);
       });

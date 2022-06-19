@@ -158,20 +158,21 @@ import router from "../router";
 export default {
   name: "UpdateAdventure",
   components: {FishingInstructorNavbar},
-  mounted: function (){
-    axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/2", {headers: {Authorization:
-            'Bearer ' + sessionStorage.getItem("accessToken")}})
-      .then(response => (this.adventure = response.data,this.address = this.adventure.address))
 
-  },data: function (){
+  data: function (){
     return{
       adventure: '',
       address : '',
+      id: this.$route.params.id,
     }
   },
-  props: ['id']
-  ,
+  mounted: function (){
+    axios
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/"+this.id, {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => (this.adventure = response.data,this.address = this.adventure.address))
+
+  },
   methods:{
     show: function(group, type='', title, text){
       this.$notify({group, title, text, type})

@@ -27,7 +27,7 @@
             <a class="navbar-item" href="#/admin/viewUsers/instructors"> Fishing instructors </a>
             <a class="navbar-item" href="#/admin/viewUsers/boatOwners"> Boat owners </a>
             <a class="navbar-item" href="#/admin/viewUsers/cottageOwners"> Cottage owners </a>
-            <a class="navbar-item" href="#/admin/AddAdministrator"> Add administrator </a>
+            <a v-if="this.admin.isPredefined" class="navbar-item" href="#/admin/AddAdministrator"> Add administrator </a>
           </div>
         </div>
 
@@ -59,15 +59,30 @@
 
 <script>
 import router from "../../router";
+import axios from "axios";
 
 export default {
   name: "AdminNavbar",
+  data: function(){
+    return{
+      admin: ''
+    }
+  },
   methods: {
     logout: function (){
       sessionStorage.clear();
       router.push('/');
     }
   }
+  ,mounted() {
+    axios
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/administrator/getAdmin", {headers: {Authorization:
+            'Bearer ' + sessionStorage.getItem("accessToken")}})
+      .then(response => (this.admin = response.data)).catch(function error(error) {
+      alert(error.response.data);
+    });
+  }
+
 }
 </script>
 
