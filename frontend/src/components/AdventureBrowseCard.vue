@@ -36,7 +36,7 @@
             <div
               class="column is-flex is-justify-content-flex-end is-align-items-right">
               <div class="buttons ml-5">
-                <button v-if="role ==='ROLE_client'" class="button is-success" style="background-color: #2e6b6b" v-on:click="$emit('subscribe', adventure.id)">Subscribe</button>
+                <button v-if="role ==='ROLE_client' && canReserve !== true" class="button is-success" style="background-color: #2e6b6b" v-on:click="$emit('subscribe', adventure.id)">Subscribe</button>
                 <router-link :to="{ name:'AdventureProfile',params:{id:adventure.id} }" class="button view_button is-success" style="background-color: #2e6b6b">
                   View
                 </router-link>
