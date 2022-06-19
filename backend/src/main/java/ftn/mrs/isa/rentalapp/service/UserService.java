@@ -1,6 +1,7 @@
 package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.dto.AccountDeleteRequestDTO;
+import ftn.mrs.isa.rentalapp.dto.RegistrationResponse;
 import ftn.mrs.isa.rentalapp.dto.UserRequest;
 import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.Boat;
@@ -62,7 +63,7 @@ public class UserService  implements UserDetailsService {
     }
 
     public Advertiser findAdvertiserById(Integer id) {
-        return advertiserRepository.findById(id).orElse(null);
+        return advertiserRepository.getAdvertiser(id);
     }
 
     public User save(UserRequest userRequest) {
@@ -159,5 +160,20 @@ public class UserService  implements UserDetailsService {
         catch (PessimisticLockingFailureException e) {
             return  false;
         }
+    }
+
+    public boolean answerRegistrationRequest(RegistrationResponse registrationResponse, RequestStatus status) throws MessagingException {
+            Advertiser a = findAdvertiserById(registrationResponse.getId());
+            if (a.getRegistrationStatus() != RequestStatus.ON_HOLD){
+                return false;
+            }
+            a.setRegistrationStatus(status);
+            saveAdvertiser(a);
+            if (status == RequestStatus.REJECTED){
+                emailService.sendRegistrationRejected(a,registrationResponse.getReason());
+            }else{
+                emailService.sendRegistrationAccepted(a);
+            }
+        return true;
     }
 }

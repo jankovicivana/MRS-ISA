@@ -135,7 +135,7 @@
                   <br/>
 
                   <div class="d-flex justify-content-center">
-                    <button type="submit" v-on:click="updateAdventure()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+                    <button type="button" v-on:click="updateAdventure()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Save</div></button>
                   </div>
 
 
@@ -153,6 +153,7 @@
 <script>
 import axios from "axios";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
+import router from "../router";
 
 export default {
   name: "UpdateAdventure",
@@ -324,11 +325,17 @@ export default {
         images: this.adventure.images
       };
 
+      for (let i of [this.adventure.name,this.adventure.description,this.address.country,this.address.city,this.address.street]){
+        if (i===''){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter all info!</p>`)
+          return;
+        }
+      }
       axios.put(process.env.VUE_APP_SERVER_PORT+"/api/adventures/updateAdventure",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated adventure!</p>`)
-          location.reload();
+          router.push({ name: 'AdventureProfile',params:{id:this.adventure.id}});
         }).catch(function error(error) {
         alert(error.response.data);
       });

@@ -115,7 +115,6 @@ public class AdventureController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         AdventureDTO dto = mapper.map(adventure,AdventureDTO.class);
-        System.out.println(dto);
         dto.setId(adventure.getId());
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
@@ -164,6 +163,7 @@ public class AdventureController {
         adventure.setPrice(adventureDTO.getPrice());
         adventure.setMaxPersonNum(adventureDTO.getMaxPersonNum());
         adventure.setDescription(adventureDTO.getDescription());
+        adventure.setCancelFee(adventureDTO.getCancelFee());
         Address a = mapper.map(adventureDTO.getAddress(),Address.class);
         adventure.setAddress(a);
 

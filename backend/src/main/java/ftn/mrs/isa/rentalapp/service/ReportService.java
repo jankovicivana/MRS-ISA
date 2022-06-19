@@ -4,10 +4,12 @@ import ftn.mrs.isa.rentalapp.model.reservation.Report;
 import ftn.mrs.isa.rentalapp.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ReportService {
 
     @Autowired
@@ -20,6 +22,6 @@ public class ReportService {
     }
 
     public Report findOne(Integer id) {
-        return  reportRepository.findById(id).orElse(null);
+        return  reportRepository.getReport(id);
     }
 }

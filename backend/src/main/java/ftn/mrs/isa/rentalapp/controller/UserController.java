@@ -62,7 +62,6 @@ public class UserController {
         for (Advertiser d: advertisers){
             AdvertiserDTO a = mapper.map(d,AdvertiserDTO.class);
             a.setRegistrationReason(d.getRegistrationReason());
-            System.out.print(a.getRegistrationReason());
             advertiserDTOS.add(a);
         }
         return new ResponseEntity<>(advertiserDTOS, HttpStatus.CREATED);
@@ -72,11 +71,10 @@ public class UserController {
     @PostMapping(value = "/rejectRegistration")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> rejectRegistration(@RequestBody RegistrationResponse registrationResponse, Principal principal) throws InterruptedException, MessagingException {
-        Advertiser a = userService.findAdvertiserById(registrationResponse.getId());
-        a.setRegistrationStatus(RequestStatus.REJECTED);
-        userService.saveAdvertiser(a);
-        emailService.sendRegistrationRejected(a,registrationResponse.getReason());
-        return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        if(userService.answerRegistrationRequest(registrationResponse,RequestStatus.REJECTED)){
+            return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value = "/acceptDeletion")
@@ -100,11 +98,12 @@ public class UserController {
     @GetMapping(value = "/acceptRegistration/{id}")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> acceptRegistration(@PathVariable Integer id, Principal principal) throws InterruptedException, MessagingException {
-        Advertiser a = userService.findAdvertiserById(id);
-        a.setRegistrationStatus(RequestStatus.ACCEPTED);
-        userService.saveAdvertiser(a);
-        emailService.sendRegistrationAccepted(a);
-        return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        RegistrationResponse r = new RegistrationResponse();
+        r.setId(id);
+        if(userService.answerRegistrationRequest(r,RequestStatus.ACCEPTED)){
+            return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/getDeleteRequestsOnHold")

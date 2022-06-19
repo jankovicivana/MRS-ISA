@@ -137,6 +137,7 @@ import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 import MainNavbar from "./header/MainNavbar";
 import ClientNavbar from "./header/ClientNavbar";
 import AdminNavbar from "./header/AdminNavbar";
+import router from "../router";
 
 export default {
   name: "AdventureProfile",
@@ -217,7 +218,7 @@ export default {
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted adventure!</p>`)
           setTimeout(() => { }, 3000)
-
+          router.push('/adventures');
         }).catch((error) => {
         this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Adventure has reservations.</p>`)
       });

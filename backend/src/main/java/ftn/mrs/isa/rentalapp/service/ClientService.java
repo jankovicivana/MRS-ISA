@@ -1,6 +1,8 @@
 package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.dto.UserRequest;
+import ftn.mrs.isa.rentalapp.model.reservation.Report;
+import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.Client;
@@ -9,10 +11,12 @@ import ftn.mrs.isa.rentalapp.repository.AddressRepository;
 import ftn.mrs.isa.rentalapp.repository.ClientRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,6 +32,14 @@ public class ClientService {
 
     @Autowired
     private RoleService roleService;
+
+
+    @Autowired
+    private ReportService reportService;
+
+
+    @Autowired
+    private EmailService emailService;
 
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -76,5 +88,27 @@ public class ClientService {
             r.setDeleted(true);
         }
         reservationsRepository.saveAll(client.getReservations());
+    }
+
+    public boolean answerPenalty(Integer id, RequestStatus status) throws MessagingException, InterruptedException {
+        try{Report report = reportService.findOne(id);
+        report.setPenaltyStatus(status);
+        String message;
+        Client c = findOne(report.getClient().getId());
+        if (status == RequestStatus.ACCEPTED){
+            c.setPenalties(c.getPenalties()+1);
+            save(c);
+            message = "accepted";
+        }
+        else{
+            message = "rejected";
+        }
+        reportService.save(report);
+        emailService.sendNotificationReportToClientAsync(c,report.getAdvertiser(),message);
+        emailService.sendNotificationReportToAdvertiserAsync(c, report.getAdvertiser(),message);}
+        catch (PessimisticLockingFailureException p){
+            return false;
+        }
+        return true;
     }
 }

@@ -214,25 +214,19 @@ public class ClientController {
     @GetMapping(value = "/acceptPenalty/{id}")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> acceptPenaltyReport(@PathVariable Integer id, Principal principal) throws MessagingException, InterruptedException {
-        Report report = reportService.findOne(id);
-        report.setPenaltyStatus(RequestStatus.ACCEPTED);
-        Client c = clientService.findOne(report.getClient().getId());
-        c.setPenalties(c.getPenalties()+1);
-        clientService.save(c);
-        reportService.save(report);
-        emailService.sendNotificationReportToClientAsync(c,report.getAdvertiser(),"accepted");
-        emailService.sendNotificationReportToAdvertiserAsync(c, report.getAdvertiser(),"accepted");
-        return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        if (clientService.answerPenalty(id, RequestStatus.ACCEPTED)) {
+            return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
+
     }
 
     @GetMapping(value = "/rejectPenalty/{id}")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> rejectPenaltyReport(@PathVariable Integer id, Principal principal) throws MessagingException, InterruptedException {
-        Report report = reportService.findOne(id);
-        report.setPenaltyStatus(RequestStatus.REJECTED);
-        reportService.save(report);
-        emailService.sendNotificationReportToClientAsync(report.getClient(),report.getAdvertiser(),"rejected");
-        emailService.sendNotificationReportToAdvertiserAsync(report.getClient(), report.getAdvertiser(),"rejected");
-        return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
+        if (clientService.answerPenalty(id, RequestStatus.REJECTED)) {
+            return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Rejecting is denied.",HttpStatus.BAD_REQUEST);
     }
 }

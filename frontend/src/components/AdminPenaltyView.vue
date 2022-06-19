@@ -95,8 +95,8 @@ export default {
           }, 3000)
           const index = this.reports.indexOf(report);
           this.reports.splice(index, 1);
-        }).catch(function error(error) {
-        alert(error.response);
+        }).catch((error) =>  {
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Another admin answered this request!</p>`)
       });
     },
     rejectPenalty:function (report){
@@ -110,8 +110,8 @@ export default {
           }, 3000)
           const index = this.reports.indexOf(report);
           this.reports.splice(index, 1);
-        }).catch(function error(error) {
-        alert(error.response);
+        }).catch((error) =>  {
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Another admin answered this request!</p>`)
       });
     }
 
