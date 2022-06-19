@@ -17,7 +17,7 @@
                   <strong><a href="#/boats/BoatProfile"  style="color: #2e6b6b; font-size: 20px">{{boat.name}}</a> </strong>
                 </span>
                 <span class="col-2">
-                  <star-rating :rating=boat.averageGrade :read-only="true" :increment="0.01" :star-size="20" :size="200"></star-rating>
+                  <star-rating :rating=boat.averageGrade :read-only="true" :increment="0.1" :star-size="20" :size="200"></star-rating>
                 </span>
               </span>
 

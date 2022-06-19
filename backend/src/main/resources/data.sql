@@ -4,7 +4,7 @@ insert into addresses (city, country, postal_code, street) values ('Cuprija', 'S
 
 
 insert into cottage_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'pera123@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,0,'coka1.jpeg',false, true,0.0,'nema');
-insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted, enabled) values (nextval('my_seqv1'), 'ivanaj0610@gmail.com', '$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K', 'ivana', 'jankovic', '065', 3, 2, 4, 0,'pera2.jpg',false, true);
+insert into clients (id, email, password, name, surname, phone_number, type, address, penalties, points,main_photo,deleted, enabled) values (nextval('my_seqv1'), 'ivanaj0610@gmail.com', '$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K', 'ivana', 'jankovic', '065', 3, 2, 1, 0,'pera2.jpg',false, true);
 
 insert into cottages (id,description,name,price,address,cottage_owner_id,max_num_person,deleted, average_grade, kind) values (nextval('my_seqv2'),'Ovo je jako kul vikendica. Najbolja vikendica na svetu. Stvarno je dobra.','Divna vikendica','200',1,1,10,false,3.2, 0);
 

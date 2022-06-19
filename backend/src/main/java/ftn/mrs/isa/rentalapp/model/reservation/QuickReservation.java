@@ -28,7 +28,7 @@ public class QuickReservation {
     @Column(name = "endDateTime", nullable = false)
     private LocalDateTime endDateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "entity")
     private EntityType entity;
 

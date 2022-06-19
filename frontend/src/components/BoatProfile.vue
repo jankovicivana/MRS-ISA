@@ -25,7 +25,7 @@
         <div class="col-md-6 pt-5" >
           <div class="row m-2">
             <h1 class="col-9 " >{{boat.name}}</h1>
-            <star-rating class="col-3" :rating="5" :read-only="true" :increment="0.01" :star-size="25" :size="200"></star-rating>
+            <star-rating class="col-3" :rating=boat.averageGrade :read-only="true" :increment="0.1" :star-size="25" :size="200"></star-rating>
           </div>
 
           <div class="fs-5 m-3 row">

@@ -25,7 +25,7 @@
         <div class="col-md-6" >
           <div class="row mx-2 mb-6">
             <div class="col-9 fw-bolder" style="font-size: 35px">{{cottage.name}}</div>
-            <star-rating class="col-3" :rating="5" :read-only="true" :increment="0.01" :star-size="25" :size="200" ></star-rating>
+            <star-rating class="col-3" :rating=cottage.averageGrade :read-only="true" :increment="0.1" :star-size="25" :size="200" ></star-rating>
           </div>
 
           <div class="fs-5 m-3 row">

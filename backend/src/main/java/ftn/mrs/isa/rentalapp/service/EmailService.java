@@ -14,6 +14,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Service
@@ -311,4 +315,42 @@ public class EmailService {
         System.out.println("Email poslat!");
     }
 
+    @Async
+    public void sendReservationEmail(String name, String clientMail, String entityName, LocalDateTime start, LocalDateTime end) throws MessagingException {
+        MimeMessageHelper mail = new MimeMessageHelper(javaMailSender.createMimeMessage(), true, "UTF-8");
+        mail.setTo(clientMail);
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Rental app notification");
+
+        DateTimeFormatter dformat = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm");
+        String startDate = start.format(dformat);
+        String endDate = end.format(dformat);
+
+        mail.setText("<html>\n" +
+                "    <body>\n" +
+                "        <div style=\"margin: 50px;\">\n" +
+                "            <div style=\"background-color: rgb(99, 216, 99);height: 55px;\">\n" +
+                "                    <h1 style=\"margin-left:15px; color: white;\">Successful </h1>\n" +
+                "            </div>\n" +
+                "            <div style=\"margin-top: 10px;\">\n" +
+                "                <div style=\"margin: 25px;\">\n" +
+                "                Dear "+ name +",\n" +
+                "                <br/>\n" +
+                "                You have successfully reserved " + entityName + ": \n" +
+                "                <br/>\n" +
+                "                "+ startDate + " - " + endDate  + " \n" +
+                "                <br/>\n" +
+                "                Regards,\n" +
+                "                <br/>\n" +
+                "                <span >Rental app team</span>\n" +
+                "            </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </body>\n" +
+                "</html>",true);
+        //mail.set
+        javaMailSender.send( mail.getMimeMessage());
+        System.out.println("Email poslat!");
+    }
 }

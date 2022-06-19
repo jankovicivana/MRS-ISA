@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -69,6 +70,10 @@ public class ReservationController {
 
     @Autowired
     private  UserService userService;
+
+    @Autowired
+    private EmailService emailService;
+
 
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasRole('client')")  // dodati ovdje ako treba jos nekoga
@@ -297,7 +302,7 @@ public class ReservationController {
 
     @PutMapping("/makeReservationFromQuick/{id}")
     @PreAuthorize("hasRole('client')")
-    public ResponseEntity<String> makeReservationFromQuick(@PathVariable(value = "id") Integer id,Principal principal){
+    public ResponseEntity<String> makeReservationFromQuick(@PathVariable(value = "id") Integer id,Principal principal) throws MessagingException {
         Client c = clientService.findByEmail(principal.getName());
         QuickReservation quickReservation = quickReservationService.findOne(id);
         quickReservation.setIsReserved(true);
@@ -317,12 +322,15 @@ public class ReservationController {
         reservationService.save(r);
         quickReservationService.save(quickReservation);
 
+        emailService.sendReservationEmail(c.getName(), c.getEmail(), quickReservation.getEntity().getName(), quickReservation.getStartDateTime(), quickReservation.getEndDateTime());
+
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/reserve")
     @PreAuthorize("hasAnyRole('client','cottageOwner','boatOwner','fishingInstructor')")
-    public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal){
+    public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal) throws MessagingException {
         Client client = clientService.findByEmail(principal.getName());
         if(client == null){
             client = clientService.findOne(r.getClientId());
@@ -342,6 +350,8 @@ public class ReservationController {
         double advertiserProfit = price - systemProfit;
         Reservation res = new Reservation(start, end, entity, price, systemProfit, advertiserProfit, r.getPersonNum(), client, null);
         reservationService.save(res);
+
+        emailService.sendReservationEmail(client.getName(), client.getEmail(), entity.getName(), start, end);
 
         return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
     }

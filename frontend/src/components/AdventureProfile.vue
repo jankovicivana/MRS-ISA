@@ -17,12 +17,12 @@
                   <img class="d-block w-100" :src="url" alt="First slide" style="border-radius: 2%;height: 450px">
                 </slide>
               </carousel>
-            
+
           </div>
           <div class="col-md-6"  >
             <div class="row">
               <div class="col-9 fw-bolder " style="font-size: 35px">{{adventure.name}}</div>
-              <star-rating class="col-3" :rating="5" :read-only="true" :increment="0.01" :star-size="25" :size="200"></star-rating>
+              <star-rating class="col-3" :rating=adventure.averageGrade :read-only="true" :increment="0.1" :star-size="25" :size="200"></star-rating>
             </div>
 
             <div class="fs-5 m-3">
