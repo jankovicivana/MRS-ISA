@@ -87,8 +87,8 @@
 
         <div v-for="e in entities">
         <CottageBrowseCard v-if="e.type === 'Cottage'" :cottage="e" :canReserve="true"  v-on:reserve="reserve($event)"></CottageBrowseCard>
-        <AdventureBrowseCard v-if="e.type === 'Adventure'" :adventure="e" :canReserve="true"  v-on:reserve="reserve($event)"></AdventureBrowseCard>
-          <BoatBrowseCard v-if="e.type === 'Boat'" :boat="e" :canReserve="true"  v-on:reserve="reserve($event)"></BoatBrowseCard>
+        <AdventureBrowseCard v-else-if="e.type === 'Adventure'" :adventure="e" :canReserve="true"  v-on:reserve="reserve($event)"></AdventureBrowseCard>
+          <BoatBrowseCard v-else :boat="e" :canReserve="true"  v-on:reserve="reserve($event)"></BoatBrowseCard>
 
         </div>
       </div>
@@ -244,10 +244,12 @@ export default {
           }, 1500) }).catch(error => {
                 if(error.response.status === 400){
                   this.show('foo-css', 'error',`<p style="font-size: 25px">Reservation failed</p>`,`<p style="font-size: 17px">You can't reserve at the same time if you have canceled already.</p>`)
-                }else{
+                } else if(error.response.status === 404){
+                  this.show('foo-css', 'error',`<p style="font-size: 25px">Reservation failed</p>`,`<p style="font-size: 17px">You already have a reservation in this period.</p>`)
+                }
+                else{
                   alert(error.response.data);
                 }
-
 
           });
     }

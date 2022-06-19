@@ -71,5 +71,4 @@ public class SystemController {
         return new ResponseEntity<>(infoDTO,HttpStatus.OK);
     }
 
-
 }

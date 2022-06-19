@@ -40,7 +40,6 @@ public class SubscriptionController {
     @GetMapping(value = "/getSubscriptions")
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<List<SubscriptionDTO>> getSubscriptions(Principal principal){
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         String mail = principal.getName();
         Client client = clientService.findByEmail(mail);
         List<Subscription> subs = subscriptionService.getSubscriptionsByUser(client.getId());
@@ -69,18 +68,6 @@ public class SubscriptionController {
         return new ResponseEntity<>("Successfully subscribed", HttpStatus.OK);
     }
 
-    @GetMapping(value="/canSubscribe/{id}")
-    @PreAuthorize("hasRole('client')")
-    public Boolean canSubscribe(@PathVariable Integer id, Principal principal) {
-        Client c = clientService.findByEmail(principal.getName());
-        EntityType e = entityService.findOne(id);
-        for(Subscription s: c.getSubscriptions()){
-            if(s.getEntity().getId().equals(e.getId())){
-                return false;
-            }
-        }
-        return true;
-    }
 
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasRole('client')")

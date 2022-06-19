@@ -57,7 +57,6 @@ public class CottageController {
     @Autowired
     private ReservationService reservationService;
 
-
     @GetMapping(value = "/all")
     public ResponseEntity<List<CottageDTO>> getAllCottages(){
         List<Cottage> cottages = cottageService.findAll();

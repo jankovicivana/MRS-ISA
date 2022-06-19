@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("api/penalty")
 public class PenaltyController {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private ClientService clientService;

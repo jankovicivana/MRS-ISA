@@ -105,11 +105,11 @@ export default {
   components: {MainNavbar},
 
   methods: {
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfull registration</p>`
-      let text = `<p style="font-size: 20px">Successfully created an account!</p>`
+
+    show: function (group, type = '',title, text) {
       this.$notify({group, title, text, type})
     },
+
     disableFields: function (){
       let user_type = this.$refs.user_type_input.value;
       if(user_type === 'client'){
@@ -125,8 +125,7 @@ export default {
 
     },
     register: function () {
-      let email = this.$refs.email.value;
-      let password = this.$refs.password.value;
+
       let name = this.$refs.name.value;
       let surname = this.$refs.surname.value;
       let city = this.$refs.city.value;
@@ -135,6 +134,28 @@ export default {
       let postalCode = this.$refs.postalCode.value;
       let role;
       let phoneNumber = this.$refs.phoneNumber.value;
+
+      if(name === '' || surname === '' || city === '' || country === '' || street === '' || postalCode === '' || phoneNumber === ''){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Incomplete data</p>`,`<p style="font-size: 20px">You must enter all the info</p>`)
+        return
+      }
+
+      let email = this.$refs.email.value;
+      if(email === '' || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === false){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid email</p>`,`<p style="font-size: 20px">You must enter a valid email</p>`)
+        return
+      }
+      let password = this.$refs.password.value;
+      let confirmPassword = this.$refs.confirmPassword.value;
+      if(password === ''){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid password</p>`,`<p style="font-size: 20px">You must enter a password</p>`)
+        return
+      }
+      if(password !== confirmPassword){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid passwords</p>`,`<p style="font-size: 20px">Passwords don't match</p>`)
+        return
+      }
+
       let reason = this.$refs.reason_input.value;
       let biography = this.$refs.biography_input.value;
 
@@ -150,7 +171,6 @@ export default {
       }
       this.info = {email, password, name, surname, city, country, street, postalCode, role, phoneNumber,reason,biography};
 
-
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/auth/register", this.info)
         .then(response => { this.registerSuccessful(role);})
@@ -159,12 +179,10 @@ export default {
 
     registerSuccessful: function(role){
       if(role === "ROLE_client"){
-        let title = `<p style="font-size: 25px">Successfull registration</p>`
-        let text = `<p style="font-size: 20px">Check you mail to activate your account!</p>`
-        this.$notify({group:'foo-css', title, text, type:'success'})
+        this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull registration</p>`,`<p style="font-size: 20px">Check you mail to activate your account!</p>`)
       }
       else{
-        this.show('foo-css', 'success');
+        this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull registration</p>`,`<p style="font-size: 20px">Successfully created an account.</p>`)
       }
 
       setTimeout(() => { router.push('/login'); }, 1500);

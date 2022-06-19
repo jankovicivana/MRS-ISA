@@ -79,7 +79,6 @@ public class ReservationController {
     @PreAuthorize("hasRole('client')")  // dodati ovdje ako treba jos nekoga
     public ResponseEntity<ReservationDTO> getById(@PathVariable Integer id, Principal principal){
         Reservation r = reservationService.getById(id);
-        System.out.println(r.getEntity().getName() + "***********************************");
         ReservationDTO rdto = mapper.map(r, ReservationDTO.class);
         String entityType = EntityKind.toString(r.getEntity().getKind());
         rdto.getEntity().setType(entityType);
@@ -342,6 +341,13 @@ public class ReservationController {
         boolean isCanceled = reservationService.isCanceled(client, start, end, entity);
         if(isCanceled){
             return new ResponseEntity<>("Already canceled.",HttpStatus.BAD_REQUEST);
+        }
+
+        List<Reservation> upcoming = reservationService.getUpcomingByClient(client.getId()); // provjeravamo ima li klijent preklapajuce rezervacije
+        for(Reservation u: upcoming){
+            if((u.getStartDateTime().isAfter(start) && u.getStartDateTime().isBefore(end)) || (u.getEndDateTime().isAfter(start) && u.getEndDateTime().isBefore(end))){
+                return new ResponseEntity<>("Already reserved.",HttpStatus.NOT_FOUND);
+            }
         }
 
         RankingInfo clientRank = rankingInfoService.findRank(client.getPoints());

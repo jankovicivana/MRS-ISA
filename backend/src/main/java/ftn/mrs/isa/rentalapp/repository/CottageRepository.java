@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CottageRepository extends JpaRepository<Cottage,Integer> {
 
-    @Query(value = "SELECT * from public.cottages inner join public.cottage_owners ON cottages.cottage_owner_id = cottage_owners.id WHERE cottage_owners.email = :email",nativeQuery = true)
+    @Query(value = "SELECT * from public.cottages inner join public.cottage_owners ON cottages.cottage_owner_id = cottage_owners.id WHERE cottage_owners.email = :email and cottages.deleted = false",nativeQuery = true)
     List<Cottage> findAllByOwnerEmail(@Param("email") String email);
 
 }

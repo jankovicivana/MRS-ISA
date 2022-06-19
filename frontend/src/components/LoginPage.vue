@@ -7,18 +7,18 @@
         <hr/>
         <div>
           <p>
-            <input class="input" type="email" placeholder="Email" ref="email"/>
+            <input class="input" required type="email" placeholder="Email" ref="email"/>
           </p>
         </div>
         <div>
           <p>
-            <input class="input" type="password" placeholder="Password" ref="password"/>
+            <input class="input" required type="password" placeholder="Password" ref="password"/>
           </p>
         </div>
 
         <div class="mt-3 justify-content-center align-items-center is-flex">
           <p class="justify-content-center">
-            <button class="button is-success login-btn" v-on:click="login" style="background: #2e6b6b;border: none;color: white;margin: 5px" tag="button">Login</button>
+            <button type="submit" class="button is-success login-btn" v-on:click="login" style="background: #2e6b6b;border: none;color: white;margin: 5px" tag="button">Login</button>
           </p>
         </div>
         <div class="mt-3 ml-1 mb-2">
@@ -51,6 +51,20 @@ export default {
     login: function(){
       let username = this.$refs.email.value;
       let password = this.$refs.password.value;
+      if(username === ''){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid credentials</p>`,`<p style="font-size: 20px">You must enter your username</p>`)
+        return
+      }
+      if(password === ''){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid credentials</p>`,`<p style="font-size: 20px">You must enter your password</p>`)
+        return
+      }
+
+      if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(username) === false){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid credentials</p>`,`<p style="font-size: 20px">You must enter a valid email address</p>`)
+        return
+      }
+
       this.info = {username, password}
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/auth/login", this.info)
@@ -61,7 +75,7 @@ export default {
             this.loginSuccessful(response);
           }
         })
-        .catch((error) => { this.loginFailed(); })
+        .catch((error) => { this.loginFailed(error); })
     },
   loginSuccessful: function(response){
     sessionStorage.setItem("accessToken", response.data.accessToken);

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface BoatRepository extends JpaRepository<Boat,Integer> {
 
-    @Query(value = "SELECT * from public.boats inner join public.boat_owners ON boats.boat_owner = boat_owners.id WHERE boat_owners.email = :email",nativeQuery = true)
+    @Query(value = "SELECT * from public.boats inner join public.boat_owners ON boats.boat_owner = boat_owners.id WHERE boat_owners.email = :email and boats.deleted = false",nativeQuery = true)
     List<Boat> findAllByOwnerEmail(@Param("email") String email);
 }

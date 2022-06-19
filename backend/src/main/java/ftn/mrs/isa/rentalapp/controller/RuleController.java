@@ -69,13 +69,8 @@ public class RuleController {
     @DeleteMapping(value = "/deleteRule/{id}")
     @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
     public  ResponseEntity<Void> deleteRule(@PathVariable Integer id,Principal principal){
-        System.out.print("id jee"+id);
         Rule rule = ruleService.findOne(id);
-        System.out.print("kao naslo");
-        //EntityType entityType = entityService.
-
         if(rule != null){
-            System.out.print("uslo pred brisanjee");
             ruleService.remove(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
