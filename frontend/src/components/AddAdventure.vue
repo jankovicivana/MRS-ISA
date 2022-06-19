@@ -21,7 +21,7 @@
 
                   <div class="form-outline mb-4">
                     <label class="form-label" for="price_input"><font-awesome-icon icon="fa-solid fa-dollar-sign"/>  Price:</label>
-                    <input type="number" id="price_input" ref="price_input" class="form-control form-control-lg" min="0" required/>
+                    <input type="number" id="price_input" ref="price_input" class="form-control form-control-lg"  min="0" required/>
                   </div>
 
 
@@ -125,7 +125,7 @@
                   <br/>
 
                   <div class="d-flex justify-content-center">
-                    <button type="submit" v-on:click="addAdventure()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+                    <button type="button" v-on:click="addAdventure()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
                   </div>
 
 
@@ -260,7 +260,10 @@ export default {
       aptag.classList.add('col-4');
       aptag.appendChild(atag);
       return [tag,aptag];
+    }, show1: function(group, type='',title,text){
+      this.$notify({group, title, text, type})
     },
+
     addAdventure: function (){
 
       let name = this.$refs.name_input.value
@@ -273,6 +276,12 @@ export default {
       let postal_code = this.$refs.postal_code_input.value
       let cancel_fee = this.$refs.cancel_fee_input.value
 
+      for (let i of [name,description,max_person_num,price,country,city,street,postal_code,cancel_fee]){
+        if (i==''){
+          this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter all info!</p>`)
+          return;
+        }
+      }
       this.info = {
         name: name,
         price:price,

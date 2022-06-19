@@ -48,4 +48,6 @@ public class BoatDTO {
 
     private Double averageGrade ;
 
+
+
 }

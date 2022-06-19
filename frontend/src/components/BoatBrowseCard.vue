@@ -101,6 +101,12 @@ export default {
   background-color: #4AAE9B;
 }
 
+
+button{
+  background-color: #2e6b6b;
+  color: white;
+}
+
 a{
   text-decoration: none;
 }

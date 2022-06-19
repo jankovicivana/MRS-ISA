@@ -3,6 +3,7 @@
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
     <MainNavbar v-if="role === null || role==='null'"></MainNavbar>
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
+    <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>
     <section class="profile_main py-lg-3 min-vh-100">
 
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
@@ -112,7 +113,7 @@
       <div class="row">
         <h3 v-if="role === 'ROLE_cottageOwner'">Add availability</h3>
         <div class="col-7 m-6" >
-          <full-calendar id="calendar" :events="events"   locale="en"></full-calendar>
+          <full-calendar id="calendar"  @eventClick="viewEvent" :events="events"   locale="en"></full-calendar>
         </div>
         <div class="col-4 mt-3">
           <div class="p-3">
@@ -141,7 +142,7 @@
               </div>
             </div>
             <div class="d-flex justify-content-center">
-              <button type="submit" v-if="role === 'ROLE_cottageOwner'"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+              <button type="button" v-if="role === 'ROLE_cottageOwner'"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
             </div>
           </form>
         </div>
@@ -160,10 +161,12 @@ import CottageOwnerNavbar from "./header/CottageOwnerNavbar";
 import router from "../router";
 import MainNavbar from "./header/MainNavbar";
 import ClientNavbar from "./header/ClientNavbar";
+import AdminNavbar from "./header/AdminNavbar";
 
 export default {
   name: "CottageProfile",
   components:{
+    AdminNavbar,
     ClientNavbar,
     MainNavbar,
     CottageOwnerNavbar,
@@ -312,25 +315,35 @@ export default {
     addAvailablePeriod:function (){
         let start_date = this.$refs.start_date_input.value
         let end_date = this.$refs.end_date_input.value
-        if(start_date === ''){
-          alert("You must enter start date!")
-          return;
-        }
-        if(end_date === ''){
-          alert("You must enter end date!")
-          return;
-        }
-        if(start_date>end_date){
-          alert("End date must be after start date.")
-          return;
-        }
+      if(start_date == ''){
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter start date!</p>`)
+        return;
+      }
+      if(end_date == ''){
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter end date!</p>`)
+        return;
+      }
+      if(start_date>end_date){
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">End date must be after start date!</p>`)
+        return;
+      }
+      if (start_date<Date.now || end_date<Date.now){
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter future dates!</p>`)
+        return;
+      }
+
+      if (!this.isPeriodAvailable(start_date,end_date)){
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You have entered this available period!</p>`)
+        return;
+      }
 
         this.info = {
           startDateTime: start_date,
           endDateTime: end_date,
           entity:this.cottageId
         };
-        this.newEvent = {
+      this.periods.push(this.info)
+      this.newEvent = {
           title: '',
           start: start_date,
           end: end_date,
@@ -350,6 +363,15 @@ export default {
           }).catch(function error(error) {
           alert(error.response.data);
         });
+    },
+    isPeriodAvailable:function (start_date,end_date){
+      for(let p of this.periods){
+        if (start_date >= p.startDateTime && end_date<= p.endDateTime){
+          return false;
+        }
+      }
+      return true;
+
     },
     reserve:function(id) {
 

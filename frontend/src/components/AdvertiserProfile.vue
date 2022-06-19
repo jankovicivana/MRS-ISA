@@ -17,7 +17,7 @@
             </div>
             <div class="pb-4 pt-4">
               <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{this.advertiser.name }}</span> <span>{{ this.advertiser.surname }}</span></h4>
-              <button v-if="isAdmin || role!=='ROLE_admin'"  @click="showModal = true" class="btn flow delete-btn">Delete profile</button>
+              <button v-if=" role!=='ROLE_admin'"  @click="showModal = true" class="btn flow delete-btn">Delete profile</button>
             </div>
           </div>
 

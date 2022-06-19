@@ -10,6 +10,7 @@ import ftn.mrs.isa.rentalapp.model.user.User;
 import ftn.mrs.isa.rentalapp.repository.AdvertiserComplaintRepository;
 import ftn.mrs.isa.rentalapp.repository.EntityComplaintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,26 +55,34 @@ public class ComplaintService {
     }
 
     public boolean answerAdvertiserComplaint(AdvertiserComplaintDTO dto, RequestStatus status) throws MessagingException {
-        AdvertiserComplaint advertiserComplaint = advertiserComplaintRepository.getAdvertiserComplaint(dto.getId());
-        if(advertiserComplaint.getStatus()!=RequestStatus.ON_HOLD){
-            return false;
-        }
-        advertiserComplaint.setAnswer(dto.getAnswer());
-        advertiserComplaint.setStatus(status);
-        saveAdvertiserComplaint(advertiserComplaint);
-        if (status == RequestStatus.ACCEPTED) {
-            emailService.sendComplaint(advertiserComplaint.getClient(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), true);
-            emailService.sendComplaint(advertiserComplaint.getAdvertiser(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), true);
-        }else{
-            emailService.sendComplaint(advertiserComplaint.getClient(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), false);
-            emailService.sendComplaint(advertiserComplaint.getAdvertiser(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), false);
+        try{
+            AdvertiserComplaint advertiserComplaint = advertiserComplaintRepository.getAdvertiserComplaint(dto.getId());
+            if(advertiserComplaint.getStatus()!=RequestStatus.ON_HOLD){
+                return false;
+            }
+            advertiserComplaint.setAnswer(dto.getAnswer());
+            advertiserComplaint.setStatus(status);
+            saveAdvertiserComplaint(advertiserComplaint);
+            if (status == RequestStatus.ACCEPTED) {
+                emailService.sendComplaint(advertiserComplaint.getClient(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), true);
+                emailService.sendComplaint(advertiserComplaint.getAdvertiser(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), true);
+            }else{
+                emailService.sendComplaint(advertiserComplaint.getClient(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), false);
+                emailService.sendComplaint(advertiserComplaint.getAdvertiser(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), false);
 
+            }
+            return true;}
+        catch (PessimisticLockingFailureException e) {
+        System.out.println("Locking exception");
+        return false;
         }
-        return true;
+
     }
 
+
     public boolean answerEntityComplaint(EntityComplaintDTO dto, RequestStatus b) throws MessagingException {
-        EntityComplaint entityComplaint = entityComplaintRepository.getEntityComplaint(dto.getId());
+        try{
+            EntityComplaint entityComplaint = entityComplaintRepository.getEntityComplaint(dto.getId());
         if(entityComplaint.getStatus()!=RequestStatus.ON_HOLD){
             return false;
         }
@@ -90,5 +99,10 @@ public class ComplaintService {
 
         }
         return true;
+        } catch (PessimisticLockingFailureException e) {
+            System.out.println("Locking exception");
+            return  false;
+        }
     }
+
 }

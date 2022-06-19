@@ -1,5 +1,5 @@
 <template>
-  <div class="reservations_main min-">
+  <div class="reservations_main is-fullheight min-vh-100">
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
     <FishingInstructorNavbar v-if="role === 'ROLE_fishingInstructor'"></FishingInstructorNavbar>
     <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'" ></BoatOwnerNavbar>
@@ -262,7 +262,7 @@ export default {
   background-position-y: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: fit-content;
   opacity: 1;
   position: absolute;
   top: 0;

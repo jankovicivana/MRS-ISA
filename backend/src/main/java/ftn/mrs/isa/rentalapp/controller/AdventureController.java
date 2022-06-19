@@ -197,6 +197,7 @@ public class AdventureController {
             if (c.getName().contains(params.getName()) && c.getPrice() <= params.getPrice() && c.getAddress().getCity().equals(params.getCity())){
                 if(availablePeriodService.isAvailableInstructor(c.getFishingInstructor().getId(), start, end) && !reservationService.isAvailableInstructor(c.getFishingInstructor().getId(), start, end)){
                     AdventureDTO dto = mapper.map(c, AdventureDTO.class);
+                    dto.setType("Adventure");
                     entitiesDTO.add(dto);
                 }
             }

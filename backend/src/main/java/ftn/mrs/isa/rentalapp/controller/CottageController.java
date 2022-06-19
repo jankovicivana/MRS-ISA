@@ -182,6 +182,7 @@ public class CottageController {
             if (c.getName().contains(params.getName()) && c.getPrice() <= params.getPrice() && c.getAddress().getCity().equals(params.getCity())){
                 if(availablePeriodService.isAvailable(c.getId(), start, end) && !reservationService.isReserved(c.getId(), start, end)){
                     CottageDTO dto = mapper.map(c, CottageDTO.class);
+                    dto.setType("Cottage");
                     entitiesDTO.add(dto);
                 }
             }

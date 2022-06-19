@@ -4,7 +4,6 @@ import ftn.mrs.isa.rentalapp.dto.UserRequest;
 import ftn.mrs.isa.rentalapp.model.entity.Boat;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
-import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
 import ftn.mrs.isa.rentalapp.model.user.Role;
 import ftn.mrs.isa.rentalapp.repository.BoatOwnerRepository;
@@ -45,12 +44,7 @@ public class BoatOwnerService {
 
     public BoatOwner save(UserRequest userRequest) {
         BoatOwner c = new BoatOwner();
-        c.setEmail(userRequest.getEmail());
-        c.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        c.setName(userRequest.getName());
-        c.setSurname(userRequest.getSurname());
-        c.setAddress(new Address(userRequest.getStreet(), userRequest.getCity(), userRequest.getPostalCode(), userRequest.getCountry()));
-        c.setEnabled(true);
+        UserService.setUserInfo(userRequest, c, passwordEncoder);
         c.setPhoneNumber(userRequest.getPhoneNumber());
         c.setPoints(0);
         c.setRegistrationStatus(RequestStatus.ON_HOLD);

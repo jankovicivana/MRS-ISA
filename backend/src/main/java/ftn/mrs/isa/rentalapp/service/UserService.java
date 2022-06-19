@@ -12,6 +12,7 @@ import ftn.mrs.isa.rentalapp.repository.UserRepository;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Service
@@ -34,7 +34,6 @@ public class UserService  implements UserDetailsService {
 
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
 
     @Autowired
     private RoleService roleService;
@@ -68,20 +67,22 @@ public class UserService  implements UserDetailsService {
 
     public User save(UserRequest userRequest) {
         User u = new User();
+        setUserInfo(userRequest, u, passwordEncoder);
+        u.setEmail(userRequest.getEmail());
+        u.setPhoneNumber(userRequest.getPhoneNumber());
+        List<Role> roles = roleService.findByName(userRequest.getRole());
+        u.setRoles(roles);
+
+        return this.userRepository.save(u);
+    }
+
+    static void setUserInfo(UserRequest userRequest, User u, PasswordEncoder passwordEncoder) {
         u.setEmail(userRequest.getEmail());
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setName(userRequest.getName());
         u.setSurname(userRequest.getSurname());
         u.setAddress(new Address(userRequest.getStreet(), userRequest.getCity(), userRequest.getPostalCode(), userRequest.getCountry()));
         u.setEnabled(true);
-        u.setEmail(userRequest.getEmail());
-        u.setPhoneNumber(userRequest.getPhoneNumber());
-
-        //
-        List<Role> roles = roleService.findByName(userRequest.getRole());
-        u.setRoles(roles);
-
-        return this.userRepository.save(u);
     }
 
     public List<Advertiser> getAdvertisersOnHold() {
@@ -135,7 +136,8 @@ public class UserService  implements UserDetailsService {
     }
 
     public boolean setDeletionStatus(AccountDeleteRequestDTO accountDeleteRequestDTO, RequestStatus status) throws MessagingException {
-        AccountDeleteRequest request = deleteAccountRequestRepository.getDeletionRequest(accountDeleteRequestDTO.getId());
+        try{
+            AccountDeleteRequest request = deleteAccountRequestRepository.getDeletionRequest(accountDeleteRequestDTO.getId());
         if (request.getStatus()!=RequestStatus.ON_HOLD){
             return false;
         }
@@ -153,6 +155,9 @@ public class UserService  implements UserDetailsService {
         }
         saveUser(user);
         emailService.sendDeletionProfileNotification(user,s);
-        return true;
+        return true;}
+        catch (PessimisticLockingFailureException e) {
+            return  false;
+        }
     }
 }

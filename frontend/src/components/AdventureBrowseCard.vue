@@ -57,7 +57,7 @@ import axios from "axios";
 
 export default {
   name: "AdventureBrowseCard",
-  props: ['adventure'],
+  props: ['canReserve','adventure'],
   data: function(){
     return{
       role:'',

@@ -1,5 +1,5 @@
 <template>
-  <section class="profile_main vh-100" >
+  <section class="profile_main  min-vh-100 is-fullheight" >
   <fishing-instructor-navbar></fishing-instructor-navbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
@@ -43,7 +43,7 @@
                           </div>
                         </div>
                         <div class="d-flex justify-content-center">
-                          <button type="submit"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+                          <button type="button"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
                         </div>
                       </form>
                     </div>
@@ -74,8 +74,6 @@ export default {
       reservations :'',
       discounts:'',
       events: [ ]
-
-
     }
   },
   mounted: function(){
@@ -150,15 +148,24 @@ export default {
       let start_date = this.$refs.start_date_input.value
       let end_date = this.$refs.end_date_input.value
       if(start_date == ''){
-        alert("You must enter start date!")
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter start date!</p>`)
         return;
       }
       if(end_date == ''){
-        alert("You must enter end date!")
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter end date!</p>`)
         return;
       }
       if(start_date>end_date){
-        alert("End date must be after start date.")
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">End date must be after start date!</p>`)
+        return;
+      }
+      if (start_date<Date.now || end_date<Date.now){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter future dates!</p>`)
+        return;
+      }
+
+      if (!this.isPeriodAvailable(start_date,end_date)){
+        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You have entered this available period!</p>`)
         return;
       }
 
@@ -166,8 +173,8 @@ export default {
         startDateTime: start_date,
         endDateTime: end_date
       };
+      this.periods.push(this.info)
       this.newEvent = {
-        title: start_date.split('T')[1].substring(0,5)+'-'+end_date.split('T')[1].substring(0,5),
         start: start_date,
         end: end_date,
         YOUR_DATA : {
@@ -187,6 +194,15 @@ export default {
       });
 
 
+    },
+    isPeriodAvailable:function (start_date,end_date){
+        for(let p of this.periods){
+            if (start_date >= p.startDateTime && end_date<= p.endDateTime){
+              return false;
+            }
+        }
+        return true;
+
     }
   },
   components: {
@@ -200,4 +216,7 @@ export default {
 
 <style scoped>
 
+  .profile_main{
+    height: fit-content;
+  }
 </style>

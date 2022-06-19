@@ -3,7 +3,8 @@
     <BoatOwnerNavbar  v-if="role === 'ROLE_boatOwner'"></BoatOwnerNavbar>
     <MainNavbar v-if="role === null"></MainNavbar>
     <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
-  <section class="profile_boat py-lg-3" >
+    <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>
+    <section class="profile_boat py-lg-3" >
     <div class="row justify-content-lg-end" style="padding-right: 25px; margin-right: 65px" >
       <router-link v-if="role === 'ROLE_boatOwner'" class="col-1 rounded-pill" :to="{ name:'UpdateBoat',id:boat.id}" style="background: #2e6b6b;margin: 5px;color: white;border-color: white" tag="button">Edit</router-link>
       <button v-if="role === 'ROLE_boatOwner'" type="button" class="col-1 rounded-pill" v-on:click="deleteBoat()" style="background:#2e6b6b;margin: 5px;color: white;border-color: white">Delete</button>
@@ -164,7 +165,7 @@
               </div>
             </div>
             <div class="d-flex justify-content-center">
-              <button type="submit"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+              <button type="button"  v-on:click="addAvailablePeriod()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
             </div>
           </form>
         </div>
@@ -182,10 +183,12 @@ import AddQuickReservation from "./AddQuickReservation";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 import MainNavbar from "./header/MainNavbar";
 import ClientNavbar from "./header/ClientNavbar";
+import AdminNavbar from "./header/AdminNavbar";
 
 export default {
   name: "BoatProfile",
   components:{
+    AdminNavbar,
     ClientNavbar,
     MainNavbar,
     BoatOwnerNavbar,
@@ -326,16 +329,25 @@ export default {
   addAvailablePeriod:function (){
     let start_date = this.$refs.start_date_input.value
     let end_date = this.$refs.end_date_input.value
-    if(start_date === ''){
-      alert("You must enter start date!")
+    if(start_date == ''){
+      this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter start date!</p>`)
       return;
     }
-    if(end_date === ''){
-      alert("You must enter end date!")
+    if(end_date == ''){
+      this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter end date!</p>`)
       return;
     }
     if(start_date>end_date){
-      alert("End date must be after start date.")
+      this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">End date must be after start date!</p>`)
+      return;
+    }
+    if (start_date<Date.now || end_date<Date.now){
+      this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter future dates!</p>`)
+      return;
+    }
+
+    if (!this.isPeriodAvailable(start_date,end_date)){
+      this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You have entered this available period!</p>`)
       return;
     }
 
@@ -344,6 +356,8 @@ export default {
       endDateTime: end_date,
       entity:this.boatId
     };
+    this.periods.push(this.info)
+
     this.newEvent = {
       title: '',
       start: start_date,
@@ -364,6 +378,15 @@ export default {
       alert(error.response.data);
     });
   },
+    isPeriodAvailable:function (start_date,end_date){
+      for(let p of this.periods){
+        if (start_date >= p.startDateTime && end_date<= p.endDateTime){
+          return false;
+        }
+      }
+      return true;
+
+    },
     reserve:function(id) {
       console.log(id);
       axios.put(process.env.VUE_APP_SERVER_PORT+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:

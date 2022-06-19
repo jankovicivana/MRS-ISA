@@ -22,5 +22,6 @@ public class AdventureDTO {
     private  Set<FishingEquipmentDTO> fishingEquipment = new HashSet<>();
     private Set<QuickReservationDTO> quickReservations = new HashSet<QuickReservationDTO>();
     private Double averageGrade ;
+    private String type;
 
 }
