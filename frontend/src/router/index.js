@@ -100,7 +100,7 @@ export default new Router({
       name:'ClientProfile',
       component: ClientProfile
     },{
-      path: '/cottages/UpdateCottage',
+      path: '/cottages/UpdateCottage/:id',
       name:'UpdateCottage',
       component: UpdateCottage
     },{

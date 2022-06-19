@@ -24,7 +24,7 @@ public class Cottage extends EntityType{
     @JoinColumn(name = "cottageOwnerId")
     private CottageOwner cottageOwner;
 
-    @OneToMany(mappedBy = "cottage", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cottage", fetch = FetchType.EAGER)
     private Set<Room> rooms = new HashSet<Room>();
 
 

@@ -42,7 +42,7 @@
         <h2>Cottages</h2>
         <br />
         <div class="columns">
-          <div class="column" v-for="c in cottages">
+          <div class="column" v-for="c in cottages.slice(0,4)">
             <div class="card col-3" v-on:click="openCottage(c.id)">
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
@@ -73,7 +73,7 @@
         <h2>Boats</h2>
         <br />
         <div class="columns">
-          <div class="column" v-for="b in boats">
+          <div class="column" v-for="b in boats.slice(0,4)">
             <div class="card col-3" v-on:click="openBoat(b.id)">
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
@@ -106,7 +106,7 @@
 
         <br />
         <div class="columns">
-          <div class="column" v-for="a in adventures">
+          <div class="column" v-for="a in adventures.slice(0,4)">
             <div class="card col-3" v-on:click="openAdventure(a.id)">
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >

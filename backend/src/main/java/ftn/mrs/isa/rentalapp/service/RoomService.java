@@ -2,6 +2,7 @@ package ftn.mrs.isa.rentalapp.service;
 
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.Room;
+import ftn.mrs.isa.rentalapp.model.entity.Rule;
 import ftn.mrs.isa.rentalapp.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,9 @@ public class RoomService {
             //save(r);
         }
         return rooms;
+    }
+
+    public void addRooms(Set<Room> rooms){
+        roomRepository.saveAll(rooms);
     }
 }

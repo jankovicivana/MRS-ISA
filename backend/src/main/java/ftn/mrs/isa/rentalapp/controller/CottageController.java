@@ -6,6 +6,7 @@ import ftn.mrs.isa.rentalapp.dto.EntitySearchDTO;
 import ftn.mrs.isa.rentalapp.dto.EntityTypeDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.user.Address;
+import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -46,6 +47,9 @@ public class CottageController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private CottageOwnerService cottageOwnerService;
 
     @Autowired
     private AvailablePeriodService availablePeriodService;
@@ -92,15 +96,16 @@ public class CottageController {
 
     @PostMapping("/addCottage")
     @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<CottageDTO> addCottage(@RequestBody CottageCreateDTO cottageCreateDTO) throws IOException {
+    public ResponseEntity<CottageDTO> addCottage(@RequestBody CottageCreateDTO cottageCreateDTO,Principal principal) throws IOException {
         Cottage cottage = new Cottage();
+        CottageOwner cottageOwner = cottageOwnerService.findByEmail(principal.getName());
+        cottage.setCottageOwner(cottageOwner);
         cottage.setName(cottageCreateDTO.getName());
         cottage.setDescription(cottageCreateDTO.getDescription());
         cottage.setMaxNumPerson(cottageCreateDTO.getMaxNumPerson());
         cottage.setPrice(cottageCreateDTO.getPrice());
         cottage.setAddress(new Address(cottageCreateDTO.getStreet(),cottageCreateDTO.getCity(),Integer.parseInt(cottageCreateDTO.getPostalCode()),cottageCreateDTO.getCountry()));
         cottage.setKind(EntityKind.COTTAGE);
-        //dodati i za cottageOwnera
 
         Set<Room> rooms =  roomService.createRoomFromString(cottageCreateDTO.getRooms(),cottage);
         cottage.setRooms(rooms);
@@ -111,12 +116,14 @@ public class CottageController {
         Set<AdditionalService> services = additionalServiceService.createAddServiceFromString(cottageCreateDTO.getAdditionalServices(),cottage);
         cottage.setAdditionalServices(services);
 
-
         Set<Image> images = imageService.createImageFromString(cottageCreateDTO.getImages(),cottage);
         cottage.setImages(images);
 
-
         cottageService.save(cottage);
+        roomService.addRooms(rooms);
+        ruleService.addRules(rules);
+        additionalServiceService.addAdditionalServices(services);
+        imageService.addImages(images);
 
         return new ResponseEntity<>(mapper.map(cottage,CottageDTO.class),HttpStatus.CREATED);
     }

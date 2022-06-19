@@ -72,7 +72,7 @@
                       <label class="form-label" for="rule_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Rule: </label>
                       <div class="row">
                         <input type="text" id="rule_input" ref="rule_input" class="input_add form-control-lg col-6 mx-3" />
-                        <button type="submit" id="add_rule_btn" v-on:click="addRule()" class="btn col-2" style="background-color: #04414d;color: white">Add rule</button>
+                        <button type="button" id="add_rule_btn" v-on:click="addRule()" class="btn col-2" style="background-color: #04414d;color: white">Add rule</button>
                       </div>
                     </div>
                     <div class="mx-1 mb-2 row" v-for="rule in cottage.rules" id="rules" style="background: #e6e6e6;border-radius: 3%">
@@ -88,7 +88,7 @@
                       <label class="form-label" for="add_service_input"><font-awesome-icon icon="fa-solid fa-pen"></font-awesome-icon> Additional service: </label>
                       <div class="row">
                         <input type="text" id="add_service_input" ref="add_service_input" class="input_add form-control-lg col-6 mx-3" />
-                        <button type="submit" v-on:click="addService()" class="btn col-3" style="background-color: #04414d;color: white">Add service</button>
+                        <button type="button" v-on:click="addService()" class="btn col-3" style="background-color: #04414d;color: white">Add service</button>
                       </div>
                     </div>
                     <div class="mx-1 mb-2 row" v-for="add in cottage.additionalServices" id="services" style="background: #e6e6e6;border-radius: 3%">
@@ -109,12 +109,12 @@
                     <p class="col-4" style="text-align: right"><a href="javascript:void(0)" style="text-decoration: none" v-on:click="removeImage(image.id)">Remove</a></p>
                   </div>
 
-                  <button type="submit" id="add_img_btn" class="btn" v-on:click="addImage()" style="background-color: #04414d;color: white;margin-left: 80%">Add image</button>
+                  <button type="button" id="add_img_btn" class="btn" v-on:click="addImage()" style="background-color: #04414d;color: white;margin-left: 80%">Add image</button>
 
 
                   <br/>
                   <div class="d-flex justify-content-center">
-                    <button type="submit" v-on:click="updateCottage()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Edit cottage</div></button>
+                    <button type="button" v-on:click="updateCottage()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Edit cottage</div></button>
                   </div>
                 </form>
               </div>
@@ -134,8 +134,9 @@ export default {
   name: "UpdateCottage",
   components: {CottageOwnerNavbar},
   mounted: function (){
+
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/1", {headers: {Authorization:
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+this.$route.params.id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.cottage = response.data,this.address = this.cottage.address))
 
@@ -143,6 +144,7 @@ export default {
     return{
       cottage: '',
       address : '',
+      cottageId: this.$route.params.id
     }
   }
   ,
@@ -168,7 +170,7 @@ export default {
       picturePath.readAsDataURL(file)
       picturePath.onload = e => {
         //this.cottage.images.push({data:e.target.result,path:file.name,entityId:1});
-        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:"../images/"+file.name,entityId:1}, {headers: {Authorization:
+        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:file.name,entityId:this.cottage.id}, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added image!</p>`)
@@ -189,7 +191,7 @@ export default {
       }
       //this.cottage.rules.push({rule:ruleText});
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:1}, {headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:this.cottage.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added rule!</p>`)
@@ -209,7 +211,7 @@ export default {
       }
       //this.cottage.additionalServices.push(service);
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:1}, {headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:this.cottage.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added service!</p>`)
@@ -229,7 +231,7 @@ export default {
         return;
       }
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rooms/addRoom", {bedNumber:room,entityId:1}, {headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rooms/addRoom", {bedNumber:room,entityId:this.cottage.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added room!</p>`)
@@ -305,6 +307,7 @@ export default {
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated cottage!</p>`)
+          setTimeout(() => {this.$router.push({name:"CottageProfile",params:{id:this.cottage.id}}); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });

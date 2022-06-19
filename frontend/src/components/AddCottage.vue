@@ -106,7 +106,7 @@
 
                   <br/>
                   <div class="d-flex justify-content-center">
-                    <button type="submit" v-on:click="addCottage()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add cottage</div></button>
+                    <button type="button" v-on:click="addCottage()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add cottage</div></button>
                   </div>
                 </form>
               </div>
@@ -304,7 +304,7 @@ export default {
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
-          setTimeout(() => {location.reload(); }, 3000)
+          setTimeout(() => {this.$router.push({name:"BrowseCottages"}); }, 2000)
         }).catch(function error(error) {
         alert(error.response.data);
       });

@@ -16,7 +16,7 @@
         <h2>Your cottages</h2>
         <br />
         <div class="columns">
-          <div class="column" v-for="c in cottages">
+          <div class="column" v-for="c in cottages.slice(0,4)">
             <div class="card col-3" v-on:click="open(c.id)">
               <div class="card-image">
                 <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >

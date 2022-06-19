@@ -16,7 +16,7 @@ public class Image {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "path", nullable = false, unique = true)
+    @Column(name = "path", nullable = false)
     private String path;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -359,7 +359,6 @@ export default {
           .then(response => {
             this.show('foo-css', 'success','`<p style="font-size: 25px">Successfully added!</p>','`<p style="font-size: 20px">Successfully added available period.</p>')
             setTimeout(() => { }, 3000)
-            //this.$router.push({name:"CottageProfile",params:{id:this.cottageId}});
           }).catch(function error(error) {
           alert(error.response.data);
         });

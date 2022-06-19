@@ -3,10 +3,7 @@ package ftn.mrs.isa.rentalapp.controller;
 import ftn.mrs.isa.rentalapp.dto.RuleDTO;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Rule;
-import ftn.mrs.isa.rentalapp.service.AdventureService;
-import ftn.mrs.isa.rentalapp.service.BoatService;
-import ftn.mrs.isa.rentalapp.service.CottageService;
-import ftn.mrs.isa.rentalapp.service.RuleService;
+import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +34,9 @@ public class RuleController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private EntityService entityService;
 
     @PostMapping("/addRule")
     @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
@@ -72,6 +72,7 @@ public class RuleController {
         System.out.print("id jee"+id);
         Rule rule = ruleService.findOne(id);
         System.out.print("kao naslo");
+        //EntityType entityType = entityService.
 
         if(rule != null){
             System.out.print("uslo pred brisanjee");

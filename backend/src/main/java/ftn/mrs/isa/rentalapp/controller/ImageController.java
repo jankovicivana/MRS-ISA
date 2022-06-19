@@ -3,10 +3,7 @@ package ftn.mrs.isa.rentalapp.controller;
 import ftn.mrs.isa.rentalapp.dto.ImageDTO;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.entity.Image;
-import ftn.mrs.isa.rentalapp.service.AdventureService;
-import ftn.mrs.isa.rentalapp.service.BoatService;
-import ftn.mrs.isa.rentalapp.service.CottageService;
-import ftn.mrs.isa.rentalapp.service.ImageService;
+import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +45,9 @@ public class ImageController {
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private EntityService entityService;
+
     @PostMapping("/addImage")
     @PreAuthorize("hasAnyRole('fishingInstructor','cottageOwner','boatOwner')")
     public ResponseEntity<ImageDTO> addImage(@RequestBody ImageDTO imageDTO, Principal principal) throws IOException {
@@ -72,19 +72,22 @@ public class ImageController {
         } catch(Exception e) {
             return null;
         }
-        String imageName = imageDTO.getPath();
-        String picturePath = "..\\frontend\\src\\assets\\images\\"+imageName;
+        String imageName = "cottage-"+imageDTO.getPath();
+        String picturePath = "src\\main\\resources\\static\\images\\"+imageName;
         try (OutputStream stream = new FileOutputStream(new File(picturePath).getCanonicalFile())) {
             stream.write(data);
         }
 
         Image image = new Image();
-        image.setPath(imageDTO.getPath());
+        image.setPath(imageName);
         image.setEntity(entity);
         image.setIsMainPhoto(false);
         entity.getImages().add(image);
 
+        entityService.save(entity);
         imageService.save(image);
+
+
         return new ResponseEntity<>(mapper.map(image, ImageDTO.class),HttpStatus.CREATED);
     }
 

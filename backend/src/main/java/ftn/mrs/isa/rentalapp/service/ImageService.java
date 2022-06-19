@@ -42,9 +42,9 @@ public class ImageService {
             } catch(Exception e) {
                 return null;
             }
-            String imageName = "cottage-"+entityType.getName()+"."+count+".jpg";
-            //String picturePath = "src\\main\\resources\\static\\images\\"+imageName;
-            String picturePath = "..\\frontend\\src\\assets\\images\\"+imageName;
+            String imageName = "cottage-"+entityType.getName()+count+".jpg";
+            String picturePath = "src\\main\\resources\\static\\images\\"+imageName;
+            //String picturePath = "..\\frontend\\src\\assets\\images\\"+imageName;
             try (OutputStream stream = new FileOutputStream(new File(picturePath).getCanonicalFile())) {
                 stream.write(data);
             }
