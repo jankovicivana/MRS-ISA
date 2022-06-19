@@ -1,5 +1,5 @@
 <template>
-  <div class="reservations_main">
+  <div class="reservations_main min-">
     <CottageOwnerNavbar v-if="role === 'ROLE_cottageOwner'"></CottageOwnerNavbar>
     <FishingInstructorNavbar v-if="role === 'ROLE_fishingInstructor'"></FishingInstructorNavbar>
     <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'" ></BoatOwnerNavbar>
@@ -32,6 +32,18 @@
         <div class="column col-2">
           <span style="color: white">People</span>
           <input class="input" type="number" value="4" placeholder="Number of people" ref="people" min="1" max="10" style="height: 40px">
+        </div>
+        <div class="column col-2">
+          <span style="color: white">Sorting</span>
+          <div class="select">
+            <select title="Sorting" v-model="searchSort">
+              <option selected="selected" value="NO_SORT" >No sorting</option>
+              <option value="PRICE_ASC">Price: Ascending</option>
+              <option value="PRICE_DESC">Price: Descending</option>
+              <option value="RATING_ASC">Rating: Ascending</option>
+              <option value="RATING_DESC">Rating: Descending</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="columns">
@@ -96,6 +108,8 @@ import router from "../router";
 import AdventureBrowseCard from "./AdventureBrowseCard";
 import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 import BoatBrowseCard from "./BoatBrowseCard";
+import _orderBy from 'lodash/orderBy';
+
 export default {
   name: "Reservations",
   components: {
@@ -111,7 +125,8 @@ export default {
       rating: 4,
       role:'',
       clientId: this.$route.params.clientId,
-      client: ''
+      client: '',
+      searchSort: "NO_SORT"
     }
   },
   mounted: function () {
@@ -146,7 +161,27 @@ export default {
               Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")
             }})
-          .then(response => (this.entities = response.data)).catch(function error(error) {
+          .then(response => {
+            this.entities = response.data
+            if(this.searchSort !== "NO_SORT"){
+              if(this.searchSort === "PRICE_ASC"){
+                this.entities = _orderBy(this.entities, 'price', 'asc')
+              }
+
+              else if(this.searchSort === "PRICE_DESC"){
+                this.entities = _orderBy(this.entities, 'price', 'desc')
+              }
+
+              else if(this.searchSort === "RATING_ASC"){
+                this.entities = _orderBy(this.entities, 'averageGrade', 'asc')
+              }
+
+              else if(this.searchSort === "RATING_DESC"){
+                this.entities = _orderBy(this.entities, 'averageGrade', 'desc')
+              }
+            }
+
+          }).catch(function error(error) {
           alert(error.response.data);});
       }else if(this.role === 'ROLE_cottageOwner'){
         this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
@@ -182,7 +217,6 @@ export default {
           .then(response => (this.entities = response.data)).catch(function error(error) {
           alert(error.response.data);});
       }
-
     },
     show: function(group, type='', entityType){
       let title = `<p style="font-size: 25px">Reserved!</p>`

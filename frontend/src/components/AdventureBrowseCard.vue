@@ -18,7 +18,7 @@
                   <strong><a href="#/adventures/AdventureProfile"  style="color: #2e6b6b; font-size: 20px">{{adventure.name}}</a> </strong>
                 </span>
                 <span class="col-2">
-                  <star-rating :rating="3.8" :read-only="true" :increment="0.01" :star-size="20" :size="200"></star-rating>
+                  <star-rating :rating=adventure.averageGrade :read-only="true" :increment="0.01" :star-size="20" :size="200"></star-rating>
                 </span>
               </span>
 

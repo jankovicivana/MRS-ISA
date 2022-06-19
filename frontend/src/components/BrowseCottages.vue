@@ -11,10 +11,18 @@
         <div>
           <div class="columns mb-6">
             <div class="column col-2">
-              <input class="input is-link" type="text" placeholder="Browse cottages" v-model="searchText"/>
+              <span style="color: white">Name</span>
+              <input class="input is-link" type="text" placeholder="Name" v-model="searchText"/>
             </div>
 
-            <div class="column col-3">
+            <div class="column col-2">
+              <span style="color: white">Price</span>
+              <input class="input" ref="price" value="500" type="number" min="0" placeholder="Max price"/>
+            </div>
+
+
+            <div class="column col-2">
+              <span style="color: white">Sorting</span>
               <div class="select">
                 <select title="Sorting" v-model="searchSort">
                   <option selected="selected" value="NO_SORT" >No sorting</option>
@@ -30,8 +38,13 @@
               </div>
             </div>
 
-            <div class="column is-flex is-justify-content-flex-end is-1">
-              <button class="button search_button is-link"  v-on:click="search()">Search</button>
+            <div class="column col-2">
+              <span style="color: white">Rating</span>
+              <star-rating :rating="3" :read-only="false" :increment="0.1" :show-rating="false"  @rating-selected="setRating" :star-size="35" :size="300" style="height: 40px" ></star-rating>
+            </div>
+
+            <div class="column col-2">
+              <button type="button" class="button search_button is-link"  v-on:click="search()">Search</button>
             </div>
           </div>
         </div>
@@ -66,7 +79,8 @@ export default {
       searchSort: "NO_SORT",
       search_cottages: '',
       role:'',
-      can: ''
+      can: '',
+      rating: 3
     }
   },
   mounted: function (){
@@ -94,6 +108,10 @@ export default {
       else{
         this.search_cottages = this.cottages;
       }
+      this.search_cottages = this.search_cottages.filter(item => {
+        return item.price <= this.$refs.price.value && item.averageGrade >= this.rating
+      })
+
       if(this.searchSort !== "NO_SORT"){
         if (this.searchSort === "NAME_ASC"){
           this.search_cottages = _orderBy(this.search_cottages, 'name', 'asc')
@@ -157,22 +175,9 @@ export default {
     });
     },
 
-  /*  canSubscribe: function (c){
-      const res = this.checkSubscribe(c).then(value => {return value})
-      return res
+    setRating: function (rating){
+      this.rating = rating;
     },
-
-    checkSubscribe: function (c){
-      if(this.role !== "ROLE_client") return false;
-      const res =  axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/sub/canSubscribe/" + c.id, {
-          headers: {
-            Authorization:
-              'Bearer ' + sessionStorage.getItem("accessToken")
-          }
-        }).then(response => {return response.data});
-      return res
-    }*/
 
     }
 }
@@ -201,13 +206,22 @@ h1{
 }
 
 .search_button{
+  box-shadow: none;
+  border: none;
   background-color: #2e6b6b;
+  cursor: pointer;
+  text-transform: uppercase;
   color: white;
+  margin-top: 25px;
+  height: 40px;
 }
 
 .search_button:hover{
   background-color: #4AAE9B;
 }
 
+star-rating{
+  align-self: normal;
+}
 
 </style>

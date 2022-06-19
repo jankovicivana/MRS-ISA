@@ -45,7 +45,7 @@ values (5,'20220625','20220621 10:00:00 AM',false,10,180,'20220622',1,null,170,f
 
 insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'pera@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,0,'Ovo bi trebao da je biografija instruktora.','pera2.jpg',false, true, 0.0,'evo mene opet');
 
-insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Ovakav adrenalin se samo kod nas moze dozivjeti.Ludi ste ako nas ne posjetite.','Fenomenalna avantura','200',1,3,10,0,false,0.0, 2);
+insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Ovakav adrenalin se samo kod nas moze dozivjeti.Ludi ste ako nas ne posjetite.','Fenomenalna avantura','200',1,3,10,0,false,2.2, 2);
 
 
 insert into images (path,entity,is_main_photo) values ('pic1.jpg',2,false);
@@ -211,13 +211,13 @@ insert into reports (id,client_showed_up,penalty_status,report_string,advertiser
 insert into account_delete_requests (id,answer,request_reason,status,user_id) values (nextval('my_seqv6'),'','dosadni ste',1,2);
 insert into account_delete_requests (id,answer,request_reason,status,user_id) values (nextval('my_seqv6'),'','ukinuli ste nam popuste',1,8);
 
-insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Nezaboravna avantura','140',1,3,10,0,false,0.0, 2);
+insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Nezaboravna avantura','140',1,3,10,0,false, 4.9, 2);
 
 insert into images (path,entity,is_main_photo) values ('fish1.jpg',9,false);
 insert into images (path,entity,is_main_photo) values ('fish2.jpg',9,false);
 
 
-insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Coka avantura','140',1,3,10,0,false,0.0, 2);
+insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Coka avantura','140',1,3,10,0,false, 3.5, 2);
 
 insert into images (path,entity,is_main_photo) values ('fish3.jpg',10,false);
 insert into images (path,entity,is_main_photo) values ('fish4.jpg',10,false);
