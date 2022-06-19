@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("api/sub")
 public class SubscriptionController {
 
-
     @Autowired
     private SubscriptionService subscriptionService;
 
@@ -33,7 +32,6 @@ public class SubscriptionController {
     public ResponseEntity<String> subscribe(@PathVariable Integer id, Principal principal) {
         return subscriptionService.addSubscription(id, principal.getName());
     }
-
 
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasRole('client')")

@@ -38,6 +38,7 @@ public class ClientController {
 
     @Autowired
     private ModelMapper mapper;
+
     @Autowired
     private CottageOwnerService cottageOwnerService;
 
@@ -51,41 +52,19 @@ public class ClientController {
     private ReportService reportService;
 
     @Autowired
-    private EmailService emailService;
-
-    @Autowired
     private TokenUtils tokenUtils;
 
     @GetMapping(value = "/activate/{token}" )
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<String> activate(@PathVariable String token){
         String username = tokenUtils.getUsernameFromToken(token);
-        System.out.println("usernameeeeeeeeeeeee" + username);
-        Client client = clientService.findByEmail(username);
-        System.out.println("usernameeeeeeeeeeeee " + username);
-        System.out.println("tokeeeeeeeeeeeeen " + token);
-        if(client == null){
-            return new ResponseEntity<>("Ne postoji", HttpStatus.NOT_FOUND);
-        }
-        if(client.isEnabled()){
-            return new ResponseEntity<>("Vec aktiviran", HttpStatus.BAD_REQUEST);
-        }
-        client.setEnabled(true);
-        clientService.save(client);
-        return new ResponseEntity<>("super", HttpStatus.OK);
+        return clientService.activate(username);
     }
 
     @GetMapping(value = "/all")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<ClientDTO>> getAllClients(Principal principal){
-        List<Client> clients = clientService.findAll();
-        List<ClientDTO> clientsDTO = new ArrayList<>();
-        for(Client c : clients){
-            if (!c.isDeleted()){
-            clientsDTO.add(mapper.map(c, ClientDTO.class));
-            }
-        }
-        return new ResponseEntity<>(clientsDTO, HttpStatus.OK);
+        return clientService.findAll();
     }
 
     @GetMapping(value = "/getClient")
@@ -112,28 +91,13 @@ public class ClientController {
     @PostMapping(value = "/updateClient" )
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<ClientDTO> updateClient(@RequestBody ClientDTO clientDTO, Principal principal){
-        Client client = clientService.findByEmail(principal.getName());
-        if(client == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Client updated = mapper.map(clientDTO, Client.class);
-        updated.setRoles(client.getRoles());
-        clientService.updateClient(updated);
-        return new ResponseEntity<>(clientDTO, HttpStatus.OK);
+        return clientService.updateClient(clientDTO, principal.getName());
     }
 
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> delete(@PathVariable Integer id,Principal principal){
-        Client client = clientService.findOne(id);
-        if(client == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (!clientService.canDeleteClient(client)){
-            return new ResponseEntity<>("Client has reservations.Deletion is not possible.",HttpStatus.OK);
-        }
-        clientService.deleteClient(client);
-        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+        return clientService.delete(id);
     }
 
     //ova ne treba funkcija
@@ -187,17 +151,6 @@ public class ClientController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    /*@GetMapping(value = "/subscriptions/{id}")
-    public ResponseEntity<SubscriptionDTO> getSubscriptions(@PathVariable Integer id){
-        Client client = clientService.findOne(id);
-        List<SubscriptionDTO> subscriptionsDTO = new ArrayList<>();
-        for(Subscription s: client.getSubscriptions()){
-            subscriptionsDTO.add(new SubscriptionDTO(s));
-        }
-        return new ResponseEntity<>(subscriptionsDTO, HttpStatus.OK);
-    }*/
-
 
 
     @GetMapping(value = "/getReportOnHold")

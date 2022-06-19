@@ -291,9 +291,11 @@ public class ReservationController {
     }
 
     @PostMapping(value = "/cancelReservation")
-    @PreAuthorize("hasRole('client')")
+    @PreAuthorize("hasRole('client')")                  // treba mu dodati penal? ? ? ?
     public ResponseEntity<String> cancelReservation(@RequestBody ReservationDTO r,Principal principal){
         Client client = clientService.findByEmail(principal.getName());
+        client.setPenalties(client.getPenalties() + 1);
+        clientService.save(client);
         reservationService.cancelReservation(r.getId());
         return new ResponseEntity<>("Canceled successfully.",HttpStatus.OK);
     }
