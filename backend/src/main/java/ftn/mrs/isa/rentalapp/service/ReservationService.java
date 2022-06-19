@@ -1,6 +1,8 @@
 package ftn.mrs.isa.rentalapp.service;
 
+import ftn.mrs.isa.rentalapp.model.entity.EntityType;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
+import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,5 +106,10 @@ public boolean isAvailableInstructor(Integer id, LocalDateTime start, LocalDateT
 
     public List<Reservation> getFutureReservationByInstructor(Integer id) {
         return reservationRepository.findAllUpcomingByInstructor(LocalDateTime.now(),id);
+    }
+
+    public boolean isCanceled(Client client, LocalDateTime start, LocalDateTime end, EntityType entity) {
+        List<Reservation> r = reservationRepository.findCanceledByClient(client.getId(), start, end, entity.getId());
+        return !r.isEmpty();
     }
 }

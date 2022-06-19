@@ -17,8 +17,7 @@
                   <img class="d-block w-100" :src="url" alt="First slide" style="border-radius: 2%;height: 450px">
                 </slide>
               </carousel>
-
-
+            
           </div>
           <div class="col-md-6"  >
             <div class="row">

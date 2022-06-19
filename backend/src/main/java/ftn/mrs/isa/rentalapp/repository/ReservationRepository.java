@@ -68,10 +68,10 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
     @Query(value = "SELECT * FROM public.reservations  WHERE entity = :id  ", nativeQuery = true)
     public List<Reservation> findAllByEntity( @Param("id") Integer id);
 
-    @Query(value = "SELECT * FROM public.reservations WHERE entity = :id and ((start_date_time <= :start and end_date_time >= :start) or (start_date_time <= :end and end_date_time >= :end))", nativeQuery = true)
+    @Query(value = "SELECT * FROM public.reservations WHERE entity = :id and ((start_date_time <= :start and end_date_time >= :start) or (start_date_time <= :end and end_date_time >= :end)) and is_canceled=false", nativeQuery = true)
     public List<Reservation> getReserved( @Param("id") Integer id,  @Param("start") LocalDateTime start,  @Param("end") LocalDateTime end);
 
- @Query(value = "SELECT * FROM public.reservations inner join public.adventures   ON  reservations.entity = adventures.id WHERE  adventures.fishing_instructor_id = :id  and ((start_date_time <= :start and end_date_time >= :start) or (start_date_time <= :end and end_date_time >= :end))", nativeQuery = true)
+    @Query(value = "SELECT * FROM public.reservations inner join public.adventures   ON  reservations.entity = adventures.id WHERE  adventures.fishing_instructor_id = :id  and ((start_date_time <= :start and end_date_time >= :start) or (start_date_time <= :end and end_date_time >= :end))", nativeQuery = true)
     public List<Reservation> getReservedByInstructor( @Param("id") Integer id,  @Param("start") LocalDateTime start,  @Param("end") LocalDateTime end);
 
     @Query(value = "SELECT * FROM public.reservations WHERE end_date_time < :now and client = :id ", nativeQuery = true)
@@ -90,4 +90,6 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
     @Modifying
     public void cancel(@Param("id") Integer id);
 
+    @Query(value = "SELECT * FROM public.reservations WHERE entity = :entity and client = :client and start_date_time = :start and end_date_time = :end and is_canceled = true", nativeQuery = true)
+    public List<Reservation> findCanceledByClient(@Param("client") Integer client, @Param("start") LocalDateTime start,@Param("end") LocalDateTime end,@Param("entity") Integer entity);
 }

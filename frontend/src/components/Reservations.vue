@@ -218,11 +218,10 @@ export default {
           alert(error.response.data);});
       }
     },
-    show: function(group, type='', entityType){
-      let title = `<p style="font-size: 25px">Reserved!</p>`
-      let text = `<p style="font-size: 20px">Successfully reserved!</p>`
+    show: function (group, type = '',title, text) {
       this.$notify({group, title, text, type})
     },
+
     setRating: function (rating){
       this.rating = rating;
     },
@@ -235,14 +234,22 @@ export default {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
           }})
-        .then(response => {this.show('foo-css', 'success', entity.type); setTimeout(() => {
+        .then(response => { this.show('foo-css', 'success',`<p style="font-size: 25px">Reserved</p>`,`<p style="font-size: 20px">Successfully reserved</p>`)
+          setTimeout(() => {
           if(this.role === 'ROLE_client'){
           location.reload(); }else{
             router.push('/currentReservations');
           }
 
-          }, 1500) }).catch(function error(error) {
-        alert(error.response.data);});
+          }, 1500) }).catch(error => {
+                if(error.response.status === 400){
+                  this.show('foo-css', 'error',`<p style="font-size: 25px">Reservation failed</p>`,`<p style="font-size: 17px">You can't reserve at the same time if you have canceled already.</p>`)
+                }else{
+                  alert(error.response.data);
+                }
+
+
+          });
     }
   }
 }

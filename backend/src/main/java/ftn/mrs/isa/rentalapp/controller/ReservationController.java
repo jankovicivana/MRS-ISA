@@ -330,6 +330,12 @@ public class ReservationController {
         LocalDateTime start = LocalDateTime.of(r.getStartDate(), r.getStartTime());
         LocalDateTime end = LocalDateTime.of(r.getEndDate(), r.getEndTime());
         EntityType entity = entityService.findOne(r.getEntityId());
+
+        boolean isCanceled = reservationService.isCanceled(client, start, end, entity);
+        if(isCanceled){
+            return new ResponseEntity<>("Already canceled.",HttpStatus.BAD_REQUEST);
+        }
+
         RankingInfo clientRank = rankingInfoService.findRank(client.getPoints());
         double price = entity.getPrice()-entity.getPrice()*clientRank.getClientDiscount()/100;
         double systemProfit = systemInfoService.calculateSystemProfit(r.getEntityId(),price,client);
