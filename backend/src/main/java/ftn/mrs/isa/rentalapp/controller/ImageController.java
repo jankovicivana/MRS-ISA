@@ -72,7 +72,7 @@ public class ImageController {
         } catch(Exception e) {
             return null;
         }
-        String imageName = "cottage-"+imageDTO.getPath();
+        String imageName = imageDTO.getPath();
         String picturePath = "src\\main\\resources\\static\\images\\"+imageName;
         try (OutputStream stream = new FileOutputStream(new File(picturePath).getCanonicalFile())) {
             stream.write(data);

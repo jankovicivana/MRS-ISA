@@ -6,6 +6,7 @@ import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.EntitySearchDTO;
 import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.user.Address;
+import ftn.mrs.isa.rentalapp.model.user.BoatOwner;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -54,6 +55,9 @@ public class BoatController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private BoatOwnerService boatOwnerService;
+
     @GetMapping(value = "/all")
     public ResponseEntity<List<BoatDTO>> getAllBoats(){
         List<Boat> boats = boatService.findAll();
@@ -95,6 +99,8 @@ public class BoatController {
     @PreAuthorize("hasRole('boatOwner')")
     public ResponseEntity<BoatDTO> addBoat(@RequestBody BoatCreateDTO boatCreateDTO,Principal principal) throws IOException {
         Boat boat = mapper.map(boatCreateDTO,Boat.class);
+        BoatOwner boatOwner = boatOwnerService.findByEmail(principal.getName());
+        boat.setBoatOwner(boatOwner);
         boat.setAddress(new Address(boatCreateDTO.getStreet(),boatCreateDTO.getCity(),boatCreateDTO.getPostal_code(),boatCreateDTO.getCountry()));
         boat.setType(BoatType.getTypeFromString(boatCreateDTO.getType()));
         boat.setKind(EntityKind.BOAT);

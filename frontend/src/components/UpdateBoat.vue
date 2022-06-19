@@ -192,7 +192,7 @@
                   <br/>
 
                   <div class="d-flex justify-content-center">
-                    <button type="submit" v-on:click="updateBoat()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Update</div></button>
+                    <button type="button" v-on:click="updateBoat()"  class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Update</div></button>
                   </div>
 
 
@@ -217,7 +217,7 @@ export default {
   components: {BoatOwnerNavbar},
   mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/3", {headers: {Authorization:
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+this.$route.params.id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.boat = response.data,this.address = this.boat.address,this.boat_type = this.boat.type))
 
@@ -231,6 +231,7 @@ export default {
       boat:'',
       address:'',
       boat_type:'',
+      boatId:this.$route.params.id
     }
   },
   methods:{
@@ -252,7 +253,7 @@ export default {
 
       picturePath.readAsDataURL(file)
       picturePath.onload = e => {
-        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:file.name,entityId:3}, {headers: {Authorization:
+        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:file.name,entityId:this.boat.id}, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added image!</p>`)
@@ -271,7 +272,7 @@ export default {
         alert("Must enter rule!");
         return;
       }
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:3}, {headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added rule!</p>`)
@@ -291,7 +292,7 @@ export default {
       }
       //this.cottage.additionalServices.push(service);
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:3}, {headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added service!</p>`)
@@ -311,7 +312,7 @@ export default {
         return;
       }
       console.log(enteredEquipment)
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/equipment/addFishingEquipment", {equipment:enteredEquipment,adventureId:-1,boatId : 3}, {headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/equipment/addFishingEquipment", {equipment:enteredEquipment,adventureId:-1,boatId : this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added equipment!</p>`)
@@ -330,7 +331,7 @@ export default {
         return;
       }
       console.log(enteredEquipment)
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/navigationEquipment/addNavigationEquipment", {equipment:enteredEquipment,boatId : 3}, {headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/navigationEquipment/addNavigationEquipment", {equipment:enteredEquipment,boatId : this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added equipment!</p>`)
@@ -423,7 +424,7 @@ export default {
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated boat!</p>`)
-          setTimeout(() => {location.reload(); }, 1500)
+          setTimeout(() => {this.$router.push({name:"BoatProfile",params:{id:this.boat.id}}); }, 1500)
         }).catch(function error(error) {
         alert(error.response.data);
       });

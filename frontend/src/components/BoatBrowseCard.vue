@@ -14,7 +14,7 @@
             <p>
               <span class="columns mt-0 mb-1">
                 <span class="col-10 ml-3">
-                  <strong><a href="#/boats/BoatProfile"  style="color: #2e6b6b; font-size: 20px">{{boat.name}}</a> </strong>
+                  <strong><router-link :to="{ name:'BoatProfile',params:{id:boat.id} }"  style="color: #2e6b6b; font-size: 20px">{{boat.name}}</router-link> </strong>
                 </span>
                 <span class="col-2">
                   <star-rating :rating=boat.averageGrade :read-only="true" :increment="0.1" :star-size="20" :size="200"></star-rating>

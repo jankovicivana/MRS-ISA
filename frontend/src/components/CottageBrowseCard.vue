@@ -14,7 +14,7 @@
             <p>
               <span class="columns mt-0 mb-1">
                 <span class="col-10 ml-3">
-                  <strong><a href="#/cottages/CottageProfile"  style="color: #2e6b6b; font-size: 20px">{{cottage.name}}</a> </strong>
+                  <strong><router-link :to="{ name:'CottageProfile',params:{id:cottage.id} }"  style="color: #2e6b6b; font-size: 20px">{{cottage.name}}</router-link> </strong>
                 </span>
                 <span class="col-2">
                   <star-rating :rating="cottage.averageGrade" :read-only="true" :increment="0.1" :star-size="20" :size="200"></star-rating>

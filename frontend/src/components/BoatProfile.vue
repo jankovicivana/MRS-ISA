@@ -15,12 +15,12 @@
 
           <carousel :per-page="1" :navigationEnabled="true" :mouse-drag="false" :autoplay="true" :adjustable-height="true" v-bind:loop="true" v-bind:speed="3000">
             <slide  v-for="url in imagesUrl" >
-              <img class="d-block w-100" :src="url"  alt="First slide" style="border-radius: 2%">
+              <img class="d-block w-100" :src="url"  alt="First slide" style="border-radius: 2%;height: 400px">
             </slide>
           </carousel>
 
           <div class="row thumbs pt-3 ">
-            <span v-for="url in imagesUrl" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="url" alt="Boat photo" class="img-responsive" width="130px" height="130px"></span>
+            <span v-for="url in imagesUrl.slice(0,4)" class="side_photo col-3 px-1" style="padding-top: 10px;"><img :src="url" alt="Boat photo" class="img-responsive" width="130px" height="130px"></span>
           </div>
         </div>
         <div class="col-md-6 pt-5" >

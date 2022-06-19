@@ -172,7 +172,7 @@ export default new Router({
       component: FishingInstructorHomepage
     },
     {
-      path: '/boats/UpdateBoat',
+      path: '/boats/UpdateBoat/:id',
       name:'UpdateBoat',
       component: UpdateBoat
     },
