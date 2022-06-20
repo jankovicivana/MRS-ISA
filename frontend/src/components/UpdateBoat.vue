@@ -244,7 +244,7 @@ export default {
     addImage: function (){
       let img = this.$refs.image_input.value
       if(img === ""){
-        alert("Must choose file!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Image must not be empty!</p>`)
         return;
       }
       let file = document.querySelector('input[type=file]').files[0];
@@ -269,7 +269,7 @@ export default {
     addRule: function (){
       let ruleText = this.$refs.rule_input.value
       if(ruleText === ""){
-        alert("Must enter rule!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Rule must not be empty!</p>`)
         return;
       }
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:this.boat.id}, {headers: {Authorization:
@@ -287,10 +287,9 @@ export default {
     addService: function (){
       let service = this.$refs.add_service_input.value
       if(service === ""){
-        alert("Must enter additional service!!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Additional service must not be empty!</p>`)
         return;
       }
-      //this.cottage.additionalServices.push(service);
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
@@ -308,7 +307,7 @@ export default {
 
       let enteredEquipment = this.$refs.equip_input.value
       if(enteredEquipment === "" || enteredEquipment == null){
-        alert('Must enter equipment!')
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Fishing equipment must not be empty!</p>`)
         return;
       }
       console.log(enteredEquipment)
@@ -326,11 +325,10 @@ export default {
     },addNavEquipment: function (){
 
       let enteredEquipment = this.$refs.nav_equip_input.value
-      if(enteredEquipment == "" || enteredEquipment == null){
-        alert('Must enter equipment!')
+      if(enteredEquipment === "" || enteredEquipment == null){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Navigation equipment must not be empty!</p>`)
         return;
       }
-      console.log(enteredEquipment)
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/navigationEquipment/addNavigationEquipment", {equipment:enteredEquipment,boatId : this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
@@ -419,6 +417,13 @@ export default {
         navigationEquipment: this.boat.navigationEquipment,
         images: this.boat.images
       };
+
+      if(this.boat.name.length === 0 || this.boat.description.length === 0 || this.boat.price.length === 0 ||this.boat.capacity.length===0 || this.address.country.length===0 ||
+        this.address.city.length === 0 || this.address.street.length===0 || this.address.postalCode.length===0 || this.boat.length.length === 0 || this.boat.cancelFee.length === 0
+        || this.boat.motorNum.length === 0 || this.boat.power.length === 0 ||this.boat.maxSpeed.length === 0 || this.boat.type.length === 0){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Fields must not be empty!</p>`)
+        return;
+      }
 
       axios.put(process.env.VUE_APP_SERVER_PORT+"/api/boats/updateBoat",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})

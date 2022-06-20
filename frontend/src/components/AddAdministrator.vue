@@ -80,7 +80,7 @@
                     </div>
                   </div>
                   <div class="d-flex justify-content-center">
-                    <button type="submit" v-on:click="addAdministrator()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+                    <button type="button" v-on:click="addAdministrator()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
                   </div>
                 </form>
                 <br/>
@@ -102,6 +102,12 @@ import AdminNavbar from "./header/AdminNavbar";
 
 export default {
   name: "AddAdministrator",
+  data() {
+
+    return {
+      result: '',
+    }
+  },
   components: {'admin_navbar': AdminNavbar},
 
   methods:{
@@ -109,14 +115,17 @@ export default {
       let title = `<p style="font-size: 25px">Successfull adding!</p>`
       let text = `<p style="font-size: 20px">Successfully added administrator!</p>`
       this.$notify({group, title, text, type})
+    },show1: function(group, type='',title,text){
+      this.$notify({group, title, text, type})
     },
+
 
     addAdministrator:function (){
       let password = this.$refs.password.value
       let confirmed_password = this.$refs.confirmed_password.value
 
       if(password !== confirmed_password){
-        alert("Passwords don't match.Try again.")
+        this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Passwords don't match.Try again!</p>`)
         return;
       }
 
@@ -141,17 +150,26 @@ export default {
         phoneNumber: phone,
         password: password
       };
+      for (let i of [first_name,last_name,state,city,email,city,street,postal_code,phone,password]) {
+        if (i === '') {
+          this.show1('foo-css', 'error', `<p style="font-size: 25px">Warning!</p>`, `<p style="font-size: 20px">You must enter all info!</p>`)
+          return;
+        }
+      }
+
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/administrator/addAdministrator",this.info ,{headers: {Authorization:
         'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')
           setTimeout(() => {location.reload(); }, 3000)
-        }).catch(function error(error) {
-        alert(error.response.data);
-      });
+        }).catch((error) =>  {
+        this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Email is already used!</p>`)
+        });
 
-    }
+    },
+
+
   }
 }
 </script>

@@ -160,7 +160,7 @@ export default {
     addImage: function (){
       let img = this.$refs.image_input.value
       if(img === ""){
-        alert("Must choose file!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Image must not be empty!</p>`)
         return;
       }
       let file = document.querySelector('input[type=file]').files[0];
@@ -169,7 +169,6 @@ export default {
 
       picturePath.readAsDataURL(file)
       picturePath.onload = e => {
-        //this.cottage.images.push({data:e.target.result,path:file.name,entityId:1});
         axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:file.name,entityId:this.cottage.id}, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
@@ -186,10 +185,9 @@ export default {
     addRule: function (){
       let ruleText = this.$refs.rule_input.value
       if(ruleText === ""){
-        alert("Must enter rule!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Rule must not be empty!</p>`)
         return;
       }
-      //this.cottage.rules.push({rule:ruleText});
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:this.cottage.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
@@ -206,10 +204,9 @@ export default {
     addService: function (){
       let service = this.$refs.add_service_input.value
       if(service === ""){
-        alert("Must enter additional service!!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Additional service must not be empty!</p>`)
         return;
       }
-      //this.cottage.additionalServices.push(service);
 
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:this.cottage.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
@@ -227,7 +224,7 @@ export default {
 
       let room = this.$refs.num_bed_input.value
       if(room === ""){
-        alert('Must enter bed number!')
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Number of beds must not be empty!</p>`)
         return;
       }
 
@@ -236,8 +233,8 @@ export default {
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added room!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch(error => {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">`+error.response.data+`</p>`)
       });
 
       document.getElementById('num_bed_input').value="";
@@ -250,8 +247,8 @@ export default {
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed rule!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch(error => {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">`+error.response.data+`</p>`)
       });
 
     },removeRoom:function (id){
@@ -262,8 +259,8 @@ export default {
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed room!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch(error => {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">`+error.response.data+`</p>`)
       });
 
     },removeAdditionalService:function (id){
@@ -273,8 +270,8 @@ export default {
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed additional service!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch(error => {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">`+error.response.data+`</p>`)
       });
 
     },removeImage:function (id){
@@ -284,8 +281,8 @@ export default {
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed image!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch(error => {
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">`+error.response.data+`</p>`)
       });
 
     },
@@ -302,6 +299,11 @@ export default {
         additionalServices: this.cottage.additionalServices,
         images: this.cottage.images
       };
+      if(this.cottage.name.length === 0 || this.cottage.price.length === 0 || this.cottage.maxNumPerson.length===0 || this.address.country.length===0
+        || this.address.city.length === 0 || this.address.street.length===0 || this.address.postal_code.length===0){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Fields must not be empty!</p>`)
+        return;
+      }
 
       axios.put(process.env.VUE_APP_SERVER_PORT+"/api/cottages/updateCottage",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})

@@ -297,7 +297,7 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted cottage!</p>`)
-            setTimeout(() => {this.$router.push({name:"HomepageCottageOwner"}); }, 3000)
+            setTimeout(() => { router.push('/cottages'); }, 2000)
           }).catch((error) => {
             this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Cottage has reservations.</p>`)
         });

@@ -211,9 +211,7 @@ export default {
     }
   },
   methods:{
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfully added!</p>`
-      let text = `<p style="font-size: 20px">Successfully added boat!</p>`
+    show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
     },
 
@@ -225,7 +223,10 @@ export default {
       let img = this.$refs.image_input.value;
       let file = document.querySelector('input[type=file]').files[0];
       var picturePath  = new FileReader();
-
+      if(img === ""){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Image must not be empty!</p>`)
+        return;
+      }
 
       picturePath.readAsDataURL(file)
       picturePath.onload = e => {
@@ -233,10 +234,6 @@ export default {
 
       }
 
-      if(img == ""){
-        alert("Must choose file!");
-        return;
-      }
       let tag,aptag;
       [tag,aptag] = this.formElement(img,this.imagesUrls);
 
@@ -247,8 +244,8 @@ export default {
     },
     addRule: function (){
       let rule = this.$refs.rule_input.value;
-      if(rule == ""){
-        alert("Must enter rule!");
+      if(rule === ""){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Rule must not be empty!</p>`)
         return;
       }
       this.rules.push(rule);
@@ -262,8 +259,8 @@ export default {
     },
     addEquipment: function (){
       let equip = this.$refs.equip_input.value
-      if(equip == ""){
-        alert("Must enter equipment!");
+      if(equip === ""){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Fishing equipment must not be empty!</p>`)
         return;
       }
       let aptag,tag;
@@ -276,8 +273,8 @@ export default {
 
     },addNavEquipment: function (){
       let equip = this.$refs.nav_equip_input.value
-      if(equip == ""){
-        alert("Must enter equipment!");
+      if(equip === ""){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Navigation equipment must not be empty!</p>`)
         return;
       }
       let aptag,tag;
@@ -292,8 +289,8 @@ export default {
 
     addService: function (){
       let service = this.$refs.add_service_input.value;
-      if(service == ""){
-        alert("Must enter additional service!!");
+      if(service === ""){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Additional service must not be empty!</p>`)
         return;
       }
       this.services.push(service);
@@ -346,6 +343,13 @@ export default {
       let max_speed = this.$refs.max_speed_input.value
       let boat_type = this.$refs.boat_type_input.value
 
+      if(name.length === 0 || description.length === 0 || price.length === 0 || max_person_num.length===0 || country.length===0 ||
+        city.length === 0 || street.length===0 || postal_code.length===0 || length.length === 0 || cancel_fee.length === 0 || motor_num.length === 0 || power.length === 0
+        || max_speed.length === 0 || boat_type.length === 0){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Fields must not be empty!</p>`)
+        return;
+      }
+
 
       this.info = {
         name: name,
@@ -372,7 +376,7 @@ export default {
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/boats/addBoat",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          this.show('foo-css', 'success')
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added boat!</p>`)
           setTimeout(() => {this.$router.push({name:"BrowseBoats"}); }, 3000)
         }).catch(function error(error) {
         alert(error.response.data);

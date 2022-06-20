@@ -82,7 +82,7 @@ public class FishingInstructorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (!fishingInstructorService.canDeleteInstructor(client)){
-            return new ResponseEntity<>("Instructor has reservations.Deletion is not possible.",HttpStatus.OK);
+            return new ResponseEntity<>("Instructor has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
         }
         fishingInstructorService.deleteInstructor(client);
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);

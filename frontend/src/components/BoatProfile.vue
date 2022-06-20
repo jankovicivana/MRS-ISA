@@ -184,6 +184,7 @@ import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 import MainNavbar from "./header/MainNavbar";
 import ClientNavbar from "./header/ClientNavbar";
 import AdminNavbar from "./header/AdminNavbar";
+import router from "../router";
 
 export default {
   name: "BoatProfile",
@@ -320,7 +321,7 @@ export default {
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted boat!</p>`)
-
+          setTimeout(() => {router.push('/boats'); }, 2000)
         }).catch((error) => {
         //alert(error.response.data);
           this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Boat has reservations.</p>`)

@@ -1,5 +1,5 @@
 <template>
-  <section class="basic_background vh-100" >
+  <section class="basic_background min-vh-100 is-fullheight" >
     <AdminNavbar :isAdmin="true"></AdminNavbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
@@ -252,5 +252,8 @@ export default {
 </script>
 
 <style scoped>
+  .basic_background{
+    height: fit-content;
+  }
 
 </style>

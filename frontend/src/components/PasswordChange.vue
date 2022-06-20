@@ -16,14 +16,14 @@
                         <label style="width: 150px" class="form-check-label" for="flexRadioDefault2">
                           New password
                         </label>
-                        <input class="ml-4" ref="pass1" style="height: 35px"  type="text" name="flexRadioDefault" id="flexRadioDefault2">
+                        <input class="ml-4" ref="pass1" style="height: 35px"  type="password" name="flexRadioDefault" id="flexRadioDefault2">
 
                       </div>
                       <div class="form-check pb-3">
                         <label style="width: 150px" class="form-check-label" for="flexRadioDefault1">
                           Confirm password
                         </label>
-                        <input class="ml-4" ref="pass2" style="height: 35px"  type="text" name="flexRadioDefault" id="flexRadioDefault1">
+                        <input class="ml-4" ref="pass2" style="height: 35px"  type="password" name="flexRadioDefault" id="flexRadioDefault1">
 
                       </div>
 
