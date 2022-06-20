@@ -49,11 +49,7 @@ public class AdministratorController {
         if (existUser != null) {
             return new ResponseEntity<>(new AdministratorDTO(),HttpStatus.BAD_REQUEST);
         }
-        Administrator admin = mapper.map(administratorCreateDTO,Administrator.class);
-        admin.setType(String.valueOf(UserType.ADMINISTRATOR));
-        admin.setPasswordChanged(false);
-        admin.setPoints(0);
-        administratorService.save(admin);
+        Administrator admin = administratorService.createAdmin(administratorCreateDTO);
         return new ResponseEntity<>(mapper.map(admin, AdministratorDTO.class), HttpStatus.CREATED);
 
     }
@@ -72,11 +68,7 @@ public class AdministratorController {
     @PostMapping(value = "/updateAdmin" )
     @PreAuthorize("hasRole('admin')")
     public void updateAdmin(@RequestBody AdministratorDTO administratorDTO, Principal principal) {
-        Administrator oldAdmin = administratorService.findOne(administratorDTO.getId());
-        Administrator a = mapper.map(administratorDTO,Administrator.class);
-        a.setRoles(oldAdmin.getRoles());
-        a.setPoints(0);
-        administratorService.save(a);
+        administratorService.updateAdmin(administratorDTO);
     }
 
     @PostMapping(value = "/changePassword")

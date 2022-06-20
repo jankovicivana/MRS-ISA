@@ -60,16 +60,7 @@ public class FishingInstructorController {
     @PostMapping(value = "/updateInstructor" )
     @PreAuthorize("hasRole('fishingInstructor')")
     public void updateInstructor(@RequestBody FishingInstructorDTO fishingInstructorDTO, Principal principal) {
-        FishingInstructor fishingInstructor = fishingInstructorService.findOne(fishingInstructorDTO.getId());
-        fishingInstructorDTO.setRegistrationStatus(fishingInstructor.getRegistrationStatus());
-        fishingInstructorDTO.setRegistrationReason(fishingInstructor.getRegistrationReason());
-        FishingInstructor updatedInstructor = mapper.map(fishingInstructorDTO,FishingInstructor.class);
-        updatedInstructor.setRoles(fishingInstructor.getRoles());
-        updatedInstructor.setMainPhoto(fishingInstructor.getMainPhoto());
-        updatedInstructor.setPoints(fishingInstructor.getPoints());
-        updatedInstructor.setEnabled(fishingInstructor.isEnabled());
-        updatedInstructor.setType(fishingInstructor.getType());
-        fishingInstructorService.updateInstructor(updatedInstructor);
+        fishingInstructorService.updateInstructor(fishingInstructorDTO);
     }
 
 
@@ -90,13 +81,7 @@ public class FishingInstructorController {
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<FishingInstructorDTO>> getAllInstructors(){
-        List<FishingInstructor> instructors = fishingInstructorService.findAll();
-        List<FishingInstructorDTO> instructorsDTO = new ArrayList<>();
-        for(FishingInstructor c : instructors){
-            if (!c.isDeleted()) {
-                instructorsDTO.add(mapper.map(c, FishingInstructorDTO.class));
-            }
-        }
+        List<FishingInstructorDTO> instructorsDTO = fishingInstructorService.findAll();
         return new ResponseEntity<>(instructorsDTO, HttpStatus.OK);
     }
 

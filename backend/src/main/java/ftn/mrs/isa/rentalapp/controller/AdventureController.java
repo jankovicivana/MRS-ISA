@@ -66,33 +66,7 @@ public class AdventureController {
     @PreAuthorize("hasRole('fishingInstructor')")
     public ResponseEntity<AdventureDTO> addAdventure(@RequestBody AdventureCreateDTO adventureDTO,Principal principal) throws Exception {
         FishingInstructor instructor = fishingInstructorService.findByEmail(principal.getName());
-        Adventure adventure = new Adventure();
-        adventure.setName(adventureDTO.getName());
-        adventure.setDescription(adventureDTO.getDescription());
-        adventure.setMaxPersonNum(Integer.parseInt(adventureDTO.getMaxPersonNum()));
-        adventure.setPrice(adventureDTO.getPrice());
-        adventure.setCancelFee(adventureDTO.getCancelFee());
-        adventure.setAddress(new Address(adventureDTO.getStreet(),adventureDTO.getCity(),adventureDTO.getPostal_code(),adventureDTO.getCountry()));
-        adventure.setFishingInstructor(instructor);
-        adventure.setKind(EntityKind.ADVENTURE);
-
-        Set<Rule> rules = ruleService.createRuleFromString(adventureDTO.getRules(),adventure);
-        adventure.setRules(rules);
-
-        Set<FishingEquipment> equipment = equipmentService.createFishingEquipmentFromString(adventureDTO.getFishingEquipment(),adventure);
-        adventure.setFishingEquipment(equipment);
-
-        Set<AdditionalService> services = additionalServiceService.createAddServiceFromString(adventureDTO.getAdditionalServices(),adventure);
-        adventure.setAdditionalServices(services);
-
-        Set<Image> images = imageService.createImageFromString(adventureDTO.getImages(),adventure);
-        adventure.setImages(images);
-
-        adventureService.save(adventure);
-        ruleService.addRules(rules);
-        additionalServiceService.addAdditionalServices(services);
-        imageService.addImages(images);
-
+        Adventure adventure = adventureService.createAdventure(instructor,adventureDTO);
         return new ResponseEntity<>(mapper.map(adventure,AdventureDTO.class), HttpStatus.CREATED);
 
     }
@@ -168,15 +142,7 @@ public class AdventureController {
         if(adventure == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        adventure.setName(adventureDTO.getName());
-        adventure.setPrice(adventureDTO.getPrice());
-        adventure.setMaxPersonNum(adventureDTO.getMaxPersonNum());
-        adventure.setDescription(adventureDTO.getDescription());
-        adventure.setCancelFee(adventureDTO.getCancelFee());
-        Address a = mapper.map(adventureDTO.getAddress(),Address.class);
-        adventure.setAddress(a);
-
-        adventureService.save(adventure);
+        adventure = adventureService.updateAdventure(adventure,adventureDTO);
         return new ResponseEntity<>(mapper.map(adventure,AdventureDTO.class),HttpStatus.OK);
     }
 

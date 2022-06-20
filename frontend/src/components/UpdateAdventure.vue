@@ -185,7 +185,7 @@ export default {
     addImage: function (){
       let img = this.$refs.image_input.value
       if(img === ""){
-        alert("Must choose file!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must choose photo!</p>`)
         return;
       }
       let file = document.querySelector('input[type=file]').files[0];
@@ -199,8 +199,8 @@ export default {
           .then(response => {
             this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added image!</p>`)
             setTimeout(() => {location.reload(); }, 1500)
-          }).catch(function error(error) {
-          alert(error.response.data);
+          }).catch((error) =>  {
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must choose photo!</p>`)
         });
       }
 
@@ -210,7 +210,7 @@ export default {
     addRule: function (){
       let ruleText = this.$refs.rule_input.value
       if(ruleText === ""){
-        alert("Must enter rule!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter rule!</p>`)
         return;
       }
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:2}, {headers: {Authorization:
@@ -218,8 +218,8 @@ export default {
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added rule!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch((error) =>  {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter rule!</p>`)
       });
 
       document.getElementById('rule_input').value="";
@@ -228,7 +228,7 @@ export default {
     addService: function (){
       let service = this.$refs.add_service_input.value
       if(service === ""){
-        alert("Must enter additional service!!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter additional service!</p>`)
         return;
       }
       //this.cottage.additionalServices.push(service);
@@ -238,8 +238,8 @@ export default {
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added service!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch((error) =>  {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter additional service!</p>`)
       });
 
       document.getElementById('add_service_input').value="";
@@ -249,7 +249,7 @@ export default {
 
       let enteredEquipment = this.$refs.equip_input.value
       if(enteredEquipment === "" || enteredEquipment == null){
-        alert('Must enter equipment!')
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter equipment!</p>`)
         return;
       }
       console.log(enteredEquipment)
@@ -258,8 +258,8 @@ export default {
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added equipment!</p>`)
           setTimeout(() => {location.reload(); }, 1500)
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch((error) =>  {
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter equipment!</p>`)
       });
 
       document.getElementById('equip_input').value="";
