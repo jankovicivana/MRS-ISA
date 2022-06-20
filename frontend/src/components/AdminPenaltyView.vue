@@ -85,8 +85,7 @@ export default {
     },
 
     acceptPenalty:function (report){
-      let id = report.id
-      axios.get(process.env.VUE_APP_SERVER_PORT + "/api/clients/acceptPenalty/"+id,{headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/clients/acceptPenalty",report,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully accepted penalty!</p>`)
@@ -100,8 +99,7 @@ export default {
       });
     },
     rejectPenalty:function (report){
-      let id = report.id
-      axios.get(process.env.VUE_APP_SERVER_PORT + "/api/clients/rejectPenalty/"+id,{headers: {Authorization:
+      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/clients/rejectPenalty",report,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully rejected penalty!</p>`)

@@ -98,12 +98,7 @@ public class UserController {
         }
         return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
     }
-    @PostMapping(value = "/emailExists")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<Boolean> emailExists(@RequestBody String email,Principal principal) {
 
-        return new ResponseEntity<>(false,HttpStatus.OK);
-    }
 
     @GetMapping("/getDeleteRequestsOnHold")
     @PreAuthorize("hasRole('admin')")

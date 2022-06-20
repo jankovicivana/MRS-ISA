@@ -138,9 +138,9 @@ public class UserService  implements UserDetailsService {
     public boolean setDeletionStatus(AccountDeleteRequestDTO accountDeleteRequestDTO, RequestStatus status) throws MessagingException {
         try{
             AccountDeleteRequest request = deleteAccountRequestRepository.getDeletionRequest(accountDeleteRequestDTO.getId());
-        if (request.getStatus()!=RequestStatus.ON_HOLD){
-            return false;
-        }
+            if (request.getStatus()!=RequestStatus.ON_HOLD){
+                return false;
+            }
         request.setAnswer(accountDeleteRequestDTO.getAnswer());
         request.setStatus(status);
         saveDeletionRequest(request);

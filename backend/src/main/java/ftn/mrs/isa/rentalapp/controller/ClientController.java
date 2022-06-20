@@ -164,20 +164,20 @@ public class ClientController {
         return new ResponseEntity<>(reportDTOS, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/acceptPenalty/{id}")
+    @PostMapping(value = "/acceptPenalty")
     @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<String> acceptPenaltyReport(@PathVariable Integer id, Principal principal) throws MessagingException, InterruptedException {
-        if (clientService.answerPenalty(id, RequestStatus.ACCEPTED)) {
+    public ResponseEntity<String> acceptPenaltyReport(@RequestBody ReportDTO reportDTO, Principal principal) throws MessagingException, InterruptedException {
+        if (clientService.answerPenalty(reportDTO.getId(), RequestStatus.ACCEPTED)) {
             return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
         }
         return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
 
     }
 
-    @GetMapping(value = "/rejectPenalty/{id}")
+    @PostMapping(value = "/rejectPenalty")
     @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<String> rejectPenaltyReport(@PathVariable Integer id, Principal principal) throws MessagingException, InterruptedException {
-        if (clientService.answerPenalty(id, RequestStatus.REJECTED)) {
+    public ResponseEntity<String> rejectPenaltyReport(@RequestBody ReportDTO reportDTO, Principal principal) throws MessagingException, InterruptedException {
+        if (clientService.answerPenalty(reportDTO.getId(), RequestStatus.REJECTED)) {
             return new ResponseEntity<>("Rejecting is successful.",HttpStatus.OK);
         }
         return new ResponseEntity<>("Rejecting is denied.",HttpStatus.BAD_REQUEST);

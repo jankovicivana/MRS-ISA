@@ -69,7 +69,6 @@ public class ComplaintService {
             }else{
                 emailService.sendComplaint(advertiserComplaint.getClient(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), false);
                 emailService.sendComplaint(advertiserComplaint.getAdvertiser(), advertiserComplaint.getComplaint(), advertiserComplaint.getAnswer(), false);
-
             }
             return true;}
         catch (PessimisticLockingFailureException e) {

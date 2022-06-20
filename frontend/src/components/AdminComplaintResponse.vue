@@ -170,7 +170,6 @@ export default {
       });
     },
     rejectEntityComplaint:function (review) {
-      let id = review.id
       let area = review.answer
       if (area==='' || area===null){
         this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Must enter response for this request!</p>`)
@@ -194,7 +193,6 @@ export default {
       });
     },
     rejectAdvertiserComplaint:function (review) {
-      let id = review.id
       let area = review.answer
       if (area==='' || area===null){
         this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Must enter response for this request!</p>`)

@@ -66,9 +66,6 @@ public class AdministratorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         AdministratorDTO dto = mapper.map(admin,AdministratorDTO.class);
-        System.out.print(dto.getEmail());
-        System.out.print(dto.isPasswordChanged());
-        System.out.print(dto.getSurname());
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 

@@ -8,8 +8,8 @@ import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Address;
 import ftn.mrs.isa.rentalapp.model.user.Client;
 import ftn.mrs.isa.rentalapp.model.user.Role;
-import ftn.mrs.isa.rentalapp.repository.AddressRepository;
 import ftn.mrs.isa.rentalapp.repository.ClientRepository;
+import ftn.mrs.isa.rentalapp.repository.ReportRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class ClientService {
 
     @Autowired
@@ -33,6 +35,9 @@ public class ClientService {
 
     @Autowired
     private ReservationRepository reservationsRepository;
+
+    @Autowired
+    private ReportRepository reportRepository;
 
 
     @Autowired
@@ -111,21 +116,23 @@ public class ClientService {
     }
 
     public boolean answerPenalty(Integer id, RequestStatus status) throws MessagingException, InterruptedException {
-        try{Report report = reportService.findOne(id);
-        report.setPenaltyStatus(status);
-        String message;
-        Client c = findOne(report.getClient().getId());
-        if (status == RequestStatus.ACCEPTED){
-            c.setPenalties(c.getPenalties()+1);
-            save(c);
-            message = "accepted";
-        }
-        else{
-            message = "rejected";
-        }
-        reportService.save(report);
-        emailService.sendNotificationReportToClientAsync(c,report.getAdvertiser(),message);
-        emailService.sendNotificationReportToAdvertiserAsync(c, report.getAdvertiser(),message);}
+        try{
+            Report report = reportService.getReport(id);
+            if (report == null){return false;}
+            report.setPenaltyStatus(status);
+            String message;
+            Client c = findOne(report.getClient().getId());
+            if (status == RequestStatus.ACCEPTED){
+                c.setPenalties(c.getPenalties()+1);
+                save(c);
+                message = "accepted";
+            }
+            else{
+                message = "rejected";
+            }
+            reportService.save(report);
+            emailService.sendNotificationReportToClientAsync(c,report.getAdvertiser(),message);
+            emailService.sendNotificationReportToAdvertiserAsync(c, report.getAdvertiser(),message);}
         catch (PessimisticLockingFailureException p){
             return false;
         }
