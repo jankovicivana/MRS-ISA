@@ -300,7 +300,7 @@ export default {
         images: this.cottage.images
       };
       if(this.cottage.name.length === 0 || this.cottage.price.length === 0 || this.cottage.maxNumPerson.length===0 || this.address.country.length===0
-        || this.address.city.length === 0 || this.address.street.length===0 || this.address.postal_code.length===0){
+        || this.address.city.length === 0 || this.address.street.length===0 || this.address.postalCode.length===0){
         this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Fields must not be empty!</p>`)
         return;
       }

@@ -327,10 +327,6 @@ export default {
         this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">End date must be after start date!</p>`)
         return;
       }
-      if (start_date<Date.now || end_date<Date.now){
-        this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter future dates!</p>`)
-        return;
-      }
 
       if (!this.isPeriodAvailable(start_date,end_date)){
         this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You have entered this available period!</p>`)
@@ -357,7 +353,7 @@ export default {
         axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addCottage",this.info, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
-            this.show('foo-css', 'success','`<p style="font-size: 25px">Successfully added!</p>','`<p style="font-size: 20px">Successfully added available period.</p>')
+            this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added available period.</p>`)
             setTimeout(() => { }, 3000)
           }).catch(function error(error) {
           alert(error.response.data);

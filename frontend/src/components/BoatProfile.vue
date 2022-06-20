@@ -342,10 +342,6 @@ export default {
       this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">End date must be after start date!</p>`)
       return;
     }
-    if (start_date<Date.now || end_date<Date.now){
-      this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You must enter future dates!</p>`)
-      return;
-    }
 
     if (!this.isPeriodAvailable(start_date,end_date)){
       this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You have entered this available period!</p>`)

@@ -47,32 +47,7 @@ public class BoatOwnerController {
     @PostMapping(value = "/updateBoatOwner" )
     @PreAuthorize("hasRole('boatOwner')")
     public ResponseEntity<String> updateBoatOwner(@RequestBody BoatOwnerDTO boatOwnerDTO) {
-        BoatOwner boatOwner = boatOwnerService.findOne(boatOwnerDTO.getId());
-        if(boatOwner == null){
-            return new ResponseEntity<>("Owner not found",HttpStatus.BAD_REQUEST);
-        }
-        if(boatOwnerDTO.getName().length() == 0 || boatOwnerDTO.getSurname().length() == 0 || boatOwnerDTO.getAddress().getCity().length() == 0
-                || boatOwnerDTO.getAddress().getCountry().length()==0 || boatOwnerDTO.getAddress().getStreet().length() == 0){
-            return new ResponseEntity<>("Values must not be empty.",HttpStatus.BAD_REQUEST);
-        }
-
-        try {
-            Integer.parseInt(boatOwnerDTO.getPhoneNumber());
-            Integer.parseInt(boatOwnerDTO.getAddress().getPostalCode());
-        }catch (NumberFormatException nfe){
-            return new ResponseEntity<>("Phone number and postal code must be numbers.",HttpStatus.BAD_REQUEST);
-        }
-
-        boatOwnerDTO.setRegistrationStatus(boatOwner.getRegistrationStatus());
-        BoatOwner updated = mapper.map(boatOwnerDTO,BoatOwner.class);
-        updated.setRoles(boatOwner.getRoles());
-        updated.setMainPhoto(boatOwner.getMainPhoto());
-        updated.setPoints(boatOwner.getPoints());
-        updated.setEnabled(boatOwner.isEnabled());
-        updated.setRegistrationReason(boatOwner.getRegistrationReason());
-        updated.setType(boatOwner.getType());
-        boatOwnerService.updateBoatOwner(updated);
-        return new ResponseEntity<>("Successfully edited.",HttpStatus.OK);
+        return boatOwnerService.updateBoatOwner(boatOwnerDTO);
     }
 
     @DeleteMapping(value = "/delete/{id}")
@@ -92,13 +67,7 @@ public class BoatOwnerController {
     @GetMapping(value = "/all")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<BoatOwnerDTO>> getAllBoatOwners(Principal principal){
-        List<BoatOwner> owners = boatOwnerService.findAll();
-        List<BoatOwnerDTO> ownersDTO = new ArrayList<>();
-        for(BoatOwner c : owners){
-            if (!c.isDeleted()) {
-                ownersDTO.add(mapper.map(c, BoatOwnerDTO.class));
-            }
-        }
+        List<BoatOwnerDTO> ownersDTO = boatOwnerService.getAllBoatOwners();
         return new ResponseEntity<>(ownersDTO, HttpStatus.OK);
     }
 
