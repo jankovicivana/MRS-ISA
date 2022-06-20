@@ -76,23 +76,9 @@ public class ReservationController {
 
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasRole('client')")  // dodati ovdje ako treba jos nekoga
+    @PreAuthorize("hasRole('client')")
     public ResponseEntity<ReservationDTO> getById(@PathVariable Integer id, Principal principal){
-        Reservation r = reservationService.getById(id);
-        ReservationDTO rdto = mapper.map(r, ReservationDTO.class);
-        String entityType = EntityKind.toString(r.getEntity().getKind());
-        rdto.getEntity().setType(entityType);
-        if(entityType.equals("Cottage")){
-            Cottage c = cottageService.findOne(r.getEntity().getId());
-            rdto.setCottage(mapper.map(c, CottageDTO.class));
-        } else  if(entityType.equals("Boat")){
-            Boat b = boatService.findOne(r.getEntity().getId());
-            rdto.setBoat(mapper.map(b, BoatDTO.class));
-        } else{
-            Adventure a = adventureService.findOne(r.getEntity().getId());
-            rdto.setAdventure(mapper.map(a, AdventureDTO.class));
-        }
-        return new ResponseEntity<>(rdto, HttpStatus.OK);
+        return reservationService.get(id);
     }
 
     @GetMapping(value = "/findHistoryByUser/getInstructor")
@@ -195,7 +181,6 @@ public class ReservationController {
      }
 
 
-
     @GetMapping(value = "/findUpcomingByBoatOwner")
     @PreAuthorize("hasRole('boatOwner')")
     public ResponseEntity<List<ReservationDTO>> getAllUpcomingReservationByBoatOwner(Principal principal){
@@ -260,13 +245,7 @@ public class ReservationController {
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/findHistoryByClient")
-    @PreAuthorize("hasRole('client')")
-    public ResponseEntity<List<ReservationDTO>> getHistoryByClient(Principal principal){
-        Client client = clientService.findByEmail(principal.getName());
-        List<Reservation> reservationList = reservationService.getHistoryByClient(client.getId());
-
-        // ovo moze kasnije da se izvuce u posebnu metodu
+    private ResponseEntity<List<ReservationDTO>> getReservationDTOList(List<Reservation> reservationList){
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for(Reservation r: reservationList){
             ReservationDTO dto = mapper.map(r, ReservationDTO.class);
@@ -274,6 +253,14 @@ public class ReservationController {
             reservationsDTO.add(dto);
         }
         return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findHistoryByClient")
+    @PreAuthorize("hasRole('client')")
+    public ResponseEntity<List<ReservationDTO>> getHistoryByClient(Principal principal){
+        Client client = clientService.findByEmail(principal.getName());
+        List<Reservation> reservationList = reservationService.getHistoryByClient(client.getId());
+        return getReservationDTOList(reservationList);
     }
 
     @GetMapping(value = "/findUpcomingByClient")
@@ -281,17 +268,11 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDTO>> getUpcomingByClient(Principal principal){
         Client client = clientService.findByEmail(principal.getName());
         List<Reservation> reservationList = reservationService.getUpcomingByClient(client.getId());
-        List<ReservationDTO> reservationsDTO = new ArrayList<>();
-        for(Reservation r: reservationList){
-            ReservationDTO dto = mapper.map(r, ReservationDTO.class);
-            dto.getEntity().setType(EntityKind.toString(r.getEntity().getKind()));
-            reservationsDTO.add(dto);
-        }
-        return new ResponseEntity<>(reservationsDTO, HttpStatus.OK);
+        return getReservationDTOList(reservationList);
     }
 
     @PostMapping(value = "/cancelReservation")
-    @PreAuthorize("hasRole('client')")                  // treba mu dodati penal? ? ? ?
+    @PreAuthorize("hasRole('client')")
     public ResponseEntity<String> cancelReservation(@RequestBody ReservationDTO r,Principal principal){
         Client client = clientService.findByEmail(principal.getName());
         client.setPenalties(client.getPenalties() + 1);
@@ -304,64 +285,18 @@ public class ReservationController {
     @PutMapping("/makeReservationFromQuick/{id}")
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<String> makeReservationFromQuick(@PathVariable(value = "id") Integer id,Principal principal) throws MessagingException {
-        Client c = clientService.findByEmail(principal.getName());
-        QuickReservation quickReservation = quickReservationService.findOne(id);
-        quickReservation.setIsReserved(true);
-        Reservation r = new Reservation();
-        r.setQuickReservation(quickReservation);
-        r.setEntity(quickReservation.getEntity());
-        r.setClient(c);
-        r.setPrice(quickReservation.getDiscountedPrice());
-        r.setStartDateTime(quickReservation.getStartDateTime());
-        r.setEndDateTime(quickReservation.getEndDateTime());
-        r.setIsCanceled(false);
-        r.setPersonNum(quickReservation.getMaxPersonNum());
-        double systemProfit = systemInfoService.calculateSystemProfit(quickReservation.getEntity().getId(),quickReservation.getDiscountedPrice(),c);
-        double advertiserProfit = quickReservation.getDiscountedPrice() - systemProfit;
-        r.setAdvertiserProfit(advertiserProfit);
-        r.setSystemProfit(systemProfit);
-        reservationService.save(r);
-        quickReservationService.save(quickReservation);
-
-        emailService.sendReservationEmail(c.getName(), c.getEmail(), quickReservation.getEntity().getName(), quickReservation.getStartDateTime(), quickReservation.getEndDateTime());
-
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        try{
+            return reservationService.makeReservationFromQuick(id, principal.getName());
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value = "/reserve")
     @PreAuthorize("hasAnyRole('client','cottageOwner','boatOwner','fishingInstructor')")
     public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal) throws MessagingException {
-        Client client = clientService.findByEmail(principal.getName());
-        if(client == null){
-            client = clientService.findOne(r.getClientId());
-        }
-        LocalDateTime start = LocalDateTime.of(r.getStartDate(), r.getStartTime());
-        LocalDateTime end = LocalDateTime.of(r.getEndDate(), r.getEndTime());
-        EntityType entity = entityService.findOne(r.getEntityId());
 
-        boolean isCanceled = reservationService.isCanceled(client, start, end, entity);
-        if(isCanceled){
-            return new ResponseEntity<>("Already canceled.",HttpStatus.BAD_REQUEST);
-        }
-
-        List<Reservation> upcoming = reservationService.getUpcomingByClient(client.getId()); // provjeravamo ima li klijent preklapajuce rezervacije
-        for(Reservation u: upcoming){
-            if((u.getStartDateTime().isAfter(start) && u.getStartDateTime().isBefore(end)) || (u.getEndDateTime().isAfter(start) && u.getEndDateTime().isBefore(end))){
-                return new ResponseEntity<>("Already reserved.",HttpStatus.NOT_FOUND);
-            }
-        }
-
-        RankingInfo clientRank = rankingInfoService.findRank(client.getPoints());
-        double price = entity.getPrice()-entity.getPrice()*clientRank.getClientDiscount()/100;
-        double systemProfit = systemInfoService.calculateSystemProfit(r.getEntityId(),price,client);
-        double advertiserProfit = price - systemProfit;
-        Reservation res = new Reservation(start, end, entity, price, systemProfit, advertiserProfit, r.getPersonNum(), client, null);
-        reservationService.save(res);
-
-        emailService.sendReservationEmail(client.getName(), client.getEmail(), entity.getName(), start, end);
-
-        return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
+        return reservationService.reserve(r, principal.getName());
     }
 
 
@@ -371,6 +306,6 @@ public class ReservationController {
         EntityType entity = entityService.findOne(r.getEntityId());
         entity.setDeleted(true);
         entityService.save(entity);
-        return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
+        return new ResponseEntity<>("Deleted successfully.",HttpStatus.OK);
     }
 }

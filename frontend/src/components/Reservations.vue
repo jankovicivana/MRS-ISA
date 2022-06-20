@@ -152,6 +152,17 @@ export default {
   },
   methods: {
     search: function (){
+      if(this.$refs.startDate.value >= this.$refs.endDate.value){
+        if(this.$refs.startDate.value === this.$refs.endDate.value){
+          if(this.$refs.startTime.value >= this.$refs.endTime.value){
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid dates</p>`,`<p style="font-size: 20px">Start date and time must be before the end.</p>`)
+            return
+          }
+        } else{
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid dates</p>`,`<p style="font-size: 20px">Start date must be before the end date.</p>`)
+          return
+        }
+      }
       if(this.role === 'ROLE_client'){
         this.params = {type: this.$refs.type.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
           startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
