@@ -3,11 +3,11 @@
   <fishing-instructor-navbar></fishing-instructor-navbar>
     <div class="content is-medium" style=" height:80%"  >
       <div class="mask d-flex align-items-center pt-5 h-100 gradient-custom-3"   >
-        <div class="container h-100" >
+        <div class="container h-100 pb-4" >
           <div class="row d-flex justify-content-center  h-100"   >
             <div class="col-11 " >
               <div class="card " style="border-radius: 15px; background: #ecd9c6;  height: 100% ">
-                <div class="card-body p-5">
+                <div class="card-body ">
 
                   <h1 class="title">Fishing instructor availability</h1>
                   <hr />
@@ -22,7 +22,7 @@
                         <hr/>
                         <span style="color: green">● </span>- Available period <br/>
                         <span style="color: red">● </span>- Reservation period<br/>
-                        <span style="color: blue">● </span>- Discount period <br/>
+                        <span style="color: lightblue">● </span>- Discount period <br/>
 
 
                       </div>
@@ -213,7 +213,5 @@ export default {
 
 <style scoped>
 
-  .profile_main{
-    height: fit-content;
-  }
+
 </style>
