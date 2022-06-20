@@ -214,12 +214,12 @@ public class ReservationService {
             if(r.getType().equals("Cottage")){
                 entity = cottageRepository.findOneLocked(r.getEntityId());
             } else if (r.getType().equals("Adventure")){
-                entity = boatRepository.findOneLocked(r.getEntityId());
-            } else{
                 entity = adventureRepository.findOneLocked(r.getEntityId());
+            } else{
+                entity = boatRepository.findOneLocked(r.getEntityId());
             }
             if(entity == null || isReserved(r.getEntityId(), start, end)){
-                return new ResponseEntity<>("Already reserved.",HttpStatus.NOT_FOUND);  // mozda neka druga greska
+                return new ResponseEntity<>("Already reserved.",HttpStatus.CONFLICT);
             }
             boolean isCanceled = isCanceled(client, start, end, entity);
             if(isCanceled){
@@ -244,7 +244,7 @@ public class ReservationService {
 
             return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
         }catch(PessimisticLockingFailureException e){
-            return new ResponseEntity<>("Already reserved.",HttpStatus.NOT_FOUND);  // mozda neka druga greska
+            return new ResponseEntity<>("Already reserved.",HttpStatus.CONFLICT);  // mozda neka druga greska
         }
 
     }

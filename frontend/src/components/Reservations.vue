@@ -263,6 +263,8 @@ export default {
                   this.show('foo-css', 'error',`<p style="font-size: 25px">Reservation failed</p>`,`<p style="font-size: 17px">You can't reserve at the same time if you have canceled already.</p>`)
                 } else if(error.response.status === 404){
                   this.show('foo-css', 'error',`<p style="font-size: 25px">Reservation failed</p>`,`<p style="font-size: 17px">You already have a reservation in this period or someone else has just reserved.</p>`)
+                }else if(error.response.status === 409){
+                  this.show('foo-css', 'error',`<p style="font-size: 25px">Conflict</p>`,`<p style="font-size: 17px">Someone else has just reserved in this period.</p>`)
                 }
                 else{
                   alert(error.response.data);

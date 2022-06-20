@@ -5,6 +5,7 @@ import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.CottageOwnerDTO;
 import ftn.mrs.isa.rentalapp.dto.EntitySearchDTO;
 import ftn.mrs.isa.rentalapp.dto.EntityTypeDTO;
+import ftn.mrs.isa.rentalapp.model.entity.Adventure;
 import ftn.mrs.isa.rentalapp.model.entity.Cottage;
 import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
 import ftn.mrs.isa.rentalapp.model.entity.EntityType;
@@ -54,12 +55,18 @@ public class EntityController {
         LocalDateTime start = LocalDateTime.of(params.getStartDate(), params.getStartTime());
         LocalDateTime end = LocalDateTime.of(params.getEndDate(), params.getEndTime());
 
-
         entities = entityService.getAll();
         for(EntityType et: entities){
             if (EntityKind.toString(et.getKind()).equals(params.getType()) && et.getPrice() <= params.getPrice()
                     && et.getAddress().getCity().equals(params.getCity()) && et.getAverageGrade() > params.getRating()  ){
-                if(availablePeriodService.isAvailable(et.getId(), start, end) && !reservationService.isReserved(et.getId(), start, end)){
+                boolean isAvailable = false;
+                if(et.getKind() == EntityKind.ADVENTURE){
+                    Adventure a = (Adventure)et;
+                    isAvailable = availablePeriodService.isAvailableInstructor(a.getFishingInstructor().getId(), start, end);
+                } else{
+                    isAvailable = availablePeriodService.isAvailable(et.getId(), start, end);
+                }
+                if(isAvailable && !reservationService.isReserved(et.getId(), start, end)){
                     EntityKind kind = et.getKind();
                     EntityTypeDTO dto = mapper.map(et, EntityTypeDTO.class);
                     dto.setType(EntityKind.toString(kind));
