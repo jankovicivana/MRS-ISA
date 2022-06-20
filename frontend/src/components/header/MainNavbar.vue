@@ -7,7 +7,6 @@
     <div class="navbar-menu">
       <div class="navbar-start">
         <a class="navbar-item" href="#/">Home </a>
-        <a class="navbar-item" href="#/">Special offers </a>
       </div>
     </div>
     <a href="#/register">Register</a>

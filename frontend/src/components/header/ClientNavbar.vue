@@ -11,8 +11,6 @@
 
           <a class="navbar-item" href="#/client/clientProfile">My profile</a>
 
-          <a class="navbar-item" href="#/client/clientHomepage">Special offers </a>
-
           <a class="navbar-item" href="#/client/subscriptions">Subscriptions </a>
 
           <div class="navbar-item has-dropdown is-hoverable">

@@ -43,7 +43,7 @@ values (5,'20220625','20220621 10:00:00 AM',false,10,180,'20220622',1,null,170,f
 
 
 
-insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'pera@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,0,'Ovo bi trebao da je biografija instruktora.','pera2.jpg',false, true, 0.0,'evo mene opet');
+insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'pera@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,0,'Ovo bi trebalo da je biografija instruktora.','pera2.jpg',false, true, 0.0,'evo mene opet');
 
 insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Ovakav adrenalin se samo kod nas moze dozivjeti.Ludi ste ako nas ne posjetite.','Fenomenalna avantura','200',1,3,10,0,false,2.2, 2);
 

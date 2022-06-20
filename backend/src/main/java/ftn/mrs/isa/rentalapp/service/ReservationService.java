@@ -62,6 +62,8 @@ public class ReservationService {
     @Autowired
     private RankingInfoService rankingInfoService;
 
+    @Autowired
+    private QuickReservationRepository quickReservationRepository;
 
 
     public void save(Reservation reservation){reservationRepository.save(reservation);}
@@ -180,26 +182,33 @@ public class ReservationService {
 
     public ResponseEntity<String> makeReservationFromQuick(Integer id, String username) throws MessagingException {
         Client c = clientService.findByEmail(username);
-        QuickReservation quickReservation = quickReservationService.findOne(id);
-        quickReservation.setIsReserved(true);
-        Reservation r = new Reservation();
-        r.setQuickReservation(quickReservation);
-        r.setEntity(quickReservation.getEntity());
-        r.setClient(c);
-        r.setPrice(quickReservation.getDiscountedPrice());
-        r.setStartDateTime(quickReservation.getStartDateTime());
-        r.setEndDateTime(quickReservation.getEndDateTime());
-        r.setIsCanceled(false);
-        r.setPersonNum(quickReservation.getMaxPersonNum());
-        double systemProfit = systemInfoService.calculateSystemProfit(quickReservation.getEntity().getId(),quickReservation.getDiscountedPrice(),c);
-        double advertiserProfit = quickReservation.getDiscountedPrice() - systemProfit;
-        r.setAdvertiserProfit(advertiserProfit);
-        r.setSystemProfit(systemProfit);
-        save(r);
-        quickReservationService.save(quickReservation);
-        emailService.sendReservationEmail(c.getName(), c.getEmail(), quickReservation.getEntity().getName(), quickReservation.getStartDateTime(), quickReservation.getEndDateTime());
+        try{
+            QuickReservation quickReservation = quickReservationRepository.findOneLocked(id);
+            if(quickReservation == null || quickReservation.getIsReserved()){
+                return new ResponseEntity<>("Already reserved.",HttpStatus.CONFLICT);
+            }
+            quickReservation.setIsReserved(true);
+            Reservation r = new Reservation();
+            r.setQuickReservation(quickReservation);
+            r.setEntity(quickReservation.getEntity());
+            r.setClient(c);
+            r.setPrice(quickReservation.getDiscountedPrice());
+            r.setStartDateTime(quickReservation.getStartDateTime());
+            r.setEndDateTime(quickReservation.getEndDateTime());
+            r.setIsCanceled(false);
+            r.setPersonNum(quickReservation.getMaxPersonNum());
+            double systemProfit = systemInfoService.calculateSystemProfit(quickReservation.getEntity().getId(),quickReservation.getDiscountedPrice(),c);
+            double advertiserProfit = quickReservation.getDiscountedPrice() - systemProfit;
+            r.setAdvertiserProfit(advertiserProfit);
+            r.setSystemProfit(systemProfit);
+            save(r);
+            quickReservationService.save(quickReservation);
+            emailService.sendReservationEmail(c.getName(), c.getEmail(), quickReservation.getEntity().getName(), quickReservation.getStartDateTime(), quickReservation.getEndDateTime());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(PessimisticLockingFailureException e){
+            return new ResponseEntity<>("Already reserved.",HttpStatus.CONFLICT);
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<String> reserve(ReserveDataDTO r, String username) throws MessagingException {
@@ -218,7 +227,7 @@ public class ReservationService {
             } else{
                 entity = boatRepository.findOneLocked(r.getEntityId());
             }
-            if(entity == null || isReserved(r.getEntityId(), start, end)){
+            if(entity == null || isReserved(r.getEntityId(), start, end)){ // dodati provjeru za avanture
                 return new ResponseEntity<>("Already reserved.",HttpStatus.CONFLICT);
             }
             boolean isCanceled = isCanceled(client, start, end, entity);
@@ -243,8 +252,8 @@ public class ReservationService {
             emailService.sendReservationEmail(client.getName(), client.getEmail(), entity.getName(), start, end);
 
             return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
-        }catch(PessimisticLockingFailureException e){
-            return new ResponseEntity<>("Already reserved.",HttpStatus.CONFLICT);  // mozda neka druga greska
+        } catch(PessimisticLockingFailureException e){
+            return new ResponseEntity<>("Already reserved.",HttpStatus.CONFLICT);
         }
 
     }
