@@ -237,8 +237,14 @@ export default {
       this.rating = rating;
     },
     reserve: function (entity){
+      let entitytype = ''
+      if(entity.type === "Cottage" || entity.type === "Adventure"){
+        entitytype = entity.type
+      } else{
+        entitytype = "Boat"
+      }
       var data = {personNum: this.$refs.people.value, startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value,
-        endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, entityId: entity.id, clientId:this.clientId, rating: this.rating}
+        endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, entityId: entity.id, clientId:this.clientId, rating: this.rating, type: entitytype}
       axios
         .post(process.env.VUE_APP_SERVER_PORT+"/api/reservation/reserve", data,{
           headers: {
@@ -256,7 +262,7 @@ export default {
                 if(error.response.status === 400){
                   this.show('foo-css', 'error',`<p style="font-size: 25px">Reservation failed</p>`,`<p style="font-size: 17px">You can't reserve at the same time if you have canceled already.</p>`)
                 } else if(error.response.status === 404){
-                  this.show('foo-css', 'error',`<p style="font-size: 25px">Reservation failed</p>`,`<p style="font-size: 17px">You already have a reservation in this period.</p>`)
+                  this.show('foo-css', 'error',`<p style="font-size: 25px">Reservation failed</p>`,`<p style="font-size: 17px">You already have a reservation in this period or someone else has just reserved.</p>`)
                 }
                 else{
                   alert(error.response.data);

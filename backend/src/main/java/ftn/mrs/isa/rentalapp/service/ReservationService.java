@@ -6,18 +6,21 @@ import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.system_info.RankingInfo;
 import ftn.mrs.isa.rentalapp.model.user.Client;
-import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
+import ftn.mrs.isa.rentalapp.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class ReservationService {
 
     @Autowired
@@ -48,10 +51,17 @@ public class ReservationService {
     private QuickReservationService quickReservationService;
 
     @Autowired
-    private EntityService entityService;
+    private CottageRepository cottageRepository;
+
+    @Autowired
+    private BoatRepository boatRepository;
+
+    @Autowired
+    private AdventureRepository adventureRepository;
 
     @Autowired
     private RankingInfoService rankingInfoService;
+
 
 
     public void save(Reservation reservation){reservationRepository.save(reservation);}
@@ -102,11 +112,10 @@ public class ReservationService {
 
     public boolean isReserved(Integer id, LocalDateTime start, LocalDateTime end){
         List<Reservation> reservations = reservationRepository.getReserved(id, start, end);
-        System.out.println("Reservations: " + reservations);
         return !reservations.isEmpty();
     }
 
-public boolean isAvailableInstructor(Integer id, LocalDateTime start, LocalDateTime end){
+    public boolean isAvailableInstructor(Integer id, LocalDateTime start, LocalDateTime end){
         List<Reservation> reservations = reservationRepository.getReservedByInstructor(id, start, end);
         System.out.println("Reservations: " + reservations);
         return !reservations.isEmpty();
@@ -200,29 +209,43 @@ public boolean isAvailableInstructor(Integer id, LocalDateTime start, LocalDateT
         }
         LocalDateTime start = LocalDateTime.of(r.getStartDate(), r.getStartTime());
         LocalDateTime end = LocalDateTime.of(r.getEndDate(), r.getEndTime());
-        EntityType entity = entityService.findOne(r.getEntityId());
-
-        boolean isCanceled = isCanceled(client, start, end, entity);
-        if(isCanceled){
-            return new ResponseEntity<>("Already canceled.",HttpStatus.BAD_REQUEST);
-        }
-
-        List<Reservation> upcoming = getUpcomingByClient(client.getId()); // provjeravamo ima li klijent preklapajuce rezervacije
-        for(Reservation u: upcoming){
-            if((u.getStartDateTime().isAfter(start) && u.getStartDateTime().isBefore(end)) || (u.getEndDateTime().isAfter(start) && u.getEndDateTime().isBefore(end))){
-                return new ResponseEntity<>("Already reserved.",HttpStatus.NOT_FOUND);
+        try{
+            EntityType entity = null;
+            if(r.getType().equals("Cottage")){
+                entity = cottageRepository.findOneLocked(r.getEntityId());
+            } else if (r.getType().equals("Adventure")){
+                entity = boatRepository.findOneLocked(r.getEntityId());
+            } else{
+                entity = adventureRepository.findOneLocked(r.getEntityId());
             }
+            if(entity == null || isReserved(r.getEntityId(), start, end)){
+                return new ResponseEntity<>("Already reserved.",HttpStatus.NOT_FOUND);  // mozda neka druga greska
+            }
+            boolean isCanceled = isCanceled(client, start, end, entity);
+            if(isCanceled){
+                return new ResponseEntity<>("Already canceled.",HttpStatus.BAD_REQUEST);
+            }
+
+            List<Reservation> upcoming = getUpcomingByClient(client.getId()); // provjeravamo ima li klijent preklapajuce rezervacije
+            for(Reservation u: upcoming){
+                if((u.getStartDateTime().isAfter(start) && u.getStartDateTime().isBefore(end)) || (u.getEndDateTime().isAfter(start) && u.getEndDateTime().isBefore(end))){
+                    return new ResponseEntity<>("Reservation in the same period.",HttpStatus.NOT_FOUND);
+                }
+            }
+
+            RankingInfo clientRank = rankingInfoService.findRank(client.getPoints());
+            double price = entity.getPrice()-entity.getPrice()*clientRank.getClientDiscount()/100;
+            double systemProfit = systemInfoService.calculateSystemProfit(r.getEntityId(),price,client);
+            double advertiserProfit = price - systemProfit;
+            Reservation res = new Reservation(start, end, entity, price, systemProfit, advertiserProfit, r.getPersonNum(), client, null);
+            save(res);
+
+            emailService.sendReservationEmail(client.getName(), client.getEmail(), entity.getName(), start, end);
+
+            return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
+        }catch(PessimisticLockingFailureException e){
+            return new ResponseEntity<>("Already reserved.",HttpStatus.NOT_FOUND);  // mozda neka druga greska
         }
 
-        RankingInfo clientRank = rankingInfoService.findRank(client.getPoints());
-        double price = entity.getPrice()-entity.getPrice()*clientRank.getClientDiscount()/100;
-        double systemProfit = systemInfoService.calculateSystemProfit(r.getEntityId(),price,client);
-        double advertiserProfit = price - systemProfit;
-        Reservation res = new Reservation(start, end, entity, price, systemProfit, advertiserProfit, r.getPersonNum(), client, null);
-        save(res);
-
-        emailService.sendReservationEmail(client.getName(), client.getEmail(), entity.getName(), start, end);
-
-        return new ResponseEntity<>("Reserved successfully.",HttpStatus.OK);
     }
 }

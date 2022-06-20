@@ -21,4 +21,6 @@ public class ReserveDataDTO {
     private LocalTime endTime;
 
     private Integer clientId;
+
+    private String type;
 }

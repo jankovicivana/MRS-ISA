@@ -14,16 +14,6 @@ public class EntityService {
     @Autowired
     private EntityTypeRepository entityRepository;
 
-    public List<EntityType> getByParams(EntitySearchDTO data){
-
-        List<EntityType> entities;
-        Double price = data.getPrice().doubleValue();
-        // entities = entityRepository.getByParams(price, data.getCity(), data.getPeople(), data.getRating());
-        entities = entityRepository.getByParams();
-
-        System.out.println(entityRepository.findAllByPriceLessThan(price));
-        return entities;
-    }
 
     public List<EntityType> getAll(){return entityRepository.findAll();}
 

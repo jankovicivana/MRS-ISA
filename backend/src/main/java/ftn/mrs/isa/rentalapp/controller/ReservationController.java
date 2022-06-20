@@ -295,7 +295,6 @@ public class ReservationController {
     @PostMapping(value = "/reserve")
     @PreAuthorize("hasAnyRole('client','cottageOwner','boatOwner','fishingInstructor')")
     public ResponseEntity<String> reserve(@RequestBody ReserveDataDTO r,Principal principal) throws MessagingException {
-
         return reservationService.reserve(r, principal.getName());
     }
 
