@@ -7,9 +7,7 @@ export default {
   name: 'AddQuickReservation',
   props: ['id'],
   methods: {
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfully added!</p>`
-      let text = `<p style="font-size: 20px">Successfully added quick reservation!</p>`
+    show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
     },
 
@@ -20,16 +18,21 @@ export default {
       let end_date = this.$refs.end_date_input.value
       let expiration_date = this.$refs.expiration_date_input.value
       if(start_date>end_date){
-        alert("End date must be after start date.")
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">End date must be after start date.</p>`)
         return;
       }
       if(expiration_date>start_date){
-        alert("Expiration date must be before start date.")
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Expiration date must be before start date.</p>`)
         return;
       }
       let price = this.$refs.price_input.value
       let discount = this.$refs.discount_input.value
       let max_person_num = this.$refs.max_person_num.value
+
+      if(price.length === 0 || discount.length === 0 || max_person_num.length === 0){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Fields must not be empty.</p>`)
+        return;
+      }
 
       this.info = {
         entId:idn,
@@ -45,12 +48,17 @@ export default {
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/addQuickReservation",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          this.show('foo-css', 'success')
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added quick reservation!</p>`)
           setTimeout(() => {location.reload(); }, 3000)
-          router.go(AdventureProfile)
-
-        }).catch(function error(error) {
-        alert(error.response.data);
+        }).catch(error=> {
+        if(error.response.status === 400){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">`+error.response.data+`</p>`)
+        } else if(error.response.status === 409){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 17px">Someone else has just reserved.</p>`)
+        }
+        else{
+          alert(error.response.data);
+        }
       });
 
 
@@ -122,7 +130,7 @@ export default {
                         </div>
                       </div>
                       <div class="d-flex justify-content-center">
-                        <button type="submit" v-on:click="addQuickReservation()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
+                        <button type="button" v-on:click="addQuickReservation()" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" style="background-color: #04414d;"><div style="color:white">Add</div></button>
                       </div>
                     </form>
                     <br/>

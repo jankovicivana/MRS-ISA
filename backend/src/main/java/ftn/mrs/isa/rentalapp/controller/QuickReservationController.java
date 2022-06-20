@@ -34,43 +34,14 @@ public class QuickReservationController {
     private QuickReservationService quickReservationService;
 
     @Autowired
-    private AdventureService adventureService;
-
-    @Autowired
-    private CottageService cottageService;
-
-    @Autowired
-    private BoatService boatService;
-
-    @Autowired
     private FishingInstructorService fishingInstructorService;
 
-    @Autowired
-    private EmailService emailService;
+
 
     @PostMapping("/addQuickReservation")
     @PreAuthorize("hasAnyRole('boatOwner','cottageOwner','fishingInstructor')")
-    public ResponseEntity<QuickReservationDTO> addQuickReservation(@RequestBody QuickReservationDTO quickReservationDTO) throws Exception {
-        EntityType entity = adventureService.findOne(quickReservationDTO.getEntId());
-        if (entity == null){
-            entity = cottageService.findOne(quickReservationDTO.getEntId());
-        }
-        if (entity == null){
-            entity = boatService.findOne(quickReservationDTO.getEntId());
-        }
-        QuickReservation quickReservation = mapper.map(quickReservationDTO, QuickReservation.class);
-        quickReservation.setIsReserved(false);
-        quickReservation.setEntity(entity);
-        quickReservation.setIsReserved(false);
-        quickReservation.setReservation(null);
-        System.out.print(quickReservation.getExpirationDateTime());
-        quickReservationService.save(quickReservation);
-
-        for(Subscription s: entity.getSubscriptions()){
-            emailService.sendQuickReservationNotification(s.getClient().getEmail(), s.getClient().getName(), entity.getName());
-        }
-
-        return new ResponseEntity<>(mapper.map(quickReservation,QuickReservationDTO.class), HttpStatus.CREATED);
+    public ResponseEntity<String> addQuickReservation(@RequestBody QuickReservationDTO quickReservationDTO) throws Exception {
+        return quickReservationService.createQuickReservation(quickReservationDTO);
 
     }
 
