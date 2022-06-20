@@ -47,6 +47,15 @@ public class FishingInstructorController {
         return new ResponseEntity<>(mapper.map(instructor,FishingInstructorDTO.class), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getInstructorById/{id}")
+    public ResponseEntity<FishingInstructorDTO> getInstructorById(@PathVariable Integer id){
+        FishingInstructor instructor = fishingInstructorService.findOne(id);
+        if(instructor == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(mapper.map(instructor,FishingInstructorDTO.class), HttpStatus.OK);
+    }
+
 
     @PostMapping(value = "/updateInstructor" )
     @PreAuthorize("hasRole('fishingInstructor')")
@@ -80,8 +89,7 @@ public class FishingInstructorController {
     }
 
     @GetMapping(value = "/all")
-    @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<List<FishingInstructorDTO>> getAllInstructors(Principal principal){
+    public ResponseEntity<List<FishingInstructorDTO>> getAllInstructors(){
         List<FishingInstructor> instructors = fishingInstructorService.findAll();
         List<FishingInstructorDTO> instructorsDTO = new ArrayList<>();
         for(FishingInstructor c : instructors){

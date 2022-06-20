@@ -14,4 +14,6 @@ public interface AdventureRepository extends JpaRepository<Adventure,Integer> {
     @Query(value = "SELECT * from public.adventures inner join public.fishing_instructors ON adventures.fishing_instructor_id = fishing_instructors.id WHERE fishing_instructors.email = :email and adventures.deleted = false",nativeQuery = true)
     List<Adventure> findAllByOwnerEmail(@Param("email") String email);
 
+    @Query(value = "SELECT * from public.adventures inner join public.fishing_instructors ON adventures.fishing_instructor_id = fishing_instructors.id WHERE fishing_instructors.id = :id and adventures.deleted = false",nativeQuery = true)
+    List<Adventure> findAllByOwnerId(@Param("id") Integer id);
 }

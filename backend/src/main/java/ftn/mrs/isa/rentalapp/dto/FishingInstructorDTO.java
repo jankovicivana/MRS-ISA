@@ -30,5 +30,4 @@ public class FishingInstructorDTO {
 
     private RequestStatus registrationStatus;
 
-
 }

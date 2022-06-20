@@ -130,6 +130,12 @@ public class AdventureController {
         return getListResponseEntity(adventures);
     }
 
+    @GetMapping(value = "/allByOwner/{id}")      // metoda za klijenta
+    public ResponseEntity<List<AdventureDTO>> getAllAdventuresByOwner(@PathVariable Integer id){
+        List<Adventure> adventures = adventureService.findAllByOwnerId(id);
+        return getListResponseEntity(adventures);
+    }
+
     private ResponseEntity<List<AdventureDTO>> getListResponseEntity(List<Adventure> adventures) {
         List<AdventureDTO> adventureDTO = new ArrayList<>();
         for (Adventure c : adventures){

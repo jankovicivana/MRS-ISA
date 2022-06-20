@@ -102,33 +102,27 @@
 
     <div id="adventures" class="block p-6 mt-1 mb-6" style="background: aliceblue">
       <div class="container ml-5 content align-items-center">
-        <h2>Adventures</h2>
-
+        <h2>Fishing instructors</h2>
         <br />
-        <div class="columns">
-          <div class="column" v-for="a in adventures.slice(0,4)">
-            <div class="card col-3" v-on:click="openAdventure(a.id)">
+        <div class="columns align-items-center is-flex justify-content-center">
+          <div class="column" v-for="i in instructors.slice(0,4)">
+            <div class="card col-3">
               <div class="card-image">
-                <carousel :per-page="1" :navigationEnabled="false" :mouse-drag="false" :autoplay="true" :paginationEnabled="false" v-bind:loop="true" v-bind:speed="3000" >
-                  <slide v-for="i in a.images">
-                    <img class="d-block w-100" :src="i" alt="First slide" style="height: 250px">
-                  </slide>
-                </carousel>
+                <img v-on:click="openInstructor(i.id)" class="d-block w-100" :src="i.mainPhoto" alt="img" style="height: 250px">
               </div>
               <div class="p-3">
-                <h4>{{ a.name }}</h4>
-                <p><font-awesome-icon icon="fa-map-marker"/> {{ a.address.street }}</p>
-                <p>{{ a.address.city}}</p>
-                <p><b>$<span>{{ a.price }}</span></b></p>
+                <h4>{{ i.name }} {{i.surname}}</h4>
+                <p><font-awesome-icon icon="fa-map-marker"/> {{ i.address.street }}</p>
+                <p>{{ i.address.city}}</p>
+                <p><b><span>{{ i.biography }}</span></b></p>
+                <button class="button view_button is-primary" v-on:click="openAdventures(i.id)">Adventures</button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="has-text-centered mt-6">
-        <a href="#/adventures" class="button view_button is-primary">View more</a>
-      </div>
+
     </div>
 
 
@@ -147,6 +141,7 @@ export default {
       cottages: '',
       boats: '',
       adventures: '',
+      instructors: '',
       imagesUrl:[]
     }
   },
@@ -203,6 +198,21 @@ export default {
                           });
                         });
       })
+
+    axios
+      .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/all")
+      .then(response => {this.instructors = response.data
+        response.data.forEach(i => {
+          let image = i.mainPhoto;
+          axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image,{responseType:"blob"})
+            .then(response => {
+              i.mainPhoto = URL.createObjectURL(response.data);
+            })
+            .catch((error) =>{
+              console.log(error);
+            });
+        });
+      })
   },
   methods:{
     openCottage:function (id){
@@ -211,9 +221,10 @@ export default {
     openBoat:function (id){
       this.$router.push({name:"BoatProfile",params:{id:id}});
     },
-    openAdventure:function (id){
-      this.$router.push({name:"AdventureProfile",params:{id:id}});
+    openAdventures:function (id){
+      this.$router.push({name:"BrowseAdventures",params:{id:id}});
     },
+
     loadOnlyOneImage:function (name) {
       axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
         .then(response => {
@@ -222,7 +233,11 @@ export default {
         .catch((error) =>{
           console.log(error);
         });
+    },
+    openInstructor: function (id){
+      this.$router.push({name:"AdvertiserProfile",params:{id:id}});
     }
+
   }
 }
 </script>

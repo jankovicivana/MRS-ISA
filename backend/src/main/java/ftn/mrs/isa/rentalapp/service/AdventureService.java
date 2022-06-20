@@ -58,4 +58,8 @@ public class AdventureService {
     public void saveAll(Set<Adventure> adventures) {
         adventureRepository.saveAll(adventures);
     }
+
+    public List<Adventure> findAllByOwnerId(Integer id) {
+        return adventureRepository.findAllByOwnerId(id);
+    }
 }

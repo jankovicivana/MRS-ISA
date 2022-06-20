@@ -17,7 +17,7 @@
             </div>
             <div class="pb-4 pt-4">
               <h4 class="mt-2 mb-0" style="color: white; float:left; padding-left: 5px" ><span>{{this.advertiser.name }}</span> <span>{{ this.advertiser.surname }}</span></h4>
-              <button v-if=" role!=='ROLE_admin'"  @click="showModal = true" class="btn flow delete-btn">Delete profile</button>
+              <button v-if=" role!=='ROLE_admin' && role!=='ROLE_client' && role!== null"  @click="showModal = true" class="btn flow delete-btn">Delete profile</button>
             </div>
           </div>
 
@@ -81,7 +81,7 @@
                   <div v-if="role === 'ROLE_fishingInstructor'" class="row mt-2">
                     <div class="col-md-12 inputs"><label class="labels">Biography</label><textarea type="text" class="form-control" placeholder="biography.." readonly v-model="advertiser.biography"/></div>
                   </div>
-                  <div class="row">
+                  <div v-if="role!=='ROLE_client' && role!== null" class="row">
                     <div v-if="isAdmin || role!=='ROLE_admin'" class="col-2 mt-3 text-right"><button v-on:click="editAdvertiser" id="editButton" class="btn btn-primary edit-button" type="button">edit</button></div>
                     <div v-if="isAdmin || role!=='ROLE_admin'" class="col-4 mt-3 text-right" ><button v-on:click="showChangePass" id="editButton" class="btn btn-primary edit-button" type="button" >Change password</button></div>
                   </div>
@@ -139,6 +139,17 @@ export default {
   },
   mounted: function (){
     this.role = sessionStorage.getItem("role");
+    if (this.role === "ROLE_client" || this.role === null) {
+      let id = this.$route.params.id
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT + "/api/fishingInstructor/getInstructorById/" + id)
+        .then(response => {this.advertiser = response.data
+          this.address = this.advertiser.address
+          this.loadOnlyOneImage(response.data.mainPhoto)
+        }).catch(function error(error) {
+        alert(error.response.data);
+      });
+    }
     if (this.role === "ROLE_cottageOwner") {
       axios
         .get(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/getCottageOwner", {
