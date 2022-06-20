@@ -151,7 +151,7 @@ public class ClientService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (!canDeleteClient(client)){
-            return new ResponseEntity<>("Client has reservations.Deletion is not possible.",HttpStatus.OK);
+            return new ResponseEntity<>("Client has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
         }
         client.setDeleted(true);
         clientRepository.save(client);

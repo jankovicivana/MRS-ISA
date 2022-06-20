@@ -128,6 +128,8 @@ export default {
     show: function (group, type = '', text) {
       let title = `<p style="font-size: 25px">Successful!</p>`
       this.$notify({group, title, text, type})
+    },show1: function(group, type='',title,text){
+      this.$notify({group, title, text, type})
     },
 
     deleteUser: function (user) {
@@ -146,8 +148,8 @@ export default {
             }, 3000)
             const index = this.users.indexOf(user);
             this.users.splice(index, 1);
-          }).catch(function error(error) {
-          alert(error.response.data);
+          }).catch((error) =>  {
+          this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Client has some reservations! Deletion is not possible!</p>`)
         });
 
       } else if (this.userType === "instructors") {
@@ -163,8 +165,8 @@ export default {
             }, 3000)
             const index = this.users.indexOf(user);
             this.users.splice(index, 1);
-          }).catch(function error(error) {
-          alert(error.response.data);
+          }).catch((error) =>  {
+          this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Instructor has some reservations! Deletion is not possible!</p>`)
         });
       } else if (this.userType === "boatOwners") {
         axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/delete/" + id, {
@@ -179,8 +181,8 @@ export default {
             }, 3000)
             const index = this.users.indexOf(user);
             this.users.splice(index, 1);
-          }).catch(function error(error) {
-          alert(error.response.data);
+          }).catch((error) =>  {
+          this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Boat owner has some reservations! Deletion is not possible!</p>`)
         });
       } else {
         axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/delete/" + id, {
@@ -195,9 +197,9 @@ export default {
             }, 3000)
             const index = this.users.indexOf(user);
             this.users.splice(index, 1);
-          }).catch(function error(error) {
-          alert(error.response.data);
-        });      }
+          }).catch((error) =>  {
+          this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Cottage owner has some reservations! Deletion is not possible!</p>`)
+        });     }
     }
   }
 }

@@ -9,12 +9,14 @@ import ftn.mrs.isa.rentalapp.model.user.FishingInstructor;
 import ftn.mrs.isa.rentalapp.model.user.User;
 import ftn.mrs.isa.rentalapp.model.user.UserType;
 import ftn.mrs.isa.rentalapp.service.AdministratorService;
+import ftn.mrs.isa.rentalapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +36,19 @@ public class AdministratorController {
     @Autowired
     private AdministratorService administratorService;
 
+    @Autowired
+    private UserService userService;
+
 
 
 
     @PostMapping("/addAdministrator")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<AdministratorDTO> addAdventure(@RequestBody AdministratorCreateDTO administratorCreateDTO, Principal principal) {
+        UserDetails existUser = this.userService.loadUserByUsername(administratorCreateDTO.getEmail());
+        if (existUser != null) {
+            return new ResponseEntity<>(new AdministratorDTO(),HttpStatus.BAD_REQUEST);
+        }
         Administrator admin = mapper.map(administratorCreateDTO,Administrator.class);
         admin.setType(String.valueOf(UserType.ADMINISTRATOR));
         admin.setPasswordChanged(false);

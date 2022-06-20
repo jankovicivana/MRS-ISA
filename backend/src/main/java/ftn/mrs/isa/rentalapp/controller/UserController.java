@@ -5,6 +5,7 @@ import ftn.mrs.isa.rentalapp.dto.AccountDeleteRequestDTO;
 import ftn.mrs.isa.rentalapp.dto.AdvertiserDTO;
 import ftn.mrs.isa.rentalapp.dto.PasswordDTO;
 import ftn.mrs.isa.rentalapp.dto.RegistrationResponse;
+import ftn.mrs.isa.rentalapp.exception.ResourceConflictException;
 import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -40,18 +42,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private EmailService emailService;
 
-    @PostMapping("/isEmailAvailable")
-    public ResponseEntity<Boolean> isEmailAvailable(@RequestBody String email) {
-        System.out.print("dosol");
-        return new ResponseEntity<>(false, HttpStatus.CREATED);
-
-        //administratorService.save(admin);
-        //return new ResponseEntity<>(mapper.map(admin, AdministratorDTO.class), HttpStatus.CREATED);
-
-    }
 
 
     @GetMapping("/getUsersOnHold")
@@ -95,6 +86,8 @@ public class UserController {
         return new ResponseEntity<>("Rejecting is denied.",HttpStatus.BAD_REQUEST);
     }
 
+
+
     @GetMapping(value = "/acceptRegistration/{id}")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<String> acceptRegistration(@PathVariable Integer id, Principal principal) throws InterruptedException, MessagingException {
@@ -104,6 +97,12 @@ public class UserController {
             return new ResponseEntity<>("Accepting is successful.",HttpStatus.OK);
         }
         return new ResponseEntity<>("Accepting is denied.",HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping(value = "/emailExists")
+    @PreAuthorize("hasRole('admin')")
+    public ResponseEntity<Boolean> emailExists(@RequestBody String email,Principal principal) {
+
+        return new ResponseEntity<>(false,HttpStatus.OK);
     }
 
     @GetMapping("/getDeleteRequestsOnHold")

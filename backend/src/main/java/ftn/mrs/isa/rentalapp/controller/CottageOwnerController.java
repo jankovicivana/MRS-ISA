@@ -93,7 +93,7 @@ public class CottageOwnerController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (!cottageOwnerService.canDeleteCottageOwner(client)){
-            return new ResponseEntity<>("Cottage owner has reservations.Deletion is not possible.",HttpStatus.OK);
+            return new ResponseEntity<>("Cottage owner has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
         }
         cottageOwnerService.deleteCottageOwner(client);
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
