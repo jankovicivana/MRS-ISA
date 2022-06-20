@@ -1,9 +1,9 @@
 <template>
-  <section class="profile_main vh-100">
+  <section class="profile_main vh-100 is-fullheight">
     <client-navbar></client-navbar>
     <div class="content is-medium">
       <div class="mask flex align-items-center pt-5 h-100">
-        <div class="container h-100">
+        <div class="container h-100 pb-3">
           <div class="row flex justify-content-center h-100">
             <div class="col-11">
               <div class="card">

@@ -187,6 +187,14 @@ public class ReservationService {
             if(quickReservation == null || quickReservation.getIsReserved()){
                 return new ResponseEntity<>("Already reserved.",HttpStatus.CONFLICT);
             }
+
+            List<Reservation> upcoming = getUpcomingByClient(c.getId());
+            for(Reservation u: upcoming){
+                if((u.getStartDateTime().isAfter(quickReservation.getStartDateTime()) && u.getStartDateTime().isBefore(quickReservation.getEndDateTime())) || (u.getEndDateTime().isAfter(quickReservation.getStartDateTime()) && u.getEndDateTime().isBefore(quickReservation.getEndDateTime()))){
+                    return new ResponseEntity<>("Reservation in the same period.",HttpStatus.BAD_REQUEST);
+                }
+            }
+
             quickReservation.setIsReserved(true);
             Reservation r = new Reservation();
             r.setQuickReservation(quickReservation);
