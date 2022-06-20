@@ -27,4 +27,7 @@ public class ClientDTO {
     private Integer points;
 
     private Integer penalties;
+
+    private Boolean deleted;
+
 }

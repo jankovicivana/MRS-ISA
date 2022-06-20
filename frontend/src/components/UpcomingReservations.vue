@@ -33,7 +33,8 @@
                         <td v-if="role === 'ROLE_cottageOwner'">{{reservation.cottage.name}}</td>
                         <td v-if="role === 'ROLE_boatOwner'">{{reservation.boat.name}}</td>
                         <td v-if="role === 'ROLE_fishingInstructor'">{{reservation.adventure.name}}</td>
-                        <td><router-link :to="{ name: 'ClientProfile',params:{id:reservation.client.id} }" style="text-decoration: none" >{{reservation.client.surname + " "+ reservation.client.name}}</router-link></td>
+                        <td v-if="!reservation.client.deleted"><router-link :to="{ name: 'ClientProfile',params:{id:reservation.client.id} }" style="text-decoration: none" >{{reservation.client.surname + " "+ reservation.client.name}}</router-link></td>
+                        <td v-if="reservation.client.deleted"><p style="text-decoration: none;color: red" >{{reservation.client.surname + " "+ reservation.client.name}}</p></td>
                         <td>{{reservation.startDateTime[2]+"."+reservation.startDateTime[1]+"."+reservation.startDateTime[0]+"."}}</td>
                         <td>{{reservation.endDateTime[2]+"."+reservation.endDateTime[1]+"."+reservation.endDateTime[0]+"."}}</td>
                         <td class="d-flex justify-content-center">{{reservation.personNum}}</td>

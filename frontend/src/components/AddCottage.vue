@@ -137,9 +137,7 @@ export default {
   }
   ,
   methods:{
-    show: function(group, type=''){
-      let title = `<p style="font-size: 25px">Successfully added!</p>`
-      let text = `<p style="font-size: 20px">Successfully added cottage!</p>`
+    show: function(group, type='',title,text){
       this.$notify({group, title, text, type})
     },
 
@@ -160,7 +158,7 @@ export default {
       }
 
       if(img == ""){
-        alert("Must choose file!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Image must not be empty!</p>`)
         return;
       }
 
@@ -176,7 +174,7 @@ export default {
     addRule: function (){
       let rule = this.$refs.rule_input.value
       if(rule == ""){
-        alert("Must enter rule!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Rule must not be empty!</p>`)
         return;
       }
       this.rules.push(rule);
@@ -192,7 +190,7 @@ export default {
     addService: function (){
       let service = this.$refs.add_service_input.value
       if(service == ""){
-        alert("Must enter additional service!!");
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Additional service must not be empty!</p>`)
         return;
       }
       this.services.push(service);
@@ -233,8 +231,8 @@ export default {
     addRoom: function (){
 
       let room = this.$refs.num_bed_input.value
-      if(room == ""){
-        alert('Must enter bed number!')
+      if(room === ""){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Number of beds must not be empty!</p>`)
         return;
       }
 
@@ -274,8 +272,6 @@ export default {
 
     },
     addCottage: function (){
-      console.log('doslo ovde')
-
       let name = this.$refs.name_input.value
       let description = this.$refs.description_input.value
       let maxPersonNum = this.$refs.max_person_input.value
@@ -284,6 +280,11 @@ export default {
       let city = this.$refs.city_input.value
       let street = this.$refs.street_input.value
       let postal_code = this.$refs.postal_code_input.value
+      if(name.length === 0 || price.length === 0 || maxPersonNum.length===0 || country.length===0 || city.length === 0 || street.length===0 || postal_code.length===0){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Fields must not be empty!</p>`)
+        return;
+      }
+
 
       this.info = {
         name: name,
@@ -303,7 +304,7 @@ export default {
       axios.post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/addCottage",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
-          this.show('foo-css', 'success')
+          this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added cottage!</p>`);
           setTimeout(() => {this.$router.push({name:"BrowseCottages"}); }, 2000)
         }).catch(function error(error) {
         alert(error.response.data);
