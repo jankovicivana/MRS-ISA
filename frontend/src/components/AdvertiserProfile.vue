@@ -4,7 +4,8 @@
     <BoatOwnerNavbar v-if="role === 'ROLE_boatOwner'"></BoatOwnerNavbar>
     <fishing-instructor-navbar v-if="role === 'ROLE_fishingInstructor'"></fishing-instructor-navbar>
     <AdminNavbar v-if="role === 'ROLE_admin'" :isAdmin="true"></AdminNavbar>
-
+    <ClientNavbar v-if="role === 'ROLE_client'"></ClientNavbar>
+    <MainNavbar  v-if="role === null"></MainNavbar>
   <section id = "client_profile" class="profile_main py-lg-3">
 
     <div  class="row py-5 px-auto">
@@ -119,11 +120,13 @@ import BoatOwnerNavbar from "./header/BoatOwnerNavbar";
 import FishingInstructorNavbar from "./header/FishingInstructorNavbar";
 import AdminNavbar from "./header/AdminNavbar";
 import router from "../router";
+import ClientNavbar from "./header/ClientNavbar";
+import MainNavbar from "./header/MainNavbar";
 
 
 export default {
   name: "AdvertiserProfile",
-  components: {AdminNavbar, FishingInstructorNavbar, BoatOwnerNavbar, CottageOwnerNavbar},
+  components: {MainNavbar, ClientNavbar, AdminNavbar, FishingInstructorNavbar, BoatOwnerNavbar, CottageOwnerNavbar},
   data: function(){
     return{
       advertiser: '',

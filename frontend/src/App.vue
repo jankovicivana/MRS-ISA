@@ -36,7 +36,6 @@ export default {
 .profile_main{
   background-attachment: fixed;
   background-image: url('assets/images/back2.jpg');
-  background-position-y: 0;
   background-repeat: no-repeat;
   background-size: cover;
   height: fit-content;
