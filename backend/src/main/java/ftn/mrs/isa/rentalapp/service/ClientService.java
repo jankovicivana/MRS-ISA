@@ -50,8 +50,6 @@ public class ClientService {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @Autowired
-    private AddressRepository addressRepository;
 
     public ResponseEntity<List<ClientDTO>> findAll() {
 
@@ -64,6 +62,11 @@ public class ClientService {
         }
         return new ResponseEntity<>(clientsDTO, HttpStatus.OK);
     }
+
+    public List<Client> findAllClients(){
+        return clientRepository.findAll();
+    }
+
 
     public Client findOne(Integer id) {return clientRepository.findById(id).orElse(null);}
 

@@ -29,7 +29,7 @@ public class PenaltyController {
         logger.info("> cronJob");
 
         List<Client> clients = new ArrayList<Client>();
-        clients = clientService.findAll();
+        clients = clientService.findAllClients();
         for(Client c: clients){
             c.setPenalties(0);
             clientService.save(c);
