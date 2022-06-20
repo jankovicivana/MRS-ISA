@@ -43,8 +43,6 @@ public class UserController {
     private UserService userService;
 
 
-
-
     @GetMapping("/getUsersOnHold")
     @PreAuthorize("hasRole('admin')")
     public ResponseEntity<List<AdvertiserDTO>> getUsersOnHold(Principal principal) {
@@ -85,7 +83,6 @@ public class UserController {
         }
         return new ResponseEntity<>("Rejecting is denied.",HttpStatus.BAD_REQUEST);
     }
-
 
 
     @GetMapping(value = "/acceptRegistration/{id}")

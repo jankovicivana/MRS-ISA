@@ -21,9 +21,9 @@ public class Client extends User{
     public Client() {
     }
 
-   /* @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-    private Set<QuickReservation> quickReservations = new HashSet<QuickReservation>();
-*/
+ /* @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+     private Set<QuickReservation> quickReservations = new HashSet<QuickReservation>();
+ */
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private Set<AdvertiserReview> advertiserReviews = new HashSet<AdvertiserReview>();
 

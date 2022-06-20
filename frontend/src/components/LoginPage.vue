@@ -60,7 +60,7 @@ export default {
         return
       }
 
-      if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(username) === false){
+      if(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(username) === false){
         this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid credentials</p>`,`<p style="font-size: 20px">You must enter a valid email address</p>`)
         return
       }

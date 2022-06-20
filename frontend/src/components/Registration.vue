@@ -141,7 +141,7 @@ export default {
       }
 
       let email = this.$refs.email.value;
-      if(email === '' || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) === false){
+      if(email === '' || /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email) === false){
         this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid email</p>`,`<p style="font-size: 20px">You must enter a valid email</p>`)
         return
       }
@@ -189,7 +189,7 @@ export default {
     },
 
     registerFailed: function(){
-      alert("Neuspjesna registracija");
+      this.show('foo-css', 'error',`<p style="font-size: 25px">Invalid email</p>`,`<p style="font-size: 20px">There is already a user with this email.</p>`)
     }
   }
 }

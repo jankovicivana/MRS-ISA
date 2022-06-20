@@ -11,6 +11,7 @@ import ftn.mrs.isa.rentalapp.model.user.Role;
 import ftn.mrs.isa.rentalapp.repository.ClientRepository;
 import ftn.mrs.isa.rentalapp.repository.ReportRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
+import ftn.mrs.isa.rentalapp.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PessimisticLockingFailureException;
@@ -41,7 +42,7 @@ public class ClientService {
 
 
     @Autowired
-    private RoleService roleService;
+    private RoleRepository roleRepository;
 
 
     @Autowired
@@ -103,7 +104,7 @@ public class ClientService {
         c.setPhoneNumber(userRequest.getPhoneNumber());
         c.setPoints(0);
         c.setPenalties(0);
-        List<Role> roles = roleService.findByName(userRequest.getRole());
+        List<Role> roles = roleRepository.findByName(userRequest.getRole());
         c.setRoles(roles);
 
         return this.clientRepository.save(c);
@@ -162,10 +163,6 @@ public class ClientService {
         }
         client.setDeleted(true);
         clientRepository.save(client);
-        /* for(Reservation r : client.getReservations()){
-            r.setDeleted(true);
-        }
-        reservationsRepository.saveAll(client.getReservations());*/
         return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
     }
 }
