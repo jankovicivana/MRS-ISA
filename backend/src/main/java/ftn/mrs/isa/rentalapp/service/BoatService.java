@@ -14,9 +14,11 @@ import ftn.mrs.isa.rentalapp.repository.QuickReservationRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 public class BoatService {
 
     @Autowired
@@ -130,6 +133,23 @@ public class BoatService {
         save(boat);
         return boat;
     }
+
+    public ResponseEntity<String> deleteBoat(Integer id){
+        try {
+            Boat boat = findOne(id);
+            if(boat == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            if(!canDeleteBoat(boat)){
+                return new ResponseEntity<>("Boat has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
+            }
+            deleteBoat(boat);
+            return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+        }catch (PessimisticLockingFailureException e){
+            return new ResponseEntity<>("Someone just made reservation.",HttpStatus.CONFLICT);
+        }
+    }
+
 
     public Double getBoatsAverageGrade(String email){
         List<Boat> boats = findAllByOwnerEmail(email);

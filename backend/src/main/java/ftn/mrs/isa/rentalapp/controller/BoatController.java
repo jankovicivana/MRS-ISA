@@ -80,15 +80,7 @@ public class BoatController {
     @DeleteMapping(value = "/deleteBoat/{id}")
     @PreAuthorize("hasAnyRole('admin','boatOwner')")
     public ResponseEntity<String> deleteBoat(@PathVariable Integer id,Principal principal){
-        Boat boat = boatService.findOne(id);
-        if(boat == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if(!boatService.canDeleteBoat(boat)){
-            return new ResponseEntity<>("Boat has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
-        }
-        boatService.deleteBoat(boat);
-        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+        return boatService.deleteBoat(id);
     }
 
     @GetMapping(value = "/getAverageGrade")
