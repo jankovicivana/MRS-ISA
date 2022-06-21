@@ -3,11 +3,7 @@ package ftn.mrs.isa.rentalapp.controller;
 
 import ftn.mrs.isa.rentalapp.dto.*;
 import ftn.mrs.isa.rentalapp.model.entity.*;
-import ftn.mrs.isa.rentalapp.model.entity.*;
-import ftn.mrs.isa.rentalapp.model.reservation.QuickReservation;
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
-import ftn.mrs.isa.rentalapp.model.system_info.RankingInfo;
-import ftn.mrs.isa.rentalapp.model.system_info.SystemInfo;
 import ftn.mrs.isa.rentalapp.model.user.*;
 import ftn.mrs.isa.rentalapp.service.*;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -286,7 +281,7 @@ public class ReservationController {
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<String> makeReservationFromQuick(@PathVariable(value = "id") Integer id,Principal principal) throws MessagingException {
         try{
-            return reservationService.makeReservationFromQuick(id, principal.getName());
+            return reservationService.reserveQuick(id, principal.getName());
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

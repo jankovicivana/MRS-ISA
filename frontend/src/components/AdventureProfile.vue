@@ -254,6 +254,10 @@ export default {
           this.show('foo-css', 'error',`<p style="font-size: 25px">Forbidden Error!</p>`,`<p style="font-size: 20px">You can not make quick reservation.</p>`)
         }else if(error.response.status === 409){
           this.show('foo-css', 'error',`<p style="font-size: 25px">Already reserved</p>`,`<p style="font-size: 20px">Someone else has just reserved the action.</p>`)
+        } else if(error.response.status === 400){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Already reserved</p>`,`<p style="font-size: 20px">You already have a reservation in this period.</p>`)
+        }else if(error.response.status === 401){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">You can't reserve</p>`,`<p style="font-size: 20px">Log in to be able to make a reservation.</p>`)
         }
       });
     }

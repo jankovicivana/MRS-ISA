@@ -251,17 +251,32 @@ export default {
     },
 
     editClient: function() {
+      this.editButton = document.getElementById('editButton');
+      if (this.editButton.innerHTML==="save" ) {
+        if (this.client.name === '' || this.client.surname === '' || this.client.phoneNumber === '' || this.address.street === '' ||
+          this.address.city === '' || this.address.country === '' || this.address.postalCode === '') {
+          this.show('foo-css', 'error', `<p style="font-size: 25px">Unsuccessful edit</p>`, `<p style="font-size: 20px">You must enter all the info.</p>`)
+          return
+        }
+        if (isNaN(parseInt(this.address.postalCode))) {
+          this.show('foo-css', 'error', `<p style="font-size: 25px">Unsuccessful edit</p>`, `<p style="font-size: 20px">Postal code must be a number.</p>`)
+          return
+        }
+      }
+
       this.inputs = document.querySelectorAll('input[type="text"]');
       for (var i=0; i<this.inputs.length; i++) {
         if(this.inputs[i].getAttribute("id") !== "email"){
           this.inputs[i].toggleAttribute('readonly');
         }
       }
-      this.editButton = document.getElementById('editButton');
+
       if (this.editButton.innerHTML==="edit" ) {
         this.editButton.innerHTML="save" ;
       } else {
         this.editButton.innerHTML="edit" ;
+
+
         var c = {id: this.client.id, name: this.client.name, surname: this.client.surname,
           email: this.client.email, password: this.client.password, address: this.address,
           phoneNumber: this.client.phoneNumber, penalties: this.client.penalties, points: this.client.points};
@@ -277,6 +292,8 @@ export default {
           })
       }
     },
+
+
 
     showChangePass:function (){
       if(document.getElementById('change_pass').hidden===true){

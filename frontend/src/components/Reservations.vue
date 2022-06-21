@@ -49,7 +49,7 @@
       <div class="columns">
         <div class="column col-2 ">
           <span style="color: white">Start date</span>
-          <input type="date" name="startDate" ref="startDate" value="2022-06-26" style="height: 40px; width:200px">
+          <input type="date" name="startDate" ref="startDate" value="2022-07-06" style="height: 40px; width:200px">
         </div>
         <div class="column col-2 ">
           <span style="color: white">Start time</span>
@@ -58,17 +58,17 @@
 
         <div class="column col-2">
           <span style="color: white">End date</span>
-          <input type="date" name="endDate" ref="endDate" value="2022-06-26" style="height: 40px; width:200px">
+          <input type="date" name="endDate" ref="endDate" value="2022-07-10" style="height: 40px; width:200px">
         </div>
         <div class="column col-2">
           <span style="color: white">End time</span>
-          <input type="time" name="endTime" ref="endTime"value="10:00:00"  style="height: 40px; width:200px">
+          <input type="time" name="endTime" ref="endTime"value="11:00:00"  style="height: 40px; width:200px">
         </div>
 
 
         <div class="column col-2">
           <span style="color: white">Rating</span>
-          <star-rating :rating="4" :read-only="false" :increment="1" :show-rating="false"  @rating-selected="setRating" :star-size="35" :size="300" style="height: 40px" ></star-rating>
+          <star-rating :rating="3" :read-only="false" :increment="1" :show-rating="false"  @rating-selected="setRating" :star-size="35" :size="300" style="height: 40px" ></star-rating>
         </div>
         <div class="column col-2">
           <button v-if="role!=='ROLE_client' || client.penalties < 3" type="submit" v-on:click="search()" class="btn search_btn" style="float: left">Search</button>
@@ -122,7 +122,7 @@ export default {
       entities: '',
       params: '',
       type: '',
-      rating: 4,
+      rating: 3,
       role:'',
       clientId: this.$route.params.clientId,
       client: '',

@@ -5,10 +5,7 @@ import ftn.mrs.isa.rentalapp.dto.CottageDTO;
 import ftn.mrs.isa.rentalapp.dto.CottageOwnerDTO;
 import ftn.mrs.isa.rentalapp.dto.EntitySearchDTO;
 import ftn.mrs.isa.rentalapp.dto.EntityTypeDTO;
-import ftn.mrs.isa.rentalapp.model.entity.Adventure;
-import ftn.mrs.isa.rentalapp.model.entity.Cottage;
-import ftn.mrs.isa.rentalapp.model.entity.EntityKind;
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.model.entity.*;
 import ftn.mrs.isa.rentalapp.model.user.CottageOwner;
 import ftn.mrs.isa.rentalapp.service.AvailablePeriodService;
 import ftn.mrs.isa.rentalapp.service.CottageService;
@@ -58,12 +55,26 @@ public class EntityController {
         entities = entityService.getAll();
         for(EntityType et: entities){
             if (EntityKind.toString(et.getKind()).equals(params.getType()) && et.getPrice() <= params.getPrice()
-                    && et.getAddress().getCity().equals(params.getCity()) && et.getAverageGrade() > params.getRating()  ){
+                    && et.getAddress().getCity().equals(params.getCity()) && et.getAverageGrade() > params.getRating()){
                 boolean isAvailable = false;
                 if(et.getKind() == EntityKind.ADVENTURE){
                     Adventure a = (Adventure)et;
+                    if(a.getMaxPersonNum() < params.getPeople()){
+                        continue;
+                    }
                     isAvailable = availablePeriodService.isAvailableInstructor(a.getFishingInstructor().getId(), start, end);
                 } else{
+                    if(et.getKind() == EntityKind.COTTAGE) {
+                        Cottage c = (Cottage)et;
+                        if(c.getMaxNumPerson() < params.getPeople()){
+                            continue;
+                        }
+                    } else{
+                        Boat b = (Boat) et;
+                        if(b.getCapacity() < params.getPeople()){
+                            continue;
+                        }
+                    }
                     isAvailable = availablePeriodService.isAvailable(et.getId(), start, end);
                 }
                 if(isAvailable && !reservationService.isReserved(et.getId(), start, end)){
@@ -74,7 +85,7 @@ public class EntityController {
                 }
             }
         }
-
+        System.out.println(entitiesDTO.size());
         return new ResponseEntity<>(entitiesDTO, HttpStatus.OK);
     }
 
