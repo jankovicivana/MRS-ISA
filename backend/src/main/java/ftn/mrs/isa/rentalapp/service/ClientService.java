@@ -108,6 +108,7 @@ public class ClientService {
         List<Role> roles = roleRepository.findByName(userRequest.getRole());
         c.setRoles(roles);
 
+
         return this.clientRepository.save(c);
     }
 
