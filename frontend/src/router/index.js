@@ -80,7 +80,7 @@ export default new Router({
       name: 'MainHomepage',
       component: MainHomepage
     },{
-      path: '/adventures/adventureProfile',
+      path: '/adventures/adventureProfile/:id',
       name:'AdventureProfile',
       component: AdventureProfile
     },{
@@ -104,7 +104,7 @@ export default new Router({
       name:'UpdateCottage',
       component: UpdateCottage
     },{
-      path: '/adventures/UpdateAdventure',
+      path: '/adventures/UpdateAdventure/:id',
       name:'UpdateAdventure',
       component: UpdateAdventure
     },{

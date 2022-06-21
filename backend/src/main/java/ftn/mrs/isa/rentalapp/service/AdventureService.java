@@ -12,7 +12,11 @@ import ftn.mrs.isa.rentalapp.repository.QuickReservationRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 public class AdventureService {
 
     @Autowired
@@ -89,6 +94,24 @@ public class AdventureService {
         adventure = setAdditionalInfo(adventure,adventureDTO);
         return adventure;
     }
+
+
+    public ResponseEntity<String> deleteAdventure(Integer id){
+        try{
+            Adventure adventure = findOne(id);
+            if(adventure == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            if (!canDeleteAdventure(adventure)){
+                return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
+            }
+            deleteAdventure(adventure);
+            return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+        }catch (PessimisticLockingFailureException e){
+            return new ResponseEntity<>("Someone just made reservation.",HttpStatus.CONFLICT);
+        }
+    }
+
 
     public Adventure setMainAdventureInfo(Adventure adventure, AdventureCreateDTO adventureDTO,FishingInstructor instructor){
         adventure.setName(adventureDTO.getName());

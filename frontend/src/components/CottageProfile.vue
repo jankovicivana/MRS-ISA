@@ -212,6 +212,7 @@ export default {
               this.loadImage(image.path);
             });
             first_response.data.quickReservations.forEach(q => {
+              alert(q.expirationDateTime);
               let date = new Date(q.expirationDateTime[0],q.expirationDateTime[1]-1,q.expirationDateTime[2])
               if(date > this.today){
                 this.quick.push(q);
