@@ -160,6 +160,21 @@ export default {
         return;
       }
 
+      let date = start_date.toString().split('T')[0]
+      let info = date.split('-')
+      if(new Date(info[0],info[1]-1,info[2])<Date.now()){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Start date mustn't be in the past!</p>`)
+        return;
+      }
+      date = end_date.toString().split('T')[0]
+      info = date.split('-')
+      if(new Date(info[0],info[1]-1,info[2])<Date.now()){
+        this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">End date mustn't be in the past!</p>`)
+        return;
+      }
+
+
+
 
       if (!this.isPeriodAvailable(start_date,end_date)){
         this.show('foo-css', 'warning',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">You have entered this available period!</p>`)
@@ -194,7 +209,15 @@ export default {
     },
     isPeriodAvailable:function (start_date,end_date){
         for(let p of this.periods){
-            if (start_date >= p.startDateTime && end_date<= p.endDateTime){
+            let start_date_available = new Date(p.startDateTime[0],p.startDateTime[1]-1,p.startDateTime[2])
+            let end_date_available = new Date(p.endDateTime[0],p.endDateTime[1]-1,p.endDateTime[2])
+            let date = start_date.toString().split('T')[0];
+            let info = date.split('-')
+            let start_date1 = new Date(info[0],info[1]-1,info[2])
+            let date2 = end_date.toString().split('T')[0];
+            let info2 = date2.split('-')
+            let end_date1 = new Date(info2[0],info2[1]-1,info2[2]);
+           if (start_date1 >= start_date_available && end_date1<= end_date_available){
               return false;
             }
         }

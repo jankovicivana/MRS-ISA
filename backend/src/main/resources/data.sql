@@ -171,7 +171,7 @@ insert into fishing_equipment (equipment,adventure,boat) values ('Crvici',null,3
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
     ('20220619 10:00:00 AM','20220626 10:00:00 AM',false,2,200,20,60,5,false,2);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
-    ('20220627 10:00:00 AM','20220630 10:00:00 AM',false,2,200,20,60,5,false,2);
+    ('20220627 10:00:00 AM','20220628 10:00:00 AM',false,2,200,20,60,5,false,2);
 insert into reservations(start_date_time,end_date_time,deleted,entity,price,system_profit,advertiser_profit,person_num,is_canceled,client) values
     ('20220615 10:00:00 AM','20220617 10:00:00 AM',false,2,200,20,60,5,false,2);
 
