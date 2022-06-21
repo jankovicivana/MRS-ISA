@@ -33,7 +33,7 @@ public class AdministratorService {
         admin.setType(String.valueOf(UserType.ADMINISTRATOR));
         admin.setPasswordChanged(false);
         admin.setPoints(0);
-        save(admin);
+        administratorRepository.save(admin);
         return admin;
     }
 
@@ -42,6 +42,6 @@ public class AdministratorService {
         Administrator a = mapper.map(administratorDTO,Administrator.class);
         a.setRoles(oldAdmin.getRoles());
         a.setPoints(0);
-        save(a);
+        administratorRepository.save(a);
     }
 }

@@ -181,6 +181,8 @@ export default {
         return;
       }
 
+      checkIntersectOfPeriods(start_date,end_date);
+
       this.info = {
         startDateTime: start_date,
         endDateTime: end_date
@@ -207,6 +209,10 @@ export default {
 
 
     },
+    checkIntersectOfPeriods:function (start_date,end_date){
+
+    }
+    ,
     isPeriodAvailable:function (start_date,end_date){
         for(let p of this.periods){
             let start_date_available = new Date(p.startDateTime[0],p.startDateTime[1]-1,p.startDateTime[2])
