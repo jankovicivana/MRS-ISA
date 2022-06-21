@@ -38,8 +38,6 @@ public class RoomServiceTest {
 
 
     @Test
-    @Transactional
-    @Rollback(true)
     public void testCreateRoom(){
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setBedNumber(5);
