@@ -40,10 +40,7 @@ public class RoomController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Room room = new Room();
-        room.setBedNumber(roomDTO.getBedNumber());
-        room.setCottage(cottage);
-        cottage.getRooms().add(room);
+        Room room = roomService.createRoom(roomDTO,cottage);
 
         roomService.save(room);
         return new ResponseEntity<>(mapper.map(room, RoomDTO.class),HttpStatus.CREATED);
