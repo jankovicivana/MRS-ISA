@@ -81,21 +81,21 @@ export default {
     this.role = sessionStorage.getItem("role");
     if (this.role === "ROLE_cottageOwner") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByCottageOwner", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/reservation/findHistoryByCottageOwner", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (
           this.reservations = response.data
         ))
     }   else if (this.role === "ROLE_fishingInstructor") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByInstructor", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/reservation/findHistoryByInstructor", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (
           this.reservations = response.data
         ))
     } else if (this.role === "ROLE_boatOwner") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByBoatOwner", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/reservation/findHistoryByBoatOwner", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (
           this.reservations = response.data

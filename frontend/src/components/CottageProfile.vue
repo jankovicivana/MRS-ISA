@@ -204,7 +204,7 @@ export default {
       window.scrollTo(0, 0)
 
         axios
-          .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/"+this.cottageId)
+          .get("https://rental-app-6.herokuapp.com"+"/api/cottages/"+this.cottageId)
           .then(first_response => {
             this.cottage = first_response.data
             this.address=first_response.data.address
@@ -231,21 +231,21 @@ export default {
             })
           })
 
-        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.cottageId)
+        axios.get("https://rental-app-6.herokuapp.com"+"/api/availablePeriod/getAvailablePeriod/"+this.cottageId)
           .then(response => {
             this.periods = response.data
             this.fillCalendar(this.periods,'bg-success');
           }).catch(function error(error) {
           alert(error.response.data);
         });
-        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfCottage/"+this.cottageId)
+        axios.get("https://rental-app-6.herokuapp.com"+"/api/reservation/findAllOfCottage/"+this.cottageId)
           .then(response => {
             this.reservations = response.data
             this.fillCalendar(this.reservations,'bg-danger');
           }).catch(function error(error) {
           alert(error.response.data);
         });
-        axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.cottageId)
+        axios.get("https://rental-app-6.herokuapp.com"+"/api/quickReservation/findQuickReservationBy/"+this.cottageId)
           .then(response => {
             this.discounts = response.data
             this.fillCalendar(this.discounts,'');
@@ -294,7 +294,7 @@ export default {
       },
       deleteCottage:function (){
         let id = this.cottage.id
-        axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/cottages/deleteCottage/"+id, {headers: {Authorization:
+        axios.delete("https://rental-app-6.herokuapp.com"+"/api/cottages/deleteCottage/"+id, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted cottage!</p>`)
@@ -312,7 +312,7 @@ export default {
 
       },
     loadImage(name) {
-      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+      axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+name,{responseType:"blob"})
         .then(response => {
           this.imagesUrl.push(URL.createObjectURL(response.data));
         })
@@ -371,7 +371,7 @@ export default {
         }
         this.events.push(this.newEvent);
 
-        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addCottage",this.info, {headers: {Authorization:
+        axios.post("https://rental-app-6.herokuapp.com"+"/api/availablePeriod/addCottage",this.info, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added available period.</p>`)
@@ -400,7 +400,7 @@ export default {
     reserve:function(id) {
 
       console.log(id);
-      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
+      axios.put("https://rental-app-6.herokuapp.com"+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)

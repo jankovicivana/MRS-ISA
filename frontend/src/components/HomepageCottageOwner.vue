@@ -62,13 +62,13 @@ export default {
   },
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/allByOwner", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/cottages/allByOwner", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {this.cottages = response.data
                         response.data.forEach(cottage => {
                           var images = []
                           cottage.images.forEach(image => {
-                            axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image.path,{responseType:"blob"})
+                            axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+image.path,{responseType:"blob"})
                               .then(response => {
                                 images.push(URL.createObjectURL(response.data));
                                 cottage.images = images;

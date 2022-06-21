@@ -71,7 +71,7 @@ export default {
   }
   ,mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/getReportOnHold", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/clients/getReportOnHold", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.reports = response.data
@@ -85,7 +85,7 @@ export default {
     },
 
     acceptPenalty:function (report){
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/clients/acceptPenalty",report,{headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/clients/acceptPenalty",report,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully accepted penalty!</p>`)
@@ -99,7 +99,7 @@ export default {
       });
     },
     rejectPenalty:function (report){
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/clients/rejectPenalty",report,{headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/clients/rejectPenalty",report,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully rejected penalty!</p>`)

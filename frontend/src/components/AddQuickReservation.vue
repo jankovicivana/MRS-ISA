@@ -45,7 +45,7 @@ export default {
         discountedPrice: price - price*discount/100,
         };
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/addQuickReservation",this.info, {headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/quickReservation/addQuickReservation",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added quick reservation!</p>`)

@@ -145,7 +145,7 @@ export default {
     if (this.role === "ROLE_client" || this.role === null) {
       let id = this.$route.params.id
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/fishingInstructor/getInstructorById/" + id)
+        .get("https://rental-app-6.herokuapp.com" + "/api/fishingInstructor/getInstructorById/" + id)
         .then(response => {this.advertiser = response.data
           this.address = this.advertiser.address
           this.loadOnlyOneImage(response.data.mainPhoto)
@@ -155,7 +155,7 @@ export default {
     }
     if (this.role === "ROLE_cottageOwner") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/getCottageOwner", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/cottageOwner/getCottageOwner", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -166,7 +166,7 @@ export default {
       });
     }else if (this.role === "ROLE_boatOwner") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/getBoatOwner", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/boatOwner/getBoatOwner", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -177,7 +177,7 @@ export default {
       });
     }else if (this.role === "ROLE_fishingInstructor") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/getInstructor", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/fishingInstructor/getInstructor", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.advertiser = response.data,this.address = this.advertiser.address,this.loadOnlyOneImage(response.data.mainPhoto))).catch(function error(error) {
         alert(error.response.data);
@@ -185,7 +185,7 @@ export default {
     }
     else if(this.role === "ROLE_admin"){
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/administrator/getAdmin", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/administrator/getAdmin", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.advertiser = response.data,this.address = this.advertiser.address,this.loadOnlyOneImage(response.data.mainPhoto))).catch(function error(error) {
         alert(error.response.data);
@@ -198,7 +198,7 @@ export default {
       this.$notify({group, title, text, type})
     },
     loadOnlyOneImage:function(name) {
-      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+      axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+name,{responseType:"blob"})
         .then(response => {
           this.mainPhoto=URL.createObjectURL(response.data);
         })
@@ -223,7 +223,7 @@ export default {
 
         if (this.role === "ROLE_cottageOwner") {
           axios
-            .post(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/updateCottageOwner", c, {headers: {Authorization:
+            .post("https://rental-app-6.herokuapp.com" + "/api/cottageOwner/updateCottageOwner", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
@@ -235,21 +235,21 @@ export default {
           })
         }else if (this.role === "ROLE_boatOwner") {
           axios
-            .post(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/updateBoatOwner", c, {headers: {Authorization:
+            .post("https://rental-app-6.herokuapp.com" + "/api/boatOwner/updateBoatOwner", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
             })
         }else if (this.role === "ROLE_fishingInstructor") {
           axios
-            .post(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/updateInstructor", c, {headers: {Authorization:
+            .post("https://rental-app-6.herokuapp.com"+"/api/fishingInstructor/updateInstructor", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
             });
         }else if (this.role === "ROLE_admin") {
           axios
-            .post(process.env.VUE_APP_SERVER_PORT+"/api/administrator/updateAdmin", c, {headers: {Authorization:
+            .post("https://rental-app-6.herokuapp.com"+"/api/administrator/updateAdmin", c, {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.show('foo-css', 'success',`<p style="font-size: 25px">Successful edit</p>`,`<p style="font-size: 20px">Successfully edited data!</p>`)
@@ -273,7 +273,7 @@ export default {
       }else{
         let c = {currentPassword:current_pass,newPassword:new_pass};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/user/changePassword", c, {headers: {Authorization:
+          .post("https://rental-app-6.herokuapp.com"+"/api/user/changePassword", c, {headers: {Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull change</p>`,`<p style="font-size: 20px">Successfully changed password!</p>`)
@@ -294,7 +294,7 @@ export default {
       this.showModal = false;
       console.log(this.$refs.request_input.value)
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/user/deleteAccount", {requestReason:this.$refs.request_input.value}, {headers: {Authorization:
+        .post("https://rental-app-6.herokuapp.com"+"/api/user/deleteAccount", {requestReason:this.$refs.request_input.value}, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successful</p>`,`<p style="font-size: 20px">Successfully sent request!</p>`)

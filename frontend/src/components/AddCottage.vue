@@ -301,7 +301,7 @@ export default {
         images: this.images
       };
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/addCottage",this.info, {headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/cottages/addCottage",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added cottage!</p>`);

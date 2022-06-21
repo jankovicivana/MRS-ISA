@@ -65,7 +65,7 @@ export default {
 
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findUpcomingByClient", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/reservation/findUpcomingByClient", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.reservations = response.data
@@ -91,7 +91,7 @@ export default {
 
     cancel: function (res){
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/reservation/cancelReservation/", res,{headers: {Authorization:
+        .post("https://rental-app-6.herokuapp.com"+"/api/reservation/cancelReservation/", res,{headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {const index = this.reservations.indexOf(res);
           this.reservations.splice(index, 1);  this.show('foo-css', 'success')}).catch(function error(error) {

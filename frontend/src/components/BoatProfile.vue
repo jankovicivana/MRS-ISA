@@ -218,7 +218,7 @@ export default {
     this.role = sessionStorage.getItem("role");
     window.scrollTo(0, 0)
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+this.boatId)
+      .get("https://rental-app-6.herokuapp.com"+"/api/boats/"+this.boatId)
       .then(response => {
         this.boat = response.data
         this.address=response.data.address
@@ -242,21 +242,21 @@ export default {
         })
       })
 
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/"+this.boatId)
+    axios.get("https://rental-app-6.herokuapp.com"+"/api/availablePeriod/getAvailablePeriod/"+this.boatId)
       .then(response => {
         this.periods = response.data
         this.fillCalendar(this.periods,'bg-success');
       }).catch(function error(error) {
       alert(error.response.data);
     });
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllOfBoat/"+this.boatId)
+    axios.get("https://rental-app-6.herokuapp.com"+"/api/reservation/findAllOfBoat/"+this.boatId)
       .then(response => {
         this.reservations = response.data
         this.fillCalendar(this.reservations,'bg-danger');
       }).catch(function error(error) {
       alert(error.response.data);
     });
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/"+this.boatId)
+    axios.get("https://rental-app-6.herokuapp.com"+"/api/quickReservation/findQuickReservationBy/"+this.boatId)
       .then(response => {
         this.discounts = response.data
         this.fillCalendar(this.discounts,'');
@@ -297,7 +297,7 @@ export default {
       }
     },
     loadImage(name) {
-      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+      axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+name,{responseType:"blob"})
         .then(response => {
           this.imagesUrl.push(URL.createObjectURL(response.data));
         })
@@ -317,7 +317,7 @@ export default {
     },
     deleteBoat:function (){
       let id = this.boat.id
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/boats/deleteBoat/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/boats/deleteBoat/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted boat!</p>`)
@@ -378,7 +378,7 @@ export default {
     }
     this.events.push(this.newEvent);
 
-    axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addBoat",this.info, {headers: {Authorization:
+    axios.post("https://rental-app-6.herokuapp.com"+"/api/availablePeriod/addBoat",this.info, {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added quick reservation!</p>`)
@@ -406,7 +406,7 @@ export default {
     },
     reserve:function(id) {
       console.log(id);
-      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
+      axios.put("https://rental-app-6.herokuapp.com"+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)

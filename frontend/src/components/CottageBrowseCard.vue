@@ -68,7 +68,7 @@ export default {
   mounted() {
     this.role = sessionStorage.getItem("role");
 
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+this.cottage.images[0].path,{responseType:"blob"})
+    axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+this.cottage.images[0].path,{responseType:"blob"})
       .then(response => {
         this.photo = URL.createObjectURL(response.data);
       })

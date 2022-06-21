@@ -125,7 +125,7 @@ export default {
       reservationUrl = "/api/reservation/findHistory";
     }
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + reservationUrl, {
+        .get("https://rental-app-6.herokuapp.com" + reservationUrl, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -141,7 +141,7 @@ export default {
 
     if (this.role !== "ROLE_admin"){
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + gradeUrl, {
+        .get("https://rental-app-6.herokuapp.com" + gradeUrl, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")

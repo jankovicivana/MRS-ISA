@@ -177,13 +177,13 @@ export default {
     if (this.role === "ROLE_cottageOwner" || this.role === "ROLE_fishingInstructor" || this.role === "ROLE_boatOwner" ) {
       var clientId = this.$route.params.id;
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/clients/"+clientId, {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/clients/"+clientId, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.client = response.data, this.address = this.client.address))
     }
     if (this.role === "ROLE_client") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/clients/getClient", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/clients/getClient", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -192,13 +192,13 @@ export default {
         .then(response => {this.client = response.data
                            this.address = this.client.address
           axios
-            .get(process.env.VUE_APP_SERVER_PORT+"/api/system/getRankingInfo/1", {headers: {Authorization:
+            .get("https://rental-app-6.herokuapp.com"+"/api/system/getRankingInfo/1", {headers: {Authorization:
                   'Bearer ' + sessionStorage.getItem("accessToken")}})
             .then(response => {
               this.regular = response.data
 
               axios
-                .get(process.env.VUE_APP_SERVER_PORT + "/api/system/getRankingInfo/2", {
+                .get("https://rental-app-6.herokuapp.com" + "/api/system/getRankingInfo/2", {
                   headers: {
                     Authorization:
                       'Bearer ' + sessionStorage.getItem("accessToken")
@@ -208,7 +208,7 @@ export default {
                   this.silver = response.data
 
                   axios
-                    .get(process.env.VUE_APP_SERVER_PORT+"/api/system/getRankingInfo/3", {headers: {Authorization:
+                    .get("https://rental-app-6.herokuapp.com"+"/api/system/getRankingInfo/3", {headers: {Authorization:
                           'Bearer ' + sessionStorage.getItem("accessToken")}})
                     .then(response => {
                       this.gold = response.data
@@ -231,7 +231,7 @@ export default {
       });
 
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/system/getSystemInfo", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/system/getSystemInfo", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -281,7 +281,7 @@ export default {
           email: this.client.email, password: this.client.password, address: this.address,
           phoneNumber: this.client.phoneNumber, penalties: this.client.penalties, points: this.client.points};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/clients/updateClient", c, {
+          .post("https://rental-app-6.herokuapp.com"+"/api/clients/updateClient", c, {
             headers: {
               Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")
@@ -315,7 +315,7 @@ export default {
       }else{
         let c = {currentPassword:current_pass,newPassword:new_pass};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/user/changePassword", c, {headers: {Authorization:
+          .post("https://rental-app-6.herokuapp.com"+"/api/user/changePassword", c, {headers: {Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull change</p>`,`<p style="font-size: 20px">Successfully changed password!</p>`)
@@ -336,7 +336,7 @@ export default {
         return;
       }
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/user/deleteAccount", {requestReason:this.$refs.request_input.value}, {headers: {Authorization:
+        .post("https://rental-app-6.herokuapp.com"+"/api/user/deleteAccount", {requestReason:this.$refs.request_input.value}, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successful</p>`,`<p style="font-size: 20px">Successfully sent request!</p>`)

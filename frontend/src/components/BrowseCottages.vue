@@ -87,12 +87,12 @@ export default {
     this.role = sessionStorage.getItem("role");
     if (this.role === "ROLE_cottageOwner") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/allByOwner", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/cottages/allByOwner", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.cottages = this.search_cottages = response.data))
     }else{
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/all", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/cottages/all", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.cottages = this.search_cottages = response.data))
     }
@@ -150,7 +150,7 @@ export default {
     },
 
     deleteCottage:function (id){
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/cottages/deleteCottage/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/cottages/deleteCottage/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted cottage!</p>`)
@@ -163,7 +163,7 @@ export default {
 
     subscribe: function (id){
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/sub/subscribe/"+id, {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/sub/subscribe/"+id, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           if (response.data === "Already subscribed"){

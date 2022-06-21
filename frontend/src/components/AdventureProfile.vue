@@ -153,7 +153,7 @@ export default {
       adventure: '',
       mainPhoto:'',
       fishingInstructor:'',
-      server: process.env.VUE_APP_SERVER_PORT,
+      server: "https://rental-app-6.herokuapp.com",
       isModalVisible: false,
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '',
@@ -173,7 +173,7 @@ export default {
     this.role = sessionStorage.getItem("role");
     window.scrollTo(0, 0)
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/"+this.adventureId)
+      .get("https://rental-app-6.herokuapp.com"+"/api/adventures/"+this.adventureId)
       .then(response => {
         this.adventure = response.data
         this.fishingInstructor = this.adventure.fishingInstructor
@@ -213,7 +213,7 @@ export default {
     },
     deleteAdventure:function (){
       let id = this.adventure.id
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/adventures/deleteAdventure/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/adventures/deleteAdventure/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted adventure!</p>`)
@@ -226,7 +226,7 @@ export default {
 
     },
     loadImage(name) {
-      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+      axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+name,{responseType:"blob"})
         .then(response => {
           this.imagesUrl.push(URL.createObjectURL(response.data));
         })
@@ -235,7 +235,7 @@ export default {
         });
     },
     loadOnlyOneImage(name) {
-      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+      axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+name,{responseType:"blob"})
         .then(response => {
           this.mainImg=URL.createObjectURL(response.data);
         })
@@ -244,7 +244,7 @@ export default {
         });
     },
     reserve:function(id) {
-      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
+      axios.put("https://rental-app-6.herokuapp.com"+"/api/reservation/makeReservationFromQuick/"+id, {},{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully reserved!</p>`,`<p style="font-size: 20px">Successfully reserved quick reservation.</p>`)

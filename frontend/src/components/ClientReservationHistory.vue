@@ -84,7 +84,7 @@ export default {
 
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findHistoryByClient", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/reservation/findHistoryByClient", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.reservations = response.data

@@ -79,7 +79,7 @@ export default {
   mounted: function(){
 
     //document.getElementById('calendar').dispatchEvent('eventClick',event, jsEvent, pos)
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/getAvailablePeriod/getInstructor", {headers: {Authorization:
+    axios.get("https://rental-app-6.herokuapp.com"+"/api/availablePeriod/getAvailablePeriod/getInstructor", {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.periods = response.data
@@ -89,7 +89,7 @@ export default {
       });
 
 
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/findAllByUser/getInstructor", {headers: {Authorization:
+    axios.get("https://rental-app-6.herokuapp.com"+"/api/reservation/findAllByUser/getInstructor", {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.reservations = response.data
@@ -98,7 +98,7 @@ export default {
       alert(error.response);
     });
 
-    axios.get(process.env.VUE_APP_SERVER_PORT+"/api/quickReservation/findQuickReservationBy/getInstructor", {headers: {Authorization:
+    axios.get("https://rental-app-6.herokuapp.com"+"/api/quickReservation/findQuickReservationBy/getInstructor", {headers: {Authorization:
           'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.discounts = response.data
@@ -198,7 +198,7 @@ export default {
       }
       this.events.push(this.newEvent);
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/availablePeriod/addForFishingInstructor",this.info, {headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/availablePeriod/addForFishingInstructor",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added available period!</p>`)

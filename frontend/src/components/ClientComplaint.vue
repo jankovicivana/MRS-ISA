@@ -71,7 +71,7 @@ export default {
   },
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/reservation/"+this.reservationId, {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/reservation/"+this.reservationId, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => {
         this.reservation = response.data;
@@ -106,7 +106,7 @@ export default {
       }
 
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/complaint/addComplaint", data,{
+        .post("https://rental-app-6.herokuapp.com"+"/api/complaint/addComplaint", data,{
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")

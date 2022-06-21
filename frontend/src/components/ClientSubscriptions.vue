@@ -52,7 +52,7 @@ export default {
   },
   mounted: function(){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/sub/getSubscriptions", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/sub/getSubscriptions", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.subscriptions = response.data))
   },
@@ -65,7 +65,7 @@ export default {
 
     unsubscribe: function (s) {
       let id = s.id;
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/sub/delete/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/sub/delete/"+id, {headers: {Authorization:
         'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           const index = this.subscriptions.indexOf(s);

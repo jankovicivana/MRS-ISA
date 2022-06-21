@@ -67,7 +67,7 @@ export default {
 
       this.info = {username, password}
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/auth/login", this.info)
+        .post("https://rental-app-6.herokuapp.com"+"/auth/login", this.info)
         .then(response => {
           if(response.data === ""){
             this.show('foo-css', 'error',`<p style="font-size: 25px">Not activated</p>`,`<p style="font-size: 20px">You must activate your account first</p>`)
@@ -96,7 +96,7 @@ export default {
   },
     findAdmin:function (){
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/administrator/getAdmin", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/administrator/getAdmin", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
         if (response.data.passwordChanged===true)

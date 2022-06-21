@@ -90,7 +90,7 @@ export default {
     this.role = sessionStorage.getItem("role");
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT + '/api/reservation/findHistory', {
+      .get("https://rental-app-6.herokuapp.com" + '/api/reservation/findHistory', {
         headers: {
           Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")

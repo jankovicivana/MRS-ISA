@@ -83,7 +83,7 @@ export default {
     this.role = sessionStorage.getItem("role");
     if (this.role === "ROLE_cottageOwner") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/reservation/findCurrentByCottageOwner/" + this.id, {
+        .get("https://rental-app-6.herokuapp.com" + "/api/reservation/findCurrentByCottageOwner/" + this.id, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -94,7 +94,7 @@ export default {
         ))
     }else if (this.role === "ROLE_boatOwner") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/reservation/findCurrentByBoatOwner", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/reservation/findCurrentByBoatOwner", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -105,7 +105,7 @@ export default {
         ))
     }else if (this.role === "ROLE_fishingInstructor"){
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/reservation/findCurrentByInstructor", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/reservation/findCurrentByInstructor", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")

@@ -106,14 +106,14 @@ export default {
   }
   ,mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/complaint/getOnHoldAdvertiserComplaint", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/complaint/getOnHoldAdvertiserComplaint", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.advertiserComplaints = response.data
       ));
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/complaint/getOnHoldEntityComplaint", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/complaint/getOnHoldEntityComplaint", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.entityComplaints = response.data
@@ -132,7 +132,7 @@ export default {
         this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Must enter response for this request!</p>`)
         return;
       }
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/complaint/acceptAdvertiserComplaint",review,{headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/complaint/acceptAdvertiserComplaint",review,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully accepted advertiser complaint!</p>`)
@@ -152,7 +152,7 @@ export default {
         this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Must enter response for this request!</p>`)
         return;
       }
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/complaint/acceptEntityComplaint" , review, {
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/complaint/acceptEntityComplaint" , review, {
         headers: {
           Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")
@@ -175,7 +175,7 @@ export default {
         this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Must enter response for this request!</p>`)
         return;
       }
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/complaint/rejectEntityComplaint" , review, {
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/complaint/rejectEntityComplaint" , review, {
         headers: {
           Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")
@@ -198,7 +198,7 @@ export default {
         this.show('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Must enter response for this request!</p>`)
         return;
       }
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/complaint/rejectAdvertiserComplaint",review,{headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/complaint/rejectAdvertiserComplaint",review,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully reject advertiser complaint!</p>`)

@@ -76,7 +76,7 @@ export default {
   }
   ,mounted() {
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/administrator/getAdmin", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/administrator/getAdmin", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.admin = response.data)).catch(function error(error) {
       alert(error.response.data);

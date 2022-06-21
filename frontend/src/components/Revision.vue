@@ -107,14 +107,14 @@ export default {
   }
   ,mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/review/getOnHoldAdvertiserReview", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/review/getOnHoldAdvertiserReview", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.advertiserReviews = response.data
       ));
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/review/getOnHoldEntityReview", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/review/getOnHoldEntityReview", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.entityReviews = response.data
@@ -130,7 +130,7 @@ export default {
     },
     acceptAdvertiserReview:function (review) {
       let id = review.id
-      axios.get(process.env.VUE_APP_SERVER_PORT + "/api/review/acceptAdvertiserReview/"+id,{headers: {Authorization:
+      axios.get("https://rental-app-6.herokuapp.com" + "/api/review/acceptAdvertiserReview/"+id,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully accepted entity review!</p>`)
@@ -145,7 +145,7 @@ export default {
     },
     acceptEntityReview:function (review) {
       let id = review.id
-      axios.get(process.env.VUE_APP_SERVER_PORT + "/api/review/acceptEntityReview/" + id, {
+      axios.get("https://rental-app-6.herokuapp.com" + "/api/review/acceptEntityReview/" + id, {
         headers: {
           Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")
@@ -164,7 +164,7 @@ export default {
     },
     rejectEntityReview:function (review) {
       let id = review.id
-      axios.get(process.env.VUE_APP_SERVER_PORT + "/api/review/rejectEntityReview/" + id, {
+      axios.get("https://rental-app-6.herokuapp.com" + "/api/review/rejectEntityReview/" + id, {
         headers: {
           Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")
@@ -183,7 +183,7 @@ export default {
     },
     rejectAdvertiserReview:function (review) {
       let id = review.id
-      axios.get(process.env.VUE_APP_SERVER_PORT + "/api/review/rejectAdvertiserReview/"+id,{headers: {Authorization:
+      axios.get("https://rental-app-6.herokuapp.com" + "/api/review/rejectAdvertiserReview/"+id,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully reject entity review!</p>`)

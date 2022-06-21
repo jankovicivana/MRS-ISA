@@ -74,7 +74,7 @@ export default {
       url = "/api/cottages/allByOwner";
     }
     axios
-      .get(process.env.VUE_APP_SERVER_PORT + url, {
+      .get("https://rental-app-6.herokuapp.com" + url, {
         headers: {
           Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")

@@ -87,12 +87,12 @@ export default {
     this.role = sessionStorage.getItem("role");
     if (this.role === "ROLE_boatOwner") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/boats/allByOwner", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com" + "/api/boats/allByOwner", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.boats = this.search_boats = response.data))
     }else{
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/boats/all", {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com" + "/api/boats/all", {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.boats = this.search_boats = response.data))
     }
@@ -103,7 +103,7 @@ export default {
       this.$notify({group, title, text, type})
     },
     deleteBoat:function (id) {
-      axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/boats/deleteBoat/" + id, {
+      axios.delete("https://rental-app-6.herokuapp.com" + "/api/boats/deleteBoat/" + id, {
         headers: {
           Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")
@@ -121,7 +121,7 @@ export default {
 
     subscribe: function (id){
       axios
-        .get(process.env.VUE_APP_SERVER_PORT+"/api/sub/subscribe/"+id, {headers: {Authorization:
+        .get("https://rental-app-6.herokuapp.com"+"/api/sub/subscribe/"+id, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           if (response.data === "Already subscribed"){

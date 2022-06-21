@@ -158,7 +158,7 @@ export default {
       }
 
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/administrator/addAdministrator",this.info ,{headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/administrator/addAdministrator",this.info ,{headers: {Authorization:
         'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success')

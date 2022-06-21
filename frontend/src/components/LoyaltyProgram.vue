@@ -166,14 +166,14 @@ export default {
   },
   mounted() {
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/system/getRankingInfo/1", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/system/getRankingInfo/1", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.regular = response.data
 
       ));
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/system/getRankingInfo/2", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/system/getRankingInfo/2", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.silver = response.data
@@ -181,14 +181,14 @@ export default {
       ));
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/system/getRankingInfo/3", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/system/getRankingInfo/3", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.gold = response.data
 
       ));
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/system/getSystemInfo", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/system/getSystemInfo", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.systemInfo = response.data
@@ -207,15 +207,15 @@ export default {
       }
       this.gold.pointsLimit = this.silver.pointsLimit;
      axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/system/save",this.regular, {headers: {Authorization:
+        .post("https://rental-app-6.herokuapp.com"+"/api/system/save",this.regular, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
 
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/system/save",this.silver, {headers: {Authorization:
+        .post("https://rental-app-6.herokuapp.com"+"/api/system/save",this.silver, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
 
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/system/save",this.gold, {headers: {Authorization:
+        .post("https://rental-app-6.herokuapp.com"+"/api/system/save",this.gold, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response =>{
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully saved loyalty program info!</p>`)
@@ -225,7 +225,7 @@ export default {
     save:function (){
 
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/system/saveSystemInfo",this.systemInfo, {headers: {Authorization:
+        .post("https://rental-app-6.herokuapp.com"+"/api/system/saveSystemInfo",this.systemInfo, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response =>{
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully saved system info!</p>`)

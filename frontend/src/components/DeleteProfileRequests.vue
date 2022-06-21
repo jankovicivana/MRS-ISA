@@ -68,7 +68,7 @@ export default {
   },
   mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/user/getDeleteRequestsOnHold", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/user/getDeleteRequestsOnHold", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.requests = response.data
@@ -88,7 +88,7 @@ export default {
         return;
       }
 
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/user/acceptDeletion",request,{headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/user/acceptDeletion",request,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully accepted profile deletion!</p>`)
@@ -108,7 +108,7 @@ export default {
         return;
       }
 
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/user/rejectDeletion",request,{headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/user/rejectDeletion",request,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully rejected profile deletion!</p>`)

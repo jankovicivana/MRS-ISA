@@ -147,12 +147,12 @@ export default {
   },
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/cottages/all")
+      .get("https://rental-app-6.herokuapp.com"+"/api/cottages/all")
       .then(response => {this.cottages = response.data
                         response.data.forEach(cottage => {
                           var images = []
                           cottage.images.forEach(image => {
-                            axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image.path,{responseType:"blob"})
+                            axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+image.path,{responseType:"blob"})
                               .then(response => {
                                 images.push(URL.createObjectURL(response.data));
                                   cottage.images = images;
@@ -165,12 +165,12 @@ export default {
       });
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/all")
+      .get("https://rental-app-6.herokuapp.com"+"/api/boats/all")
       .then(response => {this.boats = response.data
                     response.data.forEach(boat => {
                     var images = []
                       boat.images.forEach(image => {
-                      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image.path,{responseType:"blob"})
+                      axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+image.path,{responseType:"blob"})
                         .then(response => {
                           images.push(URL.createObjectURL(response.data));
                           boat.images = images;
@@ -182,12 +182,12 @@ export default {
                   });
       })
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/all")
+      .get("https://rental-app-6.herokuapp.com"+"/api/adventures/all")
       .then(response => {this.adventures = response.data
                         response.data.forEach(adventure => {
                           var images = []
                           adventure.images.forEach(image => {
-                            axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image.path,{responseType:"blob"})
+                            axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+image.path,{responseType:"blob"})
                               .then(response => {
                                 images.push(URL.createObjectURL(response.data));
                                 adventure.images = images;
@@ -200,11 +200,11 @@ export default {
       })
 
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/fishingInstructor/all")
+      .get("https://rental-app-6.herokuapp.com"+"/api/fishingInstructor/all")
       .then(response => {this.instructors = response.data
         response.data.forEach(i => {
           let image = i.mainPhoto;
-          axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+image,{responseType:"blob"})
+          axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+image,{responseType:"blob"})
             .then(response => {
               i.mainPhoto = URL.createObjectURL(response.data);
             })
@@ -226,7 +226,7 @@ export default {
     },
 
     loadOnlyOneImage:function (name) {
-      axios.get(process.env.VUE_APP_SERVER_PORT+"/api/images/getImage/"+name,{responseType:"blob"})
+      axios.get("https://rental-app-6.herokuapp.com"+"/api/images/getImage/"+name,{responseType:"blob"})
         .then(response => {
           this.imagesUrl.push(URL.createObjectURL(response.data));
         })

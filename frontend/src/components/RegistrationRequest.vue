@@ -69,7 +69,7 @@ export default {
   },
   mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/user/getUsersOnHold", {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/user/getUsersOnHold", {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (
         this.requests = response.data,
@@ -86,7 +86,7 @@ export default {
 
     acceptRegistration:function (request){
       let id = request.id
-      axios.get(process.env.VUE_APP_SERVER_PORT + "/api/user/acceptRegistration/"+id,{headers: {Authorization:
+      axios.get("https://rental-app-6.herokuapp.com" + "/api/user/acceptRegistration/"+id,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully accepted registration!</p>`)
@@ -112,7 +112,7 @@ export default {
         reason: area
       };
 
-      axios.post(process.env.VUE_APP_SERVER_PORT + "/api/user/rejectRegistration",this.info,{headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com" + "/api/user/rejectRegistration",this.info,{headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfull!</p>`,`<p style="font-size: 20px">Successfully rejected registration!</p>`)

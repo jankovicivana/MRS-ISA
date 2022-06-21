@@ -132,12 +132,12 @@ export default {
   mounted: function () {
     this.role = sessionStorage.getItem("role");
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/address/all")
+      .get("https://rental-app-6.herokuapp.com"+"/api/address/all")
       .then(response => (this.addresses = response.data));
 
     if (this.role === "ROLE_client") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/clients/getClient", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/clients/getClient", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -167,7 +167,7 @@ export default {
         this.params = {type: this.$refs.type.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
           startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/entity/getAvailable", this.params,{
+          .post("https://rental-app-6.herokuapp.com"+"/api/entity/getAvailable", this.params,{
             headers: {
               Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")
@@ -198,7 +198,7 @@ export default {
         this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
           startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/cottages/getAvailable", this.params,{
+          .post("https://rental-app-6.herokuapp.com"+"/api/cottages/getAvailable", this.params,{
             headers: {
               Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")
@@ -209,7 +209,7 @@ export default {
         this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
           startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/boats/getAvailable", this.params,{
+          .post("https://rental-app-6.herokuapp.com"+"/api/boats/getAvailable", this.params,{
             headers: {
               Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")
@@ -220,7 +220,7 @@ export default {
         this.params = {name: this.$refs.name.value, city: this.$refs.location.value, price: this.$refs.price.value, people: this.$refs.people.value,
           startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value, endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, rating: this.rating};
         axios
-          .post(process.env.VUE_APP_SERVER_PORT+"/api/adventures/getAvailable", this.params,{
+          .post("https://rental-app-6.herokuapp.com"+"/api/adventures/getAvailable", this.params,{
             headers: {
               Authorization:
                 'Bearer ' + sessionStorage.getItem("accessToken")
@@ -246,7 +246,7 @@ export default {
       var data = {personNum: this.$refs.people.value, startDate: this.$refs.startDate.value, startTime: this.$refs.startTime.value,
         endDate: this.$refs.endDate.value, endTime: this.$refs.endTime.value, entityId: entity.id, clientId:this.clientId, rating: this.rating, type: entitytype}
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/api/reservation/reserve", data,{
+        .post("https://rental-app-6.herokuapp.com"+"/api/reservation/reserve", data,{
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")

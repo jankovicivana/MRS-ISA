@@ -184,7 +184,7 @@ export default {
       this.info = {email, password, name, surname, city, country, street, postalCode, role, phoneNumber,reason,biography};
 
       axios
-        .post(process.env.VUE_APP_SERVER_PORT+"/auth/register", this.info)
+        .post("https://rental-app-6.herokuapp.com"+"/auth/register", this.info)
         .then(response => { this.registerSuccessful(role);})
         .catch((error) => { this.registerFailed(); })
     },

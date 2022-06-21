@@ -373,7 +373,7 @@ export default {
         navigationEquipment: this.nav_equipment
       };
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/boats/addBoat",this.info, {headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/boats/addBoat",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully added!</p>`,`<p style="font-size: 20px">Successfully added boat!</p>`)

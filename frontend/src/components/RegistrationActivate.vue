@@ -34,7 +34,7 @@ export default {
 
   mounted: function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT + "/api/clients/activate/" + this.token,  {
+      .get("https://rental-app-6.herokuapp.com" + "/api/clients/activate/" + this.token,  {
         headers: {
           Authorization: "Bearer " + this.token
         }

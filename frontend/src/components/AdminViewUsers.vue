@@ -77,7 +77,7 @@ export default {
     console.log(this.userType)
     if (this.userType === "clients") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/clients/all", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/clients/all", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -88,7 +88,7 @@ export default {
         ))
     } else if (this.userType === "instructors") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/fishingInstructor/all", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/fishingInstructor/all", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -101,7 +101,7 @@ export default {
 
     } else if (this.userType === "boatOwners") {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/all", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/boatOwner/all", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -112,7 +112,7 @@ export default {
     ))
     } else {
       axios
-        .get(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/all", {
+        .get("https://rental-app-6.herokuapp.com" + "/api/cottageOwner/all", {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -135,7 +135,7 @@ export default {
     deleteUser: function (user) {
       let id = user.id
       if (this.userType === "clients") {
-        axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/clients/delete/" + id, {
+        axios.delete("https://rental-app-6.herokuapp.com" + "/api/clients/delete/" + id, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -153,7 +153,7 @@ export default {
         });
 
       } else if (this.userType === "instructors") {
-        axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/fishingInstructor/delete/" + id, {
+        axios.delete("https://rental-app-6.herokuapp.com" + "/api/fishingInstructor/delete/" + id, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -169,7 +169,7 @@ export default {
           this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Instructor has some reservations! Deletion is not possible!</p>`)
         });
       } else if (this.userType === "boatOwners") {
-        axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/boatOwner/delete/" + id, {
+        axios.delete("https://rental-app-6.herokuapp.com" + "/api/boatOwner/delete/" + id, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")
@@ -185,7 +185,7 @@ export default {
           this.show1('foo-css', 'error',`<p style="font-size: 25px">Warning!</p>`,`<p style="font-size: 20px">Boat owner has some reservations! Deletion is not possible!</p>`)
         });
       } else {
-        axios.delete(process.env.VUE_APP_SERVER_PORT + "/api/cottageOwner/delete/" + id, {
+        axios.delete("https://rental-app-6.herokuapp.com" + "/api/cottageOwner/delete/" + id, {
           headers: {
             Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")

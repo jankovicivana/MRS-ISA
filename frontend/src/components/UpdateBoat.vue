@@ -217,7 +217,7 @@ export default {
   components: {BoatOwnerNavbar},
   mounted:function (){
     axios
-      .get(process.env.VUE_APP_SERVER_PORT+"/api/boats/"+this.$route.params.id, {headers: {Authorization:
+      .get("https://rental-app-6.herokuapp.com"+"/api/boats/"+this.$route.params.id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
       .then(response => (this.boat = response.data,this.address = this.boat.address,this.boat_type = this.boat.type))
 
@@ -253,7 +253,7 @@ export default {
 
       picturePath.readAsDataURL(file)
       picturePath.onload = e => {
-        axios.post(process.env.VUE_APP_SERVER_PORT+"/api/images/addImage", {data:e.target.result,path:file.name,entityId:this.boat.id}, {headers: {Authorization:
+        axios.post("https://rental-app-6.herokuapp.com"+"/api/images/addImage", {data:e.target.result,path:file.name,entityId:this.boat.id}, {headers: {Authorization:
               'Bearer ' + sessionStorage.getItem("accessToken")}})
           .then(response => {
             this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added image!</p>`)
@@ -272,7 +272,7 @@ export default {
         this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Rule must not be empty!</p>`)
         return;
       }
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/rules/addRule", {rule:ruleText,entityId:this.boat.id}, {headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/rules/addRule", {rule:ruleText,entityId:this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added rule!</p>`)
@@ -291,7 +291,7 @@ export default {
         return;
       }
 
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/addAdditionalService", {name:service,entityId:this.boat.id}, {headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/additionalServices/addAdditionalService", {name:service,entityId:this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added service!</p>`)
@@ -311,7 +311,7 @@ export default {
         return;
       }
       console.log(enteredEquipment)
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/equipment/addFishingEquipment", {equipment:enteredEquipment,adventureId:-1,boatId : this.boat.id}, {headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/equipment/addFishingEquipment", {equipment:enteredEquipment,adventureId:-1,boatId : this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added equipment!</p>`)
@@ -329,7 +329,7 @@ export default {
         this.show('foo-css', 'error',`<p style="font-size: 25px">Unsuccessful!</p>`,`<p style="font-size: 20px">Navigation equipment must not be empty!</p>`)
         return;
       }
-      axios.post(process.env.VUE_APP_SERVER_PORT+"/api/navigationEquipment/addNavigationEquipment", {equipment:enteredEquipment,boatId : this.boat.id}, {headers: {Authorization:
+      axios.post("https://rental-app-6.herokuapp.com"+"/api/navigationEquipment/addNavigationEquipment", {equipment:enteredEquipment,boatId : this.boat.id}, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully added!</p>`, `<p style="font-size: 20px">Successfully added equipment!</p>`)
@@ -343,7 +343,7 @@ export default {
     },
     removeRule:function (id){
 
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/rules/deleteRule/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/rules/deleteRule/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           console.log(id);
@@ -354,7 +354,7 @@ export default {
       });
 
     },removeEquipment:function (id){
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/equipment/deleteFishingEquipment/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/equipment/deleteFishingEquipment/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed equipment!</p>`)
@@ -364,7 +364,7 @@ export default {
       });
 
     },removeNavEquipment:function (id){
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/navigationEquipment/deleteNavigationEquipment/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/navigationEquipment/deleteNavigationEquipment/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed equipment!</p>`)
@@ -375,7 +375,7 @@ export default {
 
     },removeAdditionalService:function (id){
 
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/additionalServices/deleteAdditionalService/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/additionalServices/deleteAdditionalService/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed additional service!</p>`)
@@ -386,7 +386,7 @@ export default {
 
     },removeImage:function (id){
 
-      axios.delete(process.env.VUE_APP_SERVER_PORT+"/api/images/deleteImage/"+id, {headers: {Authorization:
+      axios.delete("https://rental-app-6.herokuapp.com"+"/api/images/deleteImage/"+id, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully removed!</p>`, `<p style="font-size: 20px">Successfully removed image!</p>`)
@@ -425,7 +425,7 @@ export default {
         return;
       }
 
-      axios.put(process.env.VUE_APP_SERVER_PORT+"/api/boats/updateBoat",this.info, {headers: {Authorization:
+      axios.put("https://rental-app-6.herokuapp.com"+"/api/boats/updateBoat",this.info, {headers: {Authorization:
             'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => {
           this.show('foo-css', 'success', `<p style="font-size: 25px">Successfully updated!</p>`, `<p style="font-size: 20px">Successfully updated boat!</p>`)
