@@ -212,6 +212,7 @@ export default {
               this.loadImage(image.path);
             });
             first_response.data.quickReservations.forEach(q => {
+              alert(q.expirationDateTime);
               let date = new Date(q.expirationDateTime[0],q.expirationDateTime[1]-1,q.expirationDateTime[2])
               if(date > this.today){
                 this.quick.push(q);
@@ -299,7 +300,14 @@ export default {
             this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted cottage!</p>`)
             setTimeout(() => { router.push('/cottages'); }, 2000)
           }).catch((error) => {
-            this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Cottage has reservations.</p>`)
+          if(error.response.status === 400){
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">`+error.response.data+`</p>`)
+          } else if(error.response.status === 409){
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 17px">`+error.response.data+`</p>`)
+          }
+          else{
+            alert(error.response.data);
+          }
         });
 
       },
@@ -379,7 +387,10 @@ export default {
         }).catch(error => {
           if(!error.response || error.response.status === 403){
             this.show('foo-css', 'error',`<p style="font-size: 25px">Forbidden Error!</p>`,`<p style="font-size: 20px">You can not make quick reservation.</p>`)
-          } else if(error.response.status === 409){
+          } else if(error.response.status === 401){
+            this.show('foo-css', 'error',`<p style="font-size: 25px">You can't reserve</p>`,`<p style="font-size: 20px">Log in to be able to make a reservation.</p>`)
+          }
+          else if(error.response.status === 409){
             this.show('foo-css', 'error',`<p style="font-size: 25px">Already reserved</p>`,`<p style="font-size: 20px">Someone else has just reserved the action.</p>`)
           } else if(error.response.status === 400){
             this.show('foo-css', 'error',`<p style="font-size: 25px">Already reserved</p>`,`<p style="font-size: 20px">You already have a reservation in this period.</p>`)

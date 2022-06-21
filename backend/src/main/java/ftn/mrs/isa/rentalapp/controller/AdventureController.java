@@ -31,11 +31,6 @@ public class AdventureController {
     @Autowired
     private AdventureService adventureService;
 
-     @Autowired
-    private EquipmentService equipmentService;
-
-    @Autowired
-    private AdditionalServiceService additionalServiceService;
 
     @Autowired
     private AvailablePeriodService availablePeriodService;
@@ -43,14 +38,10 @@ public class AdventureController {
     @Autowired
     private ReservationService reservationService;
 
-    @Autowired
-    private ImageService imageService;
 
     @Autowired
     private FishingInstructorService fishingInstructorService;
 
-    @Autowired
-    private RuleService ruleService;
 
     @Autowired
     private ModelMapper mapper;
@@ -74,15 +65,7 @@ public class AdventureController {
     @DeleteMapping(value = "/deleteAdventure/{id}")
     @PreAuthorize("hasAnyRole('fishingInstructor','admin')")
     public ResponseEntity<String> deleteAdventure(@PathVariable Integer id,Principal principal){
-        Adventure adventure = adventureService.findOne(id);
-        if(adventure == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (!adventureService.canDeleteAdventure(adventure)){
-            return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
-        }
-        adventureService.deleteAdventure(adventure);
-        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+        return adventureService.deleteAdventure(id);
     }
 
     @GetMapping(value = "/{id}")

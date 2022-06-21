@@ -33,11 +33,6 @@ public class QuickReservationService {
     @Autowired
     private EmailService emailService;
 
-    @Autowired
-    private AdventureService adventureService;
-
-    @Autowired
-    private CottageService cottageService;
 
     @Autowired
     private CottageRepository cottageRepository;
@@ -54,8 +49,6 @@ public class QuickReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    @Autowired
-    private BoatService boatService;
 
     public QuickReservation findOne(Integer id){return quickReservationRepository.findById(id).orElse(null);}
 

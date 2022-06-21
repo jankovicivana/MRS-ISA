@@ -180,7 +180,7 @@ public class ReservationService {
         return new ResponseEntity<>(rdto, HttpStatus.OK);
     }
 
-    public ResponseEntity<String> makeReservationFromQuick(Integer id, String username) throws MessagingException {
+    public ResponseEntity<String> reserveQuick(Integer id, String username) throws MessagingException {
         Client c = clientService.findByEmail(username);
         try{
             QuickReservation quickReservation = quickReservationRepository.findOneLocked(id);

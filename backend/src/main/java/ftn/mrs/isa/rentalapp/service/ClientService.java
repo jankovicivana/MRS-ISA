@@ -85,6 +85,7 @@ public class ClientService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Client updated = mapper.map(clientDTO, Client.class);
+        updated.setEnabled(true);
         updated.setRoles(client.getRoles());
         clientRepository.save(updated);
         return new ResponseEntity<>(clientDTO, HttpStatus.OK);
