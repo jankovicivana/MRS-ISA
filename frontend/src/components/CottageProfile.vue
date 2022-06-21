@@ -299,7 +299,14 @@ export default {
             this.show('foo-css', 'success',`<p style="font-size: 25px">Successfully deleted!</p>`,`<p style="font-size: 20px">Successfully deleted cottage!</p>`)
             setTimeout(() => { router.push('/cottages'); }, 2000)
           }).catch((error) => {
-            this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">Cottage has reservations.</p>`)
+          if(error.response.status === 400){
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 20px">`+error.response.data+`</p>`)
+          } else if(error.response.status === 409){
+            this.show('foo-css', 'error',`<p style="font-size: 25px">Deletion is not possible!</p>`,`<p style="font-size: 17px">`+error.response.data+`</p>`)
+          }
+          else{
+            alert(error.response.data);
+          }
         });
 
       },

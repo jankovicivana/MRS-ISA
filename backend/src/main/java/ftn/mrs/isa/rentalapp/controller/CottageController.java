@@ -80,15 +80,7 @@ public class CottageController {
     @DeleteMapping(value = "/deleteCottage/{id}")
     @PreAuthorize("hasAnyRole('admin','cottageOwner')")
     public ResponseEntity<String> deleteCottage(@PathVariable Integer id,Principal principal){
-        Cottage cottage = cottageService.findOne(id);
-        if(cottage == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (!cottageService.canDeleteCottage(cottage)){
-            return new ResponseEntity<>("Adventure has reservations.Deletion is not possible.",HttpStatus.BAD_REQUEST);
-        }
-        cottageService.deleteCottage(cottage);
-        return new ResponseEntity<>("Deletion is successful.",HttpStatus.OK);
+        return cottageService.deleteCottage(id);
     }
 
     @GetMapping(value = "/getAverageGrade")
