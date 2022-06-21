@@ -14,7 +14,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Adventures </a>
           <div class="navbar-dropdown is-boxed">
-            <a class="navbar-item" href="#/adventures"> My adventures</a>
+            <a class="navbar-item" href="#/adventures/1"> My adventures</a>
             <a class="navbar-item" href="#/adventures/addAdventure"> Add adventure </a>
           </div>
         </div>

@@ -187,7 +187,7 @@ export default new Router({
       component: BrowseBoats
     },
     {
-      path: '/adventures',
+      path: '/adventures/:id',
       name: "BrowseAdventures",
       component: BrowseAdventures
     },

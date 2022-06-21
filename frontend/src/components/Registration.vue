@@ -160,8 +160,20 @@ export default {
       let biography = this.$refs.biography_input.value;
 
       let user_type = this.$refs.user_type_input.value;
+
+      if(user_type !== 'client'){
+        if(reason === ''){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Incomplete data</p>`,`<p style="font-size: 20px">You must enter all the info</p>`)
+          return
+        }
+      }
+
       if(user_type === 'fishing instructor'){
         role = 'ROLE_fishingInstructor';
+        if(biography === ''){
+          this.show('foo-css', 'error',`<p style="font-size: 25px">Incomplete data</p>`,`<p style="font-size: 20px">You must enter all the info</p>`)
+          return
+        }
       }else if(user_type === 'cottage owner'){
         role = 'ROLE_cottageOwner';
       }else if(user_type === 'boat owner'){

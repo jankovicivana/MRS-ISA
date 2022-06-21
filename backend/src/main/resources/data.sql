@@ -11,8 +11,12 @@ insert into clients (id, email, password, name, surname, phone_number, type, add
 insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted,password_changed,points) values (nextval('my_seqv1'),'admin@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',false, true,false,false,0);
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'ikasikovic1977@gmail.com','Ivana','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,0,'coka2.jpg',false, true, 0.0,'tezak zivot ovaj');
 insert into boat_owners(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'ikasikovic197@gmail.com','Ivanaaa','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Kasikovic',2,null,2,0,1,'coka2.jpg',false, true, 0.0,'ovo mi je zivotna zelja');
-insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'peraaaaa@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,1,'Ovo bi trebalo da je biografija instruktora.','pera2.jpg',false, true, 0.0,'ja bih da se registrujem');
+insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason) values (nextval('my_seqv1'),'peraaaaa@gmail.com','Pera','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,0,1,'Ovo bi trebalo da je biografija instruktora.','fisherman2.jpg',false, true, 0.0,'ja bih da se registrujem');
 insert into admins(id,email,name,password,phone_number,surname,type,account_delete_request,address,main_photo,is_predefined, enabled,deleted,password_changed,points) values (nextval('my_seqv1'),'admin2@gmail.com','Mikica','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Peric',1,null,1,'coka1.jpeg',true, true,false,false,0);
+insert into fishing_instructors(id,email,name,password,phone_number,surname,type,account_delete_request,address,points,registration_status,biography,main_photo,deleted, enabled, average_grade,registration_reason)
+                        values (nextval('my_seqv1'),'ivanaj0610+c@gmail.com','Ivana','$2a$10$sUvGKGniC4ZePlmC.QvUWOxlwzbEYjg11Dhr7XE/l1fvrKKPWym6K','06245564','Jankovic',1,null,1,0,1,'Neka biografija. ','fisherman1.jpg',false, true, 0.0,'ja bih da se registrujem');
+
+
 
 insert into role (name) values ('ROLE_client');
 insert into role (name) values ('ROLE_admin');
@@ -20,13 +24,17 @@ insert into role (name) values ('ROLE_cottageOwner');
 insert into role (name) values ('ROLE_boatOwner');
 insert into role (name) values ('ROLE_fishingInstructor');
 
-insert into user_role (user_id, role_id) values (2, 1);
-insert into user_role (user_id, role_id) values (5, 1);
 insert into user_role (user_id, role_id) values (1, 3);
-insert into user_role (user_id, role_id) values (4, 4);
+insert into user_role (user_id, role_id) values (2, 1);
 insert into user_role (user_id, role_id) values (3, 5);
+insert into user_role (user_id, role_id) values (4, 4);
+insert into user_role (user_id, role_id) values (5, 1);
 insert into user_role (user_id, role_id) values (6, 2);
+insert into user_role (user_id, role_id) values (7, 4);
+insert into user_role (user_id, role_id) values (8, 4);
+insert into user_role (user_id, role_id) values (9, 5);
 insert into user_role (user_id, role_id) values (10, 2);
+insert into user_role (user_id, role_id) values (11, 5);
 
 
 
@@ -44,6 +52,7 @@ insert into boats (id, deleted, description, name, price, address, motor_num, ca
                     values (nextval('my_seqv2'),false,'Ovo je mnogo dobar brod. Najbrzi na svetu. On ne plovi, on leti.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat non nisi dignissim vulputate. Fusce vitae nunc sed nibh porttitor aliquet et vitae dui. Aenean ultricies ligula id ex tempus facilisis.','Brod Ivana',250,2,3,20,5,25,250,600,0,4,5.0, 1);
 insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Nezaboravna avantura','140',1,3,10,0,false, 4.9, 2);
 insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Coka avantura','140',1,3,10,0,false, 3.5, 2);
+insert into adventures (id,description,name,price,address,fishing_instructor_id,max_person_num,cancel_fee,deleted, average_grade, kind) values (nextval('my_seqv2'),'Dodjite kod nas,ali obavezno.','Prezanimljiva avantura','140',1,11,11,0,false, 4.5, 2);
 
 
 insert into images (path,entity,is_main_photo) values ('cottage1.jpg',1,true);
@@ -74,6 +83,10 @@ insert into images (path,entity,is_main_photo) values ('fish1.jpg',9,false);
 insert into images (path,entity,is_main_photo) values ('fish2.jpg',9,false);
 insert into images (path,entity,is_main_photo) values ('fish3.jpg',10,false);
 insert into images (path,entity,is_main_photo) values ('fish4.jpg',10,false);
+
+insert into images (path,entity,is_main_photo) values ('adventure1.jpg',11,true);
+insert into images (path,entity,is_main_photo) values ('adventure2.jpg',11,false);
+insert into images (path,entity,is_main_photo) values ('adventure3.jpg',11,false);
 
 insert into rooms (bed_number,cottage) values (3,1);
 insert into rooms (bed_number,cottage) values (2,1);
