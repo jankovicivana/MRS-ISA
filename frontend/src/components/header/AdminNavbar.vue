@@ -16,7 +16,7 @@
           <div class="navbar-dropdown is-boxed">
             <a class="navbar-item" href="#/cottages"> Cottages</a>
             <a class="navbar-item" href="#/boats"> Boats </a>
-            <a class="navbar-item" href="#/adventures"> Adventures </a>
+            <a class="navbar-item" href="#/adventures/1"> Adventures </a>
           </div>
         </div>
 

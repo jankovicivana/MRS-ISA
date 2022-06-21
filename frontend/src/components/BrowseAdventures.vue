@@ -91,7 +91,13 @@ export default {
               'Bearer ' + sessionStorage.getItem("accessToken")}})
         .then(response => (this.adventures = this.search_adventures = response.data))
 
-    }else{
+    } else if (this.role === 'ROLE_admin'){
+      axios
+        .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/all", {headers: {Authorization:
+              'Bearer ' + sessionStorage.getItem("accessToken")}})
+        .then(response => (this.adventures = this.search_adventures = response.data))
+    }
+    else{
     axios
       .get(process.env.VUE_APP_SERVER_PORT+"/api/adventures/allByOwner/" + this.$route.params.id)
       .then(response => {this.adventures = this.search_adventures = response.data})
