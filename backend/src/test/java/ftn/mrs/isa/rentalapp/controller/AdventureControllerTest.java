@@ -47,7 +47,7 @@ public class AdventureControllerTest {
     public void testGetAllAdventures() throws Exception {
         mockMvc.perform(get(URL_PREFIX + "/all")).andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$", hasSize(4)))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(2)))
                 .andExpect(jsonPath("$.[*].name").value(hasItem("Fenomenalna avantura")))
                 .andExpect(jsonPath("$.[*].price").value(hasItem(200.0)))
