@@ -13,6 +13,9 @@ jobs:
       - run:
           name: Test
           command: mvn -f backend/pom.xml test
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn -f backend/pom.xml sonar:sonar -Dsonar.projectKey=$PROJECT_KEY
   
 
   
@@ -20,6 +23,7 @@ jobs:
 
 orbs:
   heroku: circleci/heroku@1.2.6
+  sonarcloud: sonarsource/sonarcloud@1.0.3
 
 workflows:
   heroku_deploy:
