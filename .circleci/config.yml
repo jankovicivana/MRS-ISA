@@ -9,7 +9,7 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: mvn -f backend/pom.xml -B -DskipTests clean package
+          command: mvn -f backend/pom.xml -B -DskipTests=false clean package
       - run:
           name: Test
           command: mvn -f backend/pom.xml test
