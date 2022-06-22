@@ -6,8 +6,6 @@ jobs:
     docker:
       - image: cimg/openjdk:8.0
     steps:
-      - checkout:
-        path: 
       - run:
           name: Build
           command: mvn -f backend/pom.xml -B -DskipTests clean package
