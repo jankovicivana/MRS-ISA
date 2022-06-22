@@ -22,7 +22,7 @@ library.add(faUserSecret,faCheckCircle,faUserFriends,faPercentage,faCircle,faSta
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.component('star-rating', require("vue-star-rating").default);
+//Vue.component('star-rating', require("vue-star-rating").default);
 
 Vue.config.productionTip = false
 
