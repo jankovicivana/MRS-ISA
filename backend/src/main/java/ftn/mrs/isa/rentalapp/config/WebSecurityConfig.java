@@ -95,15 +95,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/fishingInstructor/getInstructorById/{id}").permitAll()
                 .antMatchers("/api/adventures/allByOwner/{id}").permitAll()
 
-                // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
 
                 .logout(logout -> logout.logoutUrl("/").logoutSuccessUrl("/").invalidateHttpSession(true))
 
-                // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
                 .cors().and()
 
-                // umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, userService), BasicAuthenticationFilter.class);
 
         http.csrf().disable();
