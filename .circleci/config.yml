@@ -26,6 +26,21 @@ workflows:
     jobs:
       - build-and-test
       - heroku/deploy-via-git:
+        name: deploy-back
+        app-name: rental-app-6
+        filters:
+          branches:
+            only:
+              - deployment
           requires:
             - build-and-test
+      - heroku/deploy-via-git:
+        name: deploy-front
+        app-name: rental-app-6-front
+        filters:
+          branches:
+            only:
+              - deployment
+          requires:
+            - deploy-back
       
