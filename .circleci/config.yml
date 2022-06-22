@@ -3,11 +3,11 @@ version: 2.1
 
 jobs:
   build-and-test:
-    working_directory: ~/MRS-ISA/backend
+    working_directory: ~/backend
     docker:
       - image: cimg/openjdk:8.0
     steps:
-      - checkout: ~/MRS-ISA
+      - checkout: ~/backend
         path: 
       - run:
           name: Build
