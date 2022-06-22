@@ -13,7 +13,11 @@ import ftn.mrs.isa.rentalapp.repository.BoatRepository;
 import ftn.mrs.isa.rentalapp.repository.QuickReservationRepository;
 import ftn.mrs.isa.rentalapp.repository.ReservationRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +66,8 @@ public class BoatService {
     @Autowired
     private ModelMapper mapper;
 
+    private final Logger LOG = LoggerFactory.getLogger(Boat.class);
+
     @Autowired
     private QuickReservationRepository quickReservationRepository;
 
@@ -72,7 +78,15 @@ public class BoatService {
     public List<Boat> findAllByOwnerEmail(String email){return boatRepository.findAllByOwnerEmail(email);}
 
 
-    public Boat findOne(Integer id){return boatRepository.findById(id).orElse(null);}
+    @Cacheable("boat")
+    public Boat findOne(Integer id){
+        LOG.info("Boat with id: " + id + " successfully cached!");
+        return boatRepository.findById(id).orElse(null);}
+
+    @CacheEvict(cacheNames = {"product"}, allEntries = true)
+    public void removeFromCache() {
+        LOG.info("Boats removed from cache!");
+    }
 
     public List<BoatDTO> getAllBoats(){
         List<Boat> boats = findAll();

@@ -29,10 +29,6 @@
         </div>
         <a class="navbar-item" href="#/fishingInstructor/Availability"> Availability calendar </a>
 
-        <a class="navbar-item" href="#/client/clientHomepage">Reviews </a>
-
-        <a class="navbar-item" href="#/client/clientHomepage">Complaints </a>
-
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" style="background-color: #2e6b6b"> Reports </a>
