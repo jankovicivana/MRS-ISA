@@ -3,6 +3,7 @@ version: 2.1
 
 jobs:
   build-and-test:
+    working_directory: ~/backend
     docker:
       - image: cimg/openjdk:8.0
     steps:
