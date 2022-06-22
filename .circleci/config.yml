@@ -15,7 +15,7 @@ jobs:
           command: mvn -f backend/pom.xml test
       - run:
           name: Analyze on SonarCloud
-          command: mvn -f backend/pom.xml sonar:sonar -Dsonar.projectKey=$PROJECT_KEY
+          command: mvn -f backend/pom.xml sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=MRS-ISA -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
   
 
   
