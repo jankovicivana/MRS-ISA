@@ -130,7 +130,11 @@ export default {
           }})
         .then(response => {
           this.show('foo-css', 'success');
-          this.$router.push({name: "ClientReservationHistory"}); }).catch((error) => {alert("error")});
+          this.$router.push({name: "ClientReservationHistory"}); }).catch((error) => {
+            let title = `<p style="font-size: 25px">Conflict</p>`
+            let text = `<p style="font-size: 15px">Review already sent!</p>`
+            this.$notify({group:'foo-css', title, text, type:'error'})
+      });
 
     }
   }

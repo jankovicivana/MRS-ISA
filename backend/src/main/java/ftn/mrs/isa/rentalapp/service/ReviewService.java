@@ -1,20 +1,25 @@
 package ftn.mrs.isa.rentalapp.service;
 
 
-import ftn.mrs.isa.rentalapp.model.entity.EntityReview;
-import ftn.mrs.isa.rentalapp.model.entity.EntityType;
+import ftn.mrs.isa.rentalapp.dto.ReviewDTO;
+import ftn.mrs.isa.rentalapp.model.entity.*;
+import ftn.mrs.isa.rentalapp.model.reservation.RequestStatus;
+import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import ftn.mrs.isa.rentalapp.model.user.Advertiser;
 import ftn.mrs.isa.rentalapp.model.user.AdvertiserReview;
-import ftn.mrs.isa.rentalapp.repository.AdvertiserReviewRepository;
-import ftn.mrs.isa.rentalapp.repository.EntityReviewRepository;
-import ftn.mrs.isa.rentalapp.repository.EntityTypeRepository;
-import ftn.mrs.isa.rentalapp.repository.UserRepository;
+import ftn.mrs.isa.rentalapp.model.user.Client;
+import ftn.mrs.isa.rentalapp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ReviewService {
 
 
@@ -29,6 +34,18 @@ public class ReviewService {
 
     @Autowired
     private EntityTypeRepository entityTypeRepository;
+
+    @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private EntityService entityService;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     public List<AdvertiserReview> getOnHoldAdvertiserRevisions() {
         return advertiserReviewRepository.findHoldOnReviews();
@@ -82,6 +99,61 @@ public class ReviewService {
         }
         assert entityType != null;
         entityTypeRepository.save(entityType);
+
+    }
+
+    public ResponseEntity<String> addReview(ReviewDTO r, String name) {
+        try{
+            Client client = clientService.findByEmail(name);
+            EntityType e = entityService.findOne(r.getEntityId());
+            Advertiser a = null;
+            String kind = EntityKind.toString(e.getKind());
+
+            if(kind.equals("Cottage")){
+                Cottage c = (Cottage)e;
+                a = c.getCottageOwner();
+            } else if(kind.equals("Boat")){
+                Boat b = (Boat)e;
+                a = b.getBoatOwner();
+            } else{
+                Adventure adv = (Adventure)e;
+                a = adv.getFishingInstructor();
+            }
+
+            if(!kind.equals("Adventure")){
+                EntityReview entityReview = new EntityReview();
+                entityReview.setEntity(e);
+                entityReview.setStatus(RequestStatus.ON_HOLD);
+                entityReview.setReview(r.getEntityReview());
+                entityReview.setGrade(r.getEntityGrade());
+                entityReview.setClient(client);
+                saveEntityReview(entityReview);
+            }
+
+            AdvertiserReview aReview = new AdvertiserReview();
+            aReview.setReview(r.getOwnerReview());
+            aReview.setGrade(r.getOwnerGrade());
+            aReview.setStatus(RequestStatus.ON_HOLD);
+            aReview.setClient(client);
+            aReview.setAdvertiser(a);
+
+            saveAdvertiserReview(aReview);
+
+            Reservation res = reservationRepository.getByIdLocked(r.getReservationId());
+            System.out.println("Id rezervacije " + r.getReservationId());
+            System.out.println("Rezervacija  " + res.getId());
+            // provjera
+            if(res.getIsReviewed() != null && res.getIsReviewed()){
+                return new ResponseEntity<>("Review already sent", HttpStatus.CONFLICT);
+            }
+
+            res.setIsReviewed(true);  // oznaka da je review napisan
+            reservationService.save(res);
+
+            return new ResponseEntity<>("Successfully sent review.", HttpStatus.OK);
+        }catch(PessimisticLockingFailureException e){
+            return new ResponseEntity<>("Review already sent", HttpStatus.CONFLICT);
+        }
 
     }
 }

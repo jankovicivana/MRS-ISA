@@ -2,12 +2,12 @@ package ftn.mrs.isa.rentalapp.repository;
 
 import ftn.mrs.isa.rentalapp.model.reservation.Reservation;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -92,4 +92,9 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
 
     @Query(value = "SELECT * FROM public.reservations WHERE entity = :entity and client = :client and start_date_time = :start and end_date_time = :end and is_canceled = true", nativeQuery = true)
     public List<Reservation> findCanceledByClient(@Param("client") Integer client, @Param("start") LocalDateTime start,@Param("end") LocalDateTime end,@Param("entity") Integer entity);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query(value = "SELECT r FROM Reservation r WHERE r.id = :id")
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
+    Reservation getByIdLocked(@Param("id") Integer id);
 }

@@ -57,7 +57,7 @@ public class ReviewController {
     @PostMapping(value = "/addReview")
     @PreAuthorize("hasRole('client')")
     public ResponseEntity<String> addReview(@RequestBody ReviewDTO r, Principal principal){
-
+/*
         Client client = clientService.findByEmail(principal.getName());
         EntityType e = entityService.findOne(r.getEntityId());
         Advertiser a = null;
@@ -97,7 +97,8 @@ public class ReviewController {
         res.setIsReviewed(true);  // oznaka da je review napisan
         reservationService.save(res);
 
-        return new ResponseEntity<>("Successfully sent review.",HttpStatus.OK);
+        return new ResponseEntity<>("Successfully sent review.",HttpStatus.OK);*/
+        return reviewService.addReview(r, principal.getName());
     }
 
 
